@@ -25,19 +25,21 @@ RUN pip install uwsgi
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY nginx-app.conf /etc/nginx/sites-available/default
 COPY supervisor-app.conf /etc/supervisor/conf.d/
+COPY supervisord.conf /etc/supervisor/
 
 # COPY requirements.txt and RUN pip install BEFORE adding the rest of your code, this will cause Docker's caching mechanism
 # to prevent re-installinig (all your) dependencies when you made a change a line or two in your app. 
 
 RUN mkdir -p /app/lsg
 COPY lsg/requirements.txt /app/lsg
+
 RUN pip install -r /app/lsg/requirements.txt
 
 # add (the rest of) our code
-COPY . /app/
+COPY lsg/ /app/lsg/
 
-RUN mkdir /app/lsg/server/scripts/logs
-RUN mkdir /app/lsg/server/scripts/xml
+COPY uwsgi_params /app
+COPY uwsgi.ini /app
 
 # apply patches
 COPY lsg/patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstream/
