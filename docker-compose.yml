@@ -8,7 +8,7 @@ web:
   links:
     - postgres:postgres
     - rabbitmq:rabbitmq
-  env_file: env
+  env_file: dev-env
   volumes:
     - ./web:/app/web
   volumes_from:
@@ -20,10 +20,9 @@ web:
 postgres:
   restart: always
   build: ./postgres/
+  env_file: dev-env
   volumes_from:
     - data
-  env_file:
-    - env
   expose:
     - "5432"
 
@@ -63,8 +62,7 @@ rabbitmq:
 celery:
   restart: always
   build: ./celery/
-  env_file:
-    - env
+  env_file: dev-env
   links:
     - postgres:postgres
     - rabbitmq:rabbitmq

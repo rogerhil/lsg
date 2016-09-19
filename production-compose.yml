@@ -1,0 +1,48 @@
+web:
+  extends:
+    file: docker-compose.yml
+    service: web
+  env_file: production-env
+
+postgres:
+  extends:
+    file: docker-compose.yml
+    service: postgres
+  env_file: production-env
+
+data:
+  extends:
+    file: docker-compose.yml
+    service: data
+  env_file: production-env
+
+static:
+  extends:
+    file: docker-compose.yml
+    service: static
+  env_file: production-env
+
+media:
+  extends:
+    file: docker-compose.yml
+    service: media
+  env_file: production-env
+
+logs:
+  extends:
+    file: docker-compose.yml
+    service: logs
+  env_file: production-env
+
+rabbitmq:
+  extends:
+    file: docker-compose.yml
+    service: rabbitmq
+  env_file: production-env
+
+celery:
+  extends:
+    file: docker-compose.yml
+    service: production
+  env_file: production-env
+
