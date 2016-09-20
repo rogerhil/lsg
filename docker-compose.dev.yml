@@ -1,0 +1,12 @@
+web:
+  env_file: dev-env
+  volumes:
+    - ./web/lsg:/app/lsg/
+  command: runserver 0.0.0.0:80
+
+postgres:
+  env_file: dev-env
+
+celery:
+  env_file: dev-env
+

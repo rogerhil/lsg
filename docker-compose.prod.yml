@@ -1,0 +1,9 @@
+web:
+  env_file: production-env
+
+postgres:
+  env_file: production-env
+
+celery:
+  env_file: production-env
+
