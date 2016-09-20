@@ -15,6 +15,7 @@ elif [ "$1" = 'init' ]; then
     python manage.py collectstatic --no-input
     python world/load.py
     if [ -n "$2" ]; then
+        echo Creating Django Site $2
         python create-site.py $2
     fi
 elif [ "$1" = 'update' ]; then
