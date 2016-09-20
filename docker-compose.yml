@@ -9,8 +9,6 @@ web:
     - postgres:postgres
     - rabbitmq:rabbitmq
   env_file: dev-env
-  volumes:
-    - ./web:/app/web
   volumes_from:
     - static
     - media

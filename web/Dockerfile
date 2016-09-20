@@ -47,8 +47,9 @@ COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packag
 COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
 COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
-# add unprivileged lsguser
-RUN adduser --disabled-password --gecos '' lsguser
+# add unprivileged lsg
+RUN groupadd lsg && useradd --create-home --home-dir /home/lsg -g lsg lsg
+RUN chown -R lsg:lsg /app
 
 COPY entrypoint.sh /
 

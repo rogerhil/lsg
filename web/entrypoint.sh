@@ -5,8 +5,22 @@ if [ "${1:0:1}" = '-' ]; then
 	set -- run "$@"
 fi
 
+chown -R lsg:lsg /app
+
 if [ "$1" = 'run' ]; then
     supervisord -n
+elif [ "$1" = 'init' ]; then
+    cd /app/lsg/server
+    python manage.py migrate
+    python manage.py collectstatic --no-input
+    python world/load.py
+    if [ -n "$2" ]; then
+        python create-site.py $2
+    fi
+elif [ "$1" = 'update' ]; then
+    cd /app/lsg/server
+    python manage.py migrate
+    python manage.py collectstatic
 elif [ "$1" = 'bash' ]; then
     bash
 else
