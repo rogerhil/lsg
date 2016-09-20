@@ -12,12 +12,17 @@ if [ "$1" = 'run' ]; then
 elif [ "$1" = 'init' ]; then
     cd /app/lsg/server
     python manage.py migrate
+    echo Migrating database
     python manage.py collectstatic --no-input
+    echo Loading WorldBorder database
     python world/load.py
+    #echo Creating Django Sites: $LSG_ALLOWED_HOSTS
+    #python create-site.py $LSG_ALLOWED_HOSTS
     if [ -n "$2" ]; then
         echo Creating Django Site $2
         python create-site.py $2
     fi
+    
 elif [ "$1" = 'update' ]; then
     cd /app/lsg/server
     python manage.py migrate

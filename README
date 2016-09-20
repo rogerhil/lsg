@@ -2,3 +2,4 @@
 docker-compose build
 docker-compose up -d--no-recreate
 docker-compose run --rm web init $(docker-machine ip dev)
+docker-compose run --rm web createsuperuser
