@@ -10,13 +10,14 @@ chown -R lsg:lsg /app
 
 if [ "$1" = 'run' ]; then
     supervisord -n
+
 elif [ "$1" = 'init' ]; then
     cd /app/lsg/server
     echo Migrating database
     python manage.py migrate
     echo Loading WorldBorder database
     python world/load.py
-    if [ "$LSG_DJANGO_DEBUG" = 'true' ]
+    if [ "$LSG_DJANGO_DEBUG" = 'true' ]; then
         echo Debug mode        
     else
         echo Collecting static files
@@ -31,10 +32,15 @@ elif [ "$1" = 'update' ]; then
     cd /app/lsg/server
     python manage.py migrate
     python manage.py collectstatic
+
+elif [ "$1" = 'createsuperuser' ]; then
+    cd /app/lsg/server
+    python manage.py createsuperuser
+
 elif [ "$1" = 'bash' ]; then
     bash
+
 else
-    cd /app/lsg/server
-    python manage.py $@
+    exec "$@"
 fi
 
