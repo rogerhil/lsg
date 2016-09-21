@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 if [ "${1:0:1}" = '-' ]; then
@@ -16,7 +17,7 @@ elif [ "$1" = 'init' ]; then
     echo Loading WorldBorder database
     python world/load.py
     if [ "$LSG_DJANGO_DEBUG" = 'true' ]
-        
+        echo Debug mode        
     else
         echo Collecting static files
         python manage.py collectstatic --no-input
