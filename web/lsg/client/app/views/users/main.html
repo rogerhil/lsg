@@ -1,0 +1,189 @@
+<h3>My profile
+   <small>Some description about my profile...</small>
+</h3>
+<div ng-controller="UsersCtrl as ctrl" class="container-fluid">
+   <div class="row">
+      <div class="col-md-4">
+         <div class="panel panel-default">
+            <div class="panel-body text-center">
+               <div class="pv-lg">
+                  <div ng-click="ctrl.changePicture()" class="user-img center clickable">
+                     <img ng-src="{{user.picture}}" alt="{{user.name}}" class="img-thumbnail" />
+                     <md-tooltip md-direction="top">Change Picture</md-tooltip>
+                  </div>
+               </div>
+               <h3 class="m0 text-bold">{{ user.first_name }} {{ user.last_name }}</h3>
+               <div class="mv-lg">
+                  <user-ratings user="user"></user-ratings>
+               </div>
+            </div>
+            <div class="panel-body bt text-center">
+               <div class="row">
+                  <div class="col-xs-4 br">
+                     <em class="fa fa-thumbs-up fa-fw text-success"></em>
+                     <strong>+{{ user.succeeded_swaps_count }}</strong>
+                     <md-tooltip md-direction="top">Succeeded swaps</md-tooltip>
+                  </div>
+                  <div class="col-xs-4 br">
+                     <em class="fa fa-thumbs-down fa-fw text-danger"></em>
+                     <strong>+{{ user.failed_swaps_count }}</strong>
+                     <md-tooltip md-direction="top">Failed swaps</md-tooltip>
+                  </div>
+                  <div class="col-xs-4">
+                     <em class="fa fa-clock-o fa-fw text-warning"></em>
+                     <strong>+{{ user.expired_swaps_count }}</strong>
+                     <md-tooltip md-direction="top">Expired swaps</md-tooltip>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="panel panel-default hidden-xs hidden-sm">
+            <div class="panel-heading">
+               <div class="panel-title">Map</div>
+            </div>
+            <div class="panel-body">
+               <div ng-if="!user.address.latitude || !user.address.longitude" class="media">
+                  <p>No address has been provided yet</p>
+               </div>
+               <div class="media">
+                  <div ui-map="ctrl.userMap" ui-options="ctrl.userMapOptions" class="gmap map-canvas"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-8">
+         <div class="card">
+            <div class="card-heading bg-primary">
+               <div class="card-title">Profile Form</div>
+            </div>
+            <div class="card-body">
+               <div ng-if="!user.address.latitude || !user.address.longitude" class="alert alert-warning">
+                  <span>Please complete the form below to be able to start using the application.</span>
+               </div>
+               <form name="profileForm" ng-submit="ctrl.updateUser()">
+                  <div id="profile-form">
+                     <div layout="" layout-sm="column">
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.first_name}">
+                           <label>First Name</label>
+                           <input ng-model="ctrl.user.first_name" required="required" />
+                           <div ng-repeat="error in ctrl.errors.first_name" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.last_name}">
+                           <label>Last Name</label>
+                           <input ng-model="ctrl.user.last_name" required="required" />
+                           <div ng-repeat="error in ctrl.errors.last_name" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                     </div>
+                     <div layout="" layout-sm="column">
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.phone1}">
+                           <label>Phone 1</label>
+                           <input ng-model="ctrl.user.phone1" ui-mask="+999 (99) 999-9999" placeholder="" required="required" />
+                           <div ng-repeat="error in ctrl.errors.phone1" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.phone2}">
+                           <label>Phone 2</label>
+                           <input ng-model="ctrl.user.phone2" ui-mask="+999 (99) 999-9999" placeholder="" />
+                           <div ng-repeat="error in ctrl.errors.phone2" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.gender}">
+                           <label>Gender</label>
+                           <md-select ng-model="ctrl.user.gender">
+                              <md-option ng-value="gender.id" ng-repeat="gender in ctrl.genderOptions">{{gender.label}}</md-option>
+                           </md-select>
+                           <div ng-repeat="error in ctrl.errors.gender" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                     </div>
+                  </div>
+                  <div id="platforms-field" layout="" layout-sm="column">
+                     <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.platforms}">
+                        <label>Platforms you have</label>
+                        <md-select ng-model="ctrl.user.platforms" multiple="multiple">
+                           <md-option ng-value="platform.id" ng-repeat="platform in ctrl.allPlatforms">{{platform.name}}</md-option>
+                        </md-select>
+                        <div ng-repeat="error in ctrl.errors.platforms" class="md-errors-spacer">
+                           <div class="md-char-counter">{{error}}</div>
+                        </div>
+                     </md-input-container>
+                  </div>
+                  <div id="address-form">
+                     <div>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.addressGlobal}">
+                           <h3>
+                              <span>Address</span>
+                              <div ng-repeat="error in ctrl.errors.addressGlobal" class="md-errors-spacer">
+                                 <div class="md-char-counter">{{error}}</div>
+                              </div>
+                           </h3>
+                        </md-input-container>
+                     </div>
+                     <div layout="" layout-sm="column">
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.address1 || ctrl.errors.addressGlobal}">
+                           <label>Address 1</label>
+                           <input ng-model="ctrl.user.address.address1" required="required" />
+                           <div ng-repeat="error in ctrl.errors.address.address1" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.address2 || ctrl.errors.addressGlobal}">
+                           <label>Address 2</label>
+                           <input ng-model="ctrl.user.address.address2" />
+                           <div ng-repeat="error in ctrl.errors.address.address2 " class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.postal_code || ctrl.errors.addressGlobal}">
+                           <label>Postal Code</label>
+                           <input ng-model="ctrl.user.address.postalCode" />
+                           <div ng-repeat="error in ctrl.errors.address.postal_code" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                     </div>
+                     <div layout="" layout-sm="column">
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.city || ctrl.errors.addressGlobal}">
+                           <label>City</label>
+                           <input ng-model="ctrl.user.address.city" required="required" />
+                           <div ng-repeat="error in ctrl.errors.address.city" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.state || ctrl.errors.addressGlobal}">
+                           <label>County / State</label>
+                           <input ng-model="ctrl.user.address.state" />
+                           <div ng-repeat="error in ctrl.errors.address.state" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                        <md-input-container flex="" ng-class="{'md-input-invalid': ctrl.errors.address.country || ctrl.errors.addressGlobal}">
+                           <label>Country</label>
+                           <input ng-model="ctrl.user.address.country" required="required" />
+                           <div ng-repeat="error in ctrl.errors.address.country" class="md-errors-spacer">
+                              <div class="md-char-counter">{{error}}</div>
+                           </div>
+                        </md-input-container>
+                     </div>
+                  </div>
+                  <div layout="" layout-sm="column">
+                     <md-input-container flex="">
+                        <md-button type="submit" ng-transclude="" aria-label="Save" class="md-raised md-primary md-ink-ripple">
+                           <span class="ng-scope">Save</span>
+                           <div class="md-ripple-container"></div>
+                        </md-button>
+                     </md-input-container>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

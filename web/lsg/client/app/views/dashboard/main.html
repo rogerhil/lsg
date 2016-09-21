@@ -1,0 +1,204 @@
+<h3>Dashboard
+   <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }}!</small>
+</h3>
+<div ng-controller="DashboardController as ctrl">
+   <!-- START widgets box-->
+   <div class="row">
+      <div class="col-lg-3 col-sm-6">
+         <!-- START widget-->
+         <div class="panel widget bg-success-light">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-success pv-lg">
+                  <em class="fa fa-thumbs-up fa-3x"></em>
+               </div>
+               <div class="col-xs-8 pv-lg">
+                  <div class="h2 mt0">+{{ user.succeeded_swaps_count }}</div>
+                  <div class="text-uppercase">Succeeded swaps</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+         <!-- START widget-->
+         <div class="panel widget bg-danger-light">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-danger pv-lg">
+                  <em class="fa fa-thumbs-down fa-3x"></em>
+               </div>
+               <div class="col-xs-8 pv-lg">
+                  <div class="h2 mt0">+{{ user.failed_swaps_count }}</div>
+                  <div class="text-uppercase">Failed swaps</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+         <!-- START widget-->
+         <div class="panel widget bg-warning-light">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-warning pv-lg">
+                  <em class="fa fa-clock-o fa-3x"></em>
+               </div>
+               <div class="col-xs-8 pv-lg">
+                  <div class="h2 mt0">+{{ user.expired_swaps_count }}</div>
+                  <div class="text-uppercase">Expired swaps</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+         <!-- START date widget-->
+         <div class="panel widget">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-primary pv-lg">
+                  <!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+                  <now format="MMMM" class="text-sm"></now>
+                  <br/>
+                  <now format="d" class="h2 mt0"></now>
+               </div>
+               <div class="col-xs-8 pv-lg">
+                  <now format="EEEE" class="text-uppercase"></now>
+                  <br/>
+                  <now format="h:mm" class="h2 mt0"></now>
+                  <now format="a" class="text-muted text-sm"></now>
+               </div>
+            </div>
+         </div>
+         <!-- END date widget-->
+      </div>
+   </div>
+   <!-- END widgets box-->
+   <div class="row">
+      <!-- START dashboard main content-->
+      <div class="col-lg-9">
+         <div class="row">
+            <div class="col-lg-4">
+               <!-- START loader widget-->
+               <div class="panel panel-default">
+                  <div class="panel-body">
+                     <a href="#/app/matches" class="text-muted pull-right">
+                        <em class="fa fa-arrow-right"></em>
+                     </a>
+                     <div class="panel-title">Wish list matching</div>
+                     <canvas id="percMatches" classyloader="" data-percentage="{{ ctrl.matchesPercentage }}" class="center-block"></canvas>
+                     <!--.text-center(sparkline="", data-bar-color="{{colorByName('info')}}", data-height="30", data-bar-width="5", data-bar-spacing="2", values="5,4,8,7,8,5,4,6,5,5,9,4,6,3,4,7,5,4,7")-->
+                  </div>
+                  <div class="panel-footer">
+                     <p style="font-size: 11px;" class="text-muted">
+                        <em class="fa fa-line-chart">&nbsp;</em>
+                        <span>You have</span>
+                        <span class="text-dark">{{ ctrl.matchesPercentage }}%</span>
+                        <span>of your wish list of games matching for swap.</span>
+                        <span>To increase this number, try to add more games in your collection or invite more people to use Let'SwapGames.</span>
+                     </p>
+                  </div>
+               </div>
+               <!-- END loader widget-->
+            </div>
+            <div class="col-lg-8">
+               <div class="panel panel-default">
+                  <div class="panel-heading">
+                     <div class="pull-right label label-danger">{{ user.negative_feedback_count }}</div>
+                     <div style="color: #333" class="pull-right label label-default">{{ user.neutral_feedback_count }}</div>
+                     <div class="pull-right label label-success">{{ user.positive_feedback_count }}</div>
+                     <div class="panel-title">Latest feedbacks</div>
+                  </div>
+                  <!-- START list group-->
+                  <scrollable height="180" class="list-group">
+                     <span class="list-group-item">
+                        <div ng-if="!ctrl.latestFeedbacks.length" class="media-box">
+                           <p>No swaps yet.</p>
+                        </div>
+                     </span>
+                     <!-- START list group item-->
+                     <a href="javascript:;" ng-repeat="feedback in ctrl.latestFeedbacks" class="list-group-item">
+                        <div class="media-box">
+                           <div class="pull-left">
+                              <img ng-src="{{ feedback.user.picture }}" alt="{{ feedback.user.name }}" class="media-box-object img-circle thumb32" />
+                           </div>
+                           <div class="media-box-body clearfix">
+                              <small class="pull-right">{{ feedback.closed_at }}</small>
+                              <strong class="media-box-heading text-primary">
+                                 <span ng-if="feedback.feedback == 1" class="circle circle-success circle-lg text-left"></span>
+                                 <span ng-if="feedback.feedback == 0" class="circle circle-lg text-left"></span>
+                                 <span ng-if="feedback.feedback == -1" class="circle circle-danger circle-lg text-left"></span>{{ feedback.user.name }}</strong>
+                              <p class="mb-sm">
+                                 <small>{{ feedback.notes }}</small>
+                              </p>
+                           </div>
+                        </div>
+                     </a>
+                     <!-- END list group item-->
+                  </scrollable>
+                  <!-- END list group-->
+                  <!-- START panel footer-->
+                  <div class="panel-footer clearfix">
+                     <div class="input-group">
+                        <span class="pull-left">
+                           <small>Showing the last {{ ctrl.latestFeedbacks.length }} feedbacks</small>
+                        </span>
+                        <!--input.form-control.input-sm(type='text', placeholder='Search message ..')-->
+                        <!--span.input-group-btn-->
+                        <!--    button.btn.btn-default.btn-sm(type='submit')-->
+                        <!--        i.fa.fa-search-->
+                     </div>
+                  </div>
+                  <!-- END panel-footer-->
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- END dashboard main content-->
+      <!-- START dashboard sidebar-->
+      <aside class="col-lg-3">
+         <!-- START messages and activity-->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               <div class="panel-title">Latest activities</div>
+            </div>
+            <!-- START list group-->
+            <div class="list-group">
+               <span class="list-group-item">
+                  <div ng-if="!ctrl.latestActivities.length" class="media-box">
+                     <p>No activities yet.</p>
+                  </div>
+               </span>
+               <!-- START list group item-->
+               <div ng-repeat="activity in ctrl.latestActivities" class="list-group-item">
+                  <div class="media-box">
+                     <div class="pull-left">
+                        <span class="fa-stack">
+                           <em ng-class="activity.color" class="fa fa-circle fa-stack-2x"></em>
+                           <em ng-class="activity.css_class" class="fa-stack-1x fa-inverse text-white"></em>
+                        </span>
+                     </div>
+                     <div class="media-box-body clearfix">
+                        <small class="text-muted pull-right ml">{{ activity.since }}</small>
+                        <div class="media-box-heading"><a href="#" ng-class="activity.color" class="m0">{{ activity.description }}</a>
+                        </div>
+                        <!--p.m0: small-->
+                        <!--    a(href="#") Bootstrap.xls-->
+                        <!--.media-box-heading-->
+                        <!--    a(href="#").text-warning.m0 TASKS COMPLETION-->
+                        <!--uib-progressbar.progress-xs.m0(value='22', type='warning') 22%-->
+                     </div>
+                  </div>
+               </div>
+               <!-- END list group item-->
+            </div>
+            <!-- END list group-->
+            <!-- START panel footer-->
+            <div class="panel-footer clearfix">
+               <span class="pull-left">
+                  <small>Showing the last {{ ctrl.latestActivities.length }} activities</small>
+               </span>
+               <!--a(href='#').pull-left-->
+               <!--    small Load more-->
+            </div>
+            <!-- END panel-footer-->
+         </div>
+         <!-- END messages and activity-->
+      </aside>
+      <!-- END dashboard sidebar-->
+   </div>
+</div>

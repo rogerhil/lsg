@@ -1,0 +1,48 @@
+md-dialog(aria-label="Contact Details", ng-cloak, style="max-width: 600px;")
+    form
+        md-toolbar
+            .md-toolbar-tools
+                h2 Contact Details
+                span(flex)
+                md-button.md-icon-button(ng-click="ctrl.close()")
+                    md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
+        md-dialog-content
+            .md-dialog-content
+                h3(ng-if="msg")
+                    span {{ ctrl.msg }}
+                    br
+                    br
+                div(layout="row")
+                    div(flex=20)
+                        div.user-img.center
+                            img.img-thumbnail(ng-src='{{ ctrl.swapUser.picture }}', alt='{{ctrl.swapUser.name}}')
+                    div(flex=80 style="white-space: nowrap; padding-left: 15px;")
+                        table.table.bb: tbody
+                            tr
+                                td: strong Username
+                                td {{ ctrl.swapUser.name }}
+                            tr
+                                td: strong Name
+                                td {{ ctrl.swapUser.first_name }} {{ swapUser.last_name }}
+                            tr(ng-if="swapUser.gender")
+                                td: strong Gender
+                                td {{ ctrl.swapUser.gender }}
+                            tr(ng-if="swapUser.phone1")
+                                td: strong Phone 1
+                                td {{ ctrl.swapUser.phone1 }}
+                            tr(ng-if="swapUser.phone2")
+                                td: strong Phone 2
+                                td {{ ctrl.swapUser.phone2 }}
+                            tr
+                                td: strong Address
+                                td {{ ctrl.swapUser.address.address1 }}, {{ ctrl.swapUser.address.city }}, {{ ctrl.swapUser.address.state }}, {{ ctrl.swapUser.address.country }}
+                br
+                .gmap(ui-map='ctrl.contactDetailsMap', ui-options='ctrl.contactDetailsMapOptions', class="map-canvas")
+
+
+        div(style="clear: both;")
+
+        md-dialog-actions(layout="row")
+            md-button(ng-click="ctrl.close()")
+                span close
+

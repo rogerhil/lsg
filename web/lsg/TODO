@@ -1,0 +1,31 @@
+ * Profile:
+    - Validation client (verify all server first)
+    - Permission to get/post/put/delete
+    - Profile photo (look angle tmplate profile page as an example)
+    - Improve form, re-use using templates to avoid repetition of code,
+      especially because of error messages from validation, or something to
+      integrate with django forms.
+
+ * Games:
+    - !!! SHOW A MESSAGE in the game search field in case the user didn't
+      specify his platforms in the profile page.
+    - Permission to get/post/put/delete
+    - Only allow to add game to collection/wishlist if the game belongs to the
+      list of platforms defined on the profile page. (disable the ?platform_id=
+      filter in JS to check this and fix in the server)
+    - In case a platform is removed from the list of platforms in the profile
+      page, also deletes all the games of that platform from the
+      collection/wishlist.
+
+ * Matches:
+    - Request: (radio buttons required validation in client not working)
+    - Request: add google maps :)
+    - check logic of ignore requests already made (tup)
+
+ * Request:
+    - Think about: "change feedback field name to reputation"
+
+ * General REST:
+    - Check all services/permission/options disallowing not needed services.
+    - Maybe remove not needed fields from the responses.
+    - Use django tool bar to improve performance.

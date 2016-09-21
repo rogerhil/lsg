@@ -1,0 +1,62 @@
+md-dialog(aria-label="Match", ng-cloak, style="max-width: 580px;")
+    form
+        md-toolbar
+            .md-toolbar-tools
+                h2 Pending request warning
+        md-dialog-content
+            .md-dialog-content(style="min-width: 370px;")
+                div(ng-if="ctrl.iwish.swap_pending && !ctrl.game.swap_pending")
+                    h4
+                        ng-pluralize(count="ctrl.totalPendingRequests()",
+                                     when="{'one': 'You already have a pending request which you have requested the game \"{{ ctrl.iwish.name }}\", check below:'," +
+                                           "'other': 'You already have pending requests which you have requested the game  \"{{ ctrl.iwish.name }}\", check below:'}")
+                div(ng-if="ctrl.game.swap_pending && !ctrl.iwish.swap_pending")
+                    h4
+                        ng-pluralize(count="ctrl.totalPendingRequests()",
+                                     when="{'one': 'You already have a pending request in which your game \"{{ ctrl.game.name }}\" is requested, check below:'," +
+                                           "'other': 'You already have pending requests in which your game \"{{ ctrl.game.name }}\" is requested, check below:'}")
+                div(ng-if="ctrl.iwish.swap_pending && ctrl.game.swap_pending")
+                    h4
+                        ng-pluralize(count="ctrl.totalPendingRequests()",
+                                     when="{'one': 'You already have a pending request involving both games \"{{ ctrl.iwish.name }}\" and \"{{ ctrl.game.name }}\" game, check below:'," +
+                                           "'other': 'You already have pending requests involving both games \"{{ ctrl.iwish.name }}\" and \"{{ ctrl.game.name }}\" game, check below:'}")
+
+                div
+                    //ng-include(src="'app/views/requests/requests-pending-warning.partial.html'", onload="iwish=ctrl.iwish; game=ctrl.game; context='pendingMyRequests'; meContext='requested'; otherContext='requester'")
+                    //ng-include(src="'app/views/requests/requests-pending-warning.partial.html'", onload="iwish=ctrl.iwish; game=ctrl.game; context='pendingIncomingRequests'; meContext='requester'; otherContext='requested'")
+
+                    div.media.shadow-z2(style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in ctrl.pendingMyRequests")
+                        div(layout="row")
+                            flex.game-border-highlight(ng-class="{highlighted: ctrl.iwish.swap_pending && request.requested_game.id == ctrl.iwish.id}")
+                                img.img-responsive(ng-src='{{request.requested_game.images.front_thumb_medium}}', alt='{{request.requested_game.name}}', style="max-height: 80px;")
+                                md-tooltip(md-direction="top") {{request.requested_game.name}} ({{request.requested_game.platform.name}})
+                            flex(style="z-index: 1;")
+                                img.media-object.img-circle.img-thumbnail.thumb48(ng-src='{{ request.requested.picture }}', alt='{{request.requested.name}}' style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;")
+                                md-tooltip(md-direction="top") {{request.requested.name}} {{request.distance}}km far
+                            flex.game-border-highlight(ng-class="{highlighted: ctrl.game.swap_pending && request.requester_game.id == ctrl.game.id}")
+                                img.img-responsive(ng-src='{{request.requester_game.images.front_thumb_medium}}', alt='{{request.requester_game.name}}', style="max-height: 80px;")
+                                md-tooltip(md-direction="top") {{request.requester_game.name}} ({{request.requester_game.platform.name}})
+
+                    div.media.shadow-z2(style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in ctrl.pendingIncomingRequests")
+                        div(layout="row")
+                            flex.game-border-highlight(ng-class="{highlighted: ctrl.iwish.swap_pending && request.requester_game.id == ctrl.iwish.id}")
+                                img.img-responsive(ng-src='{{request.requester_game.images.front_thumb_medium}}', alt='{{request.requester_game.name}}', style="max-height: 80px;")
+                                md-tooltip(md-direction="top") {{request.requester_game.name}} ({{request.requester_game.platform.name}})
+                            flex(style="z-index: 1;")
+                                img.media-object.img-circle.img-thumbnail.thumb48(ng-src='{{ request.requested.picture }}', alt='{{swap.user.name}}' style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;")
+                                md-tooltip(md-direction="top") {{request.requester.name}} {{request.distance}}km far
+                            flex.game-border-highlight(ng-class="{highlighted: ctrl.game.swap_pending && request.requested_game.id == ctrl.game.id}")
+                                img.img-responsive(ng-src='{{request.requested_game.images.front_thumb_medium}}', alt='{{request.requested_game.name}}', style="max-height: 80px;")
+                                md-tooltip(md-direction="top") {{request.requested_game.name}} ({{request.requested_game.platform.name}})
+                div(style="clear: both;")
+                br
+                h4(style="text-align: center;") Are you sure you want to do this request as well?
+        md-dialog-actions(layout="row")
+            button.btn.mb-sm.btn-default.btn-labeled(ng-click="ctrl.no()")
+                span.btn-label
+                    em.fa.fa-close
+                span No
+            button.btn.mb-sm.btn-success.btn-labeled(ng-click="ctrl.yes()" style="margin-left: 10px;")
+                span.btn-label
+                    em.fa.fa-check
+                span Yes, I'm sure

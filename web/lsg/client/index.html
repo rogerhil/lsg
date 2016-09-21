@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="custom">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <meta name="description" content="{{app.description}}">
+   <meta name="keywords" content="app, responsive, angular, bootstrap, dashboard, admin">
+   <title data-ng-bind="::pageTitle()">Let'SwapGames - Free for life, by gamers for gamers</title>
+   <!-- Bootstrap styles-->
+   <link rel="stylesheet" href="app/css/bootstrap.css" data-ng-if="!app.layout.isRTL">
+   <link rel="stylesheet" href="app/css/bootstrap-rtl.css" data-ng-if="app.layout.isRTL">
+   <!-- ngMaterial styles-->
+   <link rel="stylesheet" href="vendor/angular-material/angular-material.css">
+   <!-- Application styles-->
+   <link rel="stylesheet" href="app/css/app.css" data-ng-if="!app.layout.isRTL">
+   <link rel="stylesheet" href="app/css/app-rtl.css" data-ng-if="app.layout.isRTL">
+   <!-- Themes-->
+   <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
+</head>
+
+<body data-ng-class="{'layout-fixed': app.layout.isFixed, 'aside-collapsed': app.layout.isCollapsed, 'layout-boxed': app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}"
+ng-controller="LsgController as globalCtrl">
+   <div data-preloader></div>
+   <div id="spinner" style="position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: none;">
+      <div style="position: absolute; left: 50%; right: 50%; top: 50%; width: 70px;">
+         <div class="ball-pulse">
+            <div style="background-color: #fff;"></div>
+            <div style="background-color: #fff;"></div>
+            <div style="background-color: #fff;"></div>
+         </div>
+      </div>
+   </div>
+   <div data-ui-view="" data-autoscroll="false" class="wrapper"></div>
+   <script src="app/js/base.js"></script>
+   <script src="vendor/angular-material/angular-material.js"></script>
+   <script src="app/js/app.js"></script>
+   <!--script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAAZnaZBXLqNBRXjd-82km_NO7GUItyKek')-->
+</body>
+
+</html>

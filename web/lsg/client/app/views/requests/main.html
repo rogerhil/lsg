@@ -1,0 +1,22 @@
+<div ng-controller="RequestsCtrl as ctrl" class="keep-content-heading">
+   <h3>Incoming Requests
+      <small>Some description</small>
+      <button type="button" ng-click="ctrl.confirmArchiveAllRequests()" ng-if="ctrl.hasClosedRequests()" style="position: absolute; right: 15px; top: 10px;" class="btn btn-default btn-circle btn-lg bg-gray">
+         <em class="fa fa-archive"></em>
+         <md-tooltip md-direction="top">Archive all finished requests</md-tooltip>
+      </button>
+   </h3>
+   <div style="margin-right: 20px; float: left; height: 250px;" ng-repeat="request in ctrl.incomingRequests" request-id="{{ request.id }}" class="card">
+      <ng-include src="'app/views/requests/items.partial.html'" onload="user=request.requester; context='incomingRequests'"></ng-include>
+   </div>
+   <p ng-if="!ctrl.incomingRequests.length" style="margin-bottom: 40px;">No incoming requests.</p>
+   <div style="clear: both; margin-bottom: 20px;"></div>
+   <h3>My Requests
+      <small>Some description</small>
+   </h3>
+   <div style="margin-right: 20px; float: left; height: 250px;" ng-repeat="request in ctrl.myRequests" request-id="{{ request.id }}" class="card">
+      <ng-include src="'app/views/requests/items.partial.html'" onload="user=request.requested; context='myRequests'"></ng-include>
+   </div>
+   <p ng-if="!ctrl.myRequests.length">No requests.</p>
+   <div style="clear: both; margin-bottom: 20px;"></div>
+</div>

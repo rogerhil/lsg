@@ -1,0 +1,10 @@
+.media
+    .media-left.media-middle
+        a(href='#')
+            img.media-object.img-circle.img-thumbnail.thumb48(ng-src="{{user.picture}}", alt='{{user.name}}')
+    .media-body.pt-sm(style="width: auto;")
+        .text-bold {{ user.name }}&nbsp;&nbsp;
+            user-ratings(user="user")
+            .text-sm.text-muted
+                span(ng-if="distance") {{ distance }}km far
+                span(ng-if="!distance") {{ user.address.distance }}km far

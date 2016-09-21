@@ -1,0 +1,44 @@
+.card-item
+    div(layout="row")
+        flex(ng-if="context == 'myRequests'")
+            img.img-responsive(ng-src='{{request.requested_game.images.front_thumb_medium}}', alt='{{request.requested_game.name}}', style="max-height: 170px;")
+            md-tooltip(md-direction="top") {{request.requested_game.name}} ({{request.requested_game.platform.name}})
+        flex(ng-if="context == 'incomingRequests'")
+            img.img-responsive(ng-src='{{request.requester_game.images.front_thumb_medium}}', alt='{{request.requester_game.name}}', style="max-height: 170px;")
+            md-tooltip(md-direction="top") {{request.requester_game.name}} ({{request.requester_game.platform.name}})
+        flex(style="z-index: 1;")
+            button.btn.btn-default.btn-circle.btn-lg(type="button", ng-click="", style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 60px;")
+                em.fa.fa-exchange
+        flex(ng-if="context == 'myRequests'")
+            img.img-responsive(ng-src='{{request.requester_game.images.front_thumb_medium}}', alt='{{request.requester_game.name}}', style="max-height: 170px;")
+            md-tooltip(md-direction="top") {{request.requester_game.name}} ({{request.requester_game.platform.name}})
+        flex(ng-if="context == 'incomingRequests'")
+            img.img-responsive(ng-src='{{request.requested_game.images.front_thumb_medium}}', alt='{{request.requested_game.name}}', style="max-height: 170px;")
+            md-tooltip(md-direction="top") {{request.requested_game.name}} ({{request.requested_game.platform.name}})
+.card-offset
+    any(ng-if="context == 'myRequests'")
+        button.btn.btn-danger.btn-circle.btn-lg(type="button" ng-click="ctrl.confirmCancelRequest(request)" ng-if="request.isPending()")
+            em.fa.fa-close
+            md-tooltip(md-direction="top") Cancel
+    any(ng-if="context == 'incomingRequests'")
+        button.btn.btn-success.btn-circle.btn-lg(type="button" ng-click="ctrl.openAcceptRequestDialog(request)", ng-if="request.isPending()", style="margin-right: 5px;")
+            em.fa.fa-thumbs-up
+            md-tooltip(md-direction="top") Accept
+        button.btn.btn-danger.btn-circle.btn-lg(type="button" ng-click="ctrl.confirmRefuseRequest(request)", ng-if="request.isPending()")
+            em.fa.fa-thumbs-down
+            md-tooltip(md-direction="top") Refuse
+    // common buttons below
+    any
+        button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="ctrl.showContactDetails(request, context)", ng-if="request.isOngoing()", style="margin-right: 5px;")
+            em.fa.fa-phone
+            md-tooltip(md-direction="top") Contact details
+        button.btn.btn-default.btn-circle.btn-lg.bg-primary(type="button" ng-click="ctrl.openFinalizeRequestDialog(request)", ng-if="request.isOngoing() || (request.isFinalizing() && !request.isFinalizedByAuthenticatedUser())")
+            em.fa.fa-power-off
+            md-tooltip(md-direction="top") Finalize it!
+        button.btn.btn-default.btn-circle.btn-lg.bg-gray(type="button" ng-click="ctrl.confirmArchiveRequest(request)" ng-if="request.isClosed()")
+            em.fa.fa-archive
+            md-tooltip(md-direction="top") Archive
+.card-body
+    user-photo-ratings-distance(user="user" distance="request.distance")
+    .pull-right.mt(style="position: absolute; right: 15px; bottom: 25px;")
+        status-display(request="request")

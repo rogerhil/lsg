@@ -1,0 +1,35 @@
+{% load static %}
+
+<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+
+<h2>Hello {{ swap_request.requested }},</h2>
+
+<p>
+    You have accepted the game swap requested at {{ swap_request.created }} by
+    the user {{ swap_request.requester }} at Let'Swap Games.
+</p>
+
+<p>
+    {{ swap_request.requester }} offered his game
+    "{{ swap_request.requester_game }}" to
+    be swapped with your game "{{ swap_request.requested_game }}".
+</p>
+
+<p>
+    Se below {{ swap_request.requester }}'s details:
+</p>
+
+<p>
+    <strong>Email: </strong>
+    <a href="sendto:{{ swap_request.requested.email }}">{{ swap_request.requester.email }}</a><br>
+    <strong>Phone number:</strong> {{ swap_request.requester.phones }}<br>
+    <strong>Address:</strong> {{ swap_request.requester.address }}
+</p>
+
+<p>
+    Regards,
+</p>
+
+<p>
+    Let'Swap Games
+</p>

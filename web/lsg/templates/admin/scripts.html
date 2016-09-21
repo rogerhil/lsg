@@ -1,0 +1,66 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static %}
+{% load i18n %}
+
+{% block extrahead %}
+  {{ block.super }}
+{% endblock extrahead %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; Scripts
+    </div>
+{% endblock %}
+
+{% block object-tools %}
+    {{super}}
+    <h1>Scripts</h1>
+    <div id="submit-row" style="height: 80px;">
+        <ul class="object-tools" style="float: none; top: 40px;">
+            <li>
+                <input type="button" name="update-games" value="Update latest games from TheGamesDb API" />
+            </li>
+            <li>
+                <input type="button" name="update-images" value="Update games images" />
+            </li>
+        </ul>
+    </div>
+    <h2>Logs</h2>
+    <div>
+        <pre id="log" style="background-color: #333; color: #ddd; overflow: auto; width: 100%; height: 700px; border-radius: 5px; padding: 10px;">
+        </pre>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        var intervalId;
+        function updateGames() {
+            $.ajax({
+                url: '/admin/games/gamescripting/update_games/',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    window.setTimeout(function () {
+                        window.setInterval(function () {
+                            intervalId = readUpdateGamesLog(data.log);
+                        }, 1000);
+                    }, 3000);
+                }
+            });
+        }
+        function readUpdateGamesLog(logFile) {
+            $.ajax({
+                url: '/admin/games/gamescripting/update_games/log/?log_file=' + logFile,
+                data: {log_file: logFile},
+                success: function (data) {
+                    $("#log").html(data);
+                }
+            });
+        }
+
+        $('input[name=update-games]').click(function () {
+            updateGames();
+        });
+    </script>
+{% endblock %}

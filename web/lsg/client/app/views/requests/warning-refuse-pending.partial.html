@@ -1,0 +1,101 @@
+<md-dialog aria-label="Pending requests warning" ng-cloak="ng-cloak" style="max-width: 580px;">
+   <form>
+      <md-toolbar>
+         <div class="md-toolbar-tools">
+            <h2>Pending requests warning</h2>
+         </div>
+      </md-toolbar>
+      <md-dialog-content>
+         <div style="min-width: 370px;" class="md-dialog-content">
+            <h4>
+               <span ng-if="ctrl.iwish.swap_pending &amp;&amp; !ctrl.game.swap_pending">
+                  <ng-pluralize count="ctrl.totalPendingRequests()" when="{'one': 'You already have a pending request which you have requested the game &quot;{{ ctrl.iwish.name }}&quot;','other': 'You already have pending requests which you have requested the game  &quot;{{ ctrl.iwish.name }}&quot;.'}"></ng-pluralize>
+               </span>
+               <span ng-if="ctrl.game.swap_pending &amp;&amp; !ctrl.iwish.swap_pending">
+                  <ng-pluralize count="ctrl.totalPendingRequests()" when="{'one': 'You already have a pending request in which your game &quot;{{ ctrl.game.name }}&quot; is requested.','other': 'You already have pending requests in which your game &quot;{{ ctrl.game.name }}&quot; is requested.'}"></ng-pluralize>
+               </span>
+               <span ng-if="ctrl.iwish.swap_pending &amp;&amp; ctrl.game.swap_pending">
+                  <ng-pluralize count="ctrl.totalPendingRequests()" when="{'one': 'You already have a pending request involving both games &quot;{{ ctrl.iwish.name }}&quot; and &quot;{{ ctrl.game.name }}&quot; game.','other': 'You already have pending requests involving both games &quot;{{ ctrl.iwish.name }}&quot; and &quot;{{ ctrl.game.name }}&quot; game.'}"></ng-pluralize>
+               </span>
+            </h4>
+            <div layout="row" style="width: 250px; margin: 0 auto;">
+               <flex style="position: relative;">
+                  <div ng-if="ctrl.iwish.swap_pending" class="label label-warning swap-indicator">
+                     <div class="em fa fa-ellipsis-h"></div>
+                     <md-tooltip md-direction="bottom">You have already a pending Swap Request for this game.</md-tooltip>
+                  </div>
+                  <img ng-src="{{ctrl.iwish.images.front_thumb_medium}}" alt="{{ctrl.iwish.name}}" style="max-height: 170px;" class="img-responsive" />
+                  <md-tooltip md-direction="top">{{ctrl.iwish.name}} ({{ctrl.iwish.platform.name}})</md-tooltip>
+               </flex>
+               <flex style="z-index: 1;">
+                  <button type="button" ng-click="" style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 45px;" class="btn btn-default btn-circle btn-lg">
+                     <em class="fa fa-exchange"></em>
+                  </button>
+               </flex>
+               <flex style="position: relative;">
+                  <div ng-if="ctrl.game.swap_pending" class="label label-warning swap-indicator">
+                     <div class="em fa fa-ellipsis-h"></div>
+                     <md-tooltip md-direction="bottom">You have already a pending Swap Request for this game.</md-tooltip>
+                  </div>
+                  <img ng-src="{{ctrl.game.images.front_thumb_medium}}" alt="{{ctrl.game.name}}" style="max-height: 170px;" class="img-responsive" />
+                  <md-tooltip md-direction="top">{{ctrl.game.name}} ({{ctrl.game.platform.name}})</md-tooltip>
+               </flex>
+            </div>
+            <h4>The following pending requests will be automatically refused after you accept the above Swap Request:</h4>
+            <div>
+               <div style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in ctrl.pendingMyRequests" class="media shadow-z2">
+                  <div layout="row">
+                     <flex ng-class="{highlighted: ctrl.iwish.swap_pending &amp;&amp; request.requested_game.id == ctrl.iwish.id}" class="game-border-highlight">
+                        <img ng-src="{{request.requested_game.images.front_thumb_medium}}" alt="{{request.requested_game.name}}" style="max-height: 80px;" class="img-responsive" />
+                        <md-tooltip md-direction="top">{{request.requested_game.name}} ({{request.requested_game.platform.name}})</md-tooltip>
+                     </flex>
+                     <flex style="z-index: 1;">
+                        <img ng-src="{{request.requested.picture}}" alt="{{request.requested.name}}" style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;" class="media-object img-circle img-thumbnail thumb48" />
+                        <md-tooltip md-direction="top">{{request.requested.name}} {{request.distance}}km far</md-tooltip>
+                     </flex>
+                     <flex ng-class="{highlighted: ctrl.game.swap_pending &amp;&amp; request.requester_game.id == ctrl.game.id}" class="game-border-highlight">
+                        <img ng-src="{{request.requester_game.images.front_thumb_medium}}" alt="{{request.requester_game.name}}" style="max-height: 80px;" class="img-responsive" />
+                        <md-tooltip md-direction="top">{{request.requester_game.name}} ({{request.requester_game.platform.name}})</md-tooltip>
+                     </flex>
+                  </div>
+               </div>
+               <div style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in ctrl.pendingIncomingRequests" class="media shadow-z2">
+                  <div layout="row">
+                     <flex ng-class="{highlighted: ctrl.iwish.swap_pending &amp;&amp; request.requester_game.id == ctrl.iwish.id}" class="game-border-highlight">
+                        <img ng-src="{{request.requester_game.images.front_thumb_medium}}" alt="{{request.requester_game.name}}" style="max-height: 80px;" class="img-responsive" />
+                        <md-tooltip md-direction="top">{{request.requester_game.name}} ({{request.requester_game.platform.name}})</md-tooltip>
+                     </flex>
+                     <flex style="z-index: 1;">
+                        <img ng-src="{{swap.user.picture}}" alt="{{swap.user.name}}" style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;" class="media-object img-circle img-thumbnail thumb48" />
+                        <md-tooltip md-direction="top">{{request.requester.name}} {{request.distance}}km far</md-tooltip>
+                     </flex>
+                     <flex ng-class="{highlighted: ctrl.game.swap_pending &amp;&amp; request.requested_game.id == ctrl.game.id}" class="game-border-highlight">
+                        <img ng-src="{{request.requested_game.images.front_thumb_medium}}" alt="{{request.requested_game.name}}" style="max-height: 80px;" class="img-responsive" />
+                        <md-tooltip md-direction="top">{{request.requested_game.name}} ({{request.requested_game.platform.name}})</md-tooltip>
+                     </flex>
+                  </div>
+               </div>
+            </div>
+            <div style="clear: both;"></div>
+            <br/>
+            <h4 style="text-align: center;">Are you sure you want to do this request as well?</h4>
+            <div style="clear: both;"></div>
+            <br/>
+         </div>
+      </md-dialog-content>
+      <md-dialog-actions layout="row">
+         <button ng-click="ctrl.no()" class="btn mb-sm btn-default btn-labeled">
+            <span class="btn-label">
+               <em class="fa fa-close"></em>
+            </span>
+            <span>No</span>
+         </button>
+         <button ng-click="ctrl.yes()" style="margin-left: 10px;" class="btn mb-sm btn-success btn-labeled">
+            <span class="btn-label">
+               <em class="fa fa-check"></em>
+            </span>
+            <span>Yes, I'm sure</span>
+         </button>
+      </md-dialog-actions>
+   </form>
+</md-dialog>

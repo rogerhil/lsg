@@ -1,0 +1,25 @@
+{% load static %}
+
+<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+
+<h2>Hello {{ swap_request.requested }},</h2>
+
+<p>
+    The game swap requested by {{ swap_request.requester }} at
+    Let'Swap Games that you have accepted has been unfortunately cancelled.
+</p>
+
+<p>
+    {{ swap_request.requester }} has offered his game
+    "{{ swap_request.requester_game }}" to
+    be swapped with your game "{{ swap_request.requested_game }}", but
+    now he cancelled.
+</p>
+
+<p>
+    Regards,
+</p>
+
+<p>
+    Let'Swap Games
+</p>

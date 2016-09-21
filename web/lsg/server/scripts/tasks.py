@@ -1,0 +1,68 @@
+from datetime import datetime
+from celery import shared_task, task
+from celery.signals import after_task_publish
+
+from scripts.models import Scripting, CeleryTask
+from scripts.populate_games_db import PopulateGamesDb
+from scripts.download_boxart_images import BoxartDownloader
+from scripts.make_thumbnails import ThumbnailsMaker
+from scripts.expire_old_ongoing_requests import ExpireOldOngoingRequests
+from scripts.send_scheduled_emails import SendScheduledEmails
+
+
+#@celery.decorators.periodic_task(run_every=datetime.timedelta(minutes=5))
+@shared_task(bind=True, script_class=PopulateGamesDb)
+def populate_games_db(self):
+    days = Scripting.days_not_updated()
+    script = self.script_class(self.request.id)
+    script.run(update_days=days)
+    scripting = Scripting.instance()
+    scripting.games_last_updated = datetime.now()
+    scripting.save()
+    return True
+
+
+@shared_task(bind=True, script_class=BoxartDownloader)
+def download_boxart_images(self):
+    days = Scripting.days_not_updated()
+    script = self.script_class(self.request.id)
+    script.run(update_days=days)
+    scripting = Scripting.instance()
+    scripting.games_images_last_updated = datetime.now()
+    scripting.save()
+    return True
+
+
+@shared_task(bind=True, script_class=ThumbnailsMaker)
+def make_thumbnails(self):
+    days = Scripting.days_not_updated()
+    script = self.script_class(self.request.id)
+    script.run(update_days=days)
+    scripting = Scripting.instance()
+    scripting.games_thumbnails_last_updated = datetime.now()
+    scripting.save()
+    return True
+
+
+@shared_task(bind=True, script_class=ExpireOldOngoingRequests)
+def expire_old_ongoing_requests(self):
+    script = self.script_class(self.request.id)
+    script.run()
+    return True
+
+
+@shared_task(bind=True, script_class=SendScheduledEmails)
+def send_scheduled_emails(self):
+    script = self.script_class(self.request.id)
+    script.run()
+    return True
+
+
+# ********************************* SIGNALS ********************************* #
+
+@after_task_publish.connect
+def task_sent_handler(sender=None, body=None, **kwargs):
+    task_id = body['id']
+    script_class = globals()[sender.split('.')[-1]].script_class
+    log = script_class.build_log_filename(task_id)
+    CeleryTask.new(sender, task_id, log)

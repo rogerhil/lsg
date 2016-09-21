@@ -1,0 +1,32 @@
+<div class="row">
+   <div class="col-lg-6">
+      <div class="card">
+         <div class="card-heading bg-primary">
+            <div class="card-title">My Collection</div>
+         </div>
+         <div ng-controller="GamesCtrl as ctrl" class="card-body">
+            <div style="margin-right: -22px;">
+               <div ng-repeat="item in ctrl.collection" class="game-img-holder animate">
+                  <img ng-src="{{item.game.images.front_thumb_medium}}" alt="{{item.game.name}}" />
+                  <md-tooltip md-direction="top">{{item.game.name}} ({{item.game.platform.name}})</md-tooltip>
+                  <em ng-click="ctrl.removeGameFromCollection(item.id)" class="icon-close remove-game"></em>
+               </div>
+            </div>
+            <div style="clear: both;"></div>
+            <form ng-submit="ctrl.addGameToCollection()">
+               <md-autocomplete ng-disabled="ctrl.isDisabled" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" placeholder="Add more games...">
+                  <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+               </md-autocomplete>
+            </form>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-6">
+      <div class="card">
+         <div class="card-heading bg-primary">
+            <div class="card-title">Wishlist</div>
+         </div>
+         <div class="card-body"></div>
+      </div>
+   </div>
+</div>

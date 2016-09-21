@@ -1,0 +1,356 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    {% include "metatags.html" %}
+
+    <link href="{% static 'css/home/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/home/flipclock.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/home/style.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,100,100italic,300italic,400italic,700,700italic" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/home/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}"/>
+
+    <title>Let's Swap Games</title>
+
+
+</head>
+<body class="coming-soon-promo-style-2">
+
+    <!-- LOADER -->
+    <div id="loader-wrapper">
+        <div id="loader-container" style="text-align: center;">
+          <div class="stick"></div>
+          <div class="stick"></div>
+          <div class="stick"></div>
+          <div class="stick"></div>
+          <div class="stick"></div>
+          <div class="stick"></div>
+          <div class="loader-tit" style="margin-top: 20px;">Let'SwapGames</div>
+        </div>
+    </div>
+
+    <div id="content-wrapper" style="background: url('{% static "img/games-background-7.jpg" %}') no-repeat; background-color:#000; background-size: cover; background-attachment: fixed;">
+        <div class="block coming-soon-style2" id="home" style="background-color: rgba(0, 0, 0, 0.8)">
+            <div class="container">
+                <div class="row">
+                    <!-- <div class="col-md-6 margin-top-50"> -->
+
+                        <div style="text-align: center; margin-top: 100px;">
+                            <img src="{% static 'img/logo-96x50.png' %}">
+                            <h1 class="h1" style="margin-top: 15px;">Let'SwapGames</h1>
+                            <h2 class="h2">Free for life. By gamers for gamers.</h2>
+                        </div>
+
+
+                        <!--
+                            <div style="background:rgba(255, 255, 255, 0.1); padding:20px; max-width:280px; float:right; text-align: center; border-radius: 5px;">
+                                {% if user.is_authenticated %}
+                                    <div>
+                                        <div style="float:left; margin-right: 20px; border-radius: 50%; overflow: hidden; width: 45px; height: 45px;">
+                                            <a href="{% url 'app' %}">
+                                                {% if user.picture %}
+                                                    <img src="{{ user.picture }}" style="max-height: 65px;" />
+                                                {% else %}
+                                                    <img src="{% static 'img/user-icon.svg' %}"  />
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div style="float:right; margin-top: 15px;">
+                                            {{ user.first_name }}, <a href="{% url 'logout' %}">sign out</a>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                    <h3 style="margin-top: 20px;">
+                                        <a href="{% url 'app' %}">Go to my dashboard</a>
+                                    </h3>
+                                {% else %}
+                                    {% include "social-sign-in-up.html" %}
+                                    <p style="margin-top: 10px; line-height: 20px; font-size: 12px;">
+                                        You can only sign-in with a social account. <a href="#why-social">Why?</a>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="date margin-top-30">
+                            <!--
+                            <div class="clock"></div>
+                            <div class="message" style="margin-top: 15px;">
+                                <h2>game swaps so far, and counting...</h2>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="container margin-bottom-40">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="footer-linck">
+                                <a href="http://www.letswapgames.com/" style="padding: 5px 10px; font-weight: normal;"><span>Let's Swap Games 2016 &copy;</span></a>
+                            </div>
+                            <div class="footer-linck">
+                                <a href="mailto:contact@letswapgames.com" style="padding: 5px 10px; font-weight: normal;"><span>contact@letswapgames.com</span></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="follow-us">
+                                <div class="titel">
+                                    Follow Us
+                                </div>
+                                <a class="thumbs" href="https://twitter.com/letswapgames.com" target="_blank"><i class="fa fa-twitter"></i></a>
+                                <a class="thumbs" href="https://www.facebook.com/letswapgames.com" target="_blank"><i class="fa fa-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="promo-slide-background" style="background-image: url({% static "img/games-background-4.jpg" %});">
+        <div class="block promo-slide background-shadow light-text" id="about-us">
+
+            <div class="container">
+                <div class="cell-view">
+                    <div class="article-header">
+                        <article class="simple-article">
+                            <h1>About Let's Swap Games</h1>
+                            <h4>Your platform to swap games with other players for free.</h4>
+                        </article>
+                    </div>
+                    <div class="about-wrapper">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #00b1cb;">
+                                        <i class="fa fa-cogs"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="simple-article">
+                                            <h5><b>How does it work?</b></h5>
+											<ol>
+                                            <li>Sign-in.</li>
+											<li>Add your games to your library.</li>
+											<li>Add the games you want to your wish list.</li>
+											<li>We automatically match your games with other users wishes.</li>
+											</ol>
+											<hr>
+											<ul>
+											<li style="margin-left:-20px">You can send swap requests to users who want your games</li>
+											<li style="margin-left:-20px">You receive swap requests from users who have your wishes</li>
+											</ul>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+							<div class="clear hidden-md hidden-lg"></div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #ee5036;">
+                                        <i class="fa fa-user-secret"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="simple-article">
+                                            <h5><b>Is it safe?</b></h5>
+                                            <p>We do our best to build a trustworthy gamers community. But always check the rank and social network of the
+											players you swap games with. If you have any problem, give a bad review on the user and report the issue to us.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #da6bb0;">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="simple-article">
+                                            <h5><b>Is it free?</b></h5>
+                                            <p>Absolutely! And no such thing as paid or premium plans here.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clear hidden-sm"></div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #bfbf00;">
+                                        <i class="fa fa-facebook"></i>
+                                    </div>
+                                    <div class="content" id="why-social">
+                                        <div class="simple-article">
+                                            <h5><b>Why can I only sign-in with a social account?</b></h5>
+                                            <p>Our community is based on trust. We need evidence of who you are, so other players will be more confident to
+											swap games with you.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear hidden-md hidden-lg"></div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #41adf0;">
+                                        <i class="fa fa-globe"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="simple-article">
+                                            <h5><b>In which countries is it available?</b></h5>
+                                            <p>We are from Ireland, but it's a global community. Don't worry, you'll swap games with other players from
+											the same country as you.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="about-entry">
+                                    <div class="icon" style="background-color: #2cbd69;">
+                                        <i class="fa fa-gamepad"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="simple-article">
+                                            <h5><b>Who are you, anyway?</b></h5>
+                                            <p>We are gamers from Ireland who were tired of trying to sell and swap games in ad sites and being ripped of by our local game store...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear hidden-md hidden-lg"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+	<!--
+    <div class="block promo-slide light-text" id="contact-us">
+
+        <div class="container">
+            <div class="cell-view">
+                <div class="article-header">
+                    <article class="simple-article">
+                        <h1>Contact Us</h1>
+                        <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam varius neque eget finibus mollis.</h4>
+                    </article>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-b30">
+                        <div class="text-center">
+                            <div class="contact-title">Contact Us Today</div>
+                            <br/>
+                            <a class="contact-phone" href="http://moonart.net.ua/DRAWER/"><span>+0 (123) 456 7890</span></a>
+                            <br/>
+                            <a class="contact-mail" href="mailto:info@yourwebsite.com"><span>info@yourwebsite.com</span></a>
+                            <div class="contact-icons">
+                                <a href="#" style="background: #d44132;"><i class="fa fa-google-plus"></i></a>
+                                <a href="#" style="background: #4a66a0;"><i class="fa fa-facebook"></i></a>
+                                <a href="#" style="background: #6caddf;"><i class="fa fa-twitter"></i></a>
+                                <a href="#" style="background: #00b1f0;"><i class="fa fa-skype"></i></a>
+                                <a href="#" style="background: #cb2027;"><i class="fa fa-pinterest-p"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-md-offset-1">
+                        <div class="contact-title text-left">Have a Question?</div>
+                        <form class="contact-form" method="post">
+                            <div class="fields-wrapper">
+                                <div class="simple-input">
+                                    <label>Name*</label>
+                                    <input name="name" type="text">
+                                </div>
+                                <div class="simple-input">
+                                    <label>Email*</label>
+                                    <input name="email" type="text">
+                                </div>
+                                <div class="simple-input">
+                                    <label>Subject</label>
+                                    <input name="subject" type="text">
+                                </div>
+                                <div class="simple-input">
+                                    <label>Message*</label>
+                                    <textarea name="text"></textarea>
+                                </div>
+                            </div>
+                            <div class="fields-button-wrapper">
+                                <div class="button">send message<input type="submit"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="map">
+        <div id="map-canvas" data-lat="43.653226" data-lng="-107.383184" data-zoom="5" data-style="style-2">
+
+        </div>
+        <div class="addresses-block">
+            <a data-lat="43.653226" data-lng="-107.383184" data-string="1. Here is some address or email or phone or something else..."></a>
+            <a data-lat="57.653226" data-lng="-77.383184" data-string="2. Here is some address or email or phone or something else..."></a>
+        </div>
+    </div>
+
+    <header>
+        <nav>
+            <a href="welcome.html"><i class="fa fa-bars"></i><span><span>All Demos</span></span></a>
+            <a href="#home" class="anchor-scroll active"><i class="fa fa-home"></i><span><span>Home</span></span></a>
+            <a href="#about-us" class="anchor-scroll"><i class="fa fa-info"></i><span><span>About</span></span></a>
+            <a href="#contact-us" class="anchor-scroll"><i class="fa fa-envelope-o"></i><span><span>Contact</span></span></a>
+            <a href="#map" class="anchor-scroll"><i class="fa fa-globe"></i><span><span>Map</span></span></a>
+        </nav>
+        <div class="menu-button">
+            <div>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="full-screen-popup light-text" id="thank-you-contact">
+        <div class="close-layer"></div>
+        <div class="simple-article center-align">
+            <a class="close-button">+</a>
+            <h1>Thank You!</h1>
+            <h4>Your message was successfully sent.</h4>
+            <p>Pellentesque dictum ut massa vitae rhoncus. Sed dapibus dolor eu semper dapibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec feugiat augue id augue euismod ullamcorper.</p>
+        </div>
+    </div>
+
+    <div class="full-screen-popup light-text" id="thank-you-subscribe">
+        <div class="close-layer"></div>
+        <div class="simple-article center-align">
+            <a class="close-button">+</a>
+            <h1>Thank You!</h1>
+            <h4>We will inform you about any updates, stay tuned!</h4>
+            <p>Pellentesque dictum ut massa vitae rhoncus. Sed dapibus dolor eu semper dapibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec feugiat augue id augue euismod ullamcorper.</p>
+        </div>
+    </div>
+    -->
+
+    <script src="{% static 'js/home/jquery-2.1.3.min.js' %}"></script>
+    <script src="{% static 'js/home/flipclock.min.js' %}"></script>
+    <script src="{% static 'js/home/global.js' %}"></script>
+    <script src="{% static 'js/home/anchors.navigation.js' %}"></script>
+</body>
+</html>

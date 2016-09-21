@@ -1,0 +1,19 @@
+# Setup
+ - Install Python 3.5
+ - Install postgres
+ - Install postgis (windows: Postgres Application Stack Builder)
+ - Windows: Put postgres bin folder in the PATH env variable
+ - Create database lsg
+ - Create a virtualenv based on Python 3.5: "virtualenv -p python3.5 lsgenv"
+ - Activate your virtualenv by doing: "source lsgenv/bin/activate"
+ - Windows: Install win-psycopg http://stickpeople.com/projects/python/win-psycopg/
+ - Windows: Install OSGeo4W: https://docs.djangoproject.com/en/1.8/ref/contrib/gis/install/#windows
+ - Run: pip install -r requirements.txt (install pip in case is not installed)
+ - create a "localsettings.py" file under the "server/config/" directory
+ - customize your local database settings based on the "DATABASES" variable located in the main "settings.py". (copy & paste and change it.)
+ - *apply the patches in the "patches" folder in case the step below fails.
+ - manage.py migrate
+
+Some commands to populate DB:
+ - To populate games from TheGamesDb: under the server directory run: PYTHONPATH=. python scripts/populate_games_db.py
+ - To populate World DB: under the server directory run: python manage.py shell, >>> from world.load import run; run()

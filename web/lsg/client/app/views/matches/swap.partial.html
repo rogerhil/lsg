@@ -1,0 +1,65 @@
+<md-dialog aria-label="{{ title }}" ng-cloak="ng-cloak">
+   <form name="profileForm" ng-submit="submitRequestSwap()">
+      <md-toolbar>
+         <div class="md-toolbar-tools">
+            <h2>{{ title }}</h2>
+            <span flex="flex"></span>
+            <md-button ng-click="close()" class="md-icon-button">
+               <md-icon md-svg-src="app/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+         </div>
+      </md-toolbar>
+      <md-dialog-content>
+         <div style="min-width: 320px; max-width: 320px;" class="md-dialog-content">
+            <div layout="row">
+               <flex>
+                  <img ng-src="{{iwish.images.front_thumb_medium}}" alt="{{iwish.name}}" style="max-height: 170px;" class="img-responsive" />
+                  <md-tooltip md-direction="top">{{iwish.name}} ({{iwish.platform.name}})</md-tooltip>
+               </flex>
+               <flex style="z-index: 1;">
+                  <button type="button" ng-click="" style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 60px;" class="btn btn-default btn-circle btn-lg">
+                     <em class="fa fa-exchange"></em>
+                  </button>
+               </flex>
+               <flex>
+                  <img ng-src="{{game.images.front_thumb_medium}}" alt="{{game.name}}" style="max-height: 170px;" class="img-responsive" />
+                  <md-tooltip md-direction="top">{{game.name}} ({{game.platform.name}})</md-tooltip>
+               </flex>
+            </div>
+            <br/>
+            <div layout="row">
+               <div flex="20">
+                  <em style="font-size: 50px; margin-top: 7px;" class="fa fa-info-circle text-info">&nbsp</em>
+               </div>
+               <flex>
+                  <span>Please consider providing information about your game usage condition in the field below:</span>
+               </flex>
+            </div>
+            <br/>
+            <!-- XXX: The fields "requester_game_condition" and "requested_game_condition" were removed for a while...div(layout='', layout-sm='column')
+    md-input-container(flex='', layout-sm='column', ng-class="{'md-input-invalid': errors.requester_game_condition}")
+        label Usage condition
+        md-radio-group(ng-model='data.requester_game_condition', required)
+            div(layout="row", style="margin-top: 35px")
+                div(flex="33", ng-repeat="option in usageConditionOptions")
+                    md-radio-button(ng-value="option.id", aria-label="option.label", required) {{ option.label }}
+        .md-errors-spacer(ng-repeat="error in errors.requester_game_condition")
+            .md-char-counter {{error}}-->
+            <div layout="" layout-sm="column">
+               <md-input-container flex="" layout-sm="column">
+                  <label>Usage condition notes</label>
+                  <input ng-model="data.requester_game_condition_notes" />
+               </md-input-container>
+            </div>
+         </div>
+      </md-dialog-content>
+      <md-dialog-actions layout="row">
+         <md-button ng-click="close()">
+            <span>cancel</span>
+         </md-button>
+         <md-button ng-repeat="action in actionButtons" ng-click="action.action">
+            <span>{{ action.title }}</span>
+         </md-button>
+      </md-dialog-actions>
+   </form>
+</md-dialog>

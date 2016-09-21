@@ -1,0 +1,130 @@
+h3 My profile
+    small Some description about my profile...
+
+.container-fluid(ng-controller='UsersCtrl as ctrl')
+    .row
+        .col-md-4
+            .panel.panel-default
+                .panel-body.text-center
+                    .pv-lg
+                        div.user-img.center.clickable(ng-click="ctrl.changePicture()")
+                            img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
+                            md-tooltip(md-direction="top") Change Picture
+                    h3.m0.text-bold {{ user.first_name }} {{ user.last_name }}
+                    .mv-lg
+                        user-ratings(user="user")
+
+                .panel-body.bt.text-center
+                    .row
+                        .col-xs-4.br
+                            em.fa.fa-thumbs-up.fa-fw.text-success
+                            strong +{{ user.succeeded_swaps_count }}
+                            md-tooltip(md-direction="top") Succeeded swaps
+                        .col-xs-4.br
+                            em.fa.fa-thumbs-down.fa-fw.text-danger
+                            strong +{{ user.failed_swaps_count }}
+                            md-tooltip(md-direction="top") Failed swaps
+                        .col-xs-4
+                            em.fa.fa-clock-o.fa-fw.text-warning
+                            strong +{{ user.expired_swaps_count }}
+                            md-tooltip(md-direction="top") Expired swaps
+
+
+            .panel.panel-default.hidden-xs.hidden-sm
+                .panel-heading
+                    .panel-title Map
+                .panel-body
+                    .media(ng-if="!user.address.latitude || !user.address.longitude")
+                        p No address has been provided yet
+                    .media
+                        .gmap(ui-map='ctrl.userMap', ui-options='ctrl.userMapOptions', class="map-canvas")
+
+        .col-md-8
+            .card
+                .card-heading.bg-primary
+                    .card-title Profile Form
+                .card-body
+                    div.alert.alert-warning(ng-if="!user.address.latitude || !user.address.longitude")
+                        span Please complete the form below to be able to start using the application.
+                    form(name='profileForm', ng-submit="ctrl.updateUser()")
+                        div#profile-form
+                            div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
+                                    label First Name
+                                    input(ng-model='ctrl.user.first_name', required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
+                                    label Last Name
+                                    input(ng-model='ctrl.user.last_name', required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
+                                        .md-char-counter {{error}}
+                            div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone1}")
+                                    label Phone 1
+                                    input(ng-model='ctrl.user.phone1', ui-mask="+999 (99) 999-9999" placeholder="", required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.phone1")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone2}")
+                                    label Phone 2
+                                    input(ng-model='ctrl.user.phone2', ui-mask="+999 (99) 999-9999" placeholder="")
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.phone2")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.gender}")
+                                    label Gender
+                                    md-select(ng-model="ctrl.user.gender")
+                                        md-option(ng-value="gender.id", ng-repeat="gender in ctrl.genderOptions") {{gender.label}}
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.gender")
+                                        .md-char-counter {{error}}
+                        div#platforms-field(layout='', layout-sm='column')
+                            md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.platforms}")
+                                label Platforms you have
+                                md-select(ng-model="ctrl.user.platforms", multiple)
+                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms") {{platform.name}}
+                                .md-errors-spacer(ng-repeat="error in ctrl.errors.platforms")
+                                    .md-char-counter {{error}}
+                        div#address-form
+                            div
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.addressGlobal}")
+                                    h3
+                                        span Address
+                                        .md-errors-spacer(ng-repeat="error in ctrl.errors.addressGlobal")
+                                            .md-char-counter {{error}}
+                            div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.address1 || ctrl.errors.addressGlobal}")
+                                    label Address 1
+                                    input(ng-model='ctrl.user.address.address1', required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.address1")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.address2 || ctrl.errors.addressGlobal}")
+                                    label Address 2
+                                    input(ng-model='ctrl.user.address.address2')
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.address2 ")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.postal_code || ctrl.errors.addressGlobal}")
+                                    label Postal Code
+                                    input(ng-model='ctrl.user.address.postalCode')
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.postal_code")
+                                        .md-char-counter {{error}}
+                            div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.city || ctrl.errors.addressGlobal}")
+                                    label City
+                                    input(ng-model='ctrl.user.address.city', required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.city")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.state || ctrl.errors.addressGlobal}")
+                                    label County / State
+                                    input(ng-model='ctrl.user.address.state')
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.state")
+                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.country || ctrl.errors.addressGlobal}")
+                                    label Country
+                                    input(ng-model='ctrl.user.address.country', required)
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.country")
+                                        .md-char-counter {{error}}
+
+                        div(layout='', layout-sm='column')
+                            md-input-container(flex='')
+                                md-button.md-raised.md-primary.md-ink-ripple(type="submit" ng-transclude="" aria-label="Save")
+                                    span.ng-scope Save
+                                    .md-ripple-container

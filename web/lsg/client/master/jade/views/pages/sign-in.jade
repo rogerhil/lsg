@@ -1,0 +1,29 @@
+.block-center.mt-xl.wd-xl
+    // START panel
+    .panel.panel-inverse.panel-flat
+        .panel-heading.text-center
+            img.block-center.img-responsive(src="app/img/logo-77x40.png", alt="Let'SwapGames" style="margin-bottom: 8px;")
+            span Let'SwapGames
+        .panel-body.text-center.social-links
+            p.text-center.pv SIGN IN TO CONTINUE.
+            a(href="/login/facebook/?")
+                img(src="/static/img/facebook-signin.png" width="80%")
+            a(href="/login/google-oauth2/?")
+                img(src="/static/img/google-signin.png" width="80%")
+            a(href="/login/twitter/?")
+                img(src="/static/img/twitter-signin.png" width="80%")
+    // END panel
+    .p-lg.text-center
+        span &copy;
+        span(ng-bind="app.year")
+        span  -
+        span(ng-bind="app.name")
+        br
+        span(ng-bind="app.description")
+
+script.
+    var qs = window.location.toString().split('?')[1];
+    $('.social-links a').each(function () {
+         var href = $(this).attr('href');
+        $(this).attr('href', href + qs);
+    });

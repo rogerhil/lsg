@@ -1,0 +1,95 @@
+
+.md-welcome {
+  margin: -20px;
+  margin-bottom: 0;
+  .md-welcome-msg {
+    background-color: $brand-primary;
+    background-image: url('../img/welcome.jpg');
+    background-position: 0 75%;
+    color: #fff;
+    padding: 80px 30px;
+    margin-bottom: 40px;
+    h1 {
+      color: #fff;
+      font-size: 56px;
+      font-weight: 400;
+      line-height: 1.5;
+      margin: 0
+    }
+    h2 {
+      font-weight: 300;
+      margin: 0;
+    }
+  }
+}
+
+.md-welcome-row {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  a:hover,
+  a:focus,
+  a:visited,
+  a:link,
+  a:active {
+    text-transform: none;
+    text-decoration: none;
+    color: inherit;
+
+  }
+
+  @media only screen and (min-width: $mq-tablet) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .card {
+    height: 140px;
+    cursor: pointer;
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+  }
+  .card.dashboard {
+    background-color: $alert-danger-bg;
+    color: #fff;
+  }
+  .card.profile {
+    background-color: $brand-primary;
+    color: #fff;
+  }
+  .card.games {
+    background-color: $alert-warning-bg;
+    color: #fff;
+  }
+  .card.matches {
+    background-color: $alert-info-bg;
+    color: #fff;
+  }
+  .card.requests {
+    background-color: $brand-success;
+    color: #fff;
+  }
+  .card.archived {
+    background-color: $gray-light;
+  }
+  .card:hover,
+  .card:focus {
+    @include box-shadow(0 8px 8px 0 rgba(0,0,0,0.4));
+    @include translate3d(0, -2px, 0);
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+  }
+  .col-md-4:hover,
+  .col-md-4:focus {
+    @include translate3d(0, -2px, 0);
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+  }
+  .col-md-4 {
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+  }
+}

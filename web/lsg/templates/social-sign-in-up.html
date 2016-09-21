@@ -1,0 +1,18 @@
+{% load staticfiles %}
+<div id="social-sign-in" class="row">
+    <div class="col-sm-4">
+        <a href="{% url "social:begin" backend='facebook' %}?{{ request.GET.urlencode }}">
+            <img src="{% static 'img/facebook-signin.png' %}" width="200px">
+        </a>
+    </div>
+    <div class="col-sm-4">
+        <a href="{% url "social:begin" backend='google-oauth2' %}?{{ request.GET.urlencode }}">
+            <img src="{% static 'img/google-signin.png' %}" width="200px">
+        </a>
+    </div>
+    <div class="col-sm-4">
+        <a href="{% url "social:begin" backend='twitter' %}?{{ request.GET.urlencode }}">
+            <img src="{% static 'img/twitter-signin.png' %}" width="200px">
+        </a>
+    </div>
+</div>

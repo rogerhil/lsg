@@ -1,0 +1,24 @@
+md-dialog(aria-label="Change Picture", ng-cloak, style="max-width: 600px;")
+    form
+        md-toolbar
+            .md-toolbar-tools
+                h2 Change Picture
+                span(flex)
+                md-button.md-icon-button(ng-click="ctrl.close($event)")
+                    md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
+        md-dialog-content
+            .md-dialog-content
+                input(id="fileInput" type="file" style="margin-bottom: 5px;")
+                div.cropArea(style="background: #E4E4E4; overflow: hidden; width: 100%; height: 150px;")
+                    img-crop(image="ctrl.uploadedImage" result-image="ctrl.croppedImage")
+            div(style="clear: both;")
+
+        md-dialog-actions(layout="row")
+            button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
+                span.btn-label
+                    em.fa.fa-close
+                span Cancel
+            button.btn.mb-sm.btn-labeled.bg-info(ng-click="ctrl.updateUserPicture(ctrl.croppedImage)" style="margin-left: 10px;")
+                span.btn-label
+                    em.icon-check
+                span Change

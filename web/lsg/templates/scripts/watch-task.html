@@ -1,0 +1,149 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static %}
+{% load i18n %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+{% endblock extrahead %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; <a href="/admin/scripts/">{% trans 'Scripts' %}</a>
+        &rsaquo; <a href="/admin/scripts/celerytask/">{% trans 'Celery Tasks' %}</a>
+        &rsaquo; <a href="/admin/scripts/celerytask/{{ object.id }}/">{% trans 'Task' %} {{ object.id }}</a>
+        &rsaquo; Watch task {{ object }}
+    </div>
+{% endblock %}
+
+{% block object-tools %}
+    {{super}}
+    <div id="content-main">
+        <h1>Watch task <span color="#000;">{{ object }}</span></h1>
+        <h3>Started: {{ object.created }}</h3>
+        <h3>Status: <span id="status">{{ object.status }}</span></h3>
+        {% if object.status == 'PENDING' %}
+            <div class="submit-row" style="width: 160px; margin-top: 20px;">
+                <p class="deletelink-box" style="margin-right: 20px;">
+                    <a href="#" id="stop-task" class="deletelink">Stop</a>
+                </p>
+                <p class="deletelink-box">
+                    <a href="#" id="kill-task" class="deletelink">Kill -9!!!</a>
+                </p>
+            </div>
+        {% endif %}
+        <div>
+            <pre id="log" style="background-color: #333; color: #eee; overflow: auto; width: 100%; height: 700px; border-radius: 5px; padding: 10px;">
+                <img src="/static/img/horizontal-spinner.gif" />
+            </pre>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        var intervalId;
+        var taskId = '{{ object.task_id }}';
+        function pollLog() {
+            window.setTimeout(function () {
+                intervalId = window.setInterval(function () {
+                    readLog();
+                }, 1000);
+            }, 1000);
+        }
+
+        function setStatus(status) {
+            $("#status").html(status);
+            if (status == 'SUCCESS') {
+                $("#status").css('color', 'limeGreen');
+            } else if (status == 'FAILURE') {
+                $("#status").css('color', 'red');
+            } else if (status == 'PENDING') {
+                $("#status").css('color', 'gold');
+            } else if (status == 'REVOKED') {
+                $("#status").css('color', 'darkred');
+            } else if (status == 'RETRY') {
+                $("#status").css('color', 'goldenRod');
+            } else if (status == 'IGNORED') {
+                $("#status").css('color', 'blue');
+            } else if (status == 'REJECTED') {
+                $("#status").css('color', 'DarkViolet');
+            } else {
+                $("#status").css('color', 'black');
+            }
+        }
+        setStatus('{{ object.status }}');
+
+        function highlightLog(log) {
+            var newLog = [];
+            var lines = log.split('\n');
+            for (var k = 0; k < lines.length; k++) {
+                if (lines[k].indexOf(' ERROR ') != -1) {
+                    newLog.push('<span style="color: red">' + lines[k] + '</span>');
+                } else if (lines[k].indexOf(' WARNING ') != -1) {
+                    newLog.push('<span style="color: gold">' + lines[k] + '</span>');
+                } else if (lines[k].indexOf(' DEBUG ') != -1) {
+                    newLog.push('<span style="color: #ccc">' + lines[k] + '</span>');
+                } else if (lines[k].indexOf(' INFO ') != -1) {
+                    var parts = lines[k].split(' INFO ');
+                    var info = '<span style="color: skyblue"> INFO </span>';
+                    newLog.push(parts[0] + info + parts[1]);
+                } else {
+                    newLog.push(lines[k]);
+                }
+            }
+            return newLog.join('\n');
+        }
+
+        $('#stop-task').click(function () {
+            $.ajax({
+                url: "{% url 'stop_task' object.id %}",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.status);
+                }
+            });
+        });
+
+        $('#kill-task').click(function () {
+            $.ajax({
+                url: "{% url 'kill_task' object.id %}",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.status);
+                }
+            });
+        });
+
+        var scroll = true;
+
+        function readLog() {
+            $.ajax({
+                url: "{% url 'read_log' object.id %}",
+                dataType: 'json',
+                success: function (data) {
+                    setStatus(data.status);
+                    if (data.status == 'REVOKED') {
+                        $('#stop-task').parent().parent().hide();
+                    }
+                    if (data.finished) {
+                        window.clearInterval(intervalId);
+                        var finished = '\n\n############################## FINISHED! ##############################\n' + $('#status').parent().clone().html();
+                        $("#log").html(highlightLog(data.log) + finished);
+                    } else {
+                        var spinner = '\n<img src="/static/img/horizontal-spinner.gif" />';
+                        $("#log").html(highlightLog(data.log) + spinner);
+                    }
+                    if (scroll) {
+                        $('#log').scrollTop(1E10);
+                    }
+
+                }
+            });
+        }
+        pollLog();
+
+        $('#log').scroll(function (e) {
+            scroll = (e.target.scrollTop + e.target.offsetHeight) == e.target.scrollHeight;
+        });
+    </script>
+{% endblock %}

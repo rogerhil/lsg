@@ -1,0 +1,24 @@
+{% load static %}
+
+<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+
+<h2>Hello {{ user }},</h2>
+
+<p>
+    You still have a swap request ongoing at Let'Swap Games and it will expire
+    in {{ days }} days and it will consider that your negotiation didn't
+    succeed and you will be given a neutral feedback note.
+</p>
+
+<p>
+    Please <a href="http://lsg.com/app/#/app/requests">click here</a> to
+    finalize this request and give the other user a feedback note.
+</p>
+
+<p>
+    Regards,
+</p>
+
+<p>
+    Let'Swap Games
+</p>

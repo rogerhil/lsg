@@ -1,0 +1,22 @@
+<div style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in $parent.ctrl[context]" class="media shadow-z2">
+   <div layout="row">
+      <flex ng-class="{highlighted: iwish.swap_pending &amp;&amp; request[meContext + '_game'].id == iwish.id}" ng-init="src1=request[meContext + '_game'].images.front_thumb_medium" class="game-border-highlight">
+         <img ng-src="{{ src1 }}" style="max-height: 80px;" class="img-responsive" />
+         <md-tooltip md-direction="top">
+            <span ng-bind="request[meContext + '_game'].name + '(' + request[meContext + '_game'].platform.name + ')'"></span>
+         </md-tooltip>
+      </flex>
+      <flex style="z-index: 1;">
+         <img ng-src="{{ request[otherContext].picture }}" style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;" class="media-object img-circle img-thumbnail thumb48" />
+         <md-tooltip md-direction="top">
+            <span ng-bind="request[otherContext].name + ' ' + request.distance + ' km far'"></span>
+         </md-tooltip>
+      </flex>
+      <flex ng-class="{highlighted: game.swap_pending &amp;&amp; request[otherContext + '_game'].id == game.id}" ng-init="src2=request[otherContext + '_game'].images.front_thumb_medium" class="game-border-highlight">
+         <img ng-src="{{ src2 }}" style="max-height: 80px;" class="img-responsive" />
+         <md-tooltip md-direction="top">
+            <span ng-bind="request[otherContext + '_game'].name + '(' + request[otherContext + '_game'].platform.name + ')'"></span>
+         </md-tooltip>
+      </flex>
+   </div>
+</div>

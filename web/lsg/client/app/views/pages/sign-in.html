@@ -1,0 +1,37 @@
+<div class="block-center mt-xl wd-xl">
+   <!-- START panel-->
+   <div class="panel panel-inverse panel-flat">
+      <div class="panel-heading text-center">
+         <img src="app/img/logo-77x40.png" alt="Let'SwapGames" style="margin-bottom: 8px;" class="block-center img-responsive" />
+         <span>Let'SwapGames</span>
+      </div>
+      <div class="panel-body text-center social-links">
+         <p class="text-center pv">SIGN IN TO CONTINUE.</p>
+         <a href="/login/facebook/?">
+            <img src="/static/img/facebook-signin.png" width="80%" />
+         </a>
+         <a href="/login/google-oauth2/?">
+            <img src="/static/img/google-signin.png" width="80%" />
+         </a>
+         <a href="/login/twitter/?">
+            <img src="/static/img/twitter-signin.png" width="80%" />
+         </a>
+      </div>
+   </div>
+   <!-- END panel-->
+   <div class="p-lg text-center">
+      <span>&copy;</span>
+      <span ng-bind="app.year"></span>
+      <span>-</span>
+      <span ng-bind="app.name"></span>
+      <br/>
+      <span ng-bind="app.description"></span>
+   </div>
+</div>
+<script>
+   var qs = window.location.toString().split('?')[1];
+   $('.social-links a').each(function () {
+        var href = $(this).attr('href');
+       $(this).attr('href', href + qs);
+   });
+</script>

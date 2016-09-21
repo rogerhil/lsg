@@ -1,0 +1,12 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Email preview</h1>
+        <h2>Subject: {{ subject }}</h2>
+        <hr>
+        {% autoescape off %}
+            {{ email_rendered }}
+        {% endautoescape %}
+    </body>
+</html>

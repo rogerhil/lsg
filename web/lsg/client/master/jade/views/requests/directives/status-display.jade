@@ -1,0 +1,6 @@
+.label(ng-class="StatusLabelClasses[previous ? request.previous_status : request.status]")
+    em.fa.fa-gears(ng-if="request.automatically_refused && request.isRefused()")
+    em(ng-class="StatusIcons[previous ? request.previous_status : request.status]" ng-if="!request.automatically_refused || !request.isRefused()")
+    span(ng-if="!previous") &nbsp; {{ request.status_display }}
+    span(ng-if="previous") &nbsp; {{ request.previous_status_display }}
+    md-tooltip(md-direction="top" ng-if="request.automatically_refused") Automatically Refused

@@ -1,0 +1,92 @@
+<md-dialog aria-label="Match" ng-cloak="ng-cloak" style="max-width: 580px;">
+   <form>
+      <md-toolbar>
+         <div class="md-toolbar-tools">
+            <h2>Match</h2>
+            <span flex="flex"></span>
+            <md-button ng-click="ctrl.close()" class="md-icon-button">
+               <md-icon md-svg-src="app/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+         </div>
+      </md-toolbar>
+      <md-dialog-content>
+         <div style="min-width: 370px;" class="md-dialog-content">
+            <div style="float: left; margin-right: 20px; position: relative;">
+               <div ng-if="ctrl.match.iwish.swap_pending" class="label label-warning swap-indicator">
+                  <div class="em fa fa-ellipsis-h"></div>
+                  <md-tooltip md-direction="bottom">You have already a pending Swap Request for this game.</md-tooltip>
+               </div>
+               <div ng-if="ctrl.match.ongoing" class="label label-info swap-indicator">
+                  <div class="em fa fa-thumbs-up"></div>
+                  <md-tooltip md-direction="bottom">There is already a swap ongoing with this game.</md-tooltip>
+               </div>
+               <div ng-if="match.no_games_left" ng-style="ctrl.match.iwish.swap_pending &amp;&amp; {right: '40px'}" class="label bg-primary-dark swap-indicator">
+                  <div class="em fa fa-frown-o"></div>
+                  <md-tooltip md-direction="bottom">All your games that matches this game are ongoing for swap.</md-tooltip>
+               </div>
+               <img ng-src="{{ctrl.match.iwish.images.front_thumb_medium}}" alt="{{ctrl.match.iwish.name}}" />
+            </div>
+            <h3 style="margin-top: 0;">{{ctrl.match.iwish.name}}</h3>
+            <p>
+               <div class="label label-success">{{ctrl.match.iwish.platform.name}}</div>
+            </p>
+            <div ng-if="ctrl.match.iwish.swap_pending">
+               <div style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;" class="media bg-warning">
+                  <span>You have already a pending Swap Request for this game.</span>
+               </div>
+            </div>
+            <div ng-if="ctrl.match.ongoing">
+               <div style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;" class="media bg-danger-dark">
+                  <span>You cannot request this game for swapping as you already have a swap ongoing for this game.</span>
+               </div>
+            </div>
+            <div ng-if="ctrl.match.no_games_left">
+               <div style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;" class="media bg-primary-dark">
+                  <span>All your games that matches this game are ongoing for swap.</span>
+               </div>
+            </div>
+            <p class="m0">
+               <ng-pluralize count="ctrl.match.count" when="{'one': '{{ctrl.match.count}} match', 'other': '{{ctrl.match.count}} matches'}"></ng-pluralize>
+               <ng-pluralize count="ctrl.match.swaps.length" when="{'one': 'from {{ctrl.match.swaps.length}} user', 'other': 'from {{ctrl.match.swaps.length}} users'}"></ng-pluralize>
+            </p>
+            <div style="clear: both;"></div>
+            <br/>
+            <h4>The following users want to swap the game "{{match.iwish.name}}" with one of your games listed below:</h4>
+            <div ng-repeat="swap in ctrl.match.swaps" class="panel panel-default">
+               <div class="panel-body">
+                  <div ng-style="match.ongoing &amp;&amp; {opacity: 0.4}">
+                     <user-photo-ratings-distance user="swap.user"></user-photo-ratings-distance>
+                  </div>
+                  <div style="margin: 0 -15px -15px 0; padding-top: 15px;" class="media">
+                     <div ng-repeat="game in swap.wanted_games" class="game-img-holder animate">
+                        <div ng-if="game.ongoing" class="label label-info swap-indicator">
+                           <div class="em fa fa-thumbs-up"></div>
+                           <md-tooltip md-direction="bottom">There is already a swap ongoing with this game.</md-tooltip>
+                        </div>
+                        <div ng-if="game.swap_pending" class="label label-warning swap-indicator">
+                           <div class="em fa fa-ellipsis-h"></div>
+                           <md-tooltip md-direction="bottom">This games is involved in a "pending" Swap Request.</md-tooltip>
+                        </div>
+                        <img ng-src="{{game.images.front_thumb_medium}}" alt="{{game.name}}" ng-style="game.cannot_request &amp;&amp; {opacity: 0.4}" />
+                        <md-tooltip md-direction="top" ng-if="!game.cannot_request">Swap with your game "{{game.name}}" now!</md-tooltip>
+                        <md-tooltip md-direction="top" ng-if="game.cannot_request">You cannot select this game to swap with as you already have a swap ongoing involving this game.</md-tooltip>
+                        <button type="button" ng-click="ctrl.requestSwap(ctrl.match, game, swap.user)" ng-if="!game.cannot_request" class="btn btn-info btn-circle btn-lg swap">
+                           <em class="fa fa-exchange"></em>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div style="clear: both;"></div>
+         </div>
+      </md-dialog-content>
+      <md-dialog-actions layout="row">
+         <button ng-click="ctrl.close()" class="btn mb-sm btn-default btn-labeled">
+            <span class="btn-label">
+               <em class="fa fa-close"></em>
+            </span>
+            <span>Cancel</span>
+         </button>
+      </md-dialog-actions>
+   </form>
+</md-dialog>

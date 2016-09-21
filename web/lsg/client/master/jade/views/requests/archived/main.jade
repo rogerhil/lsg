@@ -1,0 +1,24 @@
+h3 Archived Requests
+    small Some description about archived requests...
+
+.container-fluid(ng-controller='ArchivedRequestsCtrl as ctrl')
+    .panel.panel-default
+        .panel-heading
+            .panel-title Archived requests
+
+        table.table.ng-table-rowselected(ng-table='ctrl.tableParams')
+            tr(ng-repeat=" request in ctrl.archivedRequests")
+                td(data-title="'Game1'") {{ request.requester_game.name }}
+                td(data-title="'Game2'") {{ request.requested_game.name }}
+                td(data-title="'Requester'") {{ request.requester.name }}
+                td(data-title="'Requested'") {{ request.requested.name }}
+                td(data-title="'Status'")
+                    status-display(request="request")
+                //td(data-title="'Delete'")
+                //    .mb
+                //        label.mda-checkbox
+                //            input(type='checkbox')
+                //            em.bg-indigo-500
+
+        .panel-body
+            strong panel body

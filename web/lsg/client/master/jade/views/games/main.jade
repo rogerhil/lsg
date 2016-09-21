@@ -1,0 +1,16 @@
+h3 Games
+  small Some description about games...
+
+.row
+    .col-lg-6
+        .card.collection-card
+            .card-heading.bg-primary
+                .card-title My Collection
+            .card-body
+                ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='collection'; ctrl.gameTour()")
+    .col-lg-6
+        .card.wishlist-card
+            .card-heading.bg-primary
+                .card-title Wish list
+            .card-body
+                ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='wishlist'")

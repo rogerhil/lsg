@@ -1,0 +1,152 @@
+h3
+    | Dashboard
+    small {{ 'dashboard.WELCOME' | translate:{ appName: app.name } }}!
+
+div(ng-controller="DashboardController as ctrl")
+    // START widgets box
+    .row
+        .col-lg-3.col-sm-6
+            // START widget
+            .panel.widget.bg-success-light
+                .row.row-table
+                    .col-xs-4.text-center.bg-success.pv-lg
+                        em.fa.fa-thumbs-up.fa-3x
+                    .col-xs-8.pv-lg
+                        .h2.mt0 +{{ user.succeeded_swaps_count }}
+                        .text-uppercase Succeeded swaps
+        .col-lg-3.col-sm-6
+            // START widget
+            .panel.widget.bg-danger-light
+                .row.row-table
+                    .col-xs-4.text-center.bg-danger.pv-lg
+                        em.fa.fa-thumbs-down.fa-3x
+                    .col-xs-8.pv-lg
+                        .h2.mt0 +{{ user.failed_swaps_count }}
+                        .text-uppercase Failed swaps
+        .col-lg-3.col-md-6.col-sm-12
+            // START widget
+            .panel.widget.bg-warning-light
+                .row.row-table
+                    .col-xs-4.text-center.bg-warning.pv-lg
+                        em.fa.fa-clock-o.fa-3x
+                    .col-xs-8.pv-lg
+                        .h2.mt0 +{{ user.expired_swaps_count }}
+                        .text-uppercase Expired swaps
+        .col-lg-3.col-md-6.col-sm-12
+            // START date widget
+            .panel.widget
+                .row.row-table
+                    .col-xs-4.text-center.bg-primary.pv-lg
+                        // See formats: https://docs.angularjs.org/api/ng/filter/date
+                        now.text-sm(format='MMMM')
+                        br
+                        now.h2.mt0(format="d")
+                    .col-xs-8.pv-lg
+                        now.text-uppercase(format='EEEE')
+                        br
+                        now.h2.mt0(format='h:mm')
+                        now.text-muted.text-sm(format='a')
+            // END date widget
+    // END widgets box
+
+    .row
+        // START dashboard main content
+        .col-lg-9
+
+            .row
+                .col-lg-4
+                    // START loader widget
+                    .panel.panel-default
+                        .panel-body
+                            a.text-muted.pull-right(href="#/app/matches"): em.fa.fa-arrow-right
+                            .panel-title Wish list matching
+                            canvas#percMatches.center-block(classyloader="", data-percentage="{{ ctrl.matchesPercentage }}")
+                            //.text-center(sparkline="", data-bar-color="{{colorByName('info')}}", data-height="30", data-bar-width="5", data-bar-spacing="2", values="5,4,8,7,8,5,4,6,5,5,9,4,6,3,4,7,5,4,7")
+                        .panel-footer
+                            p.text-muted(style="font-size: 11px;")
+                                em.fa.fa-line-chart &nbsp;
+                                span You have
+                                span.text-dark {{ ctrl.matchesPercentage }}%
+                                span of your wish list of games matching for swap.
+                                span To increase this number, try to add more games in your collection or invite more people to use Let'SwapGames.
+                    // END loader widget
+                .col-lg-8
+                    .panel.panel-default
+                        .panel-heading
+                            .pull-right.label.label-danger {{ user.negative_feedback_count }}
+                            .pull-right.label.label-default(style="color: #333") {{ user.neutral_feedback_count }}
+                            .pull-right.label.label-success {{ user.positive_feedback_count }}
+                            .panel-title Latest feedbacks
+
+                        // START list group
+                        scrollable.list-group(height="180")
+                            span.list-group-item
+                                .media-box(ng-if="!ctrl.latestFeedbacks.length")
+                                    p No swaps yet.
+                            // START list group item
+                            a.list-group-item(href='javascript:;' ng-repeat="feedback in ctrl.latestFeedbacks")
+                                .media-box
+                                    .pull-left
+                                        img.media-box-object.img-circle.thumb32(ng-src="{{ feedback.user.picture }}", alt="{{ feedback.user.name }}")
+                                    .media-box-body.clearfix
+                                        small.pull-right {{ feedback.closed_at }}
+                                        strong.media-box-heading.text-primary
+                                            span.circle.circle-success.circle-lg.text-left(ng-if="feedback.feedback == 1")
+                                            span.circle.circle-lg.text-left(ng-if="feedback.feedback == 0")
+                                            span.circle.circle-danger.circle-lg.text-left(ng-if="feedback.feedback == -1")
+                                            | {{ feedback.user.name }}
+                                        p.mb-sm: small {{ feedback.notes }}
+                            // END list group item
+                        // END list group
+                        // START panel footer
+                        .panel-footer.clearfix
+                            .input-group
+                                span.pull-left
+                                    small Showing the last {{ ctrl.latestFeedbacks.length }} feedbacks
+                                //input.form-control.input-sm(type='text', placeholder='Search message ..')
+                                //span.input-group-btn
+                                //    button.btn.btn-default.btn-sm(type='submit')
+                                //        i.fa.fa-search
+                        // END panel-footer
+        // END dashboard main content
+
+        // START dashboard sidebar
+        aside.col-lg-3
+
+            // START messages and activity
+            .panel.panel-default
+                .panel-heading
+                    .panel-title Latest activities
+                // START list group
+                .list-group
+                    span.list-group-item
+                        .media-box(ng-if="!ctrl.latestActivities.length")
+                            p No activities yet.
+                    // START list group item
+                    .list-group-item(ng-repeat="activity in ctrl.latestActivities")
+                        .media-box
+                            .pull-left
+                                span.fa-stack
+                                    em.fa.fa-circle.fa-stack-2x(ng-class="activity.color")
+                                    em.fa-stack-1x.fa-inverse.text-white(ng-class="activity.css_class")
+                            .media-box-body.clearfix
+                                small.text-muted.pull-right.ml {{ activity.since }}
+                                .media-box-heading
+                                    a.m0(href="#" ng-class="activity.color") {{ activity.description }}
+                                //p.m0: small
+                                //    a(href="#") Bootstrap.xls
+                                //.media-box-heading
+                                //    a(href="#").text-warning.m0 TASKS COMPLETION
+                                //uib-progressbar.progress-xs.m0(value='22', type='warning') 22%
+                    // END list group item
+                // END list group
+                // START panel footer
+                .panel-footer.clearfix
+                    span.pull-left
+                        small Showing the last {{ ctrl.latestActivities.length }} activities
+                    //a(href='#').pull-left
+                    //    small Load more
+                // END panel-footer
+            // END messages and activity
+
+        // END dashboard sidebar

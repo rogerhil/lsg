@@ -1,0 +1,29 @@
+<h3>Archived Requests
+   <small>Some description about archived requests...</small>
+</h3>
+<div ng-controller="ArchivedRequestsCtrl as ctrl" class="container-fluid">
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <div class="panel-title">Archived requests</div>
+      </div>
+      <table ng-table="ctrl.tableParams" class="table ng-table-rowselected">
+         <tr ng-repeat=" request in ctrl.archivedRequests">
+            <td data-title="'Game1'">{{ request.requester_game.name }}</td>
+            <td data-title="'Game2'">{{ request.requested_game.name }}</td>
+            <td data-title="'Requester'">{{ request.requester.name }}</td>
+            <td data-title="'Requested'">{{ request.requested.name }}</td>
+            <td data-title="'Status'">
+               <status-display request="request"></status-display>
+            </td>
+            <!--td(data-title="'Delete'")-->
+            <!--    .mb-->
+            <!--        label.mda-checkbox-->
+            <!--            input(type='checkbox')-->
+            <!--            em.bg-indigo-500-->
+         </tr>
+      </table>
+      <div class="panel-body">
+         <strong>panel body</strong>
+      </div>
+   </div>
+</div>

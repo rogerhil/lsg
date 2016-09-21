@@ -1,0 +1,62 @@
+md-dialog(aria-label="Finalize this request", ng-cloak)
+    form(name='finalizeForm', ng-submit="finalizeForm.$valid && ctrl.finalizeRequest($event)")
+        md-toolbar
+            .md-toolbar-tools
+                h2 Finalize this request
+                span(flex)
+                md-button.md-icon-button(ng-click="ctrl.close($event)")
+                    md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
+        md-dialog-content
+            .md-dialog-content(style="min-width: 320px; max-width: 550px;")
+                div(layout="row" style="width: 250px; margin: 0 auto;")
+                    flex(style="position: relative;")
+                        img.img-responsive(ng-src='{{ctrl.iwish.images.front_thumb_medium}}', alt='{{ctrl.iwish.name}}', style="max-height: 170px;")
+                        md-tooltip(md-direction="top") {{ctrl.iwish.name}} ({{ctrl.iwish.platform.name}})
+                    flex(style="z-index: 1;")
+                        button.btn.btn-default.btn-circle.btn-lg(type="button", ng-click="", style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 45px;")
+                            em.fa.fa-exchange
+                    flex(style="position: relative;")
+                        img.img-responsive(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.name}}', style="max-height: 170px;")
+                        md-tooltip(md-direction="top") {{ctrl.game.name}} ({{ctrl.game.platform.name}})
+                br
+                div(layout='', layout-sm='column')
+                    md-input-container(flex='' md-is-error="finalizeForm.swapped.$invalid && (finalizeForm.$submitted || finalizeForm.swapped.$dirty)")
+                        md-radio-group(ng-model='ctrl.data.swapped' ng-required="true" name="swapped")
+                            div(layout="row")
+                                label Were the games swapped?
+                            div(layout="row" style="margin-top: 30px")
+                                div(flex="50")
+                                    md-radio-button(ng-value="false") No
+                                div(flex="50")
+                                    md-radio-button(ng-value="true") Yes
+                        ng-messages(for="finalizeForm.swapped.$error" ng-if="finalizeForm.$submitted || finalizeForm.swapped.$touched" role="alert" md-auto-hide="false" ng-show="finalizeForm.swapped.$touched")
+                            ng-message(when="required") This field is required
+                div(layout='', layout-sm='column')
+                    md-input-container(flex='' md-is-error="finalizeForm.other_feedback.$invalid && (finalizeForm.$submitted || finalizeForm.other_feedback.$dirty)")
+                        md-radio-group(ng-model='ctrl.data.other_feedback' ng-required="true" name="other_feedback")
+                            div(layout="row")
+                                label Feedback
+                            div(layout="row" style="margin-top: 30px")
+                                div(flex="33")
+                                    md-radio-button(ng-value="-1") Negative
+                                div(flex="33")
+                                    md-radio-button(ng-value="0") Neutral
+                                div(flex="33")
+                                    md-radio-button(ng-value="1") Positive
+                        ng-messages(for="finalizeForm.other_feedback.$error" ng-if="finalizeForm.$submitted || finalizeForm.other_feedback.$touched" role="alert" md-auto-hide="false" ng-show="finalizeForm.other_feedback.$touched")
+                            ng-message(when="required") This field is required
+                div(layout='', layout-sm='column')
+                    md-input-container(flex='')
+                        label Feedback notes
+                        textarea(ng-model="ctrl.data.other_feedback_notes" md-maxlength="1024" rows="5" md-select-on-focus required)
+                br
+
+        md-dialog-actions(layout="row")
+            button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
+                span.btn-label
+                    em.fa.fa-close
+                span Cancel
+            button.btn.mb-sm.btn-labeled.btn-primary(type="submit" style="margin-left: 10px;")
+                span.btn-label
+                    em.fa.fa-power-off
+                span Finalize
