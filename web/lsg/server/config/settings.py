@@ -193,7 +193,10 @@ SCRIPTS_LOGS_DIR = os.path.join(BASE_DIR, 'server/scripts/logs')
 
 SCRIPTS_XML_DIR = os.path.join(BASE_DIR, 'server/scripts/xml')
 
+GAMES_IMAGES_PARENT_DIR = BASE_DIR
+
 GAMES_IMAGES_DIR = os.path.join(BASE_DIR, 'media/img/games/')
+
 
 
 # Rest Framework

@@ -99,6 +99,8 @@ if os.getenv('LSG_DB_NAME'):
 
     SCRIPTS_XML_DIR = '/app/media/scripts/xml/'
 
+    GAMES_IMAGES_PARENT_DIR = '/app'
+
     GAMES_IMAGES_DIR = '/app/media/img/games/'
 
     # FACEBOOK

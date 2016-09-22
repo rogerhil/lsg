@@ -20,6 +20,7 @@ class BaseScript(object):
     default_xml_path = settings.SCRIPTS_XML_DIR
     log_path = settings.SCRIPTS_LOGS_DIR
     images_path = settings.GAMES_IMAGES_DIR
+    parent_path = settings.GAMES_IMAGES_PARENT_DIR
 
     logger = None
 
@@ -102,7 +103,7 @@ class BaseScript(object):
             seconds = int(update_days) * 24 * 60 * 60
             updates = self.api.game.updates(seconds)
             self.games_ids = updates['games']
-            self.logger.info('Games not updated: %s' % ', '.join(games_ids))
+            self.logger.info('Games not updated: %s' % games_ids)
 
         self.xml_path = xml_path
         self.skip_existent_platforms = skip_existent_platforms
