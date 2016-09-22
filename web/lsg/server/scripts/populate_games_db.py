@@ -56,8 +56,7 @@ class PopulateGamesDb(BaseScript):
         skip = self.skip_existent_platforms
 
         if skip:
-            self.logger.info("Skipping prior platforms before %s" %
-                             last_platform)
+            self.logger.info("Skipping platforms prior to %s" % last_platform)
 
         for p in platforms:
 
@@ -94,6 +93,8 @@ class PopulateGamesDb(BaseScript):
         self.logger.info('Starting saving similars...')
         skip = self.skip_existent_platforms
         for p in self.mocked_api.platform.list():
+            if p.name not in settings.SUPPORTED_PLATFORMS:
+                continue
             if p.name.lower() == last_platform:
                 skip = False
             if skip:

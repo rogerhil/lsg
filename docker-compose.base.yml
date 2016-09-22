@@ -65,5 +65,7 @@ celery:
     - rabbitmq:rabbitmq
   volumes_from:
     - web
+    - media
+    - logs
   command: run
 
