@@ -1,6 +1,18 @@
 
 ###### DEV
 
+## Known Issues:
+
+**UBUNTU** you have to share your local host folder by doing the following:
+VBoxManage sharedfolder add dev --name "userhome" --hostpath "/home/<MY_USER>/"
+docker-machine start
+docker-machine ssh default 'sudo mkdir --parents /home/<MY_USER>'
+docker-machine ssh default 'sudo mount -t vboxsf userhome /home/<MY_USER>'
+docker-machine ssh default 'ls /home/<MY_USER>'
+
+-> REF: https://github.com/docker/compose/issues/2247
+
+
 ## INIT
 
 1. Activate the docker machine:
