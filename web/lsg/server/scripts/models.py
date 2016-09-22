@@ -21,12 +21,12 @@ class Scripting(models.Model):
             return cls.objects.create()
 
     @classmethod
-    def days_not_updated(cls):
+    def days_not_updated(cls, kind='games'):
         o = cls.instance()
         now = datetime.now()
         if not o.games_last_updated:
             return
-        now = now.replace(tzinfo=o.games_last_updated.tzinfo)
+        now = now.replace(tzinfo=getattr(o, '%s_last_updated' % kind).tzinfo)
         delta = now - o.games_last_updated
         return delta.days + 1
 

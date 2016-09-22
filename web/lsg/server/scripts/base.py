@@ -102,7 +102,7 @@ class BaseScript(object):
             self.logger.info('Update days: %s' % update_days)
             seconds = int(update_days) * 24 * 60 * 60
             updates = self.api.game.updates(seconds)
-            self.games_ids = updates['games']
+            self.games_ids = updates['games'] or []
             self.logger.info('Games not updated: %s' % games_ids)
 
         self.xml_path = xml_path

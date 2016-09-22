@@ -24,7 +24,7 @@ def populate_games_db(self):
 
 @shared_task(bind=True, script_class=BoxartDownloader)
 def download_boxart_images(self):
-    days = Scripting.days_not_updated()
+    days = Scripting.days_not_updated('games_images')
     script = self.script_class(self.request.id)
     script.run(update_days=days)
     scripting = Scripting.instance()
@@ -35,7 +35,7 @@ def download_boxart_images(self):
 
 @shared_task(bind=True, script_class=ThumbnailsMaker)
 def make_thumbnails(self):
-    days = Scripting.days_not_updated()
+    days = Scripting.days_not_updated('games_thumbnails')
     script = self.script_class(self.request.id)
     script.run(update_days=days)
     scripting = Scripting.instance()
