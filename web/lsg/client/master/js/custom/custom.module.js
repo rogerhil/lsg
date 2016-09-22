@@ -31,10 +31,11 @@
             'app.dashboard',
             'app.pages'
         ])
-        .config(function($httpProvider, $stateProvider) {
+        .config(function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
             $httpProvider.interceptors.push(mainHttpInterceptor);
+
         })
         .constant('lsgConfig', {
             authenticatedUser: null,

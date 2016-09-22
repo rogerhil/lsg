@@ -328,8 +328,6 @@ EXPIRE_OLD_ONGOING_REQUESTS_IN_DAYS = 30
 NOTIFICATION_DAYS_BEFORE_EXPIRE = [7, 3, 2, 1]
 
 SUPPORTED_PLATFORMS = [
-    #'Mac OS',
-    #'Microsoft Xbox',
     'Microsoft Xbox 360',
     'Microsoft Xbox One',
     'Nintendo 3DS',
@@ -337,8 +335,6 @@ SUPPORTED_PLATFORMS = [
     'Nintendo Entertainment System (NES)',
     'Nintendo Wii',
     'Nintendo Wii U',
-    #'PC',
-    #'Sony Playstation',
     'Sony Playstation 2',
     'Sony Playstation 3',
     'Sony Playstation 4',
@@ -352,7 +348,7 @@ from config.dockersettings import *
 
 try:
     pass
-    # disable localsettings for while...
+    # disabling localsettings for while...
     #from config.localsettings import *
 except ImportError:
     pass

@@ -36,7 +36,7 @@
             {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
                                                         'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
                                                         'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
-            {name: 'ui-router-extras',          files: ['vendor/ui-router-extra/ct-ui-router-extras.min.js']}
+            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
 
           ]
         })

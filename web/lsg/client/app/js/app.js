@@ -41,6 +41,12 @@
     'use strict';
 
     angular
+        .module('app.lazyload', []);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.core', [
             'ngRoute',
             'ngAnimate',
@@ -63,7 +69,13 @@
     'use strict';
 
     angular
-        .module('app.lazyload', []);
+        .module('app.loadingbar', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.maps', []);
 })();
 (function() {
     'use strict';
@@ -77,20 +89,22 @@
     'use strict';
 
     angular
-        .module('app.maps', []);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.loadingbar', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.navsearch', []);
 })();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.notify', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.preloader', []);
+})();
+
+
 (function() {
     'use strict';
 
@@ -109,10 +123,8 @@
     'use strict';
 
     angular
-        .module('app.preloader', []);
+        .module('app.sidebar', []);
 })();
-
-
 (function() {
     'use strict';
 
@@ -123,23 +135,11 @@
     'use strict';
 
     angular
-        .module('app.sidebar', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.utils', [
           'app.colors'
           ]);
 })();
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.notify', []);
-})();
 (function() {
     'use strict';
 
@@ -187,6 +187,71 @@
           return (APP_COLORS[name] || '#fff');
         }
     }
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.lazyload')
+        .config(lazyloadConfig);
+
+    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
+    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
+
+      // Lazy Load modules configuration
+      $ocLazyLoadProvider.config({
+        debug: false,
+        events: true,
+        modules: APP_REQUIRES.modules
+      });
+
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.lazyload')
+        .constant('APP_REQUIRES', {
+          // jQuery based and standalone scripts
+          scripts: {
+            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
+            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
+                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
+            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
+                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
+            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
+            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
+            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
+                                   'vendor/Flot/jquery.flot.resize.js',
+                                   'vendor/Flot/jquery.flot.pie.js',
+                                   'vendor/Flot/jquery.flot.time.js',
+                                   'vendor/Flot/jquery.flot.categories.js',
+                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
+            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
+            'sparklines':         ['vendor/sparkline/index.js'],
+            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
+            'loaders.css':          ['vendor/loaders.css/loaders.css']
+
+          },
+          // Angular based script (use the right module name)
+          modules: [
+            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
+            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
+            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
+                                                        'vendor/ng-table/dist/ng-table.min.css']},
+            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
+                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
+            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
+                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
+                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
+            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
+
+          ]
+        })
+        ;
 
 })();
 
@@ -311,65 +376,209 @@
     'use strict';
 
     angular
-        .module('app.lazyload')
-        .config(lazyloadConfig);
-
-    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
-    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
-
-      // Lazy Load modules configuration
-      $ocLazyLoadProvider.config({
-        debug: false,
-        events: true,
-        modules: APP_REQUIRES.modules
-      });
-
+        .module('app.loadingbar')
+        .config(loadingbarConfig)
+        ;
+    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
+    function loadingbarConfig(cfpLoadingBarProvider){
+      cfpLoadingBarProvider.includeBar = true;
+      cfpLoadingBarProvider.includeSpinner = false;
+      cfpLoadingBarProvider.latencyThreshold = 500;
+      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
     }
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.lazyload')
-        .constant('APP_REQUIRES', {
-          // jQuery based and standalone scripts
-          scripts: {
-            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
-            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
-                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
-            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
-                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
-            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
-            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
-            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
-                                   'vendor/Flot/jquery.flot.resize.js',
-                                   'vendor/Flot/jquery.flot.pie.js',
-                                   'vendor/Flot/jquery.flot.time.js',
-                                   'vendor/Flot/jquery.flot.categories.js',
-                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
-            'sparklines':         ['vendor/sparkline/index.js'],
-            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
-            'loaders.css':          ['vendor/loaders.css/loaders.css']
-
-          },
-          // Angular based script (use the right module name)
-          modules: [
-            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
-            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
-            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
-                                                        'vendor/ng-table/dist/ng-table.min.css']},
-            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
-                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
-            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
-                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
-                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
-            {name: 'ui-router-extras',          files: ['vendor/ui-router-extra/ct-ui-router-extras.min.js']}
-
-          ]
-        })
+        .module('app.loadingbar')
+        .run(loadingbarRun)
         ;
+    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
+    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
 
+      // Loading bar transition
+      // ----------------------------------- 
+      var thBar;
+      $rootScope.$on('$stateChangeStart', function() {
+          if($('.wrapper > section').length) // check if bar container exists
+            thBar = $timeout(function() {
+              cfpLoadingBar.start();
+            }, 0); // sets a latency Threshold
+      });
+      $rootScope.$on('$stateChangeSuccess', function(event) {
+          event.targetScope.$watch('$viewContentLoaded', function () {
+            $timeout.cancel(thBar);
+            cfpLoadingBar.complete();
+          });
+      });
+
+    }
+
+})();
+/**=========================================================
+ * Module: modals.js
+ * Provides a simple way to implement bootstrap modals from templates
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.maps')
+        .controller('ModalGmapController', ModalGmapController);
+
+    ModalGmapController.$inject = ['$uibModal'];
+    function ModalGmapController($uibModal) {
+        var vm = this;
+
+        activate();
+
+        ////////////////
+
+        function activate() {
+
+          vm.open = function (size) {
+
+            //var modalInstance =
+            $uibModal.open({
+              templateUrl: '/myModalContent.html',
+              controller: ModalInstanceCtrl,
+              size: size
+            });
+          };
+
+          // Please note that $uibModalInstance represents a modal window (instance) dependency.
+          // It is not the same as the $uibModal service used above.
+
+          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
+          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
+
+            $uibModalInstance.opened.then(function () {
+              var position = new google.maps.LatLng(33.790807, -117.835734);
+
+              $scope.mapOptionsModal = {
+                zoom: 14,
+                center: position,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+
+              // we use timeout to wait maps to be ready before add a markers
+              $timeout(function(){
+                // 1. Add a marker at the position it was initialized
+                new google.maps.Marker({
+                  map: $scope.myMapModal,
+                  position: position
+                });
+                // 2. Trigger a resize so the map is redrawed
+                google.maps.event.trigger($scope.myMapModal, 'resize');
+                // 3. Move to the center if it is misaligned
+                $scope.myMapModal.panTo(position);
+              });
+
+            });
+
+            $scope.ok = function () {
+              $uibModalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+          }
+
+        }
+    }
+
+})();
+
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.maps')
+        .controller('GMapController', GMapController);
+
+    GMapController.$inject = ['$timeout'];
+    function GMapController($timeout) {
+        var vm = this;
+
+        activate();
+
+        ////////////////
+
+        function activate() {
+          var position = [
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.787453, -117.835858)
+            ];
+          
+          vm.addMarker = addMarker;
+          // we use timeout to wait maps to be ready before add a markers
+          $timeout(function(){
+            addMarker(vm.myMap1, position[0]);
+            addMarker(vm.myMap2, position[1]);
+            addMarker(vm.myMap3, position[2]);
+            addMarker(vm.myMap5, position[3]);
+          });
+
+          vm.mapOptions1 = {
+            zoom: 14,
+            center: position[0],
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
+
+          vm.mapOptions2 = {
+            zoom: 19,
+            center: position[1],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+
+          vm.mapOptions3 = {
+            zoom: 14,
+            center: position[2],
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+          };
+
+          vm.mapOptions4 = {
+            zoom: 14,
+            center: position[3],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+
+          // for multiple markers
+          $timeout(function(){
+            addMarker(vm.myMap4, position[3]);
+            addMarker(vm.myMap4, position[4]);
+          });
+
+          // custom map style
+          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
+          vm.mapOptions5 = {
+            zoom: 14,
+            center: position[3],
+            styles: MapStyles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
+
+          ///////////////
+          
+          function addMarker(map, position) {
+            return new google.maps.Marker({
+              map: map,
+              position: position
+            });
+          }
+
+        }
+    }
 })();
 
 
@@ -1103,215 +1312,6 @@
     }
 })();
 /**=========================================================
- * Module: modals.js
- * Provides a simple way to implement bootstrap modals from templates
- =========================================================*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.maps')
-        .controller('ModalGmapController', ModalGmapController);
-
-    ModalGmapController.$inject = ['$uibModal'];
-    function ModalGmapController($uibModal) {
-        var vm = this;
-
-        activate();
-
-        ////////////////
-
-        function activate() {
-
-          vm.open = function (size) {
-
-            //var modalInstance =
-            $uibModal.open({
-              templateUrl: '/myModalContent.html',
-              controller: ModalInstanceCtrl,
-              size: size
-            });
-          };
-
-          // Please note that $uibModalInstance represents a modal window (instance) dependency.
-          // It is not the same as the $uibModal service used above.
-
-          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
-          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
-
-            $uibModalInstance.opened.then(function () {
-              var position = new google.maps.LatLng(33.790807, -117.835734);
-
-              $scope.mapOptionsModal = {
-                zoom: 14,
-                center: position,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-              };
-
-              // we use timeout to wait maps to be ready before add a markers
-              $timeout(function(){
-                // 1. Add a marker at the position it was initialized
-                new google.maps.Marker({
-                  map: $scope.myMapModal,
-                  position: position
-                });
-                // 2. Trigger a resize so the map is redrawed
-                google.maps.event.trigger($scope.myMapModal, 'resize');
-                // 3. Move to the center if it is misaligned
-                $scope.myMapModal.panTo(position);
-              });
-
-            });
-
-            $scope.ok = function () {
-              $uibModalInstance.close('closed');
-            };
-
-            $scope.cancel = function () {
-              $uibModalInstance.dismiss('cancel');
-            };
-
-          }
-
-        }
-    }
-
-})();
-
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.maps')
-        .controller('GMapController', GMapController);
-
-    GMapController.$inject = ['$timeout'];
-    function GMapController($timeout) {
-        var vm = this;
-
-        activate();
-
-        ////////////////
-
-        function activate() {
-          var position = [
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.787453, -117.835858)
-            ];
-          
-          vm.addMarker = addMarker;
-          // we use timeout to wait maps to be ready before add a markers
-          $timeout(function(){
-            addMarker(vm.myMap1, position[0]);
-            addMarker(vm.myMap2, position[1]);
-            addMarker(vm.myMap3, position[2]);
-            addMarker(vm.myMap5, position[3]);
-          });
-
-          vm.mapOptions1 = {
-            zoom: 14,
-            center: position[0],
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
-
-          vm.mapOptions2 = {
-            zoom: 19,
-            center: position[1],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-
-          vm.mapOptions3 = {
-            zoom: 14,
-            center: position[2],
-            mapTypeId: google.maps.MapTypeId.SATELLITE
-          };
-
-          vm.mapOptions4 = {
-            zoom: 14,
-            center: position[3],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-
-          // for multiple markers
-          $timeout(function(){
-            addMarker(vm.myMap4, position[3]);
-            addMarker(vm.myMap4, position[4]);
-          });
-
-          // custom map style
-          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
-          vm.mapOptions5 = {
-            zoom: 14,
-            center: position[3],
-            styles: MapStyles,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
-
-          ///////////////
-          
-          function addMarker(map, position) {
-            return new google.maps.Marker({
-              map: map,
-              position: position
-            });
-          }
-
-        }
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.loadingbar')
-        .config(loadingbarConfig)
-        ;
-    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
-    function loadingbarConfig(cfpLoadingBarProvider){
-      cfpLoadingBarProvider.includeBar = true;
-      cfpLoadingBarProvider.includeSpinner = false;
-      cfpLoadingBarProvider.latencyThreshold = 500;
-      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.loadingbar')
-        .run(loadingbarRun)
-        ;
-    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
-    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
-
-      // Loading bar transition
-      // ----------------------------------- 
-      var thBar;
-      $rootScope.$on('$stateChangeStart', function() {
-          if($('.wrapper > section').length) // check if bar container exists
-            thBar = $timeout(function() {
-              cfpLoadingBar.start();
-            }, 0); // sets a latency Threshold
-      });
-      $rootScope.$on('$stateChangeSuccess', function(event) {
-          event.targetScope.$watch('$viewContentLoaded', function () {
-            $timeout.cancel(thBar);
-            cfpLoadingBar.complete();
-          });
-      });
-
-    }
-
-})();
-/**=========================================================
  * Module: navbar-search.js
  * Navbar search toggler * Auto dismiss on ESC key
  =========================================================*/
@@ -1420,6 +1420,315 @@
     }
 })();
 
+/**=========================================================
+ * Module: demo-notify.js
+ * Provides a simple demo for notify
+ =========================================================*/
+(function() {
+    'use strict';
+
+    angular
+        .module('app.notify')
+        .controller('NotifyDemoCtrl', NotifyDemoCtrl);
+
+    NotifyDemoCtrl.$inject = ['Notify', '$timeout'];
+    function NotifyDemoCtrl(Notify, $timeout) {
+        var vm = this;
+
+    }
+})();
+
+/**=========================================================
+ * Module: notify.js
+ * Directive for notify plugin
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.notify')
+        .directive('notify', notify);
+
+    notify.$inject = ['$window', 'Notify'];
+    function notify ($window, Notify) {
+
+        var directive = {
+            link: link,
+            restrict: 'A',
+            scope: {
+              options: '=',
+              message: '='
+            }
+        };
+        return directive;
+
+        function link(scope, element) {
+
+          element.on('click', function (e) {
+            e.preventDefault();
+            Notify.alert(scope.message, scope.options);
+          });
+        }
+
+    }
+
+})();
+
+
+/**=========================================================
+ * Module: notify.js
+ * Create a notifications that fade out automatically.
+ * Based on Notify addon from UIKit (http://getuikit.com/docs/addons_notify.html)
+ =========================================================*/
+
+(function() {
+    'use strict';
+    angular
+        .module('app.notify')
+        .service('Notify', Notify);
+
+    Notify.$inject = ['$timeout'];
+    function Notify($timeout) {
+
+        this.alert = notifyAlert;
+        this.closeAll = notifyCloseAll;
+
+        ////////////////
+
+        function notifyAlert(msg, opts) {
+            if ( msg ) {
+                $timeout(function(){
+                    $.notify(msg, opts || {});
+                });
+            }
+        }
+
+        function notifyCloseAll(group, instantly) {
+            $timeout(function(){
+                $.notify.closeAll(group, instantly);
+            });
+        }
+    }
+
+})();
+
+/**
+ * Notify Addon definition as jQuery plugin
+ * Adapted version to work with Bootstrap classes
+ * More information http://getuikit.com/docs/addons_notify.html
+ */
+(function($){
+    'use strict';
+    var containers = {},
+        messages   = {},
+        notify     =  function(options){
+            if ($.type(options) === 'string') {
+                options = { message: options };
+            }
+            if (arguments[1]) {
+                options = $.extend(options, $.type(arguments[1]) === 'string' ? {status:arguments[1]} : arguments[1]);
+            }
+            return (new Message(options)).show();
+        },
+        closeAll  = function(group, instantly){
+            var id;
+            if(group) {
+                for(id in messages) { if(group===messages[id].group) messages[id].close(instantly); }
+            } else {
+                for(id in messages) { messages[id].close(instantly); }
+            }
+        };
+    var Message = function(options){
+        // var $this = this;
+        this.options = $.extend({}, Message.defaults, options);
+        this.uuid    = 'ID'+(new Date().getTime())+'RAND'+(Math.ceil(Math.random() * 100000));
+        this.element = $([
+            // @geedmo: alert-dismissable enables bs close icon
+            '<div class="uk-notify-message alert-dismissable">',
+                '<a class="close">&times;</a>',
+                '<div>'+this.options.message+'</div>',
+            '</div>'
+        ].join('')).data('notifyMessage', this);
+        // status
+        if (this.options.status) {
+            this.element.addClass('alert alert-'+this.options.status);
+            this.currentstatus = this.options.status;
+        }
+        this.group = this.options.group;
+        messages[this.uuid] = this;
+        if(!containers[this.options.pos]) {
+            containers[this.options.pos] = $('<div class="uk-notify uk-notify-'+this.options.pos+'"></div>').appendTo('body').on('click', '.uk-notify-message', function(){
+                $(this).data('notifyMessage').close();
+            });
+        }
+    };
+    $.extend(Message.prototype, {
+        uuid: false,
+        element: false,
+        timout: false,
+        currentstatus: '',
+        group: false,
+        show: function() {
+            if (this.element.is(':visible')) return;
+            var $this = this;
+            containers[this.options.pos].show().prepend(this.element);
+            var marginbottom = parseInt(this.element.css('margin-bottom'), 10);
+            this.element.css({'opacity':0, 'margin-top': -1*this.element.outerHeight(), 'margin-bottom':0}).animate({'opacity':1, 'margin-top': 0, 'margin-bottom':marginbottom}, function(){
+                if ($this.options.timeout) {
+                    var closefn = function(){ $this.close(); };
+                    $this.timeout = setTimeout(closefn, $this.options.timeout);
+                    $this.element.hover(
+                        function() { clearTimeout($this.timeout); },
+                        function() { $this.timeout = setTimeout(closefn, $this.options.timeout);  }
+                    );
+                }
+            });
+            return this;
+        },
+        close: function(instantly) {
+            var $this    = this,
+                finalize = function(){
+                    $this.element.remove();
+                    if(!containers[$this.options.pos].children().length) {
+                        containers[$this.options.pos].hide();
+                    }
+                    delete messages[$this.uuid];
+                };
+            if(this.timeout) clearTimeout(this.timeout);
+            if(instantly) {
+                finalize();
+            } else {
+                this.element.animate({'opacity':0, 'margin-top': -1* this.element.outerHeight(), 'margin-bottom':0}, function(){
+                    finalize();
+                });
+            }
+        },
+        content: function(html){
+            var container = this.element.find('>div');
+            if(!html) {
+                return container.html();
+            }
+            container.html(html);
+            return this;
+        },
+        status: function(status) {
+            if(!status) {
+                return this.currentstatus;
+            }
+            this.element.removeClass('alert alert-'+this.currentstatus).addClass('alert alert-'+status);
+            this.currentstatus = status;
+            return this;
+        }
+    });
+    Message.defaults = {
+        message: '',
+        status: 'normal',
+        timeout: 5000,
+        group: null,
+        pos: 'top-center'
+    };
+
+    $.notify          = notify;
+    $.notify.message  = Message;
+    $.notify.closeAll = closeAll;
+
+    return notify;
+}(jQuery));
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.preloader')
+        .directive('preloader', preloader);
+
+    preloader.$inject = ['$animate', '$timeout', '$q'];
+    function preloader ($animate, $timeout, $q) {
+
+        var directive = {
+            restrict: 'EAC',
+            template:
+              '<div class="preloader-progress">' +
+                  '<div class="preloader-progress-bar" ' +
+                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
+              '</div>'
+            ,
+            link: link
+        };
+        return directive;
+
+        ///////
+
+        function link(scope, el) {
+
+          scope.loadCounter = 0;
+
+          var counter  = 0,
+              timeout;
+
+          // disables scrollbar
+          angular.element('body').css('overflow', 'hidden');
+          // ensure class is present for styling
+          el.addClass('preloader');
+
+          appReady().then(endCounter);
+
+          timeout = $timeout(startCounter);
+
+          ///////
+
+          function startCounter() {
+
+            var remaining = 100 - counter;
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+
+            scope.loadCounter = parseInt(counter, 10);
+
+            timeout = $timeout(startCounter, 20);
+          }
+
+          function endCounter() {
+
+            $timeout.cancel(timeout);
+
+            scope.loadCounter = 100;
+
+            $timeout(function(){
+              // animate preloader hiding
+              $animate.addClass(el, 'preloader-hidden');
+              // retore scrollbar
+              angular.element('body').css('overflow', '');
+            }, 300);
+          }
+
+          function appReady() {
+            var deferred = $q.defer();
+            var viewsLoaded = 0;
+            // if this doesn't sync with the real app ready
+            // a custom event must be used instead
+            var off = scope.$on('$viewContentLoaded', function () {
+              viewsLoaded ++;
+              // we know there are at least two views to be loaded
+              // before the app is ready (1-index.html 2-app*.html)
+              if ( viewsLoaded === 2) {
+                // with resolve this fires only once
+                $timeout(function(){
+                  deferred.resolve();
+                }, 3000);
+
+                off();
+              }
+
+            });
+
+            return deferred.promise;
+          }
+
+        } //link
+    }
+
+})();
 /**=========================================================
  * Module: helpers.js
  * Provides helper functions for routes definition
@@ -1682,163 +1991,6 @@
 
 })();
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.preloader')
-        .directive('preloader', preloader);
-
-    preloader.$inject = ['$animate', '$timeout', '$q'];
-    function preloader ($animate, $timeout, $q) {
-
-        var directive = {
-            restrict: 'EAC',
-            template:
-              '<div class="preloader-progress">' +
-                  '<div class="preloader-progress-bar" ' +
-                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
-              '</div>'
-            ,
-            link: link
-        };
-        return directive;
-
-        ///////
-
-        function link(scope, el) {
-
-          scope.loadCounter = 0;
-
-          var counter  = 0,
-              timeout;
-
-          // disables scrollbar
-          angular.element('body').css('overflow', 'hidden');
-          // ensure class is present for styling
-          el.addClass('preloader');
-
-          appReady().then(endCounter);
-
-          timeout = $timeout(startCounter);
-
-          ///////
-
-          function startCounter() {
-
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
-
-            scope.loadCounter = parseInt(counter, 10);
-
-            timeout = $timeout(startCounter, 20);
-          }
-
-          function endCounter() {
-
-            $timeout.cancel(timeout);
-
-            scope.loadCounter = 100;
-
-            $timeout(function(){
-              // animate preloader hiding
-              $animate.addClass(el, 'preloader-hidden');
-              // retore scrollbar
-              angular.element('body').css('overflow', '');
-            }, 300);
-          }
-
-          function appReady() {
-            var deferred = $q.defer();
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-              viewsLoaded ++;
-              // we know there are at least two views to be loaded
-              // before the app is ready (1-index.html 2-app*.html)
-              if ( viewsLoaded === 2) {
-                // with resolve this fires only once
-                $timeout(function(){
-                  deferred.resolve();
-                }, 3000);
-
-                off();
-              }
-
-            });
-
-            return deferred.promise;
-          }
-
-        } //link
-    }
-
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.translate')
-        .config(translateConfig)
-        ;
-    translateConfig.$inject = ['$translateProvider'];
-    function translateConfig($translateProvider){
-
-      $translateProvider.useStaticFilesLoader({
-          prefix : 'app/i18n/',
-          suffix : '.json'
-      });
-
-      $translateProvider.preferredLanguage('en');
-      $translateProvider.useLocalStorage();
-      $translateProvider.usePostCompiling(true);
-      $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
-
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.translate')
-        .run(translateRun)
-        ;
-    translateRun.$inject = ['$rootScope', '$translate'];
-    
-    function translateRun($rootScope, $translate){
-
-      // Internationalization
-      // ----------------------
-
-      $rootScope.language = {
-        // Handles language dropdown
-        listIsOpen: false,
-        // list of available languages
-        available: {
-          'en':       'English',
-          'es_AR':    'Español'
-        },
-        // display always the current ui language
-        init: function () {
-          var proposedLanguage = $translate.proposedLanguage() || $translate.use();
-          var preferredLanguage = $translate.preferredLanguage(); // we know we have set a preferred one in app.config
-          $rootScope.language.selected = $rootScope.language.available[ (proposedLanguage || preferredLanguage) ];
-        },
-        set: function (localeId) {
-          // Set the new idiom
-          $translate.use(localeId);
-          // save a reference for the current language
-          $rootScope.language.selected = $rootScope.language.available[localeId];
-          // finally toggle dropdown
-          $rootScope.language.listIsOpen = ! $rootScope.language.listIsOpen;
-        }
-      };
-
-      $rootScope.language.init();
-
-    }
-})();
 /**=========================================================
  * Module: sidebar-menu.js
  * Handle sidebar collapsible elements
@@ -2200,6 +2352,70 @@
     }
 })();
 
+(function() {
+    'use strict';
+
+    angular
+        .module('app.translate')
+        .config(translateConfig)
+        ;
+    translateConfig.$inject = ['$translateProvider'];
+    function translateConfig($translateProvider){
+
+      $translateProvider.useStaticFilesLoader({
+          prefix : 'app/i18n/',
+          suffix : '.json'
+      });
+
+      $translateProvider.preferredLanguage('en');
+      $translateProvider.useLocalStorage();
+      $translateProvider.usePostCompiling(true);
+      $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.translate')
+        .run(translateRun)
+        ;
+    translateRun.$inject = ['$rootScope', '$translate'];
+    
+    function translateRun($rootScope, $translate){
+
+      // Internationalization
+      // ----------------------
+
+      $rootScope.language = {
+        // Handles language dropdown
+        listIsOpen: false,
+        // list of available languages
+        available: {
+          'en':       'English',
+          'es_AR':    'Español'
+        },
+        // display always the current ui language
+        init: function () {
+          var proposedLanguage = $translate.proposedLanguage() || $translate.use();
+          var preferredLanguage = $translate.preferredLanguage(); // we know we have set a preferred one in app.config
+          $rootScope.language.selected = $rootScope.language.available[ (proposedLanguage || preferredLanguage) ];
+        },
+        set: function (localeId) {
+          // Set the new idiom
+          $translate.use(localeId);
+          // save a reference for the current language
+          $rootScope.language.selected = $rootScope.language.available[localeId];
+          // finally toggle dropdown
+          $rootScope.language.listIsOpen = ! $rootScope.language.listIsOpen;
+        }
+      };
+
+      $rootScope.language.init();
+
+    }
+})();
 /**=========================================================
  * Module: animate-enabled.js
  * Enable or disables ngAnimate for element with directive
@@ -2630,236 +2846,6 @@
     }
 })();
 
-/**=========================================================
- * Module: demo-notify.js
- * Provides a simple demo for notify
- =========================================================*/
-(function() {
-    'use strict';
-
-    angular
-        .module('app.notify')
-        .controller('NotifyDemoCtrl', NotifyDemoCtrl);
-
-    NotifyDemoCtrl.$inject = ['Notify', '$timeout'];
-    function NotifyDemoCtrl(Notify, $timeout) {
-        var vm = this;
-
-    }
-})();
-
-/**=========================================================
- * Module: notify.js
- * Directive for notify plugin
- =========================================================*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.notify')
-        .directive('notify', notify);
-
-    notify.$inject = ['$window', 'Notify'];
-    function notify ($window, Notify) {
-
-        var directive = {
-            link: link,
-            restrict: 'A',
-            scope: {
-              options: '=',
-              message: '='
-            }
-        };
-        return directive;
-
-        function link(scope, element) {
-
-          element.on('click', function (e) {
-            e.preventDefault();
-            Notify.alert(scope.message, scope.options);
-          });
-        }
-
-    }
-
-})();
-
-
-/**=========================================================
- * Module: notify.js
- * Create a notifications that fade out automatically.
- * Based on Notify addon from UIKit (http://getuikit.com/docs/addons_notify.html)
- =========================================================*/
-
-(function() {
-    'use strict';
-    angular
-        .module('app.notify')
-        .service('Notify', Notify);
-
-    Notify.$inject = ['$timeout'];
-    function Notify($timeout) {
-
-        this.alert = notifyAlert;
-        this.closeAll = notifyCloseAll;
-
-        ////////////////
-
-        function notifyAlert(msg, opts) {
-            if ( msg ) {
-                $timeout(function(){
-                    $.notify(msg, opts || {});
-                });
-            }
-        }
-
-        function notifyCloseAll(group, instantly) {
-            $timeout(function(){
-                $.notify.closeAll(group, instantly);
-            });
-        }
-    }
-
-})();
-
-/**
- * Notify Addon definition as jQuery plugin
- * Adapted version to work with Bootstrap classes
- * More information http://getuikit.com/docs/addons_notify.html
- */
-(function($){
-    'use strict';
-    var containers = {},
-        messages   = {},
-        notify     =  function(options){
-            if ($.type(options) === 'string') {
-                options = { message: options };
-            }
-            if (arguments[1]) {
-                options = $.extend(options, $.type(arguments[1]) === 'string' ? {status:arguments[1]} : arguments[1]);
-            }
-            return (new Message(options)).show();
-        },
-        closeAll  = function(group, instantly){
-            var id;
-            if(group) {
-                for(id in messages) { if(group===messages[id].group) messages[id].close(instantly); }
-            } else {
-                for(id in messages) { messages[id].close(instantly); }
-            }
-        };
-    var Message = function(options){
-        // var $this = this;
-        this.options = $.extend({}, Message.defaults, options);
-        this.uuid    = 'ID'+(new Date().getTime())+'RAND'+(Math.ceil(Math.random() * 100000));
-        this.element = $([
-            // @geedmo: alert-dismissable enables bs close icon
-            '<div class="uk-notify-message alert-dismissable">',
-                '<a class="close">&times;</a>',
-                '<div>'+this.options.message+'</div>',
-            '</div>'
-        ].join('')).data('notifyMessage', this);
-        // status
-        if (this.options.status) {
-            this.element.addClass('alert alert-'+this.options.status);
-            this.currentstatus = this.options.status;
-        }
-        this.group = this.options.group;
-        messages[this.uuid] = this;
-        if(!containers[this.options.pos]) {
-            containers[this.options.pos] = $('<div class="uk-notify uk-notify-'+this.options.pos+'"></div>').appendTo('body').on('click', '.uk-notify-message', function(){
-                $(this).data('notifyMessage').close();
-            });
-        }
-    };
-    $.extend(Message.prototype, {
-        uuid: false,
-        element: false,
-        timout: false,
-        currentstatus: '',
-        group: false,
-        show: function() {
-            if (this.element.is(':visible')) return;
-            var $this = this;
-            containers[this.options.pos].show().prepend(this.element);
-            var marginbottom = parseInt(this.element.css('margin-bottom'), 10);
-            this.element.css({'opacity':0, 'margin-top': -1*this.element.outerHeight(), 'margin-bottom':0}).animate({'opacity':1, 'margin-top': 0, 'margin-bottom':marginbottom}, function(){
-                if ($this.options.timeout) {
-                    var closefn = function(){ $this.close(); };
-                    $this.timeout = setTimeout(closefn, $this.options.timeout);
-                    $this.element.hover(
-                        function() { clearTimeout($this.timeout); },
-                        function() { $this.timeout = setTimeout(closefn, $this.options.timeout);  }
-                    );
-                }
-            });
-            return this;
-        },
-        close: function(instantly) {
-            var $this    = this,
-                finalize = function(){
-                    $this.element.remove();
-                    if(!containers[$this.options.pos].children().length) {
-                        containers[$this.options.pos].hide();
-                    }
-                    delete messages[$this.uuid];
-                };
-            if(this.timeout) clearTimeout(this.timeout);
-            if(instantly) {
-                finalize();
-            } else {
-                this.element.animate({'opacity':0, 'margin-top': -1* this.element.outerHeight(), 'margin-bottom':0}, function(){
-                    finalize();
-                });
-            }
-        },
-        content: function(html){
-            var container = this.element.find('>div');
-            if(!html) {
-                return container.html();
-            }
-            container.html(html);
-            return this;
-        },
-        status: function(status) {
-            if(!status) {
-                return this.currentstatus;
-            }
-            this.element.removeClass('alert alert-'+this.currentstatus).addClass('alert alert-'+status);
-            this.currentstatus = status;
-            return this;
-        }
-    });
-    Message.defaults = {
-        message: '',
-        status: 'normal',
-        timeout: 5000,
-        group: null,
-        pos: 'top-center'
-    };
-
-    $.notify          = notify;
-    $.notify.message  = Message;
-    $.notify.closeAll = closeAll;
-
-    return notify;
-}(jQuery));
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.requests', [
-            'ngMaterial',
-          ]);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.customSettings', []);
-})();
 (function() {
     'use strict';
 
@@ -2867,14 +2853,6 @@
         .module('app.archived', [
             'ngMaterial',
           ]);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.routes', [
-            'app.lazyload'
-        ]);
 })();
 (function() {
     'use strict';
@@ -2909,10 +2887,11 @@
             'app.dashboard',
             'app.pages'
         ])
-        .config(["$httpProvider", "$stateProvider", function($httpProvider, $stateProvider) {
+        .config(["$httpProvider", function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
             $httpProvider.interceptors.push(mainHttpInterceptor);
+
         }])
         .constant('lsgConfig', {
             authenticatedUser: null,
@@ -2965,6 +2944,18 @@
     'use strict';
 
     angular
+        .module('app.charts', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.dashboard', []);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.games', [
             'ngMaterial'
           ]);
@@ -2973,7 +2964,15 @@
     'use strict';
 
     angular
-        .module('app.dashboard', []);
+        .module('app.matches', [
+            'ngMaterial',
+          ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.pages', []);
 })();
 (function () {
     'use strict';
@@ -2987,7 +2986,7 @@
     'use strict';
 
     angular
-        .module('app.matches', [
+        .module('app.requests', [
             'ngMaterial',
           ]);
 })();
@@ -2995,13 +2994,15 @@
     'use strict';
 
     angular
-        .module('app.charts', []);
+        .module('app.routes', [
+            'app.lazyload'
+        ]);
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.pages', []);
+        .module('app.customSettings', []);
 })();
 (function() {
     'use strict';
@@ -3061,672 +3062,6 @@
           $log.log('I\'m a line from custom.js');
         }
 
-    }
-})();
-
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.games', ['ngAnimate'])
-        .controller('GamesCtrl', GamesCtrl)
-        ;
-
-    /*
-      GamesCtrl
-     */
-    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout'];
-    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout) {
-        var self = this;
-
-        self.selectedItem = null;
-        self.searchText = null;
-        self.isDisabled = false;
-        self.collection = [];
-        self.wishlist = [];
-        self.tour = null;
-
-        UsersService.getCollection().then(function (collection) {
-            self.collection = collection;
-        });
-        UsersService.getWishlist().then(function (wishlist) {
-            self.wishlist = wishlist;
-        });
-
-        self.gameTour = function () {
-            $timeout(self.runGameTour, 1000);
-        };
-
-        self.runGameTour = function () {
-            if (!$stateParams.tour) {
-                return;
-            }
-            // BootstrapTour is not compatible with z-index based layout
-            // so adding position:static for this case makes the browser
-            // to ignore the property
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
-                section.css({'position': ''});
-            });
-            self.tour = new Tour({
-                backdrop: true,
-                //backdropContainer: 'header.topnavbar-wrapper',
-                //container: 'header.topnavbar-wrapper',
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <h3 class='popover-title'></h3>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
-                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
-                    "    <button class='btn btn-default' data-role='end'>Close</button>" +
-                    "  </div>" +
-                    "</div>",
-                steps: [
-                {
-                    element: '.card.collection-card',
-                    title: "My games collection",
-                    content: "Add your own games by searching in the field above.",
-                    placement: 'bottom'
-                },
-                {
-                    element: '.card.wishlist-card',
-                    title: "My wish list",
-                    content: "Add the games you wish by searching in the field above.",
-                    placement: 'bottom'
-                },
-                {
-                    element: 'li[sref="app.matches"]',
-                    title: "Matches",
-                    content: "Check if there is any match.",
-                    placement: 'right'
-                },
-            ]});
-            self.tour.init();
-            self.tour.start();
-            self.tour.restart(true);
-        };
-
-        self.getItems = function (context) {
-            return self[context];  // self.collection OR self.wishlist
-        };
-
-        self.querySearch = function (query, context) {
-            var gameIds = self[context].map(function (o) {return o.game.id});
-            return GamesService.query(query, gameIds);
-        };
-
-        self.addGameTo = function (context) {
-            if (!self.selectedItem) return;
-            var ids = self[context].map(function (o) {return o.game.id});
-            if (self.selectedItem.value in ids) return;
-            UsersService.addGameTo(self.selectedItem.value, context).then(function (game) {
-                self[context].push(game);
-                self[context].sort(function (a, b) {
-                    return a.game.name > b.game.name;
-                });
-                self.selectedItem = null;
-                self.searchText = null;
-            }, function (errors) {
-                var reasons = [];
-                for (var k in errors) {
-                    reasons.push(errors[k]);
-                }
-                $mdDialog.show(
-                    $mdDialog.alert()
-                    .clickOutsideToClose(true)
-                    .title('Cannot add game')
-                    .textContent(reasons.join(' '))
-                    .ariaLabel('Cannot add game')
-                    .ok('Ok')
-                );
-            });
-        };
-        self.removeGameFrom = function (itemId, context) {
-            UsersService.removeGameFrom(itemId,  context).then(function (response) {
-                self[context] = self[context].filter(function (o) {return o.id != itemId});
-            }, function (errors) {
-                var reasons = [];
-                for (var k in errors) {
-                    reasons.push(errors[k]);
-                }
-                $mdDialog.show(
-                    $mdDialog.alert()
-                    .clickOutsideToClose(true)
-                    .title('Cannot remove game')
-                    .textContent(reasons.join(' '))
-                    .ariaLabel('Cannot remove game')
-                    .ok('Ok')
-                );
-            });
-        }
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.games')
-        .service('GamesService', GamesService);
-
-    GamesService.$inject = ['$q', '$http', 'lsgConfig', 'Notify'];
-    function GamesService($q, $http, lsgConfig, Notify) {
-        var user = lsgConfig.authenticatedUser;
-        this.query = function (query, excludeGames) {
-            var url = '/api/games/?search=' + query;
-            var q = $q.defer();
-            if (user.platforms.length) {
-                url += '&platform_id=' + user.platforms.join(',');
-            } else {
-                Notify.closeAll(false, true);
-                Notify.alert("Select your platforms in the profile page first!", {group: true});
-                q.resolve([]);
-                return q.promise;
-            }
-            if (!user.address.latitude || !user.address.longitude) {
-                Notify.closeAll(false, true);
-                Notify.alert("You need to provide your address in the profile form in order to use the application.", {status: 'warning', group: true});
-                q.resolve([]);
-                return q.promise;
-            }
-            if (excludeGames.length) {
-                url += '&exclude_games=' + excludeGames.join(',');
-            }
-            $http.get(url).success(function (response) {
-                var results = response.results;
-                results = results.map(function (item) {
-                    return {
-                        value: item.id,
-                        display: item.name + ' (' + item.platform.name + ')'
-                    }
-                });
-                q.resolve(results);
-            });
-            return q.promise;
-        };
-
-        this.getPlatforms = function () {
-            var url = '/api/platforms/?limit=200';
-            var q = $q.defer();
-            $http.get(url).success(function (response) {
-                q.resolve(response.results);
-            });
-            return q.promise;
-        };
-    }
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.dashboard')
-        .controller('DashboardController', DashboardController);
-
-    DashboardController.$inject = ['$scope', '$timeout', 'UsersService', 'MatchesService'];
-    function DashboardController($scope, $timeout, UsersService, MatchesService) {
-        var self = this;
-        self.latestFeedbacks = [];
-        self.latestActivities = [];
-        self.matchesLength;
-        self.wishlistLength;
-        self.matchesPercentage = (self.matchesLength / self.wishlistLength) * 100;
-        self.classyOptions = {
-            speed: 5,
-            fontSize: "30px",
-            diameter: 70,
-            lineColor: '#2196F3',
-            remainingLineColor: "rgba(200,200,200,0.4)",
-            lineWidth: 10,
-            roundedLine: true
-        };
-        self.loader = $('#percMatches').ClassyLoader(self.classyOptions);
-
-        var updateLatestFeedbacks = function () {
-            UsersService.latestFeedbacks().then(function (latestFeedbacks) {
-                self.latestFeedbacks = latestFeedbacks;
-            });
-            $timeout(updateLatestFeedbacks, 30000);
-        };
-        var updateLatestActivities = function () {
-            UsersService.latestActivities().then(function (latestActivities) {
-                self.latestActivities = latestActivities;
-            });
-            $timeout(updateLatestActivities, 60000);
-        };
-        var reloadPerc = function () {
-            if (self.matchesLength === undefined || self.wishlistLength === undefined) {
-                return;
-            }
-            var perc = Math.ceil((self.matchesLength / self.wishlistLength) * 100);
-            if (perc != self.matchesPercentage) {
-                self.matchesPercentage = perc;
-                self.loader.setPercent(self.matchesPercentage).draw();
-            }
-        };
-
-        var updateMatchesPercentage = function () {
-            MatchesService.getMatches().then(function (matches) {
-                var filtered = matches.filter(function (o) {
-                    return !o.ongoing;
-                });
-                self.matchesLength = filtered.length;
-                reloadPerc();
-            });
-            UsersService.getWishlist().then(function (wishlist) {
-                self.wishlistLength = wishlist.length || 1;
-                reloadPerc();
-            });
-            $timeout(updateMatchesPercentage, 20000);
-        };
-
-        updateLatestFeedbacks();
-        updateLatestActivities();
-        updateMatchesPercentage();
-
-    }
-})();
-(function () {
-    'use strict';
-
-    angular
-        .module('app.preloader')
-        .directive('preloader', preloader);
-
-    preloader.$inject = ['$animate', '$timeout', '$q', '$http', 'lsgConfig', '$rootScope', 'Notify', '$state', '$stateParams'];
-    function preloader($animate, $timeout, $q, $http, lsgConfig, $rootScope, Notify, $state, $stateParams) {
-        var counter = 0;
-        var timeout;
-
-        var locationChange = function (event, next, current) {
-            var splitted = next.split('#');
-            var el = angular.element(".preloader-progress").parent();
-            if (splitted.length > 1 && (splitted[1] == '/500' || splitted[1].slice(0, 8) == '/sign-in')) {
-                endCounter($rootScope, el);
-                return;
-            }
-            if (event && event.targetScope) {
-                if (event.targetScope.user === undefined || event.targetScope.user == null) {
-                    event.preventDefault();
-                } else {
-                    return;
-                }
-            }
-            link($rootScope, el, event, current);
-        };
-
-        $rootScope.$on('$locationChangeStart', locationChange);
-
-        $rootScope.$on('$locationChangeError', function (event) {
-            console.log('?????????????????');
-            console.log(event);
-            $state.transitionTo("pages.signIn");
-        });
-
-        var directive = {
-            restrict: 'EAC',
-            template: '<div class="preloader-progress">' +
-            '<div class="preloader-progress-bar" ' +
-            'ng-style="{width: loadCounter + \'%\'}"></div>' +
-            '</div>'
-            ,
-            link: link
-        };
-        return directive;
-
-        function link(scope, el, event, sref) {
-            startLoader(scope, el);
-
-            appReady(scope, event, sref).then(function () {
-                if (sref) {
-                    // angular.forEach($state.get(), function(state) {
-                    //     console.log(state.$$state);
-                    //     return;
-                    //     //var privatePortion = state.$$state();
-                    //     var match = state.url.exec(sref);
-                    //     if (match) console.log("Matched state: " + state.name + " and parameters: " + match);
-                    // });
-                    $state.transitionTo("pages.signIn");
-                    //$state.transitionTo("app.games");
-                    $timeout(function () {
-                        window.location = sref;
-                        endCounter(scope, el);
-                    }, 300);
-                } else {
-                    //endCounter(scope, el);
-                }
-            }, function () {
-                endCounter(scope, el);
-                redirectToSignInPage();
-            });
-        } //link
-
-        function redirectToSignInPage() {
-            var nexts = window.location.hash.toString().split('?next=');
-            if (nexts.length > 1) {
-                $state.transitionTo("pages.signIn", {next: nexts[1]});
-            } else {
-                $state.transitionTo("pages.signIn");
-            }
-        }
-
-        function loadAuthenticatedUser(event) {
-            var q = $q.defer();
-            if (event && event.targetScope && event.targetScope.user != undefined && event.targetScope.user != null) {
-                q.resolve(event.targetScope.user);
-                return q;
-            }
-            $http.get('/api/users/authenticated/').success(function (response) {
-                var user = response;
-                lsgConfig.authenticatedUser = user;
-                $rootScope.user = user;
-                if (user) {
-                    q.resolve(user);
-                } else {
-                    if (event) {
-                        event.preventDefault();
-                    }
-                    redirectToSignInPage();
-                    q.reject();
-                    return;
-                }
-                var initialAlert = function () {
-                    if (!user.address.latitude || !user.address.longitude) {
-                        Notify.closeAll(false, true);
-                        Notify.alert("You need to provide your own address details in " +
-                            "order to use the application. <a style='color: yellow;' href='#/app/profile'>" +
-                            "Click here to access the profile form to update your " +
-                            "address.</a>", {status: 'danger', timeout: 7000});
-                    }
-                };
-
-                $rootScope.$on('$stateChangeStart',  function(event, toState, toParams, fromState, fromParams) {
-                    if (!lsgConfig.authenticatedUser.address.latitude || !lsgConfig.authenticatedUser.address.longitude) {
-                        initialAlert();
-                    }
-                });
-
-            }).error(function (response, status) {
-                console.log('Failed to get authenticated user');
-                if (status == 400) {
-                    q.reject();
-                    return;
-                }
-                q.resolve();
-                $state.transitionTo("pages.500");
-            });
-            return q;
-        }
-
-        ///////
-
-        function startCounter(scope) {
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
-            scope.loadCounter = parseInt(counter, 10);
-            timeout = $timeout(function () { startCounter(scope) }, 20);
-        }
-
-        function endCounter(scope, el) {
-            $timeout.cancel(timeout);
-            scope.loadCounter = 100;
-            counter = 0;
-            $timeout(function () {
-                // animate preloader hiding
-                $animate.addClass(el, 'preloader-hidden');
-                // retore scrollbar
-                angular.element('body').css('overflow', '');
-            }, 300);
-        }
-
-        function startLoader(scope, el) {
-            scope.loadCounter = 0;
-            angular.element('body').css('overflow', 'hidden');
-            el.addClass('preloader');
-            timeout = $timeout(function () { startCounter(scope) });
-        }
-
-        function appReady(scope, event) {
-            //var deferred = $q.defer();
-            var deferred = loadAuthenticatedUser(event);
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-                viewsLoaded++;
-                // we know there are at least two views to be loaded
-                // before the app is ready (1-index.html 2-app*.html)
-                if (viewsLoaded === 2) {
-                    // with resolve this fires only once
-                    //$timeout(function () {
-                    //    deferred.resolve();
-                    //}, 3000);
-                    off();
-                }
-
-            });
-            return deferred.promise;
-        }
-
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.matches', ['ngAnimate'])
-        .controller('MatchesCtrl', MatchesCtrl)
-        .controller('MatchDialogCtrl', MatchDialogCtrl)
-        .controller('RequestSwapDialogCtrl', RequestSwapDialogCtrl)
-        .controller('PendingRequestWarningCtrl', PendingRequestWarningCtrl)
-        ;
-
-    /*
-      MatchesCtrl
-     */
-    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService', 'lsgConfig'];
-    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService, lsgConfig) {
-        var self = this;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.matches = [];
-        self.showOngoingSwaps = false;
-        self.showPendingSwaps = true;
-        self.matchesPollingInterval = 3000;
-        self.matchesPromise = undefined;
-
-        var count = 0;
-        //$scope.selectedMatch = null;
-
-        self.loadMatches = function () {
-            MatchesService.getMatches().then(function (matches) {
-                self.matches = matches;
-            });
-        };
-
-        self.pollMatches = function () {
-            self.loadMatches();
-            self.matchesPromise = $timeout(function () {
-                self.pollMatches();
-            }, self.matchesPollingInterval);
-        };
-
-        self.openMatch = function(match) {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: 'MatchDialogCtrl',
-                locals: {match: match, matchesCtrl: self},
-                templateUrl: 'app/views/matches/match.partial.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-
-        self.pollMatches();
-
-        $scope.$on('$destroy', function() {
-            $timeout.cancel(self.matchesPromise);
-        });
-    }
-
-    /*
-     MatchDialogCtrl
-     */
-    MatchDialogCtrl.$inject = ['$scope', '$mdDialog', 'match', '$mdMedia', 'matchesCtrl'];
-    function MatchDialogCtrl($scope, $mdDialog, match, $mdMedia, matchesCtrl) {
-        var self = this;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.match = match;
-        self.close = function () {
-            $mdDialog.hide();
-        };
-        self.requestSwap = function(match, game, swapUser) {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: 'RequestSwapDialogCtrl',
-                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl},
-                templateUrl: 'app/views/requests/swap.partial.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-    }
-
-    /*
-     RequestSwapDialogCtrl
-     */
-    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'lsgConfig', 'Notify']
-    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, lsgConfig, Notify) {
-        var self = this;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.title = "Request Swap";
-        self.iwish = match.iwish;
-        self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
-        self.swapUser = swapUser;
-        self.data = {
-            requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
-        };
-        self.errors = {};
-        self.close = function (e) {
-            e.preventDefault();
-            $mdDialog.hide();
-            matchesCtrl.openMatch(match);
-        };
-
-        var submitRequestSwap = function (e) {
-            e.preventDefault();
-            if (self.iwish.swap_pending || self.game.swap_pending) {
-                self.warnUserAboutPendingRequest();
-            } else {
-                self.createSwapRequest()
-            }
-        };
-
-        self.warnUserAboutPendingRequest = function () {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: 'PendingRequestWarningCtrl',
-                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl, requestSwapDialogCtrl: self},
-                templateUrl: 'app/views/matches/match.warning.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-
-        self.createSwapRequest = function () {
-            RequestsService.createSwapRequest(self.swapUser.id,
-                self.iwish.id, self.authenticatedUser.id, self.game.id,
-                self.data.requester_game_condition_notes,
-                self.swapUser.address.distance).then(function (request) {
-                    $mdDialog.hide();
-                    window.location = "#/app/requests?id=" + request.id + '&msg=Your request is pending until ' + self.swapUser.name + ' accepts it.';
-                    Notify.alert("Your request has been successfully created.", {status: 'success'});
-                }).catch(function (a) {
-                    console.log(a);
-                    self.errors = a;
-                });
-        };
-
-        self.submit = submitRequestSwap;
-        self.actionButtons = [
-            {title: "Request Swap", icon: "fa fa-hand-o-up", class: "btn-info", action: submitRequestSwap}
-        ];
-    }
-
-    /*
-     PendingRequestWarningCtrl
-     */
-    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', 'lsgConfig']
-    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, lsgConfig) {
-        var self = this;
-        self.title = "Request Swap";
-        self.iwish = match.iwish;
-        self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
-        self.swapUser = swapUser;
-        self.message = '';
-        self.pendingMyRequests = [];
-        self.pendingIncomingRequests = [];
-
-        RequestsService.getMyRequests().then(function (requests) {
-            self.pendingMyRequests = requests.filter(function (request) {
-                 return (request.requested_game.id == self.iwish.id || request.requester_game.id == self.game.id);
-            });
-        });
-        RequestsService.getIncomingRequests().then(function (requests) {
-            self.pendingIncomingRequests = requests.filter(function (request) {
-                 return (request.requester_game.id == self.iwish.id || request.requested_game.id == self.game.id);
-            });
-        });
-
-        self.totalPendingRequests = function () {
-            return self.pendingMyRequests.length + self.pendingIncomingRequests.length;
-        };
-
-        self.no = function () {
-            matchesCtrl.openMatch(match);
-        };
-        self.yes = function () {
-            requestSwapDialogCtrl.createSwapRequest();
-        };
-    }
-
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.matches')
-        .service('MatchesService', MatchesService);
-
-    MatchesService.$inject = ['$q', '$http', 'lsgConfig'];
-    function MatchesService($q, $http, lsgConfig) {
-
-        this.getMatches = function () {
-            var q = $q.defer();
-            var userId = lsgConfig.authenticatedUser.id;
-            var baseUserUrl = '/api/users/' + userId + '/';
-            var url = baseUserUrl + 'matches/';
-            $http
-                .get(url)
-                .success(function (response) {
-                    q.resolve(response);
-                });
-            return q.promise;
-        }
     }
 })();
 
@@ -5392,6 +4727,1738 @@
 
 })();
 
+(function () {
+    'use strict';
+
+    angular
+        .module('app.dashboard')
+        .controller('DashboardController', DashboardController);
+
+    DashboardController.$inject = ['$scope', '$timeout', 'UsersService', 'MatchesService'];
+    function DashboardController($scope, $timeout, UsersService, MatchesService) {
+        var self = this;
+        self.latestFeedbacks = [];
+        self.latestActivities = [];
+        self.matchesLength;
+        self.wishlistLength;
+        self.matchesPercentage = (self.matchesLength / self.wishlistLength) * 100;
+        self.classyOptions = {
+            speed: 5,
+            fontSize: "30px",
+            diameter: 70,
+            lineColor: '#2196F3',
+            remainingLineColor: "rgba(200,200,200,0.4)",
+            lineWidth: 10,
+            roundedLine: true
+        };
+        self.loader = $('#percMatches').ClassyLoader(self.classyOptions);
+
+        var updateLatestFeedbacks = function () {
+            UsersService.latestFeedbacks().then(function (latestFeedbacks) {
+                self.latestFeedbacks = latestFeedbacks;
+            });
+            $timeout(updateLatestFeedbacks, 30000);
+        };
+        var updateLatestActivities = function () {
+            UsersService.latestActivities().then(function (latestActivities) {
+                self.latestActivities = latestActivities;
+            });
+            $timeout(updateLatestActivities, 60000);
+        };
+        var reloadPerc = function () {
+            if (self.matchesLength === undefined || self.wishlistLength === undefined) {
+                return;
+            }
+            var perc = Math.ceil((self.matchesLength / self.wishlistLength) * 100);
+            if (perc != self.matchesPercentage) {
+                self.matchesPercentage = perc;
+                self.loader.setPercent(self.matchesPercentage).draw();
+            }
+        };
+
+        var updateMatchesPercentage = function () {
+            MatchesService.getMatches().then(function (matches) {
+                var filtered = matches.filter(function (o) {
+                    return !o.ongoing;
+                });
+                self.matchesLength = filtered.length;
+                reloadPerc();
+            });
+            UsersService.getWishlist().then(function (wishlist) {
+                self.wishlistLength = wishlist.length || 1;
+                reloadPerc();
+            });
+            $timeout(updateMatchesPercentage, 20000);
+        };
+
+        updateLatestFeedbacks();
+        updateLatestActivities();
+        updateMatchesPercentage();
+
+    }
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.games', ['ngAnimate'])
+        .controller('GamesCtrl', GamesCtrl)
+        ;
+
+    /*
+      GamesCtrl
+     */
+    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout'];
+    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout) {
+        var self = this;
+
+        self.selectedItem = null;
+        self.searchText = null;
+        self.isDisabled = false;
+        self.collection = [];
+        self.wishlist = [];
+        self.tour = null;
+
+        UsersService.getCollection().then(function (collection) {
+            self.collection = collection;
+        });
+        UsersService.getWishlist().then(function (wishlist) {
+            self.wishlist = wishlist;
+        });
+
+        self.gameTour = function () {
+            $timeout(self.runGameTour, 1000);
+        };
+
+        self.runGameTour = function () {
+            if (!$stateParams.tour) {
+                return;
+            }
+            // BootstrapTour is not compatible with z-index based layout
+            // so adding position:static for this case makes the browser
+            // to ignore the property
+            var section = angular.element('.wrapper > section');
+            section.css({'position': 'static'});
+            // finally restore on destroy and reuse the value declared in stylesheet
+            $scope.$on('$destroy', function(){
+                section.css({'position': ''});
+            });
+            self.tour = new Tour({
+                backdrop: true,
+                //backdropContainer: 'header.topnavbar-wrapper',
+                //container: 'header.topnavbar-wrapper',
+                template: "" +
+                    "<div class='popover tour'>" +
+                    "  <div class='arrow'></div>" +
+                    "  <h3 class='popover-title'></h3>" +
+                    "  <div class='popover-content'></div>" +
+                    "  <div class='popover-navigation'>" +
+                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
+                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
+                    "    <button class='btn btn-default' data-role='end'>Close</button>" +
+                    "  </div>" +
+                    "</div>",
+                steps: [
+                {
+                    element: '.card.collection-card',
+                    title: "My games collection",
+                    content: "Add your own games by searching in the field above.",
+                    placement: 'bottom'
+                },
+                {
+                    element: '.card.wishlist-card',
+                    title: "My wish list",
+                    content: "Add the games you wish by searching in the field above.",
+                    placement: 'bottom'
+                },
+                {
+                    element: 'li[sref="app.matches"]',
+                    title: "Matches",
+                    content: "Check if there is any match.",
+                    placement: 'right'
+                },
+            ]});
+            self.tour.init();
+            self.tour.start();
+            self.tour.restart(true);
+        };
+
+        self.getItems = function (context) {
+            return self[context];  // self.collection OR self.wishlist
+        };
+
+        self.querySearch = function (query, context) {
+            var gameIds = self[context].map(function (o) {return o.game.id});
+            return GamesService.query(query, gameIds);
+        };
+
+        self.addGameTo = function (context) {
+            if (!self.selectedItem) return;
+            var ids = self[context].map(function (o) {return o.game.id});
+            if (self.selectedItem.value in ids) return;
+            UsersService.addGameTo(self.selectedItem.value, context).then(function (game) {
+                self[context].push(game);
+                self[context].sort(function (a, b) {
+                    return a.game.name > b.game.name;
+                });
+                self.selectedItem = null;
+                self.searchText = null;
+            }, function (errors) {
+                var reasons = [];
+                for (var k in errors) {
+                    reasons.push(errors[k]);
+                }
+                $mdDialog.show(
+                    $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .title('Cannot add game')
+                    .textContent(reasons.join(' '))
+                    .ariaLabel('Cannot add game')
+                    .ok('Ok')
+                );
+            });
+        };
+        self.removeGameFrom = function (itemId, context) {
+            UsersService.removeGameFrom(itemId,  context).then(function (response) {
+                self[context] = self[context].filter(function (o) {return o.id != itemId});
+            }, function (errors) {
+                var reasons = [];
+                for (var k in errors) {
+                    reasons.push(errors[k]);
+                }
+                $mdDialog.show(
+                    $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .title('Cannot remove game')
+                    .textContent(reasons.join(' '))
+                    .ariaLabel('Cannot remove game')
+                    .ok('Ok')
+                );
+            });
+        }
+    }
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.games')
+        .service('GamesService', GamesService);
+
+    GamesService.$inject = ['$q', '$http', 'lsgConfig', 'Notify'];
+    function GamesService($q, $http, lsgConfig, Notify) {
+        var user = lsgConfig.authenticatedUser;
+        this.query = function (query, excludeGames) {
+            var url = '/api/games/?search=' + query;
+            var q = $q.defer();
+            if (user.platforms.length) {
+                url += '&platform_id=' + user.platforms.join(',');
+            } else {
+                Notify.closeAll(false, true);
+                Notify.alert("Select your platforms in the profile page first!", {group: true});
+                q.resolve([]);
+                return q.promise;
+            }
+            if (!user.address.latitude || !user.address.longitude) {
+                Notify.closeAll(false, true);
+                Notify.alert("You need to provide your address in the profile form in order to use the application.", {status: 'warning', group: true});
+                q.resolve([]);
+                return q.promise;
+            }
+            if (excludeGames.length) {
+                url += '&exclude_games=' + excludeGames.join(',');
+            }
+            $http.get(url).success(function (response) {
+                var results = response.results;
+                results = results.map(function (item) {
+                    return {
+                        value: item.id,
+                        display: item.name + ' (' + item.platform.name + ')'
+                    }
+                });
+                q.resolve(results);
+            });
+            return q.promise;
+        };
+
+        this.getPlatforms = function () {
+            var url = '/api/platforms/?limit=200';
+            var q = $q.defer();
+            $http.get(url).success(function (response) {
+                q.resolve(response.results);
+            });
+            return q.promise;
+        };
+    }
+})();
+
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.matches', ['ngAnimate'])
+        .controller('MatchesCtrl', MatchesCtrl)
+        .controller('MatchDialogCtrl', MatchDialogCtrl)
+        .controller('RequestSwapDialogCtrl', RequestSwapDialogCtrl)
+        .controller('PendingRequestWarningCtrl', PendingRequestWarningCtrl)
+        ;
+
+    /*
+      MatchesCtrl
+     */
+    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService', 'lsgConfig'];
+    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService, lsgConfig) {
+        var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.matches = [];
+        self.showOngoingSwaps = false;
+        self.showPendingSwaps = true;
+        self.matchesPollingInterval = 3000;
+        self.matchesPromise = undefined;
+
+        var count = 0;
+        //$scope.selectedMatch = null;
+
+        self.loadMatches = function () {
+            MatchesService.getMatches().then(function (matches) {
+                self.matches = matches;
+            });
+        };
+
+        self.pollMatches = function () {
+            self.loadMatches();
+            self.matchesPromise = $timeout(function () {
+                self.pollMatches();
+            }, self.matchesPollingInterval);
+        };
+
+        self.openMatch = function(match) {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: 'MatchDialogCtrl',
+                locals: {match: match, matchesCtrl: self},
+                templateUrl: 'app/views/matches/match.partial.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.pollMatches();
+
+        $scope.$on('$destroy', function() {
+            $timeout.cancel(self.matchesPromise);
+        });
+    }
+
+    /*
+     MatchDialogCtrl
+     */
+    MatchDialogCtrl.$inject = ['$scope', '$mdDialog', 'match', '$mdMedia', 'matchesCtrl'];
+    function MatchDialogCtrl($scope, $mdDialog, match, $mdMedia, matchesCtrl) {
+        var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.match = match;
+        self.close = function () {
+            $mdDialog.hide();
+        };
+        self.requestSwap = function(match, game, swapUser) {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: 'RequestSwapDialogCtrl',
+                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl},
+                templateUrl: 'app/views/requests/swap.partial.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+    }
+
+    /*
+     RequestSwapDialogCtrl
+     */
+    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'lsgConfig', 'Notify']
+    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, lsgConfig, Notify) {
+        var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.title = "Request Swap";
+        self.iwish = match.iwish;
+        self.game = game;
+        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.swapUser = swapUser;
+        self.data = {
+            requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
+        };
+        self.errors = {};
+        self.close = function (e) {
+            e.preventDefault();
+            $mdDialog.hide();
+            matchesCtrl.openMatch(match);
+        };
+
+        var submitRequestSwap = function (e) {
+            e.preventDefault();
+            if (self.iwish.swap_pending || self.game.swap_pending) {
+                self.warnUserAboutPendingRequest();
+            } else {
+                self.createSwapRequest()
+            }
+        };
+
+        self.warnUserAboutPendingRequest = function () {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: 'PendingRequestWarningCtrl',
+                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl, requestSwapDialogCtrl: self},
+                templateUrl: 'app/views/matches/match.warning.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.createSwapRequest = function () {
+            RequestsService.createSwapRequest(self.swapUser.id,
+                self.iwish.id, self.authenticatedUser.id, self.game.id,
+                self.data.requester_game_condition_notes,
+                self.swapUser.address.distance).then(function (request) {
+                    $mdDialog.hide();
+                    window.location = "#/app/requests?id=" + request.id + '&msg=Your request is pending until ' + self.swapUser.name + ' accepts it.';
+                    Notify.alert("Your request has been successfully created.", {status: 'success'});
+                }).catch(function (a) {
+                    console.log(a);
+                    self.errors = a;
+                });
+        };
+
+        self.submit = submitRequestSwap;
+        self.actionButtons = [
+            {title: "Request Swap", icon: "fa fa-hand-o-up", class: "btn-info", action: submitRequestSwap}
+        ];
+    }
+
+    /*
+     PendingRequestWarningCtrl
+     */
+    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', 'lsgConfig']
+    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, lsgConfig) {
+        var self = this;
+        self.title = "Request Swap";
+        self.iwish = match.iwish;
+        self.game = game;
+        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.swapUser = swapUser;
+        self.message = '';
+        self.pendingMyRequests = [];
+        self.pendingIncomingRequests = [];
+
+        RequestsService.getMyRequests().then(function (requests) {
+            self.pendingMyRequests = requests.filter(function (request) {
+                 return (request.requested_game.id == self.iwish.id || request.requester_game.id == self.game.id);
+            });
+        });
+        RequestsService.getIncomingRequests().then(function (requests) {
+            self.pendingIncomingRequests = requests.filter(function (request) {
+                 return (request.requester_game.id == self.iwish.id || request.requested_game.id == self.game.id);
+            });
+        });
+
+        self.totalPendingRequests = function () {
+            return self.pendingMyRequests.length + self.pendingIncomingRequests.length;
+        };
+
+        self.no = function () {
+            matchesCtrl.openMatch(match);
+        };
+        self.yes = function () {
+            requestSwapDialogCtrl.createSwapRequest();
+        };
+    }
+
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.matches')
+        .service('MatchesService', MatchesService);
+
+    MatchesService.$inject = ['$q', '$http', 'lsgConfig'];
+    function MatchesService($q, $http, lsgConfig) {
+
+        this.getMatches = function () {
+            var q = $q.defer();
+            var userId = lsgConfig.authenticatedUser.id;
+            var baseUserUrl = '/api/users/' + userId + '/';
+            var url = baseUserUrl + 'matches/';
+            $http
+                .get(url)
+                .success(function (response) {
+                    q.resolve(response);
+                });
+            return q.promise;
+        }
+    }
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.preloader')
+        .directive('preloader', preloader);
+
+    preloader.$inject = ['$animate', '$timeout', '$q', '$http', 'lsgConfig', '$rootScope', 'Notify', '$state', '$stateParams'];
+    function preloader($animate, $timeout, $q, $http, lsgConfig, $rootScope, Notify, $state, $stateParams) {
+        var counter = 0;
+        var timeout;
+        var failedToGetUser = false;
+
+        var locationChange = function (event, next, current) {
+            var splitted = next.split('#');
+            var el = angular.element(".preloader-progress").parent();
+            if (splitted.length > 1 && (splitted[1] == '/500')) {
+                endCounter($rootScope, el);
+                return;
+            }
+            if (splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
+                endCounter($rootScope, el);
+                return;
+            }
+            if (event && event.targetScope) {
+                if (event.targetScope.user === undefined || event.targetScope.user == null) {
+                    event.preventDefault();
+                } else {
+                    return;
+                }
+            }
+            link($rootScope, el, event, current);
+        };
+
+        $rootScope.$on('$locationChangeStart', locationChange);
+
+        var directive = {
+            restrict: 'EAC',
+            template: '<div class="preloader-progress">' +
+            '<div class="preloader-progress-bar" ' +
+            'ng-style="{width: loadCounter + \'%\'}"></div>' +
+            '</div>'
+            ,
+            link: link
+        };
+        return directive;
+
+        function link(scope, el, event, sref) {
+            startLoader(scope, el);
+
+            appReady(scope, event, sref).then(function () {
+                if (sref) {
+                    var states = $state.get();
+                    var state;
+                    var matchedState;
+                    for (var k = 0; k < states.length; k++) {
+                        state = states[k];
+                        if (!state.$$state) continue;
+                        var privatePortion = state.$$state();
+                        var match = privatePortion.url.exec(sref.split('#')[1]);
+                        if (match) {
+                            matchedState = state;
+                            break
+                        }
+                    }
+                    if (matchedState) {
+                        if (matchedState.name == 'pages.signIn') {
+                            $state.transitionTo("app.welcome");
+                        } else {
+                            $state.transitionTo(matchedState.name);
+                        }
+                    } else {
+                        $state.transitionTo("app.welcome");
+                    }
+                    endCounter(scope, el);
+                } else {
+                    //endCounter(scope, el);
+                }
+            }, function () {
+                endCounter(scope, el);
+                failedToGetUser = true;
+                redirectToSignInPage();
+            });
+        } //link
+
+        function redirectToSignInPage() {
+            var nexts = window.location.hash.toString().split('?next=');
+            if (nexts.length > 1) {
+                $state.transitionTo("pages.signIn", {next: nexts[1]});
+            } else {
+                $state.transitionTo("pages.signIn");
+            }
+        }
+
+        function loadAuthenticatedUser(event) {
+            var q = $q.defer();
+            if (event && event.targetScope && event.targetScope.user != undefined && event.targetScope.user != null) {
+                q.resolve(event.targetScope.user);
+                return q;
+            }
+            $http.get('/api/users/authenticated/').success(function (response) {
+                var user = response;
+                lsgConfig.authenticatedUser = user;
+                $rootScope.user = user;
+                if (user) {
+                    q.resolve(user);
+                } else {
+                    if (event) {
+                        event.preventDefault();
+                    }
+                    failedToGetUser = true;
+                    redirectToSignInPage();
+                    q.reject();
+                    return;
+                }
+                var initialAlert = function () {
+                    if (!user.address.latitude || !user.address.longitude) {
+                        Notify.closeAll(false, true);
+                        Notify.alert("You need to provide your own address details in " +
+                            "order to use the application. <a style='color: yellow;' href='#/app/profile'>" +
+                            "Click here to access the profile form to update your " +
+                            "address.</a>", {status: 'danger', timeout: 7000});
+                    }
+                };
+
+                $rootScope.$on('$stateChangeStart',  function(event, toState, toParams, fromState, fromParams) {
+                    if (!lsgConfig.authenticatedUser.address.latitude || !lsgConfig.authenticatedUser.address.longitude) {
+                        initialAlert();
+                    }
+                });
+
+            }).error(function (response, status) {
+                console.log('Failed to get authenticated user');
+                if (status == 400) {
+                    q.reject();
+                    return;
+                }
+                q.resolve();
+                $state.transitionTo("pages.500");
+            });
+            return q;
+        }
+
+        ///////
+
+        function startCounter(scope) {
+            var remaining = 100 - counter;
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+            scope.loadCounter = parseInt(counter, 10);
+            timeout = $timeout(function () { startCounter(scope) }, 20);
+        }
+
+        function endCounter(scope, el) {
+            $timeout.cancel(timeout);
+            scope.loadCounter = 100;
+            counter = 0;
+            $timeout(function () {
+                // animate preloader hiding
+                $animate.addClass(el, 'preloader-hidden');
+                // retore scrollbar
+                angular.element('body').css('overflow', '');
+            }, 300);
+        }
+
+        function startLoader(scope, el) {
+            scope.loadCounter = 0;
+            angular.element('body').css('overflow', 'hidden');
+            el.addClass('preloader');
+            timeout = $timeout(function () { startCounter(scope) });
+        }
+
+        function appReady(scope, event) {
+            //var deferred = $q.defer();
+            var deferred = loadAuthenticatedUser(event);
+            var viewsLoaded = 0;
+            // if this doesn't sync with the real app ready
+            // a custom event must be used instead
+            var off = scope.$on('$viewContentLoaded', function () {
+                viewsLoaded++;
+                // we know there are at least two views to be loaded
+                // before the app is ready (1-index.html 2-app*.html)
+                if (viewsLoaded === 2) {
+                    // with resolve this fires only once
+                    //$timeout(function () {
+                    //    deferred.resolve();
+                    //}, 3000);
+                    off();
+                }
+
+            });
+            return deferred.promise;
+        }
+
+    }
+
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('app.requests', ['ngAnimate',])
+        .controller('RequestsCtrl', RequestsCtrl)
+        .controller('AcceptRequestDialogCtrl', AcceptRequestDialogCtrl)
+        .controller('ContactDetailsCtrl', ContactDetailsCtrl)
+        .controller('PendingRequestsWarningCtrl', PendingRequestsWarningCtrl)
+        .controller('FinalizeRequestCtrl', FinalizeRequestCtrl)
+    ;
+
+    /*
+     RequestsCtrl
+     */
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', 'lsgConfig', 'globalFunctions', '$stateParams'];
+    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, lsgConfig, globalFunctions, $stateParams) {
+        var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.user = lsgConfig.authenticatedUser;
+        self.myRequests = [];
+        self.incomingRequests = [];
+
+        self.pendingMyRequests = [];
+        self.pendingIncomingRequests = [];
+
+        self.requestsPollingInterval = 5000;
+        self.requestsPromise = undefined;
+        self.tour = undefined;
+
+
+        self.loadMyRequests = function () {
+            RequestsService.getMyRequests().then(function (requests) {
+                self.myRequests = requests;
+                $timeout(function () {
+                    self.highlightRequest();
+                }, 1000);
+            });
+        };
+
+        self.loadIncomingRequests = function () {
+            RequestsService.getIncomingRequests().then(function (requests) {
+                self.incomingRequests = requests;
+                $timeout(function () {
+                    self.highlightRequest();
+                }, 1000);
+            });
+        };
+
+        self.loadAllRequests = function () {
+            self.loadMyRequests();
+            self.loadIncomingRequests();
+        };
+
+        self.pollRequests = function () {
+            self.loadAllRequests();
+            self.requestsPromise = $timeout(function () {
+                self.pollRequests();
+            }, self.requestsPollingInterval);
+        };
+
+        self.pollRequests();
+
+        $scope.$on('$destroy', function() {
+            $timeout.cancel(self.requestsPromise);
+        });
+
+        self.highlightRequest = function () {
+            if (self.tour || $stateParams.id === undefined) {
+                return;
+            }
+            $timeout.cancel(self.requestsPromise);
+            // BootstrapTour is not compatible with z-index based layout
+            // so adding position:static for this case makes the browser
+            // to ignore the property
+            var section = angular.element('.wrapper > section');
+            section.css({'position': 'static'});
+            // finally restore on destroy and reuse the value declared in stylesheet
+            $scope.$on('$destroy', function(){
+                section.css({'position': ''});
+            });
+            var msg = $stateParams.msg || "Swap Request";
+            self.tour = new Tour({
+                backdrop: true,
+                backdropPadding: 5,
+                //duration: 2000,
+                template: "" +
+                    "<div class='popover tour'>" +
+                    "  <div class='arrow'></div>" +
+                    "  <div class='popover-content'></div>" +
+                    "  <div class='popover-navigation'>" +
+                    "    <a href='javascript:;' data-role='end'>OK!</a>" +
+                    "  </div>" +
+                    "</div>",
+                onEnd: function (t) {
+                    self.pollRequests();
+                },
+                steps: [
+                {
+                    element: 'div.card[request-id="' + $stateParams.id + '"]',
+                    content: msg,
+                    placement: 'top'
+                }
+            ]});
+            self.tour.init();
+            self.tour.start();
+            self.tour.restart(true);
+            $('body').click(function () {
+                self.tour.end();
+            });
+        };
+
+        self.getPendingMyRequestsRelated = function (request, iwish, game) {
+            var requests = self.pendingMyRequests.filter(function (item) {
+                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
+            });
+            return requests;
+        };
+
+        self.getPendingIncomingRequestsRelated = function (request, iwish, game) {
+            var requests = self.incomingRequests.filter(function (item) {
+                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
+            });
+            return requests;
+        };
+
+        self.openAcceptRequestDialog = function(request) {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: AcceptRequestDialogCtrl,
+                locals: {request: request, requestsCtrl: self},
+                templateUrl: 'app/views/requests/swap.partial.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.confirmCancelRequest = function(request) {
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure you want to cancel this Swap Request?')
+                .textContent('')
+                .ariaLabel('Cancel Swap Request')
+                .ok("Yes, I'm sure")
+                .cancel('No');
+            $mdDialog.show(confirm).then(function () {
+                self.cancelRequest(request);
+            }, function () {
+                // TODO: maybe do something if cancel confirm
+            });
+        };
+
+        self.cancelRequest = function (request) {
+            RequestsService.cancelRequest(request.id).then(function (request) {
+                var index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', request.id);
+                self.myRequests.splice(index, 1, request);
+            });
+        };
+
+        self.confirmRefuseRequest = function(request, fromOpenAcceptRequestDialog) {
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure you want to refuse this Swap Request?')
+                .textContent('')
+                .ariaLabel('Refuse Swap Request')
+                .ok("Yes, I'm sure")
+                .cancel('No');
+            $mdDialog.show(confirm).then(function () {
+                self.refuseRequest(request);
+            }, function () {
+                if (fromOpenAcceptRequestDialog) {
+                    self.openAcceptRequestDialog(request);
+                }
+            });
+        };
+
+        self.refuseRequest = function (request) {
+            RequestsService.refuseRequest(request.id).then(function (request) {
+                var index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', request.id);
+                self.incomingRequests.splice(index, 1, request);
+            });
+        };
+
+        self.showContactDetails = function (request, context, msg) {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: ContactDetailsCtrl,
+                locals: {request: request, context: context, msg: msg, requestsCtrl: self},
+                templateUrl: 'app/views/requests/contact-details.partial.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.openFinalizeRequestDialog = function (request) {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: FinalizeRequestCtrl,
+                locals: {request: request, requestsCtrl: self},
+                templateUrl: 'app/views/requests/finalize-request.partial.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.confirmArchiveRequest = function (request) {
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure you want to archive this Swap Request?')
+                .textContent('')
+                .ariaLabel('Archive Swap Request')
+                .ok("Yes, I'm sure")
+                .cancel('No');
+            $mdDialog.show(confirm).then(function () {
+                self.archiveRequest(request);
+            });
+        };
+
+        self.archiveRequest = function (request) {
+            RequestsService.archiveRequest(request.id).then(function (request) {
+                var index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', request.id);
+                if (index) {
+                    self.incomingRequests.splice(index, 1);
+                } else {
+                    index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', request.id);
+                    self.myRequests.splice(index, 1);
+                }
+            });
+        };
+        self.confirmArchiveAllRequests = function () {
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure you want to archive all finished requests?')
+                .textContent('Finished requests are those in one of the following statuses: Succeeded, Failed, Refused, Cancelled, Failed or Expired.')
+                .ariaLabel('Archive all finished requests!')
+                .ok("Yes, I'm sure")
+                .cancel('No');
+            $mdDialog.show(confirm).then(function () {
+                self.archiveAllRequests();
+            });
+        };
+        self.archiveAllRequests = function () {
+            RequestsService.archiveAllRequests().then(function (data) {
+                var index;
+                for (var k = 0; k < data.my.length; k++) {
+                    index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', data.my[k]);
+                    if (index === undefined) continue;
+                    self.myRequests.splice(index, 1);
+                }
+                for (var k = 0; k < data.incoming.length; k++) {
+                    index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', data.incoming[k]);
+                    if (index === undefined) continue;
+                    self.incomingRequests.splice(index, 1);
+                }
+            });
+        };
+        self.hasClosedRequests = function () {
+            // OPTMIZE THIS!!!!! It's being called every time!
+            for (var k = 0; k < self.myRequests.length; k++) {
+                if (self.myRequests[k].isClosed()) return true;
+            }
+            for (var k = 0; k < self.incomingRequests.length; k++) {
+                if (self.incomingRequests[k].isClosed()) return true;
+            }
+            return false;
+        };
+    }
+
+    /*
+     AcceptRequestDialogCtrl
+     */
+    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
+    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions) {
+        var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.request = request;
+        self.title = "Accept Swap Request";
+        self.iwish = request.requester_game;
+        self.game = request.requested_game;
+        self.user = request.requester;
+        self.requesterGameConditionNotes = request.requester_game_condition_notes;
+        self.data = {
+            requested_game_condition_notes: null  // IMPORTANT: now is the REQUESTED field!
+        };
+        self.errors = {};
+        self.close = function (e) {
+            e.preventDefault();
+            $mdDialog.hide();
+        }
+        var accept = function (e) {
+            e.preventDefault();
+            var pendingMyRequests = requestsCtrl.getPendingMyRequestsRelated(request, request.requester_game, request.requested_game);
+            var pendingIncomingRequests = requestsCtrl.getPendingIncomingRequestsRelated(request, request.requester_game, request.requested_game);
+            if (pendingMyRequests.length || pendingIncomingRequests.length) {
+                $mdDialog.show({
+                    controllerAs: 'ctrl',
+                    controller: PendingRequestsWarningCtrl,
+                    locals: {request: request, pendingMyRequests: pendingMyRequests, pendingIncomingRequests: pendingIncomingRequests, acceptRequestDialogCtrl: self},
+                    templateUrl: 'app/views/requests/warning-refuse-pending.partial.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                });
+            } else {
+                self.acceptRequest();
+            }
+        };
+
+        var refuse = function (e) {
+            e.preventDefault();
+            requestsCtrl.confirmRefuseRequest(request, true);
+            self.close(e);
+        };
+        self.submit = accept;
+        self.actionButtons = [
+            {title: "Refuse", icon: "fa fa-thumbs-down", class: "btn-danger", action: refuse},
+            {title: "Accept", icon: "fa fa-thumbs-up", class: "btn-success", action: accept}
+        ];
+
+        self.acceptRequest = function () {
+            RequestsService.acceptRequest(self.request.id, self.data.requested_game_condition_notes).then(function (request) {
+                var index = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
+                requestsCtrl.incomingRequests.splice(index, 1, request);
+                var msg = 'Congratulations! You have accepted to swap your game "' +
+                    request.requested_game.name + '" with ' + request.requester.name + '\'s game "' +
+                    request.requester_game.name + '". Contact ' + request.requester.name + ' so you can arrange ways of ' +
+                    'concluding the swap.';
+                requestsCtrl.showContactDetails(request, 'incomingRequests', msg);
+            });
+        };
+
+    }
+
+    /*
+     ContactDetailsCtrl
+     */
+    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'request', 'context', 'msg', 'requestsCtrl']
+    function ContactDetailsCtrl($scope, $timeout, $mdDialog, request, context, msg, requestsCtrl) {
+        var self = this;
+        self.msg = msg;
+        self.user = requestsCtrl.user;
+        self.swapUser = context == 'incomingRequests' ? request.requester : request.requested;
+        self.request = request;
+        self.context = context;
+        self.close = function () {
+            $mdDialog.hide();
+        };
+
+        function setupContactDetailsMap(user, otherUser) {
+            var bounds = new google.maps.LatLngBounds();
+            var userPosition = new google.maps.LatLng(user.address.latitude,
+                                                      user.address.longitude);
+            var otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
+                                                           otherUser.address.longitude);
+            var userMarker, otherUserMarker;
+
+            $timeout(function () {
+                userMarker = new google.maps.Marker({map: self.contactDetailsMap, position: userPosition, title: user.name, visible:true});
+                otherUserMarker = new google.maps.Marker({map: self.contactDetailsMap, position: otherUserPosition, title: otherUser.name, visible:true});
+                bounds.extend(userMarker.position);
+                bounds.extend(otherUserMarker.position);
+                var userInfoWindow = new google.maps.InfoWindow({
+                    content: 'My location'
+                });
+                var otherUserInfoWindow = new google.maps.InfoWindow({
+                    content: otherUser.name + " location"
+                });
+                userInfoWindow.open(self.contactDetailsMap, userMarker);
+                otherUserInfoWindow.open(self.contactDetailsMap, otherUserMarker);
+                $timeout(function () {
+                    google.maps.event.trigger(self.contactDetailsMap, 'resize');
+                    $timeout(function () {
+                        self.contactDetailsMap.fitBounds(bounds);
+                    });
+                });
+            });
+
+            self.contactDetailsMapOptions = {
+                zoom: 14,
+                center: userPosition,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scrollwheel: false
+            };
+        }
+
+        setupContactDetailsMap(self.user, self.swapUser);
+    }
+
+    /*
+     PendingRequestsWarningCtrl
+     */
+    PendingRequestsWarningCtrl.$inject = ['$scope', '$mdDialog', 'request', 'pendingMyRequests', 'pendingIncomingRequests', 'acceptRequestDialogCtrl']
+    function PendingRequestsWarningCtrl($scope, $mdDialog, request, pendingMyRequests, pendingIncomingRequests, acceptRequestDialogCtrl) {
+        var self = this;
+        self.pendingMyRequests = pendingMyRequests;
+        self.pendingIncomingRequests = pendingIncomingRequests;
+        self.iwish = request.requester_game;
+        self.game = request.requested_game;
+        self.iwish.swap_pending = true;
+        self.game.swap_pending = true;
+        self.totalPendingRequests = function () {
+            return self.pendingMyRequests.length + self.pendingIncomingRequests.length;
+        };
+        self.no = function () {
+            $mdDialog.hide();
+        };
+        self.yes = function () {
+            acceptRequestDialogCtrl.acceptRequest();
+        };
+    }
+
+    /*
+     FinalizeRequestCtrl
+     */
+    FinalizeRequestCtrl.$inject = ['$scope', '$mdDialog', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
+    function FinalizeRequestCtrl($scope, $mdDialog, request, requestsCtrl, RequestsService, globalFunctions) {
+        var self = this;
+        self.request = request;
+        self.user = requestsCtrl.user;
+        self.data = {};
+        if (self.user.id == request.requester.id) {
+            self.iwish = request.requested_game;
+            self.game = request.requester_game;
+            self.swapUser = request.requested;
+        } else {
+            self.iwish = request.requester_game;
+            self.game = request.requested_game;
+            self.swapUser = request.requester;
+        }
+
+        self.close = function (e) {
+            e.preventDefault();
+            $mdDialog.hide();
+        };
+        self.finalizeRequest = function (e) {
+            e.preventDefault();
+            RequestsService.finalizeRequest(self.request.id, self.data.swapped, self.data.other_feedback, self.data.other_feedback_notes).then(function (request) {
+                $mdDialog.hide();
+                var indexInc = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
+                var indexMy = globalFunctions.getIndexByObjectAttribute(requestsCtrl.myRequests, 'id', request.id);
+                if (indexInc !== undefined) {
+                    requestsCtrl.incomingRequests.splice(indexInc, 1, request);
+                }
+                if (indexMy !== undefined) {
+                    requestsCtrl.myRequests.splice(indexMy, 1, request);
+                }
+            });
+        };
+    }
+
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.requests')
+        .directive('statusDisplay', statusDisplay);
+
+    /*
+     statusDisplay
+     */
+    statusDisplay.$inject = ['lsgConfig'];
+    function statusDisplay (lsgConfig) {
+        console.log(lsgConfig);
+        return {
+            restrict: 'E',
+            scope: {
+                request: '=',
+                previous: '='
+            },
+            link: function (scope) {
+                scope.StatusLabelClasses = lsgConfig.StatusLabelClasses;
+                scope.StatusIcons = lsgConfig.StatusIcons;
+            },
+            templateUrl: 'app/views/requests/directives/status-display.html'
+        }
+    };
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.requests')
+        .service('RequestsService', RequestsService);
+
+    RequestsService.$inject = ['$q', '$http', 'lsgConfig'];
+    function RequestsService($q, $http, lsgConfig) {
+        var userId = lsgConfig.authenticatedUser.id;
+        var baseUrl = {
+            myRequests: '/api/users/' + userId + '/my_requests/',
+            incomingRequests: '/api/users/' + userId + '/incoming_requests/',
+            requests: '/api/users/' + userId + '/requests/'
+        };
+        this.baseUrl = baseUrl;
+        
+        var Request = function (data) {
+            for (var key in data) {
+                this[key] = data[key];
+            }
+        };
+        Request.prototype.isFinalizedByAuthenticatedUser = function () {
+            var finalizing = this.isFinalizing() || this.isFinalized();
+            var context;
+            if (this.requester.id == userId) {
+                context = 'requester';
+            } else {
+                context = 'requested';
+            }
+            var userFinalized = this[context + '_swapped'] != null && this[context + '_swapped'] != undefined;
+            return finalizing && userFinalized;
+        };
+        Request.prototype.isPending = function () {
+            return this.status == lsgConfig.Status.pending;
+        };
+        Request.prototype.isOngoing = function () {
+            return this.status == lsgConfig.Status.ongoing;
+        };
+        Request.prototype.isCancelled = function () {
+            return this.status == lsgConfig.Status.cancelled;
+        };
+        Request.prototype.isExpired = function () {
+            return this.status == lsgConfig.Status.expired;
+        };
+        Request.prototype.isRefused = function () {
+            return this.status == lsgConfig.Status.refused;
+        };
+        Request.prototype.isSucceeded = function () {
+            return this.status == lsgConfig.Status.succeeded;
+        };
+        Request.prototype.isArchived = function () {
+            return this.status == lsgConfig.Status.archived;
+        };
+        Request.prototype.isFinalizing = function () {
+            return this.status == lsgConfig.Status.finalizing;
+        };
+        Request.prototype.isOpen = function () {
+            return lsgConfig.Status.open_statuses.indexOf(this.status) != -1;
+        };
+        Request.prototype.isClosed = function () {
+            return lsgConfig.Status.closed_statuses.indexOf(this.status) != -1;
+        };
+        Request.prototype.isFinalized = function () {
+            return lsgConfig.Status.finalized_statuses.indexOf(this.status) != -1;
+        };
+
+        this.Request = Request;
+
+        this.getMyRequests = function () {
+            var q = $q.defer();
+            $http
+                .get(baseUrl.myRequests)
+                .success(function (response) {
+                    var requests = response.results.map(function (o) {return new Request(o)});
+                    q.resolve(requests);
+                });
+            return q.promise;
+        };
+        this.getIncomingRequests = function () {
+            var q = $q.defer();
+            $http
+                .get(baseUrl.incomingRequests)
+                .success(function (response) {
+                    var requests = response.results.map(function (o) {return new Request(o)});
+                    q.resolve(requests);
+                });
+            return q.promise;
+        };
+        this.createSwapRequest = function (requested, requested_game,
+                                           requester, requester_game,
+                                           requester_game_condition_notes,
+                                           distance) {
+            var q = $q.defer();
+            var data = {
+                requested_id: requested,
+                requested_game_id: requested_game,
+                requester_id: requester,
+                requester_game_id: requester_game,
+                requester_game_condition_notes: requester_game_condition_notes,
+                distance: distance
+            };
+            $http
+                .post(baseUrl.myRequests, data)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                }).error(function(response, status) {
+                    console.log(response);
+                    if (status == 400) {
+                        q.reject(response);
+                    }
+                });
+            return q.promise;
+        };
+        this.acceptRequest = function (requestId,
+                                       requested_game_condition_notes) {
+            var url = baseUrl.incomingRequests + requestId + '/accept/';
+            var q = $q.defer();
+            var data = {
+                requested_game_condition_notes: requested_game_condition_notes,
+            };
+            $http
+                .post(url, data)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                });
+            return q.promise;
+        };
+        this.refuseRequest = function (requestId) {
+            var url = baseUrl.incomingRequests + requestId + '/refuse/';
+            var q = $q.defer();
+            $http
+                .post(url)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                });
+            return q.promise;
+        };
+        this.cancelRequest = function (requestId) {
+            var url = baseUrl.myRequests + requestId + '/cancel/';
+            var q = $q.defer();
+            $http
+                .post(url)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                });
+            return q.promise;
+        };
+        this.finalizeRequest = function (requestId, swapped, other_feedback, other_feedback_notes) {
+            var url = baseUrl.requests + requestId + '/finalize/';
+            var q = $q.defer();
+            var data = {
+                swapped: swapped,
+                other_feedback: other_feedback,
+                other_feedback_notes: other_feedback_notes
+            };
+            $http
+                .post(url, data)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                });
+            return q.promise;
+        };
+        this.archiveRequest = function (requestId) {
+            var url = baseUrl.requests + requestId + '/archive/';
+            var q = $q.defer();
+            $http
+                .post(url)
+                .success(function (response) {
+                    q.resolve(new Request(response));
+                });
+            return q.promise;
+        };
+        this.archiveAllRequests = function () {
+            var url = baseUrl.requests + 'archive-all/';
+            var q = $q.defer();
+            $http
+                .post(url)
+                .success(function (response) {
+                    q.resolve(response);
+                });
+            return q.promise;
+        };
+    }
+})();
+
+/**=========================================================
+ * Module: helpers.js
+ * Provides helper functions for routes definition
+ =========================================================*/
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.routes')
+        .provider('RouteHelpers', RouteHelpersProvider)
+    ;
+
+    RouteHelpersProvider.$inject = ['APP_REQUIRES'];
+    function RouteHelpersProvider(APP_REQUIRES) {
+
+        /* jshint validthis:true */
+        return {
+            // provider access level
+            basepath: basepath,
+            resolveFor: resolveFor,
+            // controller access level
+            $get: function () {
+                return {
+                    basepath: basepath,
+                    resolveFor: resolveFor
+                };
+            }
+        };
+
+        // Set here the base of the relative path
+        // for all app views
+        function basepath(uri) {
+            return 'app/views/' + uri;
+        }
+
+        // Generates a resolve object by passing script names
+        // previously configured in constant.APP_REQUIRES
+        function resolveFor() {
+            var _args = arguments;
+            return {
+                deps: ['$ocLazyLoad', '$q', function ($ocLL, $q) {
+                    // Creates a promise chain for each argument
+                    var promise = $q.when(1); // empty promise
+                    for (var i = 0, len = _args.length; i < len; i++) {
+                        promise = andThen(_args[i]);
+                    }
+                    return promise;
+
+                    // creates promise to chain dynamically
+                    function andThen(_arg) {
+                        // also support a function that returns a promise
+                        if (typeof _arg === 'function')
+                            return promise.then(_arg);
+                        else
+                            return promise.then(function () {
+                                // if is a module, pass the name. If not, pass the array
+                                var whatToLoad = getRequired(_arg);
+                                // simple error check
+                                if (!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
+                                // finally, return a promise
+                                return $ocLL.load(whatToLoad);
+                            });
+                    }
+
+                    // check and returns required data
+                    // analyze module items with the form [name: '', files: []]
+                    // and also simple array of script files (for not angular js)
+                    function getRequired(name) {
+                        if (APP_REQUIRES.modules)
+                            for (var m in APP_REQUIRES.modules)
+                                if (APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
+                                    return APP_REQUIRES.modules[m];
+                        return APP_REQUIRES.scripts && APP_REQUIRES.scripts[name];
+                    }
+
+                }]
+            };
+        } // resolveFor
+
+    }
+
+
+})();
+
+
+/**=========================================================
+ * Module: config.js
+ * App routes and resources configuration
+ =========================================================*/
+
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.routes')
+        .config(routesConfig);
+
+    routesConfig.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider'];
+    function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper) {
+
+        // Set the following to true to enable the HTML5 Mode
+        // You may have to set <base> tag in index and a routing configuration in your server
+        $locationProvider.html5Mode(false);
+
+        $stateProvider.decorator('parent', function (internalStateObj, parentFn) {
+             // This fn is called by StateBuilder each time a state is registered
+
+             // The first arg is the internal state. Capture it and add an accessor to public state object.
+             internalStateObj.self.$$state = function() { return internalStateObj; };
+
+             // pass through to default .parent() function
+             return parentFn(internalStateObj);
+        });
+
+        // defaults to dashboard
+        $urlRouterProvider.otherwise('/app/welcome');
+
+        //
+        // Application Routes
+        // -----------------------------------   
+        $stateProvider
+            .state('app', {
+                url: '/app',
+                abstract: true,
+                templateUrl: helper.basepath('app.html'),
+                resolve: helper.resolveFor('modernizr', 'icons')
+            })
+            .state('app.welcome', {
+                url: '/welcome',
+                title: 'Welcome',
+                templateUrl: helper.basepath('welcome.html'),
+                resolve: helper.resolveFor('bm.bsTour')
+            })
+            .state('pages', {
+                url: '',
+                abstract: true,
+                templateUrl: helper.basepath('single-page.html'),
+                resolve: helper.resolveFor('modernizr', 'icons'),
+                controller: ['$rootScope', function($rootScope) {
+                    $rootScope.app.layout.isBoxed = false;
+                }]
+            })
+            .state('pages.signIn', {
+                url: '/sign-in?next',
+                title: 'Sing In',
+                templateUrl: 'app/views/pages/sign-in.html'
+            })
+            .state('pages.500', {
+                url: '/500',
+                title: 'Oh! Something went wrong',
+                templateUrl: 'app/views/pages/500.html'
+            })
+            //
+            // Material
+            // -----------------------------------
+            .state('app.dashboard', {
+                url: '/dashboard',
+                title: 'Dashboard',
+                templateUrl: helper.basepath('dashboard/main.html'),
+                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons', 'sparklines', 'classyloader')
+            })
+            .state('app.games', {
+                url: '/games?tour',
+                title: 'Games',
+                templateUrl: helper.basepath('games/main.html'),
+                resolve: helper.resolveFor('bm.bsTour')
+            })
+            .state('app.users', {
+                url: '/profile',
+                title: 'Profile',
+                templateUrl: helper.basepath('users/main.html'),
+                resolve: helper.resolveFor('ngImgCrop', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
+            })
+            .state('app.matches', {
+                url: '/matches',
+                title: 'Matches',
+                templateUrl: helper.basepath('matches/main.html')
+            })
+            .state('app.requests', {
+                url: '/requests?id&msg',
+                title: 'Requests',
+                templateUrl: helper.basepath('requests/main.html'),
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
+            })
+            .state('app.archived', {
+                url: '/requests/archived',
+                title: 'Archived Requests',
+                templateUrl: helper.basepath('requests/archived/main.html'),
+                resolve: helper.resolveFor('ngTable')
+            })
+
+            .state('app.cards', {
+                url: '/cards',
+                title: 'Material Cards',
+                templateUrl: helper.basepath('material.cards.html')
+            })
+            .state('app.forms', {
+                url: '/forms',
+                title: 'Material Forms',
+                templateUrl: helper.basepath('material.forms.html')
+            })
+            .state('app.whiteframe', {
+                url: '/whiteframe',
+                title: 'Material Whiteframe',
+                templateUrl: helper.basepath('material.whiteframe.html')
+            })
+            .state('app.matcolors', {
+                url: '/matcolors',
+                title: 'Material Colors',
+                templateUrl: helper.basepath('material.colors.html')
+            })
+            .state('app.lists', {
+                url: '/lists',
+                title: 'Material Lists',
+                templateUrl: helper.basepath('material.lists.html')
+            })
+            .state('app.inputs', {
+                url: '/inputs',
+                title: 'Material Inputs',
+                templateUrl: helper.basepath('material.inputs.html')
+            })
+            .state('app.matwidgets', {
+                url: '/matwidgets',
+                title: 'Material Widgets',
+                templateUrl: helper.basepath('material.widgets.html'),
+                resolve: helper.resolveFor('weather-icons', 'loadGoogleMapsJS', function () {
+                    return loadGoogleMaps();
+                }, 'ui.map')
+            })
+            .state('app.ngmaterial', {
+                url: '/ngmaterial',
+                title: 'ngMaterial',
+                templateUrl: helper.basepath('material.ngmaterial.html')
+            });
+
+        //
+        // CUSTOM RESOLVES
+        //   Add your own resolves properties
+        //   following this object extend
+        //   method
+        // -----------------------------------
+        // .state('app.someroute', {
+        //   url: '/some_url',
+        //   templateUrl: 'path_to_template.html',
+        //   controller: 'someController',
+        //   resolve: angular.extend(
+        //     helper.resolveFor(), {
+        //     // YOUR RESOLVES GO HERE
+        //     }
+        //   )
+        // })
+        ;
+
+    } // routesConfig
+
+})();
+
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app.routes')
+        .controller('RoutesCtrl', RoutesCtrl);
+
+    RoutesCtrl.$inject = ['$scope', '$rootScope'];
+    function RoutesCtrl($scope, $rootScope) {
+        
+    }
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('app.customSettings')
+        .run(customSettingsRun);
+
+    customSettingsRun.$inject = ['$rootScope', 'lsgConfig', '$state'];
+
+    function customSettingsRun($rootScope, lsgConfig, $state) {
+
+        // Hides/show user avatar on sidebar from any element
+        $rootScope.toggleUserBlock = function () {
+            $rootScope.$broadcast('toggleUserBlock');
+        };
+
+        // Global Settings
+        // -----------------------------------
+        $rootScope.app = {
+            name: "Let'SwapGames",
+            description: 'FREE FOR LIFE, BY GAMERS FOR GAMERS',
+            year: ((new Date()).getFullYear()),
+            layout: {
+                isFixed: true,
+                isCollapsed: false,
+                isBoxed: false,
+                isRTL: false,
+                horizontal: false,
+                isFloat: false,
+                asideHover: false,
+                theme: null,
+                asideScrollbar: false,
+                isCollapsedText: false
+            },
+            useFullLayout: false,
+            hiddenFooter: false,
+            offsidebarOpen: false,
+            asideToggled: false,
+            viewAnimation: 'ng-fadeInUp'
+        };
+
+        if ($rootScope.user === undefined || $rootScope.user == null) {
+            //window.location = '/app/#/sign-in';
+        }
+        
+        var Status = {
+            pending: 1,
+            cancelled: 2,
+            ongoing: 3,
+            refused: 4,
+            finalizing: 5,
+            succeeded: 6,
+            failed: 7,
+            expired: 8,
+            archived: 9
+        };
+
+        Status.open_statuses = [Status.pending, Status.ongoing,
+            Status.finalizing];
+        Status.closed_statuses = [Status.cancelled, Status.refused,
+            Status.succeeded, Status.failed, Status.expired];
+        Status.finalized_statuses = [Status.succeeded, Status.failed];
+        Status.ongoing_statuses = [Status.ongoing, Status.finalizing];
+
+        $rootScope.StatusLabelClasses = {
+            1: 'label-warning',                // pending
+            2: 'label-default bg-primary',     // cancelled
+            3: 'label-info',                   // ongoing
+            4: 'label-danger',                 // refused
+            5: 'label-default bg-green-light', // finalizing
+            6: 'label-success',                // succeeded
+            7: 'label-default bg-gray-darker', // failed
+            8: 'label-default bg-purple-dark', // expired
+            9: 'label-default bg-gray-light'   // archived
+        };
+
+        $rootScope.StatusIcons = {
+            1: 'fa fa-ellipsis-h',             // pending
+            2: 'fa fa-close',                  // cancelled
+            3: 'fa fa-thumbs-up',              // ongoing
+            4: 'fa fa-thumbs-down',            // refused
+            5: 'fa fa-gavel',                  // finalizing
+            6: 'fa fa-check',                  // succeeded
+            7: 'fa fa-chain-broken',           // failed
+            8: 'fa fa-clock-o',                // expired
+            9: 'fa fa-archive'                 // archived
+        };
+
+
+        $rootScope.Status = Status;
+        lsgConfig.Status = Status;
+        lsgConfig.StatusLabelClasses = $rootScope.StatusLabelClasses;
+        lsgConfig.StatusIcons = $rootScope.StatusIcons;
+
+        // Setup the layout mode
+        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');
+
+
+        // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
+        // if( angular.isDefined($localStorage.layout) )
+        //   $rootScope.app.layout = $localStorage.layout;
+        // else
+        //   $localStorage.layout = $rootScope.app.layout;
+        //
+        // $rootScope.$watch('app.layout', function () {
+        //   $localStorage.layout = $rootScope.app.layout;
+        // }, true);
+
+        // Close submenu when sidebar change from collapsed to normal
+        $rootScope.$watch('app.layout.isCollapsed', function (newValue) {
+            if (newValue === false)
+                $rootScope.$broadcast('closeSidebarMenu');
+        });
+
+    }
+
+})();
+
 /**=========================================================
  * Module: sidebar-menu.js
  * Handle sidebar collapsible elements
@@ -6251,789 +7318,6 @@
     'use strict';
 
     angular
-        .module('app.requests', ['ngAnimate',])
-        .controller('RequestsCtrl', RequestsCtrl)
-        .controller('AcceptRequestDialogCtrl', AcceptRequestDialogCtrl)
-        .controller('ContactDetailsCtrl', ContactDetailsCtrl)
-        .controller('PendingRequestsWarningCtrl', PendingRequestsWarningCtrl)
-        .controller('FinalizeRequestCtrl', FinalizeRequestCtrl)
-    ;
-
-    /*
-     RequestsCtrl
-     */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', 'lsgConfig', 'globalFunctions', '$stateParams'];
-    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, lsgConfig, globalFunctions, $stateParams) {
-        var self = this;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.user = lsgConfig.authenticatedUser;
-        self.myRequests = [];
-        self.incomingRequests = [];
-
-        self.pendingMyRequests = [];
-        self.pendingIncomingRequests = [];
-
-        self.requestsPollingInterval = 5000;
-        self.requestsPromise = undefined;
-        self.tour = undefined;
-
-
-        self.loadMyRequests = function () {
-            RequestsService.getMyRequests().then(function (requests) {
-                self.myRequests = requests;
-                $timeout(function () {
-                    self.highlightRequest();
-                }, 1000);
-            });
-        };
-
-        self.loadIncomingRequests = function () {
-            RequestsService.getIncomingRequests().then(function (requests) {
-                self.incomingRequests = requests;
-                $timeout(function () {
-                    self.highlightRequest();
-                }, 1000);
-            });
-        };
-
-        self.loadAllRequests = function () {
-            self.loadMyRequests();
-            self.loadIncomingRequests();
-        };
-
-        self.pollRequests = function () {
-            self.loadAllRequests();
-            self.requestsPromise = $timeout(function () {
-                self.pollRequests();
-            }, self.requestsPollingInterval);
-        };
-
-        self.pollRequests();
-
-        $scope.$on('$destroy', function() {
-            $timeout.cancel(self.requestsPromise);
-        });
-
-        self.highlightRequest = function () {
-            if (self.tour || $stateParams.id === undefined) {
-                return;
-            }
-            $timeout.cancel(self.requestsPromise);
-            // BootstrapTour is not compatible with z-index based layout
-            // so adding position:static for this case makes the browser
-            // to ignore the property
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
-                section.css({'position': ''});
-            });
-            var msg = $stateParams.msg || "Swap Request";
-            self.tour = new Tour({
-                backdrop: true,
-                backdropPadding: 5,
-                //duration: 2000,
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <a href='javascript:;' data-role='end'>OK!</a>" +
-                    "  </div>" +
-                    "</div>",
-                onEnd: function (t) {
-                    self.pollRequests();
-                },
-                steps: [
-                {
-                    element: 'div.card[request-id="' + $stateParams.id + '"]',
-                    content: msg,
-                    placement: 'top'
-                }
-            ]});
-            self.tour.init();
-            self.tour.start();
-            self.tour.restart(true);
-            $('body').click(function () {
-                self.tour.end();
-            });
-        };
-
-        self.getPendingMyRequestsRelated = function (request, iwish, game) {
-            var requests = self.pendingMyRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
-            });
-            return requests;
-        };
-
-        self.getPendingIncomingRequestsRelated = function (request, iwish, game) {
-            var requests = self.incomingRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
-            });
-            return requests;
-        };
-
-        self.openAcceptRequestDialog = function(request) {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: AcceptRequestDialogCtrl,
-                locals: {request: request, requestsCtrl: self},
-                templateUrl: 'app/views/requests/swap.partial.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-
-        self.confirmCancelRequest = function(request) {
-            var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to cancel this Swap Request?')
-                .textContent('')
-                .ariaLabel('Cancel Swap Request')
-                .ok("Yes, I'm sure")
-                .cancel('No');
-            $mdDialog.show(confirm).then(function () {
-                self.cancelRequest(request);
-            }, function () {
-                // TODO: maybe do something if cancel confirm
-            });
-        };
-
-        self.cancelRequest = function (request) {
-            RequestsService.cancelRequest(request.id).then(function (request) {
-                var index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', request.id);
-                self.myRequests.splice(index, 1, request);
-            });
-        };
-
-        self.confirmRefuseRequest = function(request, fromOpenAcceptRequestDialog) {
-            var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to refuse this Swap Request?')
-                .textContent('')
-                .ariaLabel('Refuse Swap Request')
-                .ok("Yes, I'm sure")
-                .cancel('No');
-            $mdDialog.show(confirm).then(function () {
-                self.refuseRequest(request);
-            }, function () {
-                if (fromOpenAcceptRequestDialog) {
-                    self.openAcceptRequestDialog(request);
-                }
-            });
-        };
-
-        self.refuseRequest = function (request) {
-            RequestsService.refuseRequest(request.id).then(function (request) {
-                var index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', request.id);
-                self.incomingRequests.splice(index, 1, request);
-            });
-        };
-
-        self.showContactDetails = function (request, context, msg) {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: ContactDetailsCtrl,
-                locals: {request: request, context: context, msg: msg, requestsCtrl: self},
-                templateUrl: 'app/views/requests/contact-details.partial.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-
-        self.openFinalizeRequestDialog = function (request) {
-            $mdDialog.show({
-                controllerAs: 'ctrl',
-                controller: FinalizeRequestCtrl,
-                locals: {request: request, requestsCtrl: self},
-                templateUrl: 'app/views/requests/finalize-request.partial.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: useFullScreen
-            });
-        };
-
-        self.confirmArchiveRequest = function (request) {
-            var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to archive this Swap Request?')
-                .textContent('')
-                .ariaLabel('Archive Swap Request')
-                .ok("Yes, I'm sure")
-                .cancel('No');
-            $mdDialog.show(confirm).then(function () {
-                self.archiveRequest(request);
-            });
-        };
-
-        self.archiveRequest = function (request) {
-            RequestsService.archiveRequest(request.id).then(function (request) {
-                var index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', request.id);
-                if (index) {
-                    self.incomingRequests.splice(index, 1);
-                } else {
-                    index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', request.id);
-                    self.myRequests.splice(index, 1);
-                }
-            });
-        };
-        self.confirmArchiveAllRequests = function () {
-            var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to archive all finished requests?')
-                .textContent('Finished requests are those in one of the following statuses: Succeeded, Failed, Refused, Cancelled, Failed or Expired.')
-                .ariaLabel('Archive all finished requests!')
-                .ok("Yes, I'm sure")
-                .cancel('No');
-            $mdDialog.show(confirm).then(function () {
-                self.archiveAllRequests();
-            });
-        };
-        self.archiveAllRequests = function () {
-            RequestsService.archiveAllRequests().then(function (data) {
-                var index;
-                for (var k = 0; k < data.my.length; k++) {
-                    index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', data.my[k]);
-                    if (index === undefined) continue;
-                    self.myRequests.splice(index, 1);
-                }
-                for (var k = 0; k < data.incoming.length; k++) {
-                    index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', data.incoming[k]);
-                    if (index === undefined) continue;
-                    self.incomingRequests.splice(index, 1);
-                }
-            });
-        };
-        self.hasClosedRequests = function () {
-            // OPTMIZE THIS!!!!! It's being called every time!
-            for (var k = 0; k < self.myRequests.length; k++) {
-                if (self.myRequests[k].isClosed()) return true;
-            }
-            for (var k = 0; k < self.incomingRequests.length; k++) {
-                if (self.incomingRequests[k].isClosed()) return true;
-            }
-            return false;
-        };
-    }
-
-    /*
-     AcceptRequestDialogCtrl
-     */
-    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
-    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions) {
-        var self = this;
-        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.request = request;
-        self.title = "Accept Swap Request";
-        self.iwish = request.requester_game;
-        self.game = request.requested_game;
-        self.user = request.requester;
-        self.requesterGameConditionNotes = request.requester_game_condition_notes;
-        self.data = {
-            requested_game_condition_notes: null  // IMPORTANT: now is the REQUESTED field!
-        };
-        self.errors = {};
-        self.close = function (e) {
-            e.preventDefault();
-            $mdDialog.hide();
-        }
-        var accept = function (e) {
-            e.preventDefault();
-            var pendingMyRequests = requestsCtrl.getPendingMyRequestsRelated(request, request.requester_game, request.requested_game);
-            var pendingIncomingRequests = requestsCtrl.getPendingIncomingRequestsRelated(request, request.requester_game, request.requested_game);
-            if (pendingMyRequests.length || pendingIncomingRequests.length) {
-                $mdDialog.show({
-                    controllerAs: 'ctrl',
-                    controller: PendingRequestsWarningCtrl,
-                    locals: {request: request, pendingMyRequests: pendingMyRequests, pendingIncomingRequests: pendingIncomingRequests, acceptRequestDialogCtrl: self},
-                    templateUrl: 'app/views/requests/warning-refuse-pending.partial.html',
-                    parent: angular.element(document.body),
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen
-                });
-            } else {
-                self.acceptRequest();
-            }
-        };
-
-        var refuse = function (e) {
-            e.preventDefault();
-            requestsCtrl.confirmRefuseRequest(request, true);
-            self.close(e);
-        };
-        self.submit = accept;
-        self.actionButtons = [
-            {title: "Refuse", icon: "fa fa-thumbs-down", class: "btn-danger", action: refuse},
-            {title: "Accept", icon: "fa fa-thumbs-up", class: "btn-success", action: accept}
-        ];
-
-        self.acceptRequest = function () {
-            RequestsService.acceptRequest(self.request.id, self.data.requested_game_condition_notes).then(function (request) {
-                var index = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
-                requestsCtrl.incomingRequests.splice(index, 1, request);
-                var msg = 'Congratulations! You have accepted to swap your game "' +
-                    request.requested_game.name + '" with ' + request.requester.name + '\'s game "' +
-                    request.requester_game.name + '". Contact ' + request.requester.name + ' so you can arrange ways of ' +
-                    'concluding the swap.';
-                requestsCtrl.showContactDetails(request, 'incomingRequests', msg);
-            });
-        };
-
-    }
-
-    /*
-     ContactDetailsCtrl
-     */
-    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'request', 'context', 'msg', 'requestsCtrl']
-    function ContactDetailsCtrl($scope, $timeout, $mdDialog, request, context, msg, requestsCtrl) {
-        var self = this;
-        self.msg = msg;
-        self.user = requestsCtrl.user;
-        self.swapUser = context == 'incomingRequests' ? request.requester : request.requested;
-        self.request = request;
-        self.context = context;
-        self.close = function () {
-            $mdDialog.hide();
-        };
-
-        function setupContactDetailsMap(user, otherUser) {
-            var bounds = new google.maps.LatLngBounds();
-            var userPosition = new google.maps.LatLng(user.address.latitude,
-                                                      user.address.longitude);
-            var otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
-                                                           otherUser.address.longitude);
-            var userMarker, otherUserMarker;
-
-            $timeout(function () {
-                userMarker = new google.maps.Marker({map: self.contactDetailsMap, position: userPosition, title: user.name, visible:true});
-                otherUserMarker = new google.maps.Marker({map: self.contactDetailsMap, position: otherUserPosition, title: otherUser.name, visible:true});
-                bounds.extend(userMarker.position);
-                bounds.extend(otherUserMarker.position);
-                var userInfoWindow = new google.maps.InfoWindow({
-                    content: 'My location'
-                });
-                var otherUserInfoWindow = new google.maps.InfoWindow({
-                    content: otherUser.name + " location"
-                });
-                userInfoWindow.open(self.contactDetailsMap, userMarker);
-                otherUserInfoWindow.open(self.contactDetailsMap, otherUserMarker);
-                $timeout(function () {
-                    google.maps.event.trigger(self.contactDetailsMap, 'resize');
-                    $timeout(function () {
-                        self.contactDetailsMap.fitBounds(bounds);
-                    });
-                });
-            });
-
-            self.contactDetailsMapOptions = {
-                zoom: 14,
-                center: userPosition,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                scrollwheel: false
-            };
-        }
-
-        setupContactDetailsMap(self.user, self.swapUser);
-    }
-
-    /*
-     PendingRequestsWarningCtrl
-     */
-    PendingRequestsWarningCtrl.$inject = ['$scope', '$mdDialog', 'request', 'pendingMyRequests', 'pendingIncomingRequests', 'acceptRequestDialogCtrl']
-    function PendingRequestsWarningCtrl($scope, $mdDialog, request, pendingMyRequests, pendingIncomingRequests, acceptRequestDialogCtrl) {
-        var self = this;
-        self.pendingMyRequests = pendingMyRequests;
-        self.pendingIncomingRequests = pendingIncomingRequests;
-        self.iwish = request.requester_game;
-        self.game = request.requested_game;
-        self.iwish.swap_pending = true;
-        self.game.swap_pending = true;
-        self.totalPendingRequests = function () {
-            return self.pendingMyRequests.length + self.pendingIncomingRequests.length;
-        };
-        self.no = function () {
-            $mdDialog.hide();
-        };
-        self.yes = function () {
-            acceptRequestDialogCtrl.acceptRequest();
-        };
-    }
-
-    /*
-     FinalizeRequestCtrl
-     */
-    FinalizeRequestCtrl.$inject = ['$scope', '$mdDialog', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
-    function FinalizeRequestCtrl($scope, $mdDialog, request, requestsCtrl, RequestsService, globalFunctions) {
-        var self = this;
-        self.request = request;
-        self.user = requestsCtrl.user;
-        self.data = {};
-        if (self.user.id == request.requester.id) {
-            self.iwish = request.requested_game;
-            self.game = request.requester_game;
-            self.swapUser = request.requested;
-        } else {
-            self.iwish = request.requester_game;
-            self.game = request.requested_game;
-            self.swapUser = request.requester;
-        }
-
-        self.close = function (e) {
-            e.preventDefault();
-            $mdDialog.hide();
-        };
-        self.finalizeRequest = function (e) {
-            e.preventDefault();
-            RequestsService.finalizeRequest(self.request.id, self.data.swapped, self.data.other_feedback, self.data.other_feedback_notes).then(function (request) {
-                $mdDialog.hide();
-                var indexInc = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
-                var indexMy = globalFunctions.getIndexByObjectAttribute(requestsCtrl.myRequests, 'id', request.id);
-                if (indexInc !== undefined) {
-                    requestsCtrl.incomingRequests.splice(indexInc, 1, request);
-                }
-                if (indexMy !== undefined) {
-                    requestsCtrl.myRequests.splice(indexMy, 1, request);
-                }
-            });
-        };
-    }
-
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.requests')
-        .directive('statusDisplay', statusDisplay);
-
-    /*
-     statusDisplay
-     */
-    statusDisplay.$inject = ['lsgConfig'];
-    function statusDisplay (lsgConfig) {
-        console.log(lsgConfig);
-        return {
-            restrict: 'E',
-            scope: {
-                request: '=',
-                previous: '='
-            },
-            link: function (scope) {
-                scope.StatusLabelClasses = lsgConfig.StatusLabelClasses;
-                scope.StatusIcons = lsgConfig.StatusIcons;
-            },
-            templateUrl: 'app/views/requests/directives/status-display.html'
-        }
-    };
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.requests')
-        .service('RequestsService', RequestsService);
-
-    RequestsService.$inject = ['$q', '$http', 'lsgConfig'];
-    function RequestsService($q, $http, lsgConfig) {
-        var userId = lsgConfig.authenticatedUser.id;
-        var baseUrl = {
-            myRequests: '/api/users/' + userId + '/my_requests/',
-            incomingRequests: '/api/users/' + userId + '/incoming_requests/',
-            requests: '/api/users/' + userId + '/requests/'
-        };
-        this.baseUrl = baseUrl;
-        
-        var Request = function (data) {
-            for (var key in data) {
-                this[key] = data[key];
-            }
-        };
-        Request.prototype.isFinalizedByAuthenticatedUser = function () {
-            var finalizing = this.isFinalizing() || this.isFinalized();
-            var context;
-            if (this.requester.id == userId) {
-                context = 'requester';
-            } else {
-                context = 'requested';
-            }
-            var userFinalized = this[context + '_swapped'] != null && this[context + '_swapped'] != undefined;
-            return finalizing && userFinalized;
-        };
-        Request.prototype.isPending = function () {
-            return this.status == lsgConfig.Status.pending;
-        };
-        Request.prototype.isOngoing = function () {
-            return this.status == lsgConfig.Status.ongoing;
-        };
-        Request.prototype.isCancelled = function () {
-            return this.status == lsgConfig.Status.cancelled;
-        };
-        Request.prototype.isExpired = function () {
-            return this.status == lsgConfig.Status.expired;
-        };
-        Request.prototype.isRefused = function () {
-            return this.status == lsgConfig.Status.refused;
-        };
-        Request.prototype.isSucceeded = function () {
-            return this.status == lsgConfig.Status.succeeded;
-        };
-        Request.prototype.isArchived = function () {
-            return this.status == lsgConfig.Status.archived;
-        };
-        Request.prototype.isFinalizing = function () {
-            return this.status == lsgConfig.Status.finalizing;
-        };
-        Request.prototype.isOpen = function () {
-            return lsgConfig.Status.open_statuses.indexOf(this.status) != -1;
-        };
-        Request.prototype.isClosed = function () {
-            return lsgConfig.Status.closed_statuses.indexOf(this.status) != -1;
-        };
-        Request.prototype.isFinalized = function () {
-            return lsgConfig.Status.finalized_statuses.indexOf(this.status) != -1;
-        };
-
-        this.Request = Request;
-
-        this.getMyRequests = function () {
-            var q = $q.defer();
-            $http
-                .get(baseUrl.myRequests)
-                .success(function (response) {
-                    var requests = response.results.map(function (o) {return new Request(o)});
-                    q.resolve(requests);
-                });
-            return q.promise;
-        };
-        this.getIncomingRequests = function () {
-            var q = $q.defer();
-            $http
-                .get(baseUrl.incomingRequests)
-                .success(function (response) {
-                    var requests = response.results.map(function (o) {return new Request(o)});
-                    q.resolve(requests);
-                });
-            return q.promise;
-        };
-        this.createSwapRequest = function (requested, requested_game,
-                                           requester, requester_game,
-                                           requester_game_condition_notes,
-                                           distance) {
-            var q = $q.defer();
-            var data = {
-                requested_id: requested,
-                requested_game_id: requested_game,
-                requester_id: requester,
-                requester_game_id: requester_game,
-                requester_game_condition_notes: requester_game_condition_notes,
-                distance: distance
-            };
-            $http
-                .post(baseUrl.myRequests, data)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                }).error(function(response, status) {
-                    console.log(response);
-                    if (status == 400) {
-                        q.reject(response);
-                    }
-                });
-            return q.promise;
-        };
-        this.acceptRequest = function (requestId,
-                                       requested_game_condition_notes) {
-            var url = baseUrl.incomingRequests + requestId + '/accept/';
-            var q = $q.defer();
-            var data = {
-                requested_game_condition_notes: requested_game_condition_notes,
-            };
-            $http
-                .post(url, data)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                });
-            return q.promise;
-        };
-        this.refuseRequest = function (requestId) {
-            var url = baseUrl.incomingRequests + requestId + '/refuse/';
-            var q = $q.defer();
-            $http
-                .post(url)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                });
-            return q.promise;
-        };
-        this.cancelRequest = function (requestId) {
-            var url = baseUrl.myRequests + requestId + '/cancel/';
-            var q = $q.defer();
-            $http
-                .post(url)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                });
-            return q.promise;
-        };
-        this.finalizeRequest = function (requestId, swapped, other_feedback, other_feedback_notes) {
-            var url = baseUrl.requests + requestId + '/finalize/';
-            var q = $q.defer();
-            var data = {
-                swapped: swapped,
-                other_feedback: other_feedback,
-                other_feedback_notes: other_feedback_notes
-            };
-            $http
-                .post(url, data)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                });
-            return q.promise;
-        };
-        this.archiveRequest = function (requestId) {
-            var url = baseUrl.requests + requestId + '/archive/';
-            var q = $q.defer();
-            $http
-                .post(url)
-                .success(function (response) {
-                    q.resolve(new Request(response));
-                });
-            return q.promise;
-        };
-        this.archiveAllRequests = function () {
-            var url = baseUrl.requests + 'archive-all/';
-            var q = $q.defer();
-            $http
-                .post(url)
-                .success(function (response) {
-                    q.resolve(response);
-                });
-            return q.promise;
-        };
-    }
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.customSettings')
-        .run(customSettingsRun);
-
-    customSettingsRun.$inject = ['$rootScope', 'lsgConfig', '$state'];
-
-    function customSettingsRun($rootScope, lsgConfig, $state) {
-
-        // Hides/show user avatar on sidebar from any element
-        $rootScope.toggleUserBlock = function () {
-            $rootScope.$broadcast('toggleUserBlock');
-        };
-
-        // Global Settings
-        // -----------------------------------
-        $rootScope.app = {
-            name: "Let'SwapGames",
-            description: 'FREE FOR LIFE, BY GAMERS FOR GAMERS',
-            year: ((new Date()).getFullYear()),
-            layout: {
-                isFixed: true,
-                isCollapsed: false,
-                isBoxed: false,
-                isRTL: false,
-                horizontal: false,
-                isFloat: false,
-                asideHover: false,
-                theme: null,
-                asideScrollbar: false,
-                isCollapsedText: false
-            },
-            useFullLayout: false,
-            hiddenFooter: false,
-            offsidebarOpen: false,
-            asideToggled: false,
-            viewAnimation: 'ng-fadeInUp'
-        };
-
-        if ($rootScope.user === undefined || $rootScope.user == null) {
-            //window.location = '/app/#/sign-in';
-        }
-        
-        var Status = {
-            pending: 1,
-            cancelled: 2,
-            ongoing: 3,
-            refused: 4,
-            finalizing: 5,
-            succeeded: 6,
-            failed: 7,
-            expired: 8,
-            archived: 9
-        };
-
-        Status.open_statuses = [Status.pending, Status.ongoing,
-            Status.finalizing];
-        Status.closed_statuses = [Status.cancelled, Status.refused,
-            Status.succeeded, Status.failed, Status.expired];
-        Status.finalized_statuses = [Status.succeeded, Status.failed];
-        Status.ongoing_statuses = [Status.ongoing, Status.finalizing];
-
-        $rootScope.StatusLabelClasses = {
-            1: 'label-warning',                // pending
-            2: 'label-default bg-primary',     // cancelled
-            3: 'label-info',                   // ongoing
-            4: 'label-danger',                 // refused
-            5: 'label-default bg-green-light', // finalizing
-            6: 'label-success',                // succeeded
-            7: 'label-default bg-gray-darker', // failed
-            8: 'label-default bg-purple-dark', // expired
-            9: 'label-default bg-gray-light'   // archived
-        };
-
-        $rootScope.StatusIcons = {
-            1: 'fa fa-ellipsis-h',             // pending
-            2: 'fa fa-close',                  // cancelled
-            3: 'fa fa-thumbs-up',              // ongoing
-            4: 'fa fa-thumbs-down',            // refused
-            5: 'fa fa-gavel',                  // finalizing
-            6: 'fa fa-check',                  // succeeded
-            7: 'fa fa-chain-broken',           // failed
-            8: 'fa fa-clock-o',                // expired
-            9: 'fa fa-archive'                 // archived
-        };
-
-
-        $rootScope.Status = Status;
-        lsgConfig.Status = Status;
-        lsgConfig.StatusLabelClasses = $rootScope.StatusLabelClasses;
-        lsgConfig.StatusIcons = $rootScope.StatusIcons;
-
-        // Setup the layout mode
-        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');
-
-
-        // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
-        // if( angular.isDefined($localStorage.layout) )
-        //   $rootScope.app.layout = $localStorage.layout;
-        // else
-        //   $localStorage.layout = $rootScope.app.layout;
-        //
-        // $rootScope.$watch('app.layout', function () {
-        //   $localStorage.layout = $rootScope.app.layout;
-        // }, true);
-
-        // Close submenu when sidebar change from collapsed to normal
-        $rootScope.$watch('app.layout.isCollapsed', function (newValue) {
-            if (newValue === false)
-                $rootScope.$broadcast('closeSidebarMenu');
-        });
-
-    }
-
-})();
-
-(function () {
-    'use strict';
-
-    angular
         .module('app.archived', ['ngAnimate'])
         .controller('ArchivedRequestsCtrl', ArchivedRequestsCtrl)
     ;
@@ -7096,267 +7380,5 @@
                 });
             return q.promise;
         };
-    }
-})();
-
-/**=========================================================
- * Module: helpers.js
- * Provides helper functions for routes definition
- =========================================================*/
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.routes')
-        .provider('RouteHelpers', RouteHelpersProvider)
-    ;
-
-    RouteHelpersProvider.$inject = ['APP_REQUIRES'];
-    function RouteHelpersProvider(APP_REQUIRES) {
-
-        /* jshint validthis:true */
-        return {
-            // provider access level
-            basepath: basepath,
-            resolveFor: resolveFor,
-            // controller access level
-            $get: function () {
-                return {
-                    basepath: basepath,
-                    resolveFor: resolveFor
-                };
-            }
-        };
-
-        // Set here the base of the relative path
-        // for all app views
-        function basepath(uri) {
-            return 'app/views/' + uri;
-        }
-
-        // Generates a resolve object by passing script names
-        // previously configured in constant.APP_REQUIRES
-        function resolveFor() {
-            var _args = arguments;
-            return {
-                deps: ['$ocLazyLoad', '$q', function ($ocLL, $q) {
-                    // Creates a promise chain for each argument
-                    var promise = $q.when(1); // empty promise
-                    for (var i = 0, len = _args.length; i < len; i++) {
-                        promise = andThen(_args[i]);
-                    }
-                    return promise;
-
-                    // creates promise to chain dynamically
-                    function andThen(_arg) {
-                        // also support a function that returns a promise
-                        if (typeof _arg === 'function')
-                            return promise.then(_arg);
-                        else
-                            return promise.then(function () {
-                                // if is a module, pass the name. If not, pass the array
-                                var whatToLoad = getRequired(_arg);
-                                // simple error check
-                                if (!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
-                                // finally, return a promise
-                                return $ocLL.load(whatToLoad);
-                            });
-                    }
-
-                    // check and returns required data
-                    // analyze module items with the form [name: '', files: []]
-                    // and also simple array of script files (for not angular js)
-                    function getRequired(name) {
-                        if (APP_REQUIRES.modules)
-                            for (var m in APP_REQUIRES.modules)
-                                if (APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
-                                    return APP_REQUIRES.modules[m];
-                        return APP_REQUIRES.scripts && APP_REQUIRES.scripts[name];
-                    }
-
-                }]
-            };
-        } // resolveFor
-
-    }
-
-
-})();
-
-
-/**=========================================================
- * Module: config.js
- * App routes and resources configuration
- =========================================================*/
-
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.routes')
-        .config(routesConfig);
-
-    routesConfig.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider'];
-    function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper) {
-
-        // Set the following to true to enable the HTML5 Mode
-        // You may have to set <base> tag in index and a routing configuration in your server
-        $locationProvider.html5Mode(false);
-
-        // defaults to dashboard
-        $urlRouterProvider.otherwise('/app/welcome');
-
-        // 
-        // Application Routes
-        // -----------------------------------   
-        $stateProvider
-            .state('app', {
-                url: '/app',
-                abstract: true,
-                templateUrl: helper.basepath('app.html'),
-                resolve: helper.resolveFor('modernizr', 'icons')
-            })
-            .state('app.welcome', {
-                url: '/welcome',
-                title: 'Welcome',
-                templateUrl: helper.basepath('welcome.html'),
-                resolve: helper.resolveFor('bm.bsTour')
-            })
-            .state('pages', {
-                url: '',
-                abstract: true,
-                templateUrl: helper.basepath('single-page.html'),
-                resolve: helper.resolveFor('modernizr', 'icons'),
-                controller: ['$rootScope', function($rootScope) {
-                    $rootScope.app.layout.isBoxed = false;
-                }]
-            })
-            .state('pages.signIn', {
-                url: '/sign-in?next',
-                title: 'Sing In',
-                templateUrl: 'app/views/pages/sign-in.html'
-            })
-            .state('pages.500', {
-                url: '/500',
-                title: 'Oh! Something went wrong',
-                templateUrl: 'app/views/pages/500.html'
-            })
-            //
-            // Material
-            // -----------------------------------
-            .state('app.dashboard', {
-                url: '/dashboard',
-                title: 'Dashboard',
-                templateUrl: helper.basepath('dashboard/main.html'),
-                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons', 'sparklines', 'classyloader')
-            })
-            .state('app.games', {
-                url: '/games?tour',
-                title: 'Games',
-                templateUrl: helper.basepath('games/main.html'),
-                resolve: helper.resolveFor('bm.bsTour')
-            })
-            .state('app.users', {
-                url: '/profile',
-                title: 'Profile',
-                templateUrl: helper.basepath('users/main.html'),
-                resolve: helper.resolveFor('ngImgCrop', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
-            })
-            .state('app.matches', {
-                url: '/matches',
-                title: 'Matches',
-                templateUrl: helper.basepath('matches/main.html')
-            })
-            .state('app.requests', {
-                url: '/requests?id&msg',
-                title: 'Requests',
-                templateUrl: helper.basepath('requests/main.html'),
-                resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
-            })
-            .state('app.archived', {
-                url: '/requests/archived',
-                title: 'Archived Requests',
-                templateUrl: helper.basepath('requests/archived/main.html'),
-                resolve: helper.resolveFor('ngTable')
-            })
-
-            .state('app.cards', {
-                url: '/cards',
-                title: 'Material Cards',
-                templateUrl: helper.basepath('material.cards.html')
-            })
-            .state('app.forms', {
-                url: '/forms',
-                title: 'Material Forms',
-                templateUrl: helper.basepath('material.forms.html')
-            })
-            .state('app.whiteframe', {
-                url: '/whiteframe',
-                title: 'Material Whiteframe',
-                templateUrl: helper.basepath('material.whiteframe.html')
-            })
-            .state('app.matcolors', {
-                url: '/matcolors',
-                title: 'Material Colors',
-                templateUrl: helper.basepath('material.colors.html')
-            })
-            .state('app.lists', {
-                url: '/lists',
-                title: 'Material Lists',
-                templateUrl: helper.basepath('material.lists.html')
-            })
-            .state('app.inputs', {
-                url: '/inputs',
-                title: 'Material Inputs',
-                templateUrl: helper.basepath('material.inputs.html')
-            })
-            .state('app.matwidgets', {
-                url: '/matwidgets',
-                title: 'Material Widgets',
-                templateUrl: helper.basepath('material.widgets.html'),
-                resolve: helper.resolveFor('weather-icons', 'loadGoogleMapsJS', function () {
-                    return loadGoogleMaps();
-                }, 'ui.map')
-            })
-            .state('app.ngmaterial', {
-                url: '/ngmaterial',
-                title: 'ngMaterial',
-                templateUrl: helper.basepath('material.ngmaterial.html')
-            });
-        //
-        // CUSTOM RESOLVES
-        //   Add your own resolves properties
-        //   following this object extend
-        //   method
-        // -----------------------------------
-        // .state('app.someroute', {
-        //   url: '/some_url',
-        //   templateUrl: 'path_to_template.html',
-        //   controller: 'someController',
-        //   resolve: angular.extend(
-        //     helper.resolveFor(), {
-        //     // YOUR RESOLVES GO HERE
-        //     }
-        //   )
-        // })
-        ;
-
-    } // routesConfig
-
-})();
-
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.routes')
-        .controller('RoutesCtrl', RoutesCtrl);
-
-    RoutesCtrl.$inject = ['$scope', '$rootScope'];
-    function RoutesCtrl($scope, $rootScope) {
-        
     }
 })();

@@ -9,11 +9,16 @@
     function preloader($animate, $timeout, $q, $http, lsgConfig, $rootScope, Notify, $state, $stateParams) {
         var counter = 0;
         var timeout;
+        var failedToGetUser = false;
 
         var locationChange = function (event, next, current) {
             var splitted = next.split('#');
             var el = angular.element(".preloader-progress").parent();
-            if (splitted.length > 1 && (splitted[1] == '/500' || splitted[1].slice(0, 8) == '/sign-in')) {
+            if (splitted.length > 1 && (splitted[1] == '/500')) {
+                endCounter($rootScope, el);
+                return;
+            }
+            if (splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
             }
@@ -28,12 +33,6 @@
         };
 
         $rootScope.$on('$locationChangeStart', locationChange);
-
-        $rootScope.$on('$locationChangeError', function (event) {
-            console.log('?????????????????');
-            console.log(event);
-            $state.transitionTo("pages.signIn");
-        });
 
         var directive = {
             restrict: 'EAC',
@@ -51,24 +50,35 @@
 
             appReady(scope, event, sref).then(function () {
                 if (sref) {
-                    // angular.forEach($state.get(), function(state) {
-                    //     console.log(state.$$state);
-                    //     return;
-                    //     //var privatePortion = state.$$state();
-                    //     var match = state.url.exec(sref);
-                    //     if (match) console.log("Matched state: " + state.name + " and parameters: " + match);
-                    // });
-                    $state.transitionTo("pages.signIn");
-                    //$state.transitionTo("app.games");
-                    $timeout(function () {
-                        window.location = sref;
-                        endCounter(scope, el);
-                    }, 300);
+                    var states = $state.get();
+                    var state;
+                    var matchedState;
+                    for (var k = 0; k < states.length; k++) {
+                        state = states[k];
+                        if (!state.$$state) continue;
+                        var privatePortion = state.$$state();
+                        var match = privatePortion.url.exec(sref.split('#')[1]);
+                        if (match) {
+                            matchedState = state;
+                            break
+                        }
+                    }
+                    if (matchedState) {
+                        if (matchedState.name == 'pages.signIn') {
+                            $state.transitionTo("app.welcome");
+                        } else {
+                            $state.transitionTo(matchedState.name);
+                        }
+                    } else {
+                        $state.transitionTo("app.welcome");
+                    }
+                    endCounter(scope, el);
                 } else {
                     //endCounter(scope, el);
                 }
             }, function () {
                 endCounter(scope, el);
+                failedToGetUser = true;
                 redirectToSignInPage();
             });
         } //link
@@ -98,6 +108,7 @@
                     if (event) {
                         event.preventDefault();
                     }
+                    failedToGetUser = true;
                     redirectToSignInPage();
                     q.reject();
                     return;

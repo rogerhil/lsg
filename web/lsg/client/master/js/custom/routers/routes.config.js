@@ -18,10 +18,20 @@
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
 
+        $stateProvider.decorator('parent', function (internalStateObj, parentFn) {
+             // This fn is called by StateBuilder each time a state is registered
+
+             // The first arg is the internal state. Capture it and add an accessor to public state object.
+             internalStateObj.self.$$state = function() { return internalStateObj; };
+
+             // pass through to default .parent() function
+             return parentFn(internalStateObj);
+        });
+
         // defaults to dashboard
         $urlRouterProvider.otherwise('/app/welcome');
 
-        // 
+        //
         // Application Routes
         // -----------------------------------   
         $stateProvider
@@ -138,6 +148,7 @@
                 title: 'ngMaterial',
                 templateUrl: helper.basepath('material.ngmaterial.html')
             });
+
         //
         // CUSTOM RESOLVES
         //   Add your own resolves properties
