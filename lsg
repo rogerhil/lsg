@@ -29,7 +29,7 @@ elif [ "$1" = 'createsuperuser' ]; then
 
 else
     echo
-    echo "Usage: ./lsg init | buildup | run | bash | createsuperuser"
+    echo "Usage: ./lsg init | buildup | run | webbash | celerybash | createsuperuser"
     echo
 fi
 
