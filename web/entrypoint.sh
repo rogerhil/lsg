@@ -17,15 +17,15 @@ elif [ "$1" = 'init' ]; then
     python manage.py migrate
     echo Loading WorldBorder database
     python world/load.py
+    if [ -n "$2" ]; then
+       echo Creating Django Site $2
+       python create-site.py $2
+    fi
     if [ "$LSG_DJANGO_DEBUG" = 'true' ]; then
         echo Debug mode        
     else
         echo Collecting static files
         python manage.py collectstatic --no-input
-        if [ -n "$2" ]; then
-            echo Creating Django Site $2
-            python create-site.py $2
-        fi
     fi
     
 elif [ "$1" = 'update' ]; then
@@ -36,6 +36,10 @@ elif [ "$1" = 'update' ]; then
 elif [ "$1" = 'createsuperuser' ]; then
     cd /app/lsg/server
     python manage.py createsuperuser
+
+elif [ "$1" = 'devrun' ]; then
+    cd /app/lsg/server
+    python manage.py runserver 0.0.0.0:80
 
 elif [ "$1" = 'bash' ]; then
     bash

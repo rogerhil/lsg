@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 
 from django.db.utils import IntegrityError
+from django.conf import settings
 from datetime import datetime
 from urllib.parse import urlencode
 from urllib.error import HTTPError
@@ -59,6 +60,11 @@ class PopulateGamesDb(BaseScript):
                              last_platform)
 
         for p in platforms:
+
+            if p.name not in settings.SUPPORTED_PLATFORMS:
+                self.logger.info(" * Skipping not supported platform: %s" % p)
+                continue
+
             if p.name.lower() == last_platform:
                 skip = False
             if skip:

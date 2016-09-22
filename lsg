@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$1" = 'init' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml build
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web init $(docker-machine ip dev)
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web createsuperuser
+
+elif [ "$1" = 'buildup' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop celery
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml rm web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml rm celery
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml build
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+
+elif [ "$1" = 'run' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm --service-ports web devrun
+else
+    echo
+    echo "Usage: ./lsg init | buildup | run"
+    echo
+fi
+
