@@ -12,6 +12,8 @@ class RedirectFallbackMiddleware(object):
 
         response = self.get_response(request)
         if response.status_code == 404:
+            if request.user.is_authenticated():
+                return http.HttpResponseRedirect('/app/')
             return http.HttpResponseRedirect('/')
 
         return response
