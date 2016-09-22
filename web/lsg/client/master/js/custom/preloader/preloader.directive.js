@@ -123,7 +123,10 @@
                     }
                 };
 
-                $rootScope.$on('$stateChangeStart',  function(event, toState, toParams, fromState, fromParams) {
+                $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                    if (toState.name == 'app.welcome' || toState.name == 'app.users') {
+                        return;
+                    }
                     if (!lsgConfig.authenticatedUser.address.latitude || !lsgConfig.authenticatedUser.address.longitude) {
                         initialAlert();
                     }

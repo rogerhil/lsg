@@ -27,6 +27,7 @@
             });
             var tour = new Tour({
                 backdrop: true,
+                backdropPadding: 'anything',
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
