@@ -18,7 +18,7 @@
                 endCounter($rootScope, el);
                 return;
             }
-            if (splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
+            if (splitted.length > 1 && splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
             }

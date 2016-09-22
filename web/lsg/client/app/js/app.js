@@ -41,12 +41,6 @@
     'use strict';
 
     angular
-        .module('app.lazyload', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.core', [
             'ngRoute',
             'ngAnimate',
@@ -69,13 +63,19 @@
     'use strict';
 
     angular
-        .module('app.loadingbar', []);
+        .module('app.lazyload', []);
 })();
 (function() {
     'use strict';
 
     angular
         .module('app.maps', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar', []);
 })();
 (function() {
     'use strict';
@@ -187,71 +187,6 @@
           return (APP_COLORS[name] || '#fff');
         }
     }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.lazyload')
-        .config(lazyloadConfig);
-
-    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
-    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
-
-      // Lazy Load modules configuration
-      $ocLazyLoadProvider.config({
-        debug: false,
-        events: true,
-        modules: APP_REQUIRES.modules
-      });
-
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.lazyload')
-        .constant('APP_REQUIRES', {
-          // jQuery based and standalone scripts
-          scripts: {
-            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
-            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
-                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
-            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
-                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
-            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
-            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
-            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
-                                   'vendor/Flot/jquery.flot.resize.js',
-                                   'vendor/Flot/jquery.flot.pie.js',
-                                   'vendor/Flot/jquery.flot.time.js',
-                                   'vendor/Flot/jquery.flot.categories.js',
-                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
-            'sparklines':         ['vendor/sparkline/index.js'],
-            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
-            'loaders.css':          ['vendor/loaders.css/loaders.css']
-
-          },
-          // Angular based script (use the right module name)
-          modules: [
-            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
-            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
-            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
-                                                        'vendor/ng-table/dist/ng-table.min.css']},
-            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
-                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
-            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
-                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
-                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
-            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
-
-          ]
-        })
-        ;
 
 })();
 
@@ -376,46 +311,67 @@
     'use strict';
 
     angular
-        .module('app.loadingbar')
-        .config(loadingbarConfig)
-        ;
-    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
-    function loadingbarConfig(cfpLoadingBarProvider){
-      cfpLoadingBarProvider.includeBar = true;
-      cfpLoadingBarProvider.includeSpinner = false;
-      cfpLoadingBarProvider.latencyThreshold = 500;
-      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
+        .module('app.lazyload')
+        .config(lazyloadConfig);
+
+    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
+    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
+
+      // Lazy Load modules configuration
+      $ocLazyLoadProvider.config({
+        debug: false,
+        events: true,
+        modules: APP_REQUIRES.modules
+      });
+
     }
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.loadingbar')
-        .run(loadingbarRun)
+        .module('app.lazyload')
+        .constant('APP_REQUIRES', {
+          // jQuery based and standalone scripts
+          scripts: {
+            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
+            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
+                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
+            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
+                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
+            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
+            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
+            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
+                                   'vendor/Flot/jquery.flot.resize.js',
+                                   'vendor/Flot/jquery.flot.pie.js',
+                                   'vendor/Flot/jquery.flot.time.js',
+                                   'vendor/Flot/jquery.flot.categories.js',
+                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
+            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
+            'sparklines':         ['vendor/sparkline/index.js'],
+            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
+            'loaders.css':          ['vendor/loaders.css/loaders.css']
+
+          },
+          // Angular based script (use the right module name)
+          modules: [
+            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
+            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
+            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
+                                                        'vendor/ng-table/dist/ng-table.min.css']},
+            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
+                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
+            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
+                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
+                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
+            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
+
+          ]
+        })
         ;
-    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
-    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
-
-      // Loading bar transition
-      // ----------------------------------- 
-      var thBar;
-      $rootScope.$on('$stateChangeStart', function() {
-          if($('.wrapper > section').length) // check if bar container exists
-            thBar = $timeout(function() {
-              cfpLoadingBar.start();
-            }, 0); // sets a latency Threshold
-      });
-      $rootScope.$on('$stateChangeSuccess', function(event) {
-          event.targetScope.$watch('$viewContentLoaded', function () {
-            $timeout.cancel(thBar);
-            cfpLoadingBar.complete();
-          });
-      });
-
-    }
 
 })();
+
 /**=========================================================
  * Module: modals.js
  * Provides a simple way to implement bootstrap modals from templates
@@ -581,6 +537,50 @@
     }
 })();
 
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar')
+        .config(loadingbarConfig)
+        ;
+    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
+    function loadingbarConfig(cfpLoadingBarProvider){
+      cfpLoadingBarProvider.includeBar = true;
+      cfpLoadingBarProvider.includeSpinner = false;
+      cfpLoadingBarProvider.latencyThreshold = 500;
+      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar')
+        .run(loadingbarRun)
+        ;
+    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
+    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
+
+      // Loading bar transition
+      // ----------------------------------- 
+      var thBar;
+      $rootScope.$on('$stateChangeStart', function() {
+          if($('.wrapper > section').length) // check if bar container exists
+            thBar = $timeout(function() {
+              cfpLoadingBar.start();
+            }, 0); // sets a latency Threshold
+      });
+      $rootScope.$on('$stateChangeSuccess', function(event) {
+          event.targetScope.$watch('$viewContentLoaded', function () {
+            $timeout.cancel(thBar);
+            cfpLoadingBar.complete();
+          });
+      });
+
+    }
+
+})();
 
 (function() {
     'use strict';
@@ -2964,15 +2964,15 @@
     'use strict';
 
     angular
-        .module('app.matches', [
-            'ngMaterial',
-          ]);
+        .module('app.pages', []);
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.pages', []);
+        .module('app.matches', [
+            'ngMaterial',
+          ]);
 })();
 (function () {
     'use strict';
@@ -5228,7 +5228,7 @@
                 endCounter($rootScope, el);
                 return;
             }
-            if (splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
+            if (splitted.length > 1 && splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
             }
