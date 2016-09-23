@@ -30,7 +30,9 @@ class BoxartDownloader(BaseScript):
             (different_fpath and os.path.isfile(different_fpath))) \
            and not override:
             return
-        self.logger.warn("NO JPEG, %s instead: %s" % (extension.upper(), url))
+        if different_fpath:
+            self.logger.warn("NO JPEG, %s instead: %s" % (extension.upper(),
+                                                          url))
 
         try:
             image_data = self.api._get_response(url)
