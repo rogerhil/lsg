@@ -5,10 +5,10 @@
 
 **UBUNTU** you have to share your local host folder by doing the following:
 VBoxManage sharedfolder add dev --name "userhome" --hostpath "/home/<MY_USER>/"
-docker-machine start
-docker-machine ssh default 'sudo mkdir --parents /home/<MY_USER>'
-docker-machine ssh default 'sudo mount -t vboxsf userhome /home/<MY_USER>'
-docker-machine ssh default 'ls /home/<MY_USER>'
+docker-machine start dev
+docker-machine ssh dev 'sudo mkdir --parents /home/<MY_USER>'
+docker-machine ssh dev 'sudo mount -t vboxsf userhome /home/<MY_USER>'
+docker-machine ssh dev 'ls /home/<MY_USER>'
 
 -> REF: https://github.com/docker/compose/issues/2247
 
@@ -30,4 +30,29 @@ $ ./lsg run
 NOTE: Get the ip using the command below to access through the browser:
 $ docker-machine ip dev
 
+
+###### PRODUCTION
+
+## Create docker-machine in local host from digital ocean (178.62.58.228)
+
+1. Append your local SSH pub key ~/.ssh/id_rsa to the ~/.ssh/authorized_keys file in digital ocean remote (178.62.58.228).
+2. Run the following command:
+$ docker-machine create -d generic --generic-ip-address=178.62.58.228 --generic-ssh-user root --generic-ssh-key=~/.ssh/id_rsa lsgdigitalocean
+
+Troubleshooting:
+1. If it takes a long time with the message (Waiting for machine to be running, this may take a few minutes...)
+   1.1: try to enable the port 2376 bu executing the following: ufw allow 2376
+   1.2: check logs in /var/log/syslog or /var/log/auth while trying.
+
+REF: https://blog.dahanne.net/2015/10/07/adding-an-existing-docker-host-to-docker-machine-a-few-tips/
+
+
+
+###### SOCIAL CONFIG
+
+## DEV
+
+Google: https://console.developers.google.com/apis/credentials?project=lets-swap-games
+Facebook: https://developers.facebook.com/apps/1638493343076740/settings/
+Twitter: https://apps.twitter.com/app/8906192/show
 

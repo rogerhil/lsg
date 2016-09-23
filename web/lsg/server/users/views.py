@@ -18,4 +18,4 @@ class Done(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        return "%s#/app/welcome" % reverse('app')
+        return "/app/#/app/welcome"
