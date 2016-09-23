@@ -22,7 +22,7 @@
         self.genderOptions = [{id: 'male', label: 'Male'},
                               {id: 'female', label: 'Female'}];
         self.mapMarkers = [];
-        self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude;
+        self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
 
         function tourActivate() {
             // BootstrapTour is not compatible with z-index based layout
@@ -112,21 +112,6 @@
             tour.start();
             tour.restart(true);
         }
-
-        // $timeout(gameTourActivate, 1000);
-        // $timeout(function () {
-        //     var el = $('li[sref="app.games"] a');
-        //     el.attr('href', '#/app/games?tour=true');
-        //     el.click(function () {
-        //         $timeout(function () {
-        //             el.attr('href', '#/app/games');
-        //             el.unbind('click');
-        //         }, 1000);
-        //     });
-        // }, 1000);
-
-        //$timeout(tourActivate, 1000);
-
 
         self.changePicture = function () {
             $mdDialog.show({

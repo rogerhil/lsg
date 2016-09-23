@@ -41,6 +41,14 @@ elif [ "$1" = 'devrun' ]; then
     cd /app/lsg/server
     python manage.py runserver 0.0.0.0:80
 
+elif [ "$1" = 'shell' ]; then
+    cd /app/lsg/server
+    python manage.py shell
+
+elif [ "$1" = 'dbshell' ]; then
+    cd /app/lsg/server
+    python manage.py shell
+
 elif [ "$1" = 'bash' ]; then
     bash
 

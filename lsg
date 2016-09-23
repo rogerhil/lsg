@@ -18,18 +18,27 @@ elif [ "$1" = 'run' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm --service-ports web devrun
 
+elif [ "$1" = 'shell' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web shell
+
+elif [ "$1" = 'dbshell' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web dbshell
+
 elif [ "$1" = 'webbash' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml exec web bash
 
 elif [ "$1" = 'celerybash' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml exec celery bash
 
+elif [ "$1" = 'celeryrestart' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml restart celery
+
 elif [ "$1" = 'createsuperuser' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web createsuperuser
 
 else
     echo
-    echo "Usage: ./lsg init | buildup | run | webbash | celerybash | createsuperuser"
+    echo "Usage: ./lsg init | buildup | run | shell | dbshell | webbash | celerybash | celeryrestart | createsuperuser"
     echo
 fi
 
