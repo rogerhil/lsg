@@ -8,9 +8,8 @@
     /*
      statusDisplay
      */
-    statusDisplay.$inject = ['lsgConfig'];
-    function statusDisplay (lsgConfig) {
-        console.log(lsgConfig);
+    statusDisplay.$inject = ['$rootScope'];
+    function statusDisplay ($rootScope) {
         return {
             restrict: 'E',
             scope: {
@@ -18,8 +17,8 @@
                 previous: '='
             },
             link: function (scope) {
-                scope.StatusLabelClasses = lsgConfig.StatusLabelClasses;
-                scope.StatusIcons = lsgConfig.StatusIcons;
+                scope.StatusLabelClasses = $rootScope.StatusLabelClasses;
+                scope.StatusIcons = $rootScope.StatusIcons;
             },
             templateUrl: 'app/views/requests/directives/status-display.html'
         }

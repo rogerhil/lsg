@@ -13,8 +13,8 @@
     /*
       MatchesCtrl
      */
-    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService', 'lsgConfig'];
-    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService, lsgConfig) {
+    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService'];
+    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.matches = [];
@@ -85,14 +85,14 @@
     /*
      RequestSwapDialogCtrl
      */
-    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'lsgConfig', 'Notify']
-    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, lsgConfig, Notify) {
+    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', '$rootScope', 'Notify']
+    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, $rootScope, Notify) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.title = "Request Swap";
         self.iwish = match.iwish;
         self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
@@ -148,13 +148,13 @@
     /*
      PendingRequestWarningCtrl
      */
-    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', 'lsgConfig']
-    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, lsgConfig) {
+    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', '$rootScope']
+    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, $rootScope) {
         var self = this;
         self.title = "Request Swap";
         self.iwish = match.iwish;
         self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
         self.message = '';
         self.pendingMyRequests = [];

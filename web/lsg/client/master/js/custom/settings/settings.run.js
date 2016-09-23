@@ -5,9 +5,9 @@
         .module('app.customSettings')
         .run(customSettingsRun);
 
-    customSettingsRun.$inject = ['$rootScope', 'lsgConfig', '$state'];
+    customSettingsRun.$inject = ['$rootScope'];
 
-    function customSettingsRun($rootScope, lsgConfig, $state) {
+    function customSettingsRun($rootScope) {
 
         // Hides/show user avatar on sidebar from any element
         $rootScope.toggleUserBlock = function () {
@@ -18,7 +18,7 @@
         // -----------------------------------
         $rootScope.app = {
             name: "Let'SwapGames",
-            description: 'FREE FOR LIFE, BY GAMERS FOR GAMERS',
+            description: 'FREE FOR LIFE, FOR GAMERS BY GAMERS',
             year: ((new Date()).getFullYear()),
             layout: {
                 isFixed: true,
@@ -88,9 +88,6 @@
 
 
         $rootScope.Status = Status;
-        lsgConfig.Status = Status;
-        lsgConfig.StatusLabelClasses = $rootScope.StatusLabelClasses;
-        lsgConfig.StatusIcons = $rootScope.StatusIcons;
 
         // Setup the layout mode
         $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');

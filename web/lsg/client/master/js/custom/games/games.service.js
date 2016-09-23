@@ -5,9 +5,9 @@
         .module('app.games')
         .service('GamesService', GamesService);
 
-    GamesService.$inject = ['$q', '$http', 'lsgConfig', 'Notify'];
-    function GamesService($q, $http, lsgConfig, Notify) {
-        var user = lsgConfig.authenticatedUser;
+    GamesService.$inject = ['$q', '$http', '$rootScope', 'Notify'];
+    function GamesService($q, $http, $rootScope, Notify) {
+        var user = $rootScope.user;
         this.query = function (query, excludeGames) {
             var url = '/api/games/?search=' + query;
             var q = $q.defer();

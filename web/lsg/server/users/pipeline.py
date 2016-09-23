@@ -1,3 +1,4 @@
+import logging
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
@@ -8,6 +9,9 @@ from django.core.files.temp import NamedTemporaryFile
 from world.models import Address
 
 FACEBOOK_social_picture_url = "http://graph.facebook.com/%s/picture?type=normal"
+
+
+logger = logging.getLogger('django')
 
 
 def get_image_data(url, **params):
@@ -21,9 +25,8 @@ def get_image_data(url, **params):
         with urlopen(request) as response:
             return response.read()
     except HTTPError as err:
-        # XXX must log err
-        print(err)
-        pass
+        logger.error('Error while trying  to retrieve image data from url %s: '
+                     '%s' % (url, err))
 
 
 def save_profile(backend, user, response, *args, **kwargs):

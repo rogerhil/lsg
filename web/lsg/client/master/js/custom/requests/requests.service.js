@@ -5,9 +5,9 @@
         .module('app.requests')
         .service('RequestsService', RequestsService);
 
-    RequestsService.$inject = ['$q', '$http', 'lsgConfig'];
-    function RequestsService($q, $http, lsgConfig) {
-        var userId = lsgConfig.authenticatedUser.id;
+    RequestsService.$inject = ['$q', '$http', '$rootScope'];
+    function RequestsService($q, $http, $rootScope) {
+        var userId = $rootScope.user.id;
         var baseUrl = {
             myRequests: '/api/users/' + userId + '/my_requests/',
             incomingRequests: '/api/users/' + userId + '/incoming_requests/',
@@ -32,37 +32,37 @@
             return finalizing && userFinalized;
         };
         Request.prototype.isPending = function () {
-            return this.status == lsgConfig.Status.pending;
+            return this.status == $rootScope.Status.pending;
         };
         Request.prototype.isOngoing = function () {
-            return this.status == lsgConfig.Status.ongoing;
+            return this.status == $rootScope.Status.ongoing;
         };
         Request.prototype.isCancelled = function () {
-            return this.status == lsgConfig.Status.cancelled;
+            return this.status == $rootScope.Status.cancelled;
         };
         Request.prototype.isExpired = function () {
-            return this.status == lsgConfig.Status.expired;
+            return this.status == $rootScope.Status.expired;
         };
         Request.prototype.isRefused = function () {
-            return this.status == lsgConfig.Status.refused;
+            return this.status == $rootScope.Status.refused;
         };
         Request.prototype.isSucceeded = function () {
-            return this.status == lsgConfig.Status.succeeded;
+            return this.status == $rootScope.Status.succeeded;
         };
         Request.prototype.isArchived = function () {
-            return this.status == lsgConfig.Status.archived;
+            return this.status == $rootScope.Status.archived;
         };
         Request.prototype.isFinalizing = function () {
-            return this.status == lsgConfig.Status.finalizing;
+            return this.status == $rootScope.Status.finalizing;
         };
         Request.prototype.isOpen = function () {
-            return lsgConfig.Status.open_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.open_statuses.indexOf(this.status) != -1;
         };
         Request.prototype.isClosed = function () {
-            return lsgConfig.Status.closed_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.closed_statuses.indexOf(this.status) != -1;
         };
         Request.prototype.isFinalized = function () {
-            return lsgConfig.Status.finalized_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.finalized_statuses.indexOf(this.status) != -1;
         };
 
         this.Request = Request;

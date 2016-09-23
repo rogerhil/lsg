@@ -5,9 +5,9 @@
         .module('app.archived')
         .service('ArchivedRequestsService', ArchivedRequestsService);
 
-    ArchivedRequestsService.$inject = ['$q', '$http', 'lsgConfig', 'RequestsService'];
-    function ArchivedRequestsService($q, $http, lsgConfig, RequestsService) {
-        var userId = lsgConfig.authenticatedUser.id;
+    ArchivedRequestsService.$inject = ['$q', '$http', '$rootScope', 'RequestsService'];
+    function ArchivedRequestsService($q, $http, $rootScope, RequestsService) {
+        var userId = $rootScope.user.id;
         var Request = RequestsService.Request;
 
         this.getArchivedRequests = function () {

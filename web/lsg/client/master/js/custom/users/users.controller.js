@@ -11,12 +11,12 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'lsgConfig', 'Notify', '$rootScope'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, lsgConfig, Notify, $rootScope) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.allPlatforms = [];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
@@ -133,7 +133,6 @@
             UsersService.updateUser(self.user).then(function (user) {
                 Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 self.errors = {};
-                lsgConfig.authenticatedUser = user;
                 self.user = user;
                 $rootScope.user = user;
                 setupUserMap(user);
@@ -191,8 +190,8 @@
     /*
       ChangePictureDialogCtrl
      */
-    ChangePictureDialogCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'UsersService', 'lsgConfig', '$rootScope', 'usersCtrl'];
-    function ChangePictureDialogCtrl($scope, $timeout, $mdDialog, UsersService, lsgConfig, $rootScope, usersCtrl) {
+    ChangePictureDialogCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'UsersService', '$rootScope', 'usersCtrl'];
+    function ChangePictureDialogCtrl($scope, $timeout, $mdDialog, UsersService, $rootScope, usersCtrl) {
         var self = this;
         self.uploadedImage = '';
         self.croppedImage = '';
@@ -245,7 +244,6 @@
 
         self.updateUserPicture = function (image) {
             UsersService.updateUserPicture(image).then(function (user) {
-                lsgConfig.authenticatedUser = user;
                 usersCtrl.user = user;
                 $rootScope.user = user;
                 $mdDialog.hide();

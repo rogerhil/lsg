@@ -9,10 +9,10 @@
     /*
      ArchivedRequestsCtrl
      */
-    ArchivedRequestsCtrl.$inject = ['$scope', '$q', '$filter', 'ngTableParams', 'lsgConfig', 'ArchivedRequestsService'];
-    function ArchivedRequestsCtrl($scope, $q, $filter, ngTableParams, lsgConfig, ArchivedRequestsService) {
+    ArchivedRequestsCtrl.$inject = ['$scope', '$q', '$filter', 'ngTableParams', '$rootScope', 'ArchivedRequestsService'];
+    function ArchivedRequestsCtrl($scope, $q, $filter, ngTableParams, $rootScope, ArchivedRequestsService) {
         var self = this;
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.archivedRequests = [];
         ArchivedRequestsService.getArchivedRequests().then(function (requests) {
             self.archivedRequests = requests;

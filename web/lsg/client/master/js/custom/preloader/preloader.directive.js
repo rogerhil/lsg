@@ -5,8 +5,8 @@
         .module('app.preloader')
         .directive('preloader', preloader);
 
-    preloader.$inject = ['$animate', '$timeout', '$q', '$http', 'lsgConfig', '$rootScope', 'Notify', '$state', '$stateParams'];
-    function preloader($animate, $timeout, $q, $http, lsgConfig, $rootScope, Notify, $state, $stateParams) {
+    preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams'];
+    function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams) {
         var counter = 0;
         var timeout;
         var failedToGetUser = false;
@@ -100,7 +100,6 @@
             }
             $http.get('/api/users/authenticated/').success(function (response) {
                 var user = response;
-                lsgConfig.authenticatedUser = user;
                 $rootScope.user = user;
                 if (user) {
                     q.resolve(user);
@@ -127,7 +126,7 @@
                     if (toState.name == 'app.welcome' || toState.name == 'app.users') {
                         return;
                     }
-                    if (!lsgConfig.authenticatedUser.address.latitude || !lsgConfig.authenticatedUser.address.longitude) {
+                    if (!$rootScope.user.address.latitude || !$rootScope.user.address.longitude) {
                         initialAlert();
                     }
                 });

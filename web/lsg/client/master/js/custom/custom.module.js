@@ -37,9 +37,6 @@
             $httpProvider.interceptors.push(mainHttpInterceptor);
 
         })
-        .constant('lsgConfig', {
-            authenticatedUser: null,
-        })
         .factory('globalFunctions', function() {
             var services = {
                 getIndexByObjectAttribute: function(list, attr, value) {

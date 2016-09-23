@@ -10,10 +10,10 @@
     /*
       WelcomeCtrl
      */
-    WelcomeCtrl.$inject = ['$scope', 'lsgConfig', '$timeout'];
-    function WelcomeCtrl($scope, lsgConfig, $timeout) {
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout'];
+    function WelcomeCtrl($scope, $rootScope, $timeout) {
         var self = this;
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.tour;
         function tourActivate() {
             // BootstrapTour is not compatible with z-index based layout

@@ -5,12 +5,12 @@
         .module('app.matches')
         .service('MatchesService', MatchesService);
 
-    MatchesService.$inject = ['$q', '$http', 'lsgConfig'];
-    function MatchesService($q, $http, lsgConfig) {
+    MatchesService.$inject = ['$q', '$http', '$rootScope'];
+    function MatchesService($q, $http, $rootScope) {
 
         this.getMatches = function () {
             var q = $q.defer();
-            var userId = lsgConfig.authenticatedUser.id;
+            var userId = $rootScope.user.id;
             var baseUserUrl = '/api/users/' + userId + '/';
             var url = baseUserUrl + 'matches/';
             $http

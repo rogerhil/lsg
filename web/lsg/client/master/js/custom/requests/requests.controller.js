@@ -13,11 +13,11 @@
     /*
      RequestsCtrl
      */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', 'lsgConfig', 'globalFunctions', '$stateParams'];
-    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, lsgConfig, globalFunctions, $stateParams) {
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams'];
+    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.myRequests = [];
         self.incomingRequests = [];
 
@@ -112,14 +112,14 @@
 
         self.getPendingMyRequestsRelated = function (request, iwish, game) {
             var requests = self.pendingMyRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
+                 return (item.status == $rootScope.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
             });
             return requests;
         };
 
         self.getPendingIncomingRequestsRelated = function (request, iwish, game) {
             var requests = self.incomingRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
+                 return (item.status == $rootScope.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
             });
             return requests;
         };

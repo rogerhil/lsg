@@ -5,9 +5,9 @@
         .module('app.users')
         .service('UsersService', UsersService);
 
-    UsersService.$inject = ['$q', '$http', 'lsgConfig'];
-    function UsersService($q, $http, lsgConfig) {
-        var userId = lsgConfig.authenticatedUser.id;
+    UsersService.$inject = ['$q', '$http', '$rootScope'];
+    function UsersService($q, $http, $rootScope) {
+        var userId = $rootScope.user.id;
         var baseUserUrl = '/api/users/' + userId + '/';
 
         this.getUserDetails = function () {

@@ -1,17 +1,18 @@
+import logging
 from decimal import Decimal, ROUND_UP
 from copy import deepcopy
 from functools import reduce
 
 from django.db import models
-from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.measure import Distance
-from django.contrib.gis.geos import Point
 
 from games.models import Game, Platform
 from world.models import Address
 from request.models import SwapRequest, Status
 from utils import Choices
+
+logger = logging.getLogger('django')
 
 
 class Discard(Choices):
@@ -219,6 +220,10 @@ class User(AbstractUser):
 
     @property
     def matches(self):
+        if not self.address.point:
+            logger.debug('User %s has no point address "%s"' %
+                         (self, self.address))
+            return []
         games_collections = CollectionItem.objects \
             .filter(game__in=self.wishlist.all()) \
             .exclude(user=self)
@@ -256,11 +261,16 @@ class User(AbstractUser):
         iwish_in_requests = set(iwish_my) | set(iwish_inc)
         iswap_in_requests = set(iswap_my) | set(iswap_inc)
 
+        qs = Address.objects.distance(self.address.point)
         matches = dict()
         for game_collection in games_collections:
             user = game_collection.user
-            qs = Address.objects.distance(self.address.point or Point(0, 0))
             user.address = qs.get(id=user.address.id)
+            if not user.address.distance:
+                logger.error("Error while trying to find matches for user %s. "
+                             "User %s doesn't have distance information: %s" %
+                             (self, user, user.address))
+                continue
             for my_game in self.collection.all():
                 for game_he_wishes in user.wishlist.all():
                     if my_game.id == game_he_wishes.id:
@@ -319,8 +329,7 @@ class User(AbstractUser):
             match['swaps'].sort(key=lambda p: p['user'].rating)
             match['swaps'].sort(key=lambda p: p['user'].succeeded_swaps_count,
                                 reverse=True)
-            match['swaps'].sort(key=lambda p: p['user'].address.distance or
-                                              Distance(999999999))
+            match['swaps'].sort(key=lambda p: p['user'].address.distance)
         return matches.values()
 
     @property
@@ -343,7 +352,7 @@ class User(AbstractUser):
             for swap in match['swaps']:
                 user = us.to_representation(swap['user'])
                 user['feedback'] = swap['user'].rating
-                dist = swap['user'].address.distance or Distance(999999999)
+                dist = swap['user'].address.distance
                 km = Decimal(dist.km).quantize(Decimal(".1"), ROUND_UP)
                 user['address']['distance'] = km
                 games = []

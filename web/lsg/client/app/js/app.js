@@ -35,19 +35,7 @@
     'use strict';
 
     angular
-        .module('app.loadingbar', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.colors', []);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.lazyload', []);
 })();
 (function() {
     'use strict';
@@ -75,7 +63,19 @@
     'use strict';
 
     angular
-        .module('app.navsearch', []);
+        .module('app.lazyload', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.maps', []);
 })();
 (function() {
     'use strict';
@@ -89,14 +89,22 @@
     'use strict';
 
     angular
+        .module('app.navsearch', []);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.notify', []);
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.maps', []);
+        .module('app.preloader', []);
 })();
+
+
 (function() {
     'use strict';
 
@@ -109,22 +117,14 @@
     'use strict';
 
     angular
-        .module('app.sidebar', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.settings', []);
 })();
 (function() {
     'use strict';
 
     angular
-        .module('app.preloader', []);
+        .module('app.sidebar', []);
 })();
-
-
 (function() {
     'use strict';
 
@@ -140,50 +140,6 @@
           ]);
 })();
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.loadingbar')
-        .config(loadingbarConfig)
-        ;
-    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
-    function loadingbarConfig(cfpLoadingBarProvider){
-      cfpLoadingBarProvider.includeBar = true;
-      cfpLoadingBarProvider.includeSpinner = false;
-      cfpLoadingBarProvider.latencyThreshold = 500;
-      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.loadingbar')
-        .run(loadingbarRun)
-        ;
-    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
-    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
-
-      // Loading bar transition
-      // ----------------------------------- 
-      var thBar;
-      $rootScope.$on('$stateChangeStart', function() {
-          if($('.wrapper > section').length) // check if bar container exists
-            thBar = $timeout(function() {
-              cfpLoadingBar.start();
-            }, 0); // sets a latency Threshold
-      });
-      $rootScope.$on('$stateChangeSuccess', function(event) {
-          event.targetScope.$watch('$viewContentLoaded', function () {
-            $timeout.cancel(thBar);
-            cfpLoadingBar.complete();
-          });
-      });
-
-    }
-
-})();
 (function() {
     'use strict';
 
@@ -231,71 +187,6 @@
           return (APP_COLORS[name] || '#fff');
         }
     }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.lazyload')
-        .config(lazyloadConfig);
-
-    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
-    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
-
-      // Lazy Load modules configuration
-      $ocLazyLoadProvider.config({
-        debug: false,
-        events: true,
-        modules: APP_REQUIRES.modules
-      });
-
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.lazyload')
-        .constant('APP_REQUIRES', {
-          // jQuery based and standalone scripts
-          scripts: {
-            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
-            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
-                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
-            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
-                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
-            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
-            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
-            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
-                                   'vendor/Flot/jquery.flot.resize.js',
-                                   'vendor/Flot/jquery.flot.pie.js',
-                                   'vendor/Flot/jquery.flot.time.js',
-                                   'vendor/Flot/jquery.flot.categories.js',
-                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
-            'sparklines':         ['vendor/sparkline/index.js'],
-            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
-            'loaders.css':          ['vendor/loaders.css/loaders.css']
-
-          },
-          // Angular based script (use the right module name)
-          modules: [
-            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
-            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
-            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
-                                                        'vendor/ng-table/dist/ng-table.min.css']},
-            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
-                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
-            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
-                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
-                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
-            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
-
-          ]
-        })
-        ;
 
 })();
 
@@ -416,111 +307,276 @@
 })();
 
 
+(function() {
+    'use strict';
+
+    angular
+        .module('app.lazyload')
+        .config(lazyloadConfig);
+
+    lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
+    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
+
+      // Lazy Load modules configuration
+      $ocLazyLoadProvider.config({
+        debug: false,
+        events: true,
+        modules: APP_REQUIRES.modules
+      });
+
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.lazyload')
+        .constant('APP_REQUIRES', {
+          // jQuery based and standalone scripts
+          scripts: {
+            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
+            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
+                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
+            'weather-icons':      ['vendor/weather-icons/css/weather-icons.min.css',
+                                   'vendor/weather-icons/css/weather-icons-wind.min.css'],
+            'loadGoogleMapsJS':   ['vendor/load-google-maps/load-google-maps.js'],
+            'flot-chart':         ['vendor/Flot/jquery.flot.js'],
+            'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
+                                   'vendor/Flot/jquery.flot.resize.js',
+                                   'vendor/Flot/jquery.flot.pie.js',
+                                   'vendor/Flot/jquery.flot.time.js',
+                                   'vendor/Flot/jquery.flot.categories.js',
+                                   'vendor/flot-spline/js/jquery.flot.spline.min.js'],
+            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
+            'sparklines':         ['vendor/sparkline/index.js'],
+            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
+            'loaders.css':          ['vendor/loaders.css/loaders.css']
+
+          },
+          // Angular based script (use the right module name)
+          modules: [
+            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
+            {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
+            {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
+                                                        'vendor/ng-table/dist/ng-table.min.css']},
+            {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/minified/ng-img-crop.js',
+                                                        'vendor/ng-img-crop/compile/minified/ng-img-crop.css']},
+            {name: 'bm.bsTour',                 files: ['vendor/bootstrap-tour/build/css/bootstrap-tour.css',
+                                                        'vendor/bootstrap-tour/build/js/bootstrap-tour-standalone.js',
+                                                        'vendor/angular-bootstrap-tour/dist/angular-bootstrap-tour.js'], serie: true},
+            {name: 'ui-router-extras',          files: ['vendor/ui-router-extras/release/ct-ui-router-extras.min.js']}
+
+          ]
+        })
+        ;
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar')
+        .config(loadingbarConfig)
+        ;
+    loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
+    function loadingbarConfig(cfpLoadingBarProvider){
+      cfpLoadingBarProvider.includeBar = true;
+      cfpLoadingBarProvider.includeSpinner = false;
+      cfpLoadingBarProvider.latencyThreshold = 500;
+      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.loadingbar')
+        .run(loadingbarRun)
+        ;
+    loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
+    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
+
+      // Loading bar transition
+      // ----------------------------------- 
+      var thBar;
+      $rootScope.$on('$stateChangeStart', function() {
+          if($('.wrapper > section').length) // check if bar container exists
+            thBar = $timeout(function() {
+              cfpLoadingBar.start();
+            }, 0); // sets a latency Threshold
+      });
+      $rootScope.$on('$stateChangeSuccess', function(event) {
+          event.targetScope.$watch('$viewContentLoaded', function () {
+            $timeout.cancel(thBar);
+            cfpLoadingBar.complete();
+          });
+      });
+
+    }
+
+})();
 /**=========================================================
- * Module: navbar-search.js
- * Navbar search toggler * Auto dismiss on ESC key
+ * Module: modals.js
+ * Provides a simple way to implement bootstrap modals from templates
  =========================================================*/
 
 (function() {
     'use strict';
 
     angular
-        .module('app.navsearch')
-        .directive('searchOpen', searchOpen)
-        .directive('searchDismiss', searchDismiss);
+        .module('app.maps')
+        .controller('ModalGmapController', ModalGmapController);
 
-    //
-    // directives definition
-    // 
-    
-    function searchOpen () {
-        var directive = {
-            controller: searchOpenController,
-            restrict: 'A'
-        };
-        return directive;
+    ModalGmapController.$inject = ['$uibModal'];
+    function ModalGmapController($uibModal) {
+        var vm = this;
 
-    }
+        activate();
 
-    function searchDismiss () {
-        var directive = {
-            controller: searchDismissController,
-            restrict: 'A'
-        };
-        return directive;
-        
-    }
+        ////////////////
 
-    //
-    // Contrller definition
-    // 
-    
-    searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchOpenController ($scope, $element, NavSearch) {
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.toggle);
-    }
+        function activate() {
 
-    searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchDismissController ($scope, $element, NavSearch) {
-      
-      var inputSelector = '.navbar-form input[type="text"]';
+          vm.open = function (size) {
 
-      $(inputSelector)
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('keyup', function(e) {
-          if (e.keyCode === 27) // ESC
-            NavSearch.dismiss();
-        });
-        
-      // click anywhere closes the search
-      $(document).on('click', NavSearch.dismiss);
-      // dismissable options
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.dismiss);
+            //var modalInstance =
+            $uibModal.open({
+              templateUrl: '/myModalContent.html',
+              controller: ModalInstanceCtrl,
+              size: size
+            });
+          };
+
+          // Please note that $uibModalInstance represents a modal window (instance) dependency.
+          // It is not the same as the $uibModal service used above.
+
+          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
+          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
+
+            $uibModalInstance.opened.then(function () {
+              var position = new google.maps.LatLng(33.790807, -117.835734);
+
+              $scope.mapOptionsModal = {
+                zoom: 14,
+                center: position,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+
+              // we use timeout to wait maps to be ready before add a markers
+              $timeout(function(){
+                // 1. Add a marker at the position it was initialized
+                new google.maps.Marker({
+                  map: $scope.myMapModal,
+                  position: position
+                });
+                // 2. Trigger a resize so the map is redrawed
+                google.maps.event.trigger($scope.myMapModal, 'resize');
+                // 3. Move to the center if it is misaligned
+                $scope.myMapModal.panTo(position);
+              });
+
+            });
+
+            $scope.ok = function () {
+              $uibModalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+          }
+
+        }
     }
 
 })();
 
 
-/**=========================================================
- * Module: nav-search.js
- * Services to share navbar search functions
- =========================================================*/
-
 (function() {
     'use strict';
 
     angular
-        .module('app.navsearch')
-        .service('NavSearch', NavSearch);
+        .module('app.maps')
+        .controller('GMapController', GMapController);
 
-    function NavSearch() {
-        this.toggle = toggle;
-        this.dismiss = dismiss;
+    GMapController.$inject = ['$timeout'];
+    function GMapController($timeout) {
+        var vm = this;
+
+        activate();
 
         ////////////////
 
-        var navbarFormSelector = 'form.navbar-form';
+        function activate() {
+          var position = [
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.787453, -117.835858)
+            ];
+          
+          vm.addMarker = addMarker;
+          // we use timeout to wait maps to be ready before add a markers
+          $timeout(function(){
+            addMarker(vm.myMap1, position[0]);
+            addMarker(vm.myMap2, position[1]);
+            addMarker(vm.myMap3, position[2]);
+            addMarker(vm.myMap5, position[3]);
+          });
 
-        function toggle() {
-          var navbarForm = $(navbarFormSelector);
+          vm.mapOptions1 = {
+            zoom: 14,
+            center: position[0],
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
 
-          navbarForm.toggleClass('open');
+          vm.mapOptions2 = {
+            zoom: 19,
+            center: position[1],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
 
-          var isOpen = navbarForm.hasClass('open');
+          vm.mapOptions3 = {
+            zoom: 14,
+            center: position[2],
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+          };
 
-          navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
-        }
+          vm.mapOptions4 = {
+            zoom: 14,
+            center: position[3],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
 
-        function dismiss() {
-          $(navbarFormSelector)
-            .removeClass('open') // Close control
-            .find('input[type="text"]').blur() // remove focus
-            // .val('') // Empty input
-            ;
+          // for multiple markers
+          $timeout(function(){
+            addMarker(vm.myMap4, position[3]);
+            addMarker(vm.myMap4, position[4]);
+          });
+
+          // custom map style
+          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
+          vm.mapOptions5 = {
+            zoom: 14,
+            center: position[3],
+            styles: MapStyles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
+
+          ///////////////
+          
+          function addMarker(map, position) {
+            return new google.maps.Marker({
+              map: map,
+              position: position
+            });
+          }
+
         }
     }
 })();
@@ -1256,6 +1312,115 @@
     }
 })();
 /**=========================================================
+ * Module: navbar-search.js
+ * Navbar search toggler * Auto dismiss on ESC key
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.navsearch')
+        .directive('searchOpen', searchOpen)
+        .directive('searchDismiss', searchDismiss);
+
+    //
+    // directives definition
+    // 
+    
+    function searchOpen () {
+        var directive = {
+            controller: searchOpenController,
+            restrict: 'A'
+        };
+        return directive;
+
+    }
+
+    function searchDismiss () {
+        var directive = {
+            controller: searchDismissController,
+            restrict: 'A'
+        };
+        return directive;
+        
+    }
+
+    //
+    // Contrller definition
+    // 
+    
+    searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
+    function searchOpenController ($scope, $element, NavSearch) {
+      $element
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('click', NavSearch.toggle);
+    }
+
+    searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
+    function searchDismissController ($scope, $element, NavSearch) {
+      
+      var inputSelector = '.navbar-form input[type="text"]';
+
+      $(inputSelector)
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('keyup', function(e) {
+          if (e.keyCode === 27) // ESC
+            NavSearch.dismiss();
+        });
+        
+      // click anywhere closes the search
+      $(document).on('click', NavSearch.dismiss);
+      // dismissable options
+      $element
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('click', NavSearch.dismiss);
+    }
+
+})();
+
+
+/**=========================================================
+ * Module: nav-search.js
+ * Services to share navbar search functions
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.navsearch')
+        .service('NavSearch', NavSearch);
+
+    function NavSearch() {
+        this.toggle = toggle;
+        this.dismiss = dismiss;
+
+        ////////////////
+
+        var navbarFormSelector = 'form.navbar-form';
+
+        function toggle() {
+          var navbarForm = $(navbarFormSelector);
+
+          navbarForm.toggleClass('open');
+
+          var isOpen = navbarForm.hasClass('open');
+
+          navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
+        }
+
+        function dismiss() {
+          $(navbarFormSelector)
+            .removeClass('open') // Close control
+            .find('input[type="text"]').blur() // remove focus
+            // .val('') // Empty input
+            ;
+        }
+    }
+})();
+
+/**=========================================================
  * Module: demo-notify.js
  * Provides a simple demo for notify
  =========================================================*/
@@ -1471,171 +1636,99 @@
     return notify;
 }(jQuery));
 
-/**=========================================================
- * Module: modals.js
- * Provides a simple way to implement bootstrap modals from templates
- =========================================================*/
-
 (function() {
     'use strict';
 
     angular
-        .module('app.maps')
-        .controller('ModalGmapController', ModalGmapController);
+        .module('app.preloader')
+        .directive('preloader', preloader);
 
-    ModalGmapController.$inject = ['$uibModal'];
-    function ModalGmapController($uibModal) {
-        var vm = this;
+    preloader.$inject = ['$animate', '$timeout', '$q'];
+    function preloader ($animate, $timeout, $q) {
 
-        activate();
+        var directive = {
+            restrict: 'EAC',
+            template:
+              '<div class="preloader-progress">' +
+                  '<div class="preloader-progress-bar" ' +
+                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
+              '</div>'
+            ,
+            link: link
+        };
+        return directive;
 
-        ////////////////
+        ///////
 
-        function activate() {
+        function link(scope, el) {
 
-          vm.open = function (size) {
+          scope.loadCounter = 0;
 
-            //var modalInstance =
-            $uibModal.open({
-              templateUrl: '/myModalContent.html',
-              controller: ModalInstanceCtrl,
-              size: size
-            });
-          };
+          var counter  = 0,
+              timeout;
 
-          // Please note that $uibModalInstance represents a modal window (instance) dependency.
-          // It is not the same as the $uibModal service used above.
+          // disables scrollbar
+          angular.element('body').css('overflow', 'hidden');
+          // ensure class is present for styling
+          el.addClass('preloader');
 
-          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
-          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
+          appReady().then(endCounter);
 
-            $uibModalInstance.opened.then(function () {
-              var position = new google.maps.LatLng(33.790807, -117.835734);
+          timeout = $timeout(startCounter);
 
-              $scope.mapOptionsModal = {
-                zoom: 14,
-                center: position,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-              };
+          ///////
 
-              // we use timeout to wait maps to be ready before add a markers
-              $timeout(function(){
-                // 1. Add a marker at the position it was initialized
-                new google.maps.Marker({
-                  map: $scope.myMapModal,
-                  position: position
-                });
-                // 2. Trigger a resize so the map is redrawed
-                google.maps.event.trigger($scope.myMapModal, 'resize');
-                // 3. Move to the center if it is misaligned
-                $scope.myMapModal.panTo(position);
-              });
+          function startCounter() {
 
-            });
+            var remaining = 100 - counter;
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
 
-            $scope.ok = function () {
-              $uibModalInstance.close('closed');
-            };
+            scope.loadCounter = parseInt(counter, 10);
 
-            $scope.cancel = function () {
-              $uibModalInstance.dismiss('cancel');
-            };
-
+            timeout = $timeout(startCounter, 20);
           }
 
-        }
+          function endCounter() {
+
+            $timeout.cancel(timeout);
+
+            scope.loadCounter = 100;
+
+            $timeout(function(){
+              // animate preloader hiding
+              $animate.addClass(el, 'preloader-hidden');
+              // retore scrollbar
+              angular.element('body').css('overflow', '');
+            }, 300);
+          }
+
+          function appReady() {
+            var deferred = $q.defer();
+            var viewsLoaded = 0;
+            // if this doesn't sync with the real app ready
+            // a custom event must be used instead
+            var off = scope.$on('$viewContentLoaded', function () {
+              viewsLoaded ++;
+              // we know there are at least two views to be loaded
+              // before the app is ready (1-index.html 2-app*.html)
+              if ( viewsLoaded === 2) {
+                // with resolve this fires only once
+                $timeout(function(){
+                  deferred.resolve();
+                }, 3000);
+
+                off();
+              }
+
+            });
+
+            return deferred.promise;
+          }
+
+        } //link
     }
 
 })();
-
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.maps')
-        .controller('GMapController', GMapController);
-
-    GMapController.$inject = ['$timeout'];
-    function GMapController($timeout) {
-        var vm = this;
-
-        activate();
-
-        ////////////////
-
-        function activate() {
-          var position = [
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.787453, -117.835858)
-            ];
-          
-          vm.addMarker = addMarker;
-          // we use timeout to wait maps to be ready before add a markers
-          $timeout(function(){
-            addMarker(vm.myMap1, position[0]);
-            addMarker(vm.myMap2, position[1]);
-            addMarker(vm.myMap3, position[2]);
-            addMarker(vm.myMap5, position[3]);
-          });
-
-          vm.mapOptions1 = {
-            zoom: 14,
-            center: position[0],
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
-
-          vm.mapOptions2 = {
-            zoom: 19,
-            center: position[1],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-
-          vm.mapOptions3 = {
-            zoom: 14,
-            center: position[2],
-            mapTypeId: google.maps.MapTypeId.SATELLITE
-          };
-
-          vm.mapOptions4 = {
-            zoom: 14,
-            center: position[3],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-
-          // for multiple markers
-          $timeout(function(){
-            addMarker(vm.myMap4, position[3]);
-            addMarker(vm.myMap4, position[4]);
-          });
-
-          // custom map style
-          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
-          vm.mapOptions5 = {
-            zoom: 14,
-            center: position[3],
-            styles: MapStyles,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
-
-          ///////////////
-          
-          function addMarker(map, position) {
-            return new google.maps.Marker({
-              map: map,
-              position: position
-            });
-          }
-
-        }
-    }
-})();
-
 /**=========================================================
  * Module: helpers.js
  * Provides helper functions for routes definition
@@ -1824,6 +1917,79 @@
 
 })();
 
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.settings')
+        .run(settingsRun);
+
+    settingsRun.$inject = ['$rootScope', '$localStorage'];
+
+    function settingsRun($rootScope, $localStorage){
+
+
+      // User Settings
+      // -----------------------------------
+      $rootScope.user = {
+        name:     'John',
+        job:      'ng-developer',
+        picture:  'app/img/user/02.jpg'
+      };
+
+      // Hides/show user avatar on sidebar from any element
+      $rootScope.toggleUserBlock = function(){
+        $rootScope.$broadcast('toggleUserBlock');
+      };
+
+      // Global Settings
+      // -----------------------------------
+      $rootScope.app = {
+        name: 'Angle',
+        description: 'Angular Bootstrap Admin Template',
+        year: ((new Date()).getFullYear()),
+        layout: {
+          isFixed: true,
+          isCollapsed: false,
+          isBoxed: false,
+          isRTL: false,
+          horizontal: false,
+          isFloat: false,
+          asideHover: false,
+          theme: null,
+          asideScrollbar: false,
+          isCollapsedText: false
+        },
+        useFullLayout: false,
+        hiddenFooter: false,
+        offsidebarOpen: false,
+        asideToggled: false,
+        viewAnimation: 'ng-fadeInUp'
+      };
+
+      // Setup the layout mode
+      $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
+
+      // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
+      // if( angular.isDefined($localStorage.layout) )
+      //   $rootScope.app.layout = $localStorage.layout;
+      // else
+      //   $localStorage.layout = $rootScope.app.layout;
+      //
+      // $rootScope.$watch('app.layout', function () {
+      //   $localStorage.layout = $rootScope.app.layout;
+      // }, true);
+
+      // Close submenu when sidebar change from collapsed to normal
+      $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
+        if( newValue === false )
+          $rootScope.$broadcast('closeSidebarMenu');
+      });
+
+    }
+
+})();
 
 /**=========================================================
  * Module: sidebar-menu.js
@@ -2186,172 +2352,6 @@
     }
 })();
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.settings')
-        .run(settingsRun);
-
-    settingsRun.$inject = ['$rootScope', '$localStorage'];
-
-    function settingsRun($rootScope, $localStorage){
-
-
-      // User Settings
-      // -----------------------------------
-      $rootScope.user = {
-        name:     'John',
-        job:      'ng-developer',
-        picture:  'app/img/user/02.jpg'
-      };
-
-      // Hides/show user avatar on sidebar from any element
-      $rootScope.toggleUserBlock = function(){
-        $rootScope.$broadcast('toggleUserBlock');
-      };
-
-      // Global Settings
-      // -----------------------------------
-      $rootScope.app = {
-        name: 'Angle',
-        description: 'Angular Bootstrap Admin Template',
-        year: ((new Date()).getFullYear()),
-        layout: {
-          isFixed: true,
-          isCollapsed: false,
-          isBoxed: false,
-          isRTL: false,
-          horizontal: false,
-          isFloat: false,
-          asideHover: false,
-          theme: null,
-          asideScrollbar: false,
-          isCollapsedText: false
-        },
-        useFullLayout: false,
-        hiddenFooter: false,
-        offsidebarOpen: false,
-        asideToggled: false,
-        viewAnimation: 'ng-fadeInUp'
-      };
-
-      // Setup the layout mode
-      $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
-
-      // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
-      // if( angular.isDefined($localStorage.layout) )
-      //   $rootScope.app.layout = $localStorage.layout;
-      // else
-      //   $localStorage.layout = $rootScope.app.layout;
-      //
-      // $rootScope.$watch('app.layout', function () {
-      //   $localStorage.layout = $rootScope.app.layout;
-      // }, true);
-
-      // Close submenu when sidebar change from collapsed to normal
-      $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
-        if( newValue === false )
-          $rootScope.$broadcast('closeSidebarMenu');
-      });
-
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.preloader')
-        .directive('preloader', preloader);
-
-    preloader.$inject = ['$animate', '$timeout', '$q'];
-    function preloader ($animate, $timeout, $q) {
-
-        var directive = {
-            restrict: 'EAC',
-            template:
-              '<div class="preloader-progress">' +
-                  '<div class="preloader-progress-bar" ' +
-                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
-              '</div>'
-            ,
-            link: link
-        };
-        return directive;
-
-        ///////
-
-        function link(scope, el) {
-
-          scope.loadCounter = 0;
-
-          var counter  = 0,
-              timeout;
-
-          // disables scrollbar
-          angular.element('body').css('overflow', 'hidden');
-          // ensure class is present for styling
-          el.addClass('preloader');
-
-          appReady().then(endCounter);
-
-          timeout = $timeout(startCounter);
-
-          ///////
-
-          function startCounter() {
-
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
-
-            scope.loadCounter = parseInt(counter, 10);
-
-            timeout = $timeout(startCounter, 20);
-          }
-
-          function endCounter() {
-
-            $timeout.cancel(timeout);
-
-            scope.loadCounter = 100;
-
-            $timeout(function(){
-              // animate preloader hiding
-              $animate.addClass(el, 'preloader-hidden');
-              // retore scrollbar
-              angular.element('body').css('overflow', '');
-            }, 300);
-          }
-
-          function appReady() {
-            var deferred = $q.defer();
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-              viewsLoaded ++;
-              // we know there are at least two views to be loaded
-              // before the app is ready (1-index.html 2-app*.html)
-              if ( viewsLoaded === 2) {
-                // with resolve this fires only once
-                $timeout(function(){
-                  deferred.resolve();
-                }, 3000);
-
-                off();
-              }
-
-            });
-
-            return deferred.promise;
-          }
-
-        } //link
-    }
-
-})();
 (function() {
     'use strict';
 
@@ -2850,6 +2850,14 @@
     'use strict';
 
     angular
+        .module('app.archived', [
+            'ngMaterial',
+          ]);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('custom', [
             // from the framework
             'app.core',
@@ -2885,9 +2893,6 @@
             $httpProvider.interceptors.push(mainHttpInterceptor);
 
         }])
-        .constant('lsgConfig', {
-            authenticatedUser: null,
-        })
         .factory('globalFunctions', function() {
             var services = {
                 getIndexByObjectAttribute: function(list, attr, value) {
@@ -2956,12 +2961,6 @@
     'use strict';
 
     angular
-        .module('app.pages', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.matches', [
             'ngMaterial',
           ]);
@@ -2970,9 +2969,7 @@
     'use strict';
 
     angular
-        .module('app.requests', [
-            'ngMaterial',
-          ]);
+        .module('app.pages', []);
 })();
 (function () {
     'use strict';
@@ -2986,7 +2983,9 @@
     'use strict';
 
     angular
-        .module('app.customSettings', []);
+        .module('app.requests', [
+            'ngMaterial',
+          ]);
 })();
 (function() {
     'use strict';
@@ -2995,6 +2994,12 @@
         .module('app.routes', [
             'app.lazyload'
         ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.customSettings', []);
 })();
 (function() {
     'use strict';
@@ -3020,14 +3025,6 @@
           ]);
 })();
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.archived', [
-            'ngMaterial',
-          ]);
-})();
 
 // To run this code, edit file index.html or index.jade and change
 // html data-ng-app attribute from angle to myAppName
@@ -4948,9 +4945,9 @@
         .module('app.games')
         .service('GamesService', GamesService);
 
-    GamesService.$inject = ['$q', '$http', 'lsgConfig', 'Notify'];
-    function GamesService($q, $http, lsgConfig, Notify) {
-        var user = lsgConfig.authenticatedUser;
+    GamesService.$inject = ['$q', '$http', '$rootScope', 'Notify'];
+    function GamesService($q, $http, $rootScope, Notify) {
+        var user = $rootScope.user;
         this.query = function (query, excludeGames) {
             var url = '/api/games/?search=' + query;
             var q = $q.defer();
@@ -5010,8 +5007,8 @@
     /*
       MatchesCtrl
      */
-    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService', 'lsgConfig'];
-    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService, lsgConfig) {
+    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService'];
+    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.matches = [];
@@ -5082,14 +5079,14 @@
     /*
      RequestSwapDialogCtrl
      */
-    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'lsgConfig', 'Notify']
-    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, lsgConfig, Notify) {
+    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', '$rootScope', 'Notify']
+    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, $rootScope, Notify) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.title = "Request Swap";
         self.iwish = match.iwish;
         self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
@@ -5145,13 +5142,13 @@
     /*
      PendingRequestWarningCtrl
      */
-    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', 'lsgConfig']
-    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, lsgConfig) {
+    PendingRequestWarningCtrl.$inject = ['$scope', '$mdDialog', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', 'requestSwapDialogCtrl', '$rootScope']
+    function PendingRequestWarningCtrl($scope, $mdDialog, match, game, swapUser, RequestsService, matchesCtrl, requestSwapDialogCtrl, $rootScope) {
         var self = this;
         self.title = "Request Swap";
         self.iwish = match.iwish;
         self.game = game;
-        self.authenticatedUser = lsgConfig.authenticatedUser;
+        self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
         self.message = '';
         self.pendingMyRequests = [];
@@ -5190,12 +5187,12 @@
         .module('app.matches')
         .service('MatchesService', MatchesService);
 
-    MatchesService.$inject = ['$q', '$http', 'lsgConfig'];
-    function MatchesService($q, $http, lsgConfig) {
+    MatchesService.$inject = ['$q', '$http', '$rootScope'];
+    function MatchesService($q, $http, $rootScope) {
 
         this.getMatches = function () {
             var q = $q.defer();
-            var userId = lsgConfig.authenticatedUser.id;
+            var userId = $rootScope.user.id;
             var baseUserUrl = '/api/users/' + userId + '/';
             var url = baseUserUrl + 'matches/';
             $http
@@ -5212,6 +5209,204 @@
     'use strict';
 
     angular
+        .module('app.preloader')
+        .directive('preloader', preloader);
+
+    preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams'];
+    function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams) {
+        var counter = 0;
+        var timeout;
+        var failedToGetUser = false;
+
+        var locationChange = function (event, next, current) {
+            var splitted = next.split('#');
+            var el = angular.element(".preloader-progress").parent();
+            if (splitted.length > 1 && (splitted[1] == '/500')) {
+                endCounter($rootScope, el);
+                return;
+            }
+            if (splitted.length > 1 && splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
+                endCounter($rootScope, el);
+                return;
+            }
+            if (event && event.targetScope) {
+                if (event.targetScope.user === undefined || event.targetScope.user == null) {
+                    event.preventDefault();
+                } else {
+                    return;
+                }
+            }
+            link($rootScope, el, event, current);
+        };
+
+        $rootScope.$on('$locationChangeStart', locationChange);
+
+        var directive = {
+            restrict: 'EAC',
+            template: '<div class="preloader-progress">' +
+            '<div class="preloader-progress-bar" ' +
+            'ng-style="{width: loadCounter + \'%\'}"></div>' +
+            '</div>'
+            ,
+            link: link
+        };
+        return directive;
+
+        function link(scope, el, event, sref) {
+            startLoader(scope, el);
+
+            appReady(scope, event, sref).then(function () {
+                if (sref) {
+                    var states = $state.get();
+                    var state;
+                    var matchedState;
+                    for (var k = 0; k < states.length; k++) {
+                        state = states[k];
+                        if (!state.$$state) continue;
+                        var privatePortion = state.$$state();
+                        var match = privatePortion.url.exec(sref.split('#')[1]);
+                        if (match) {
+                            matchedState = state;
+                            break
+                        }
+                    }
+                    if (matchedState) {
+                        if (matchedState.name == 'pages.signIn') {
+                            $state.transitionTo("app.welcome");
+                        } else {
+                            $state.transitionTo(matchedState.name);
+                        }
+                    } else {
+                        $state.transitionTo("app.welcome");
+                    }
+                    endCounter(scope, el);
+                } else {
+                    //endCounter(scope, el);
+                }
+            }, function () {
+                endCounter(scope, el);
+                failedToGetUser = true;
+                redirectToSignInPage();
+            });
+        } //link
+
+        function redirectToSignInPage() {
+            var nexts = window.location.hash.toString().split('?next=');
+            if (nexts.length > 1) {
+                $state.transitionTo("pages.signIn", {next: nexts[1]});
+            } else {
+                $state.transitionTo("pages.signIn");
+            }
+        }
+
+        function loadAuthenticatedUser(event) {
+            var q = $q.defer();
+            if (event && event.targetScope && event.targetScope.user != undefined && event.targetScope.user != null) {
+                q.resolve(event.targetScope.user);
+                return q;
+            }
+            $http.get('/api/users/authenticated/').success(function (response) {
+                var user = response;
+                $rootScope.user = user;
+                if (user) {
+                    q.resolve(user);
+                } else {
+                    if (event) {
+                        event.preventDefault();
+                    }
+                    failedToGetUser = true;
+                    redirectToSignInPage();
+                    q.reject();
+                    return;
+                }
+                var initialAlert = function () {
+                    if (!user.address.latitude || !user.address.longitude) {
+                        Notify.closeAll(false, true);
+                        Notify.alert("You need to provide your own address details in " +
+                            "order to use the application. <a style='color: yellow;' href='#/app/profile'>" +
+                            "Click here to access the profile form to update your " +
+                            "address.</a>", {status: 'danger', timeout: 7000});
+                    }
+                };
+
+                $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                    if (toState.name == 'app.welcome' || toState.name == 'app.users') {
+                        return;
+                    }
+                    if (!$rootScope.user.address.latitude || !$rootScope.user.address.longitude) {
+                        initialAlert();
+                    }
+                });
+
+            }).error(function (response, status) {
+                console.log('Failed to get authenticated user');
+                if (status == 400) {
+                    q.reject();
+                    return;
+                }
+                q.resolve();
+                $state.transitionTo("pages.500");
+            });
+            return q;
+        }
+
+        ///////
+
+        function startCounter(scope) {
+            var remaining = 100 - counter;
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+            scope.loadCounter = parseInt(counter, 10);
+            timeout = $timeout(function () { startCounter(scope) }, 20);
+        }
+
+        function endCounter(scope, el) {
+            $timeout.cancel(timeout);
+            scope.loadCounter = 100;
+            counter = 0;
+            $timeout(function () {
+                // animate preloader hiding
+                $animate.addClass(el, 'preloader-hidden');
+                // retore scrollbar
+                angular.element('body').css('overflow', '');
+            }, 300);
+        }
+
+        function startLoader(scope, el) {
+            scope.loadCounter = 0;
+            angular.element('body').css('overflow', 'hidden');
+            el.addClass('preloader');
+            timeout = $timeout(function () { startCounter(scope) });
+        }
+
+        function appReady(scope, event) {
+            //var deferred = $q.defer();
+            var deferred = loadAuthenticatedUser(event);
+            var viewsLoaded = 0;
+            // if this doesn't sync with the real app ready
+            // a custom event must be used instead
+            var off = scope.$on('$viewContentLoaded', function () {
+                viewsLoaded++;
+                // we know there are at least two views to be loaded
+                // before the app is ready (1-index.html 2-app*.html)
+                if (viewsLoaded === 2) {
+                    // with resolve this fires only once
+                    //$timeout(function () {
+                    //    deferred.resolve();
+                    //}, 3000);
+                    off();
+                }
+
+            });
+            return deferred.promise;
+        }
+
+    }
+
+})();
+(function () {
+    'use strict';
+
+    angular
         .module('app.requests', ['ngAnimate',])
         .controller('RequestsCtrl', RequestsCtrl)
         .controller('AcceptRequestDialogCtrl', AcceptRequestDialogCtrl)
@@ -5223,11 +5418,11 @@
     /*
      RequestsCtrl
      */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', 'lsgConfig', 'globalFunctions', '$stateParams'];
-    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, lsgConfig, globalFunctions, $stateParams) {
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams'];
+    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.myRequests = [];
         self.incomingRequests = [];
 
@@ -5322,14 +5517,14 @@
 
         self.getPendingMyRequestsRelated = function (request, iwish, game) {
             var requests = self.pendingMyRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
+                 return (item.status == $rootScope.Status.pending && item.id != request.id && (item.requested_game.id == iwish.id || item.requester_game.id == game.id));
             });
             return requests;
         };
 
         self.getPendingIncomingRequestsRelated = function (request, iwish, game) {
             var requests = self.incomingRequests.filter(function (item) {
-                 return (item.status == lsgConfig.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
+                 return (item.status == $rootScope.Status.pending && item.id != request.id && (item.requester_game.id == iwish.id || item.requested_game.id == game.id));
             });
             return requests;
         };
@@ -5669,9 +5864,8 @@
     /*
      statusDisplay
      */
-    statusDisplay.$inject = ['lsgConfig'];
-    function statusDisplay (lsgConfig) {
-        console.log(lsgConfig);
+    statusDisplay.$inject = ['$rootScope'];
+    function statusDisplay ($rootScope) {
         return {
             restrict: 'E',
             scope: {
@@ -5679,8 +5873,8 @@
                 previous: '='
             },
             link: function (scope) {
-                scope.StatusLabelClasses = lsgConfig.StatusLabelClasses;
-                scope.StatusIcons = lsgConfig.StatusIcons;
+                scope.StatusLabelClasses = $rootScope.StatusLabelClasses;
+                scope.StatusIcons = $rootScope.StatusIcons;
             },
             templateUrl: 'app/views/requests/directives/status-display.html'
         }
@@ -5694,9 +5888,9 @@
         .module('app.requests')
         .service('RequestsService', RequestsService);
 
-    RequestsService.$inject = ['$q', '$http', 'lsgConfig'];
-    function RequestsService($q, $http, lsgConfig) {
-        var userId = lsgConfig.authenticatedUser.id;
+    RequestsService.$inject = ['$q', '$http', '$rootScope'];
+    function RequestsService($q, $http, $rootScope) {
+        var userId = $rootScope.user.id;
         var baseUrl = {
             myRequests: '/api/users/' + userId + '/my_requests/',
             incomingRequests: '/api/users/' + userId + '/incoming_requests/',
@@ -5721,37 +5915,37 @@
             return finalizing && userFinalized;
         };
         Request.prototype.isPending = function () {
-            return this.status == lsgConfig.Status.pending;
+            return this.status == $rootScope.Status.pending;
         };
         Request.prototype.isOngoing = function () {
-            return this.status == lsgConfig.Status.ongoing;
+            return this.status == $rootScope.Status.ongoing;
         };
         Request.prototype.isCancelled = function () {
-            return this.status == lsgConfig.Status.cancelled;
+            return this.status == $rootScope.Status.cancelled;
         };
         Request.prototype.isExpired = function () {
-            return this.status == lsgConfig.Status.expired;
+            return this.status == $rootScope.Status.expired;
         };
         Request.prototype.isRefused = function () {
-            return this.status == lsgConfig.Status.refused;
+            return this.status == $rootScope.Status.refused;
         };
         Request.prototype.isSucceeded = function () {
-            return this.status == lsgConfig.Status.succeeded;
+            return this.status == $rootScope.Status.succeeded;
         };
         Request.prototype.isArchived = function () {
-            return this.status == lsgConfig.Status.archived;
+            return this.status == $rootScope.Status.archived;
         };
         Request.prototype.isFinalizing = function () {
-            return this.status == lsgConfig.Status.finalizing;
+            return this.status == $rootScope.Status.finalizing;
         };
         Request.prototype.isOpen = function () {
-            return lsgConfig.Status.open_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.open_statuses.indexOf(this.status) != -1;
         };
         Request.prototype.isClosed = function () {
-            return lsgConfig.Status.closed_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.closed_statuses.indexOf(this.status) != -1;
         };
         Request.prototype.isFinalized = function () {
-            return lsgConfig.Status.finalized_statuses.indexOf(this.status) != -1;
+            return $rootScope.Status.finalized_statuses.indexOf(this.status) != -1;
         };
 
         this.Request = Request;
@@ -5871,323 +6065,6 @@
             return q.promise;
         };
     }
-})();
-
-(function () {
-    'use strict';
-
-    angular
-        .module('app.preloader')
-        .directive('preloader', preloader);
-
-    preloader.$inject = ['$animate', '$timeout', '$q', '$http', 'lsgConfig', '$rootScope', 'Notify', '$state', '$stateParams'];
-    function preloader($animate, $timeout, $q, $http, lsgConfig, $rootScope, Notify, $state, $stateParams) {
-        var counter = 0;
-        var timeout;
-        var failedToGetUser = false;
-
-        var locationChange = function (event, next, current) {
-            var splitted = next.split('#');
-            var el = angular.element(".preloader-progress").parent();
-            if (splitted.length > 1 && (splitted[1] == '/500')) {
-                endCounter($rootScope, el);
-                return;
-            }
-            if (splitted.length > 1 && splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
-                endCounter($rootScope, el);
-                return;
-            }
-            if (event && event.targetScope) {
-                if (event.targetScope.user === undefined || event.targetScope.user == null) {
-                    event.preventDefault();
-                } else {
-                    return;
-                }
-            }
-            link($rootScope, el, event, current);
-        };
-
-        $rootScope.$on('$locationChangeStart', locationChange);
-
-        var directive = {
-            restrict: 'EAC',
-            template: '<div class="preloader-progress">' +
-            '<div class="preloader-progress-bar" ' +
-            'ng-style="{width: loadCounter + \'%\'}"></div>' +
-            '</div>'
-            ,
-            link: link
-        };
-        return directive;
-
-        function link(scope, el, event, sref) {
-            startLoader(scope, el);
-
-            appReady(scope, event, sref).then(function () {
-                if (sref) {
-                    var states = $state.get();
-                    var state;
-                    var matchedState;
-                    for (var k = 0; k < states.length; k++) {
-                        state = states[k];
-                        if (!state.$$state) continue;
-                        var privatePortion = state.$$state();
-                        var match = privatePortion.url.exec(sref.split('#')[1]);
-                        if (match) {
-                            matchedState = state;
-                            break
-                        }
-                    }
-                    if (matchedState) {
-                        if (matchedState.name == 'pages.signIn') {
-                            $state.transitionTo("app.welcome");
-                        } else {
-                            $state.transitionTo(matchedState.name);
-                        }
-                    } else {
-                        $state.transitionTo("app.welcome");
-                    }
-                    endCounter(scope, el);
-                } else {
-                    //endCounter(scope, el);
-                }
-            }, function () {
-                endCounter(scope, el);
-                failedToGetUser = true;
-                redirectToSignInPage();
-            });
-        } //link
-
-        function redirectToSignInPage() {
-            var nexts = window.location.hash.toString().split('?next=');
-            if (nexts.length > 1) {
-                $state.transitionTo("pages.signIn", {next: nexts[1]});
-            } else {
-                $state.transitionTo("pages.signIn");
-            }
-        }
-
-        function loadAuthenticatedUser(event) {
-            var q = $q.defer();
-            if (event && event.targetScope && event.targetScope.user != undefined && event.targetScope.user != null) {
-                q.resolve(event.targetScope.user);
-                return q;
-            }
-            $http.get('/api/users/authenticated/').success(function (response) {
-                var user = response;
-                lsgConfig.authenticatedUser = user;
-                $rootScope.user = user;
-                if (user) {
-                    q.resolve(user);
-                } else {
-                    if (event) {
-                        event.preventDefault();
-                    }
-                    failedToGetUser = true;
-                    redirectToSignInPage();
-                    q.reject();
-                    return;
-                }
-                var initialAlert = function () {
-                    if (!user.address.latitude || !user.address.longitude) {
-                        Notify.closeAll(false, true);
-                        Notify.alert("You need to provide your own address details in " +
-                            "order to use the application. <a style='color: yellow;' href='#/app/profile'>" +
-                            "Click here to access the profile form to update your " +
-                            "address.</a>", {status: 'danger', timeout: 7000});
-                    }
-                };
-
-                $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-                    if (toState.name == 'app.welcome' || toState.name == 'app.users') {
-                        return;
-                    }
-                    if (!lsgConfig.authenticatedUser.address.latitude || !lsgConfig.authenticatedUser.address.longitude) {
-                        initialAlert();
-                    }
-                });
-
-            }).error(function (response, status) {
-                console.log('Failed to get authenticated user');
-                if (status == 400) {
-                    q.reject();
-                    return;
-                }
-                q.resolve();
-                $state.transitionTo("pages.500");
-            });
-            return q;
-        }
-
-        ///////
-
-        function startCounter(scope) {
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
-            scope.loadCounter = parseInt(counter, 10);
-            timeout = $timeout(function () { startCounter(scope) }, 20);
-        }
-
-        function endCounter(scope, el) {
-            $timeout.cancel(timeout);
-            scope.loadCounter = 100;
-            counter = 0;
-            $timeout(function () {
-                // animate preloader hiding
-                $animate.addClass(el, 'preloader-hidden');
-                // retore scrollbar
-                angular.element('body').css('overflow', '');
-            }, 300);
-        }
-
-        function startLoader(scope, el) {
-            scope.loadCounter = 0;
-            angular.element('body').css('overflow', 'hidden');
-            el.addClass('preloader');
-            timeout = $timeout(function () { startCounter(scope) });
-        }
-
-        function appReady(scope, event) {
-            //var deferred = $q.defer();
-            var deferred = loadAuthenticatedUser(event);
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-                viewsLoaded++;
-                // we know there are at least two views to be loaded
-                // before the app is ready (1-index.html 2-app*.html)
-                if (viewsLoaded === 2) {
-                    // with resolve this fires only once
-                    //$timeout(function () {
-                    //    deferred.resolve();
-                    //}, 3000);
-                    off();
-                }
-
-            });
-            return deferred.promise;
-        }
-
-    }
-
-})();
-(function () {
-    'use strict';
-
-    angular
-        .module('app.customSettings')
-        .run(customSettingsRun);
-
-    customSettingsRun.$inject = ['$rootScope', 'lsgConfig', '$state'];
-
-    function customSettingsRun($rootScope, lsgConfig, $state) {
-
-        // Hides/show user avatar on sidebar from any element
-        $rootScope.toggleUserBlock = function () {
-            $rootScope.$broadcast('toggleUserBlock');
-        };
-
-        // Global Settings
-        // -----------------------------------
-        $rootScope.app = {
-            name: "Let'SwapGames",
-            description: 'FREE FOR LIFE, BY GAMERS FOR GAMERS',
-            year: ((new Date()).getFullYear()),
-            layout: {
-                isFixed: true,
-                isCollapsed: false,
-                isBoxed: false,
-                isRTL: false,
-                horizontal: false,
-                isFloat: false,
-                asideHover: false,
-                theme: null,
-                asideScrollbar: false,
-                isCollapsedText: false
-            },
-            useFullLayout: false,
-            hiddenFooter: false,
-            offsidebarOpen: false,
-            asideToggled: false,
-            viewAnimation: 'ng-fadeInUp'
-        };
-
-        if ($rootScope.user === undefined || $rootScope.user == null) {
-            //window.location = '/app/#/sign-in';
-        }
-        
-        var Status = {
-            pending: 1,
-            cancelled: 2,
-            ongoing: 3,
-            refused: 4,
-            finalizing: 5,
-            succeeded: 6,
-            failed: 7,
-            expired: 8,
-            archived: 9
-        };
-
-        Status.open_statuses = [Status.pending, Status.ongoing,
-            Status.finalizing];
-        Status.closed_statuses = [Status.cancelled, Status.refused,
-            Status.succeeded, Status.failed, Status.expired];
-        Status.finalized_statuses = [Status.succeeded, Status.failed];
-        Status.ongoing_statuses = [Status.ongoing, Status.finalizing];
-
-        $rootScope.StatusLabelClasses = {
-            1: 'label-warning',                // pending
-            2: 'label-default bg-primary',     // cancelled
-            3: 'label-info',                   // ongoing
-            4: 'label-danger',                 // refused
-            5: 'label-default bg-green-light', // finalizing
-            6: 'label-success',                // succeeded
-            7: 'label-default bg-gray-darker', // failed
-            8: 'label-default bg-purple-dark', // expired
-            9: 'label-default bg-gray-light'   // archived
-        };
-
-        $rootScope.StatusIcons = {
-            1: 'fa fa-ellipsis-h',             // pending
-            2: 'fa fa-close',                  // cancelled
-            3: 'fa fa-thumbs-up',              // ongoing
-            4: 'fa fa-thumbs-down',            // refused
-            5: 'fa fa-gavel',                  // finalizing
-            6: 'fa fa-check',                  // succeeded
-            7: 'fa fa-chain-broken',           // failed
-            8: 'fa fa-clock-o',                // expired
-            9: 'fa fa-archive'                 // archived
-        };
-
-
-        $rootScope.Status = Status;
-        lsgConfig.Status = Status;
-        lsgConfig.StatusLabelClasses = $rootScope.StatusLabelClasses;
-        lsgConfig.StatusIcons = $rootScope.StatusIcons;
-
-        // Setup the layout mode
-        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');
-
-
-        // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
-        // if( angular.isDefined($localStorage.layout) )
-        //   $rootScope.app.layout = $localStorage.layout;
-        // else
-        //   $localStorage.layout = $rootScope.app.layout;
-        //
-        // $rootScope.$watch('app.layout', function () {
-        //   $localStorage.layout = $rootScope.app.layout;
-        // }, true);
-
-        // Close submenu when sidebar change from collapsed to normal
-        $rootScope.$watch('app.layout.isCollapsed', function (newValue) {
-            if (newValue === false)
-                $rootScope.$broadcast('closeSidebarMenu');
-        });
-
-    }
-
 })();
 
 /**=========================================================
@@ -6462,6 +6339,121 @@
         
     }
 })();
+(function () {
+    'use strict';
+
+    angular
+        .module('app.customSettings')
+        .run(customSettingsRun);
+
+    customSettingsRun.$inject = ['$rootScope'];
+
+    function customSettingsRun($rootScope) {
+
+        // Hides/show user avatar on sidebar from any element
+        $rootScope.toggleUserBlock = function () {
+            $rootScope.$broadcast('toggleUserBlock');
+        };
+
+        // Global Settings
+        // -----------------------------------
+        $rootScope.app = {
+            name: "Let'SwapGames",
+            description: 'FREE FOR LIFE, FOR GAMERS BY GAMERS',
+            year: ((new Date()).getFullYear()),
+            layout: {
+                isFixed: true,
+                isCollapsed: false,
+                isBoxed: false,
+                isRTL: false,
+                horizontal: false,
+                isFloat: false,
+                asideHover: false,
+                theme: null,
+                asideScrollbar: false,
+                isCollapsedText: false
+            },
+            useFullLayout: false,
+            hiddenFooter: false,
+            offsidebarOpen: false,
+            asideToggled: false,
+            viewAnimation: 'ng-fadeInUp'
+        };
+
+        if ($rootScope.user === undefined || $rootScope.user == null) {
+            //window.location = '/app/#/sign-in';
+        }
+        
+        var Status = {
+            pending: 1,
+            cancelled: 2,
+            ongoing: 3,
+            refused: 4,
+            finalizing: 5,
+            succeeded: 6,
+            failed: 7,
+            expired: 8,
+            archived: 9
+        };
+
+        Status.open_statuses = [Status.pending, Status.ongoing,
+            Status.finalizing];
+        Status.closed_statuses = [Status.cancelled, Status.refused,
+            Status.succeeded, Status.failed, Status.expired];
+        Status.finalized_statuses = [Status.succeeded, Status.failed];
+        Status.ongoing_statuses = [Status.ongoing, Status.finalizing];
+
+        $rootScope.StatusLabelClasses = {
+            1: 'label-warning',                // pending
+            2: 'label-default bg-primary',     // cancelled
+            3: 'label-info',                   // ongoing
+            4: 'label-danger',                 // refused
+            5: 'label-default bg-green-light', // finalizing
+            6: 'label-success',                // succeeded
+            7: 'label-default bg-gray-darker', // failed
+            8: 'label-default bg-purple-dark', // expired
+            9: 'label-default bg-gray-light'   // archived
+        };
+
+        $rootScope.StatusIcons = {
+            1: 'fa fa-ellipsis-h',             // pending
+            2: 'fa fa-close',                  // cancelled
+            3: 'fa fa-thumbs-up',              // ongoing
+            4: 'fa fa-thumbs-down',            // refused
+            5: 'fa fa-gavel',                  // finalizing
+            6: 'fa fa-check',                  // succeeded
+            7: 'fa fa-chain-broken',           // failed
+            8: 'fa fa-clock-o',                // expired
+            9: 'fa fa-archive'                 // archived
+        };
+
+
+        $rootScope.Status = Status;
+
+        // Setup the layout mode
+        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');
+
+
+        // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
+        // if( angular.isDefined($localStorage.layout) )
+        //   $rootScope.app.layout = $localStorage.layout;
+        // else
+        //   $localStorage.layout = $rootScope.app.layout;
+        //
+        // $rootScope.$watch('app.layout', function () {
+        //   $localStorage.layout = $rootScope.app.layout;
+        // }, true);
+
+        // Close submenu when sidebar change from collapsed to normal
+        $rootScope.$watch('app.layout.isCollapsed', function (newValue) {
+            if (newValue === false)
+                $rootScope.$broadcast('closeSidebarMenu');
+        });
+
+    }
+
+})();
+
 /**=========================================================
  * Module: sidebar-menu.js
  * Handle sidebar collapsible elements
@@ -6836,12 +6828,12 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'lsgConfig', 'Notify', '$rootScope'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, lsgConfig, Notify, $rootScope) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.allPlatforms = [];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
@@ -6958,7 +6950,6 @@
             UsersService.updateUser(self.user).then(function (user) {
                 Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 self.errors = {};
-                lsgConfig.authenticatedUser = user;
                 self.user = user;
                 $rootScope.user = user;
                 setupUserMap(user);
@@ -7016,8 +7007,8 @@
     /*
       ChangePictureDialogCtrl
      */
-    ChangePictureDialogCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'UsersService', 'lsgConfig', '$rootScope', 'usersCtrl'];
-    function ChangePictureDialogCtrl($scope, $timeout, $mdDialog, UsersService, lsgConfig, $rootScope, usersCtrl) {
+    ChangePictureDialogCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'UsersService', '$rootScope', 'usersCtrl'];
+    function ChangePictureDialogCtrl($scope, $timeout, $mdDialog, UsersService, $rootScope, usersCtrl) {
         var self = this;
         self.uploadedImage = '';
         self.croppedImage = '';
@@ -7070,7 +7061,6 @@
 
         self.updateUserPicture = function (image) {
             UsersService.updateUserPicture(image).then(function (user) {
-                lsgConfig.authenticatedUser = user;
                 usersCtrl.user = user;
                 $rootScope.user = user;
                 $mdDialog.hide();
@@ -7129,9 +7119,9 @@
         .module('app.users')
         .service('UsersService', UsersService);
 
-    UsersService.$inject = ['$q', '$http', 'lsgConfig'];
-    function UsersService($q, $http, lsgConfig) {
-        var userId = lsgConfig.authenticatedUser.id;
+    UsersService.$inject = ['$q', '$http', '$rootScope'];
+    function UsersService($q, $http, $rootScope) {
+        var userId = $rootScope.user.id;
         var baseUserUrl = '/api/users/' + userId + '/';
 
         this.getUserDetails = function () {
@@ -7253,10 +7243,10 @@
     /*
       WelcomeCtrl
      */
-    WelcomeCtrl.$inject = ['$scope', 'lsgConfig', '$timeout'];
-    function WelcomeCtrl($scope, lsgConfig, $timeout) {
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout'];
+    function WelcomeCtrl($scope, $rootScope, $timeout) {
         var self = this;
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.tour;
         function tourActivate() {
             // BootstrapTour is not compatible with z-index based layout
@@ -7314,10 +7304,10 @@
     /*
      ArchivedRequestsCtrl
      */
-    ArchivedRequestsCtrl.$inject = ['$scope', '$q', '$filter', 'ngTableParams', 'lsgConfig', 'ArchivedRequestsService'];
-    function ArchivedRequestsCtrl($scope, $q, $filter, ngTableParams, lsgConfig, ArchivedRequestsService) {
+    ArchivedRequestsCtrl.$inject = ['$scope', '$q', '$filter', 'ngTableParams', '$rootScope', 'ArchivedRequestsService'];
+    function ArchivedRequestsCtrl($scope, $q, $filter, ngTableParams, $rootScope, ArchivedRequestsService) {
         var self = this;
-        self.user = lsgConfig.authenticatedUser;
+        self.user = $rootScope.user;
         self.archivedRequests = [];
         ArchivedRequestsService.getArchivedRequests().then(function (requests) {
             self.archivedRequests = requests;
@@ -7353,9 +7343,9 @@
         .module('app.archived')
         .service('ArchivedRequestsService', ArchivedRequestsService);
 
-    ArchivedRequestsService.$inject = ['$q', '$http', 'lsgConfig', 'RequestsService'];
-    function ArchivedRequestsService($q, $http, lsgConfig, RequestsService) {
-        var userId = lsgConfig.authenticatedUser.id;
+    ArchivedRequestsService.$inject = ['$q', '$http', '$rootScope', 'RequestsService'];
+    function ArchivedRequestsService($q, $http, $rootScope, RequestsService) {
+        var userId = $rootScope.user.id;
         var Request = RequestsService.Request;
 
         this.getArchivedRequests = function () {
