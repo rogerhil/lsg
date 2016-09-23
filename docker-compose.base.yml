@@ -8,8 +8,6 @@ web:
   links:
     - postgres:postgres
     - rabbitmq:rabbitmq
-  volumes:
-    - ./web/lsg:/app/lsg/
   volumes_from:
     - static
     - media

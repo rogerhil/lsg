@@ -24,10 +24,11 @@ class Scripting(models.Model):
     def days_not_updated(cls, kind='games'):
         o = cls.instance()
         now = datetime.now()
-        if not o.games_last_updated:
+        last_updated = getattr(o, '%s_last_updated' % kind, None)
+        if not last_updated:
             return
-        now = now.replace(tzinfo=getattr(o, '%s_last_updated' % kind).tzinfo)
-        delta = now - o.games_last_updated
+        now = now.replace(tzinfo=last_updated.tzinfo)
+        delta = now - last_updated
         return delta.days + 1
 
 
