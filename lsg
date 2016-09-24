@@ -14,12 +14,17 @@ elif [ "$1" = 'buildup' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml build
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
 
-elif [ "$1" = 'run' ]; then
+elif [ "$1" = 'rundev' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm --service-ports web devrun
 
-elif [ "$1" = 'runprod' ]; then
+elif [ "$1" = 'runnginx' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+
+elif [ "$1" = 'runnginxinit' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web init $(docker-machine ip dev)
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
 
 elif [ "$1" = 'shell' ]; then
@@ -42,7 +47,7 @@ elif [ "$1" = 'createsuperuser' ]; then
 
 else
     echo
-    echo "Usage: ./lsg init | buildup | run | shell | dbshell | webbash | celerybash | celeryrestart | createsuperuser"
+    echo "Usage: ./lsg (init | buildup | rundev | runnginx | runnginxinit | shell | dbshell | webbash | celerybash | celeryrestart | createsuperuser)"
     echo
 fi
 

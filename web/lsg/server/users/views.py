@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import RedirectView, FormView, View
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
+from django.core.exceptions import SuspiciousOperation
 from django.core.urlresolvers import reverse
 
 
@@ -25,4 +26,4 @@ class Done(RedirectView):
 class Forbidden(View):
 
     def get(self, *args, **kwargs):
-        return HttpResponseForbidden('aaaaaaa')
+        raise SuspiciousOperation

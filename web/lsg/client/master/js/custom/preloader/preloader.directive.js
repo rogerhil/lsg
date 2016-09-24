@@ -12,13 +12,43 @@
         var failedToGetUser = false;
 
         var locationChange = function (event, next, current) {
-            var splitted = next.split('#');
+            var currentSplitted = current.split('#');
+            var nextSplitted = next.split('#');
             var el = angular.element(".preloader-progress").parent();
-            if (splitted.length > 1 && (splitted[1] == '/500')) {
-                endCounter($rootScope, el);
-                return;
+            if (nextSplitted.length > 1) {
+                switch (nextSplitted[1]) {
+                    case '/500':
+                        $state.transitionTo("pages.500");
+                        endCounter($rootScope, el);
+                        return;
+                    case '/403':
+                        $state.transitionTo("pages.403");
+                        endCounter($rootScope, el);
+                        return;
+                    case '/400':
+                        $state.transitionTo("pages.400");
+                        endCounter($rootScope, el);
+                        return;
+                }
             }
-            if (splitted.length > 1 && splitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
+            if (currentSplitted.length > 1) {
+                switch (currentSplitted[1]) {
+                    case '/500':
+                        $state.transitionTo("pages.500");
+                        endCounter($rootScope, el);
+                        return;
+                    case '/403':
+                        $state.transitionTo("pages.403");
+                        endCounter($rootScope, el);
+                        return;
+                    case '/400':
+                        $state.transitionTo("pages.400");
+                        endCounter($rootScope, el);
+                        return;
+                }
+            }
+
+            if (nextSplitted.length > 1 && nextSplitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
             }
@@ -108,7 +138,7 @@
                         event.preventDefault();
                     }
                     failedToGetUser = true;
-                    redirectToSignInPage();
+                    //redirectToSignInPage();
                     q.reject();
                     return;
                 }
@@ -132,7 +162,6 @@
                 });
 
             }).error(function (response, status) {
-                console.log('Failed to get authenticated user');
                 if (status == 400) {
                     q.reject();
                     return;

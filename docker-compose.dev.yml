@@ -2,7 +2,6 @@ web:
   env_file: dev-env
   volumes:
     - ./web/lsg:/app/lsg/
-  command: devrun
 
 postgres:
   env_file: dev-env
