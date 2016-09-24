@@ -21,9 +21,3 @@ class Done(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         return "/app/#/app/welcome"
-
-
-class Forbidden(View):
-
-    def get(self, *args, **kwargs):
-        raise SuspiciousOperation
