@@ -21,7 +21,8 @@ if os.getenv('LSG_DB_NAME'):
     
     DEBUG = bool_env('LSG_DJANGO_DEBUG')
 
-    ALLOWED_HOSTS = ['letswapgames.com', 'letswapgames.ie', 'letswapgames.co.uk']
+    ALLOWED_HOSTS = ['letswapgames.com', 'letswapgames.ie', 'letswapgames.co.uk',
+                     'www.letswapgames.com', 'www.letswapgames.ie', 'www.letswapgames.co.uk']
 
     for host in os.getenv('LSG_ALLOWED_HOSTS', '').split(','):
         if host.strip():

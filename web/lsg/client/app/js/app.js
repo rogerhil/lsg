@@ -35,12 +35,6 @@
     'use strict';
 
     angular
-        .module('app.colors', []);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.core', [
             'ngRoute',
             'ngAnimate',
@@ -63,6 +57,12 @@
     'use strict';
 
     angular
+        .module('app.colors', []);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.lazyload', []);
 })();
 (function() {
@@ -75,7 +75,7 @@
     'use strict';
 
     angular
-        .module('app.maps', []);
+        .module('app.navsearch', []);
 })();
 (function() {
     'use strict';
@@ -89,13 +89,21 @@
     'use strict';
 
     angular
-        .module('app.navsearch', []);
+        .module('app.maps', []);
 })();
 (function() {
     'use strict';
 
     angular
         .module('app.notify', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.routes', [
+            'app.lazyload'
+        ]);
 })();
 (function() {
     'use strict';
@@ -109,21 +117,13 @@
     'use strict';
 
     angular
-        .module('app.routes', [
-            'app.lazyload'
-        ]);
+        .module('app.sidebar', []);
 })();
 (function() {
     'use strict';
 
     angular
         .module('app.settings', []);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.sidebar', []);
 })();
 (function() {
     'use strict';
@@ -138,56 +138,6 @@
         .module('app.utils', [
           'app.colors'
           ]);
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.colors')
-        .constant('APP_COLORS', {
-          'primary':                '#3F51B5',
-          'success':                '#4CAF50',
-          'info':                   '#2196F3',
-          'warning':                '#FF9800',
-          'danger':                 '#F44336',
-          'inverse':                '#607D8B',
-          'green':                  '#009688',
-          'pink':                   '#E91E63',
-          'purple':                 '#673AB7',
-          'dark':                   '#263238',
-          'yellow':                 '#FFEB3B',
-          'gray-darker':            '#232735',
-          'gray-dark':              '#3a3f51',
-          'gray':                   '#dde6e9',
-          'gray-light':             '#e4eaec',
-          'gray-lighter':           '#edf1f2'
-        })
-        ;
-})();
-/**=========================================================
- * Module: colors.js
- * Services to retrieve global colors
- =========================================================*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.colors')
-        .service('Colors', Colors);
-
-    Colors.$inject = ['APP_COLORS'];
-    function Colors(APP_COLORS) {
-        this.byName = byName;
-
-        ////////////////
-
-        function byName(name) {
-          return (APP_COLORS[name] || '#fff');
-        }
-    }
-
 })();
 
 (function() {
@@ -311,6 +261,56 @@
     'use strict';
 
     angular
+        .module('app.colors')
+        .constant('APP_COLORS', {
+          'primary':                '#3F51B5',
+          'success':                '#4CAF50',
+          'info':                   '#2196F3',
+          'warning':                '#FF9800',
+          'danger':                 '#F44336',
+          'inverse':                '#607D8B',
+          'green':                  '#009688',
+          'pink':                   '#E91E63',
+          'purple':                 '#673AB7',
+          'dark':                   '#263238',
+          'yellow':                 '#FFEB3B',
+          'gray-darker':            '#232735',
+          'gray-dark':              '#3a3f51',
+          'gray':                   '#dde6e9',
+          'gray-light':             '#e4eaec',
+          'gray-lighter':           '#edf1f2'
+        })
+        ;
+})();
+/**=========================================================
+ * Module: colors.js
+ * Services to retrieve global colors
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.colors')
+        .service('Colors', Colors);
+
+    Colors.$inject = ['APP_COLORS'];
+    function Colors(APP_COLORS) {
+        this.byName = byName;
+
+        ////////////////
+
+        function byName(name) {
+          return (APP_COLORS[name] || '#fff');
+        }
+    }
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
         .module('app.lazyload')
         .config(lazyloadConfig);
 
@@ -417,166 +417,110 @@
 
 })();
 /**=========================================================
- * Module: modals.js
- * Provides a simple way to implement bootstrap modals from templates
+ * Module: navbar-search.js
+ * Navbar search toggler * Auto dismiss on ESC key
  =========================================================*/
 
 (function() {
     'use strict';
 
     angular
-        .module('app.maps')
-        .controller('ModalGmapController', ModalGmapController);
+        .module('app.navsearch')
+        .directive('searchOpen', searchOpen)
+        .directive('searchDismiss', searchDismiss);
 
-    ModalGmapController.$inject = ['$uibModal'];
-    function ModalGmapController($uibModal) {
-        var vm = this;
+    //
+    // directives definition
+    // 
+    
+    function searchOpen () {
+        var directive = {
+            controller: searchOpenController,
+            restrict: 'A'
+        };
+        return directive;
 
-        activate();
+    }
 
-        ////////////////
+    function searchDismiss () {
+        var directive = {
+            controller: searchDismissController,
+            restrict: 'A'
+        };
+        return directive;
+        
+    }
 
-        function activate() {
+    //
+    // Contrller definition
+    // 
+    
+    searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
+    function searchOpenController ($scope, $element, NavSearch) {
+      $element
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('click', NavSearch.toggle);
+    }
 
-          vm.open = function (size) {
+    searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
+    function searchDismissController ($scope, $element, NavSearch) {
+      
+      var inputSelector = '.navbar-form input[type="text"]';
 
-            //var modalInstance =
-            $uibModal.open({
-              templateUrl: '/myModalContent.html',
-              controller: ModalInstanceCtrl,
-              size: size
-            });
-          };
-
-          // Please note that $uibModalInstance represents a modal window (instance) dependency.
-          // It is not the same as the $uibModal service used above.
-
-          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
-          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
-
-            $uibModalInstance.opened.then(function () {
-              var position = new google.maps.LatLng(33.790807, -117.835734);
-
-              $scope.mapOptionsModal = {
-                zoom: 14,
-                center: position,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-              };
-
-              // we use timeout to wait maps to be ready before add a markers
-              $timeout(function(){
-                // 1. Add a marker at the position it was initialized
-                new google.maps.Marker({
-                  map: $scope.myMapModal,
-                  position: position
-                });
-                // 2. Trigger a resize so the map is redrawed
-                google.maps.event.trigger($scope.myMapModal, 'resize');
-                // 3. Move to the center if it is misaligned
-                $scope.myMapModal.panTo(position);
-              });
-
-            });
-
-            $scope.ok = function () {
-              $uibModalInstance.close('closed');
-            };
-
-            $scope.cancel = function () {
-              $uibModalInstance.dismiss('cancel');
-            };
-
-          }
-
-        }
+      $(inputSelector)
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('keyup', function(e) {
+          if (e.keyCode === 27) // ESC
+            NavSearch.dismiss();
+        });
+        
+      // click anywhere closes the search
+      $(document).on('click', NavSearch.dismiss);
+      // dismissable options
+      $element
+        .on('click', function (e) { e.stopPropagation(); })
+        .on('click', NavSearch.dismiss);
     }
 
 })();
 
 
+/**=========================================================
+ * Module: nav-search.js
+ * Services to share navbar search functions
+ =========================================================*/
+
 (function() {
     'use strict';
 
     angular
-        .module('app.maps')
-        .controller('GMapController', GMapController);
+        .module('app.navsearch')
+        .service('NavSearch', NavSearch);
 
-    GMapController.$inject = ['$timeout'];
-    function GMapController($timeout) {
-        var vm = this;
-
-        activate();
+    function NavSearch() {
+        this.toggle = toggle;
+        this.dismiss = dismiss;
 
         ////////////////
 
-        function activate() {
-          var position = [
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.790807, -117.835734),
-              new google.maps.LatLng(33.787453, -117.835858)
-            ];
-          
-          vm.addMarker = addMarker;
-          // we use timeout to wait maps to be ready before add a markers
-          $timeout(function(){
-            addMarker(vm.myMap1, position[0]);
-            addMarker(vm.myMap2, position[1]);
-            addMarker(vm.myMap3, position[2]);
-            addMarker(vm.myMap5, position[3]);
-          });
+        var navbarFormSelector = 'form.navbar-form';
 
-          vm.mapOptions1 = {
-            zoom: 14,
-            center: position[0],
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
+        function toggle() {
+          var navbarForm = $(navbarFormSelector);
 
-          vm.mapOptions2 = {
-            zoom: 19,
-            center: position[1],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
+          navbarForm.toggleClass('open');
 
-          vm.mapOptions3 = {
-            zoom: 14,
-            center: position[2],
-            mapTypeId: google.maps.MapTypeId.SATELLITE
-          };
+          var isOpen = navbarForm.hasClass('open');
 
-          vm.mapOptions4 = {
-            zoom: 14,
-            center: position[3],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
+          navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
+        }
 
-          // for multiple markers
-          $timeout(function(){
-            addMarker(vm.myMap4, position[3]);
-            addMarker(vm.myMap4, position[4]);
-          });
-
-          // custom map style
-          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
-          vm.mapOptions5 = {
-            zoom: 14,
-            center: position[3],
-            styles: MapStyles,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
-          };
-
-          ///////////////
-          
-          function addMarker(map, position) {
-            return new google.maps.Marker({
-              map: map,
-              position: position
-            });
-          }
-
+        function dismiss() {
+          $(navbarFormSelector)
+            .removeClass('open') // Close control
+            .find('input[type="text"]').blur() // remove focus
+            // .val('') // Empty input
+            ;
         }
     }
 })();
@@ -1312,110 +1256,166 @@
     }
 })();
 /**=========================================================
- * Module: navbar-search.js
- * Navbar search toggler * Auto dismiss on ESC key
+ * Module: modals.js
+ * Provides a simple way to implement bootstrap modals from templates
  =========================================================*/
 
 (function() {
     'use strict';
 
     angular
-        .module('app.navsearch')
-        .directive('searchOpen', searchOpen)
-        .directive('searchDismiss', searchDismiss);
+        .module('app.maps')
+        .controller('ModalGmapController', ModalGmapController);
 
-    //
-    // directives definition
-    // 
-    
-    function searchOpen () {
-        var directive = {
-            controller: searchOpenController,
-            restrict: 'A'
-        };
-        return directive;
+    ModalGmapController.$inject = ['$uibModal'];
+    function ModalGmapController($uibModal) {
+        var vm = this;
 
-    }
+        activate();
 
-    function searchDismiss () {
-        var directive = {
-            controller: searchDismissController,
-            restrict: 'A'
-        };
-        return directive;
-        
-    }
+        ////////////////
 
-    //
-    // Contrller definition
-    // 
-    
-    searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchOpenController ($scope, $element, NavSearch) {
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.toggle);
-    }
+        function activate() {
 
-    searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchDismissController ($scope, $element, NavSearch) {
-      
-      var inputSelector = '.navbar-form input[type="text"]';
+          vm.open = function (size) {
 
-      $(inputSelector)
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('keyup', function(e) {
-          if (e.keyCode === 27) // ESC
-            NavSearch.dismiss();
-        });
-        
-      // click anywhere closes the search
-      $(document).on('click', NavSearch.dismiss);
-      // dismissable options
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.dismiss);
+            //var modalInstance =
+            $uibModal.open({
+              templateUrl: '/myModalContent.html',
+              controller: ModalInstanceCtrl,
+              size: size
+            });
+          };
+
+          // Please note that $uibModalInstance represents a modal window (instance) dependency.
+          // It is not the same as the $uibModal service used above.
+
+          ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout'];
+          function ModalInstanceCtrl($scope, $uibModalInstance, $timeout) {
+
+            $uibModalInstance.opened.then(function () {
+              var position = new google.maps.LatLng(33.790807, -117.835734);
+
+              $scope.mapOptionsModal = {
+                zoom: 14,
+                center: position,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+
+              // we use timeout to wait maps to be ready before add a markers
+              $timeout(function(){
+                // 1. Add a marker at the position it was initialized
+                new google.maps.Marker({
+                  map: $scope.myMapModal,
+                  position: position
+                });
+                // 2. Trigger a resize so the map is redrawed
+                google.maps.event.trigger($scope.myMapModal, 'resize');
+                // 3. Move to the center if it is misaligned
+                $scope.myMapModal.panTo(position);
+              });
+
+            });
+
+            $scope.ok = function () {
+              $uibModalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+          }
+
+        }
     }
 
 })();
 
 
-/**=========================================================
- * Module: nav-search.js
- * Services to share navbar search functions
- =========================================================*/
-
 (function() {
     'use strict';
 
     angular
-        .module('app.navsearch')
-        .service('NavSearch', NavSearch);
+        .module('app.maps')
+        .controller('GMapController', GMapController);
 
-    function NavSearch() {
-        this.toggle = toggle;
-        this.dismiss = dismiss;
+    GMapController.$inject = ['$timeout'];
+    function GMapController($timeout) {
+        var vm = this;
+
+        activate();
 
         ////////////////
 
-        var navbarFormSelector = 'form.navbar-form';
+        function activate() {
+          var position = [
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.790807, -117.835734),
+              new google.maps.LatLng(33.787453, -117.835858)
+            ];
+          
+          vm.addMarker = addMarker;
+          // we use timeout to wait maps to be ready before add a markers
+          $timeout(function(){
+            addMarker(vm.myMap1, position[0]);
+            addMarker(vm.myMap2, position[1]);
+            addMarker(vm.myMap3, position[2]);
+            addMarker(vm.myMap5, position[3]);
+          });
 
-        function toggle() {
-          var navbarForm = $(navbarFormSelector);
+          vm.mapOptions1 = {
+            zoom: 14,
+            center: position[0],
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
 
-          navbarForm.toggleClass('open');
+          vm.mapOptions2 = {
+            zoom: 19,
+            center: position[1],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
 
-          var isOpen = navbarForm.hasClass('open');
+          vm.mapOptions3 = {
+            zoom: 14,
+            center: position[2],
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+          };
 
-          navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
-        }
+          vm.mapOptions4 = {
+            zoom: 14,
+            center: position[3],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
 
-        function dismiss() {
-          $(navbarFormSelector)
-            .removeClass('open') // Close control
-            .find('input[type="text"]').blur() // remove focus
-            // .val('') // Empty input
-            ;
+          // for multiple markers
+          $timeout(function(){
+            addMarker(vm.myMap4, position[3]);
+            addMarker(vm.myMap4, position[4]);
+          });
+
+          // custom map style
+          var MapStyles = [{'featureType':'water','stylers':[{'visibility':'on'},{'color':'#bdd1f9'}]},{'featureType':'all','elementType':'labels.text.fill','stylers':[{'color':'#334165'}]},{featureType:'landscape',stylers:[{color:'#e9ebf1'}]},{featureType:'road.highway',elementType:'geometry',stylers:[{color:'#c5c6c6'}]},{featureType:'road.arterial',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'road.local',elementType:'geometry',stylers:[{color:'#fff'}]},{featureType:'transit',elementType:'geometry',stylers:[{color:'#d8dbe0'}]},{featureType:'poi',elementType:'geometry',stylers:[{color:'#cfd5e0'}]},{featureType:'administrative',stylers:[{visibility:'on'},{lightness:33}]},{featureType:'poi.park',elementType:'labels',stylers:[{visibility:'on'},{lightness:20}]},{featureType:'road',stylers:[{color:'#d8dbe0',lightness:20}]}];
+          vm.mapOptions5 = {
+            zoom: 14,
+            center: position[3],
+            styles: MapStyles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
+          };
+
+          ///////////////
+          
+          function addMarker(map, position) {
+            return new google.maps.Marker({
+              map: map,
+              position: position
+            });
+          }
+
         }
     }
 })();
@@ -1636,99 +1636,6 @@
     return notify;
 }(jQuery));
 
-(function() {
-    'use strict';
-
-    angular
-        .module('app.preloader')
-        .directive('preloader', preloader);
-
-    preloader.$inject = ['$animate', '$timeout', '$q'];
-    function preloader ($animate, $timeout, $q) {
-
-        var directive = {
-            restrict: 'EAC',
-            template:
-              '<div class="preloader-progress">' +
-                  '<div class="preloader-progress-bar" ' +
-                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
-              '</div>'
-            ,
-            link: link
-        };
-        return directive;
-
-        ///////
-
-        function link(scope, el) {
-
-          scope.loadCounter = 0;
-
-          var counter  = 0,
-              timeout;
-
-          // disables scrollbar
-          angular.element('body').css('overflow', 'hidden');
-          // ensure class is present for styling
-          el.addClass('preloader');
-
-          appReady().then(endCounter);
-
-          timeout = $timeout(startCounter);
-
-          ///////
-
-          function startCounter() {
-
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
-
-            scope.loadCounter = parseInt(counter, 10);
-
-            timeout = $timeout(startCounter, 20);
-          }
-
-          function endCounter() {
-
-            $timeout.cancel(timeout);
-
-            scope.loadCounter = 100;
-
-            $timeout(function(){
-              // animate preloader hiding
-              $animate.addClass(el, 'preloader-hidden');
-              // retore scrollbar
-              angular.element('body').css('overflow', '');
-            }, 300);
-          }
-
-          function appReady() {
-            var deferred = $q.defer();
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-              viewsLoaded ++;
-              // we know there are at least two views to be loaded
-              // before the app is ready (1-index.html 2-app*.html)
-              if ( viewsLoaded === 2) {
-                // with resolve this fires only once
-                $timeout(function(){
-                  deferred.resolve();
-                }, 3000);
-
-                off();
-              }
-
-            });
-
-            return deferred.promise;
-          }
-
-        } //link
-    }
-
-})();
 /**=========================================================
  * Module: helpers.js
  * Provides helper functions for routes definition
@@ -1922,75 +1829,95 @@
     'use strict';
 
     angular
-        .module('app.settings')
-        .run(settingsRun);
+        .module('app.preloader')
+        .directive('preloader', preloader);
 
-    settingsRun.$inject = ['$rootScope', '$localStorage'];
+    preloader.$inject = ['$animate', '$timeout', '$q'];
+    function preloader ($animate, $timeout, $q) {
 
-    function settingsRun($rootScope, $localStorage){
+        var directive = {
+            restrict: 'EAC',
+            template:
+              '<div class="preloader-progress">' +
+                  '<div class="preloader-progress-bar" ' +
+                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
+              '</div>'
+            ,
+            link: link
+        };
+        return directive;
 
+        ///////
 
-      // User Settings
-      // -----------------------------------
-      $rootScope.user = {
-        name:     'John',
-        job:      'ng-developer',
-        picture:  'app/img/user/02.jpg'
-      };
+        function link(scope, el) {
 
-      // Hides/show user avatar on sidebar from any element
-      $rootScope.toggleUserBlock = function(){
-        $rootScope.$broadcast('toggleUserBlock');
-      };
+          scope.loadCounter = 0;
 
-      // Global Settings
-      // -----------------------------------
-      $rootScope.app = {
-        name: 'Angle',
-        description: 'Angular Bootstrap Admin Template',
-        year: ((new Date()).getFullYear()),
-        layout: {
-          isFixed: true,
-          isCollapsed: false,
-          isBoxed: false,
-          isRTL: false,
-          horizontal: false,
-          isFloat: false,
-          asideHover: false,
-          theme: null,
-          asideScrollbar: false,
-          isCollapsedText: false
-        },
-        useFullLayout: false,
-        hiddenFooter: false,
-        offsidebarOpen: false,
-        asideToggled: false,
-        viewAnimation: 'ng-fadeInUp'
-      };
+          var counter  = 0,
+              timeout;
 
-      // Setup the layout mode
-      $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
+          // disables scrollbar
+          angular.element('body').css('overflow', 'hidden');
+          // ensure class is present for styling
+          el.addClass('preloader');
 
-      // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
-      // if( angular.isDefined($localStorage.layout) )
-      //   $rootScope.app.layout = $localStorage.layout;
-      // else
-      //   $localStorage.layout = $rootScope.app.layout;
-      //
-      // $rootScope.$watch('app.layout', function () {
-      //   $localStorage.layout = $rootScope.app.layout;
-      // }, true);
+          appReady().then(endCounter);
 
-      // Close submenu when sidebar change from collapsed to normal
-      $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
-        if( newValue === false )
-          $rootScope.$broadcast('closeSidebarMenu');
-      });
+          timeout = $timeout(startCounter);
 
+          ///////
+
+          function startCounter() {
+
+            var remaining = 100 - counter;
+            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+
+            scope.loadCounter = parseInt(counter, 10);
+
+            timeout = $timeout(startCounter, 20);
+          }
+
+          function endCounter() {
+
+            $timeout.cancel(timeout);
+
+            scope.loadCounter = 100;
+
+            $timeout(function(){
+              // animate preloader hiding
+              $animate.addClass(el, 'preloader-hidden');
+              // retore scrollbar
+              angular.element('body').css('overflow', '');
+            }, 300);
+          }
+
+          function appReady() {
+            var deferred = $q.defer();
+            var viewsLoaded = 0;
+            // if this doesn't sync with the real app ready
+            // a custom event must be used instead
+            var off = scope.$on('$viewContentLoaded', function () {
+              viewsLoaded ++;
+              // we know there are at least two views to be loaded
+              // before the app is ready (1-index.html 2-app*.html)
+              if ( viewsLoaded === 2) {
+                // with resolve this fires only once
+                $timeout(function(){
+                  deferred.resolve();
+                }, 3000);
+
+                off();
+              }
+
+            });
+
+            return deferred.promise;
+          }
+
+        } //link
     }
 
 })();
-
 /**=========================================================
  * Module: sidebar-menu.js
  * Handle sidebar collapsible elements
@@ -2350,6 +2277,79 @@
           $scope.$on('$destroy', detach);
         }
     }
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.settings')
+        .run(settingsRun);
+
+    settingsRun.$inject = ['$rootScope', '$localStorage'];
+
+    function settingsRun($rootScope, $localStorage){
+
+
+      // User Settings
+      // -----------------------------------
+      $rootScope.user = {
+        name:     'John',
+        job:      'ng-developer',
+        picture:  'app/img/user/02.jpg'
+      };
+
+      // Hides/show user avatar on sidebar from any element
+      $rootScope.toggleUserBlock = function(){
+        $rootScope.$broadcast('toggleUserBlock');
+      };
+
+      // Global Settings
+      // -----------------------------------
+      $rootScope.app = {
+        name: 'Angle',
+        description: 'Angular Bootstrap Admin Template',
+        year: ((new Date()).getFullYear()),
+        layout: {
+          isFixed: true,
+          isCollapsed: false,
+          isBoxed: false,
+          isRTL: false,
+          horizontal: false,
+          isFloat: false,
+          asideHover: false,
+          theme: null,
+          asideScrollbar: false,
+          isCollapsedText: false
+        },
+        useFullLayout: false,
+        hiddenFooter: false,
+        offsidebarOpen: false,
+        asideToggled: false,
+        viewAnimation: 'ng-fadeInUp'
+      };
+
+      // Setup the layout mode
+      $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
+
+      // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
+      // if( angular.isDefined($localStorage.layout) )
+      //   $rootScope.app.layout = $localStorage.layout;
+      // else
+      //   $localStorage.layout = $rootScope.app.layout;
+      //
+      // $rootScope.$watch('app.layout', function () {
+      //   $localStorage.layout = $rootScope.app.layout;
+      // }, true);
+
+      // Close submenu when sidebar change from collapsed to normal
+      $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
+        if( newValue === false )
+          $rootScope.$broadcast('closeSidebarMenu');
+      });
+
+    }
+
 })();
 
 (function() {
@@ -3011,20 +3011,20 @@
     'use strict';
 
     angular
-        .module('app.users', [
-            'ngMaterial',
-            'angular-ui-mask'
-          ]);
-})();
-(function() {
-    'use strict';
-
-    angular
         .module('app.welcome', [
             'ngMaterial'
           ]);
 })();
 
+(function() {
+    'use strict';
+
+    angular
+        .module('app.users', [
+            'ngMaterial',
+            'angular-ui-mask'
+          ]);
+})();
 
 // To run this code, edit file index.html or index.jade and change
 // html data-ng-app attribute from angle to myAppName
@@ -6820,6 +6820,68 @@
     'use strict';
 
     angular
+        .module('app.welcome', ['ngAnimate'])
+        .controller('WelcomeCtrl', WelcomeCtrl)
+        ;
+
+    /*
+      WelcomeCtrl
+     */
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout'];
+    function WelcomeCtrl($scope, $rootScope, $timeout) {
+        var self = this;
+        self.user = $rootScope.user;
+        self.tour;
+        function tourActivate() {
+            // BootstrapTour is not compatible with z-index based layout
+            // so adding position:static for this case makes the browser
+            // to ignore the property
+            var section = angular.element('.wrapper > section');
+            section.css({'position': 'static'});
+            // finally restore on destroy and reuse the value declared in stylesheet
+            $scope.$on('$destroy', function(){
+                section.css({'position': ''});
+            });
+            var tour = new Tour({
+                backdrop: true,
+                backdropPadding: 'anything',
+                template: "" +
+                    "<div class='popover tour'>" +
+                    "  <div class='arrow'></div>" +
+                    "  <h3 class='popover-title'></h3>" +
+                    "  <div class='popover-content'></div>" +
+                    "  <div class='popover-navigation'>" +
+                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
+                    "  </div>" +
+                    "</div>",
+                steps: [
+                {
+                    element: ".row.md-welcome-row .profile-col",
+                    title: "Update your profile now!",
+                    content: "Please update your profile giving your address " +
+                             "and the game platforms you have.",
+                    placement: 'top'
+                }
+            ]});
+            tour.init();
+            tour.start();
+            tour.restart(true);
+            self.tour = tour;
+        }
+        if (!self.user.address.latitude || !self.user.address.longitude) {
+            $timeout(tourActivate, 3000);
+        }
+
+
+    }
+
+})();
+
+
+(function() {
+    'use strict';
+
+    angular
         .module('app.users', ['ngAnimate'])
         .controller('UsersCtrl', UsersCtrl)
         .controller('ChangePictureDialogCtrl', ChangePictureDialogCtrl)
@@ -7229,68 +7291,6 @@
             return q.promise;
         };
     }
-})();
-
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.welcome', ['ngAnimate'])
-        .controller('WelcomeCtrl', WelcomeCtrl)
-        ;
-
-    /*
-      WelcomeCtrl
-     */
-    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout'];
-    function WelcomeCtrl($scope, $rootScope, $timeout) {
-        var self = this;
-        self.user = $rootScope.user;
-        self.tour;
-        function tourActivate() {
-            // BootstrapTour is not compatible with z-index based layout
-            // so adding position:static for this case makes the browser
-            // to ignore the property
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
-                section.css({'position': ''});
-            });
-            var tour = new Tour({
-                backdrop: true,
-                backdropPadding: 'anything',
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <h3 class='popover-title'></h3>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
-                    "</div>",
-                steps: [
-                {
-                    element: ".row.md-welcome-row .profile-col",
-                    title: "Update your profile now!",
-                    content: "Please update your profile giving your address " +
-                             "and the game platforms you have.",
-                    placement: 'top'
-                }
-            ]});
-            tour.init();
-            tour.start();
-            tour.restart(true);
-            self.tour = tour;
-        }
-        if (!self.user.address.latitude || !self.user.address.longitude) {
-            $timeout(tourActivate, 3000);
-        }
-
-
-    }
-
 })();
 
 (function () {
