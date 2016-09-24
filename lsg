@@ -18,6 +18,10 @@ elif [ "$1" = 'run' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm --service-ports web devrun
 
+elif [ "$1" = 'runprod' ]; then
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
+    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+
 elif [ "$1" = 'shell' ]; then
     docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web shell
 

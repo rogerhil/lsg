@@ -26,7 +26,7 @@ from rest_framework_nested import routers
 from mail.views import SwapRequestEmailPreview
 from scripts.views import CeleryTaskLog, WatchCeleryTask, StopCeleryTask, \
     KillCeleryTask
-from users.views import Logout, Done
+from users.views import Logout, Done, Forbidden
 from games.api.views import GameViewSet, PlatformViewSet
 from users.api.views import UsersViewSet, CollectionItemViewSet, \
     WishlistViewSet, AuthenticatedUserView
@@ -47,9 +47,9 @@ users_router.register('requests', AllRequestsViewSet)
 router.register('games', GameViewSet)
 router.register('platforms', PlatformViewSet)
 
-handler500 = RedirectView.as_view(url='/app/#/500')
-handler400 = RedirectView.as_view(url='/app/#/400')
-handler403 = RedirectView.as_view(url='/app/#/403')
+#handler500 = RedirectView.as_view(url='/app/#/500')
+#handler400 = RedirectView.as_view(url='/app/#/400')
+#handler403 = RedirectView.as_view(url='/app/#/403')
 
 urlpatterns = [
     url(r'^admin/scripts/celerytask/(?P<pk>\d+)/watch/$',
@@ -69,6 +69,8 @@ urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^done/$', Done.as_view(), name='done'),
     url(r'^logout/$', Logout.as_view(), name='logout'),
+
+    #url(r'^forb/$', Forbidden.as_view()),
 
     url(r'^mail/swap-request/(?P<template_name>[\w\-]+)/preview/',
         s(SwapRequestEmailPreview.as_view()),
