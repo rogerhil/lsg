@@ -66,6 +66,16 @@
                 title: 'Oh! Something went wrong',
                 templateUrl: 'app/views/pages/500.html'
             })
+            .state('pages.400', {
+                url: '/400',
+                title: 'Oh! Bad request',
+                templateUrl: 'app/views/pages/400.html'
+            })
+            .state('pages.403', {
+                url: '/403',
+                title: 'Forbidden!',
+                templateUrl: 'app/views/pages/403.html'
+            })
             //
             // Material
             // -----------------------------------
@@ -104,50 +114,6 @@
                 templateUrl: helper.basepath('requests/archived/main.html'),
                 resolve: helper.resolveFor('ngTable')
             })
-
-            .state('app.cards', {
-                url: '/cards',
-                title: 'Material Cards',
-                templateUrl: helper.basepath('material.cards.html')
-            })
-            .state('app.forms', {
-                url: '/forms',
-                title: 'Material Forms',
-                templateUrl: helper.basepath('material.forms.html')
-            })
-            .state('app.whiteframe', {
-                url: '/whiteframe',
-                title: 'Material Whiteframe',
-                templateUrl: helper.basepath('material.whiteframe.html')
-            })
-            .state('app.matcolors', {
-                url: '/matcolors',
-                title: 'Material Colors',
-                templateUrl: helper.basepath('material.colors.html')
-            })
-            .state('app.lists', {
-                url: '/lists',
-                title: 'Material Lists',
-                templateUrl: helper.basepath('material.lists.html')
-            })
-            .state('app.inputs', {
-                url: '/inputs',
-                title: 'Material Inputs',
-                templateUrl: helper.basepath('material.inputs.html')
-            })
-            .state('app.matwidgets', {
-                url: '/matwidgets',
-                title: 'Material Widgets',
-                templateUrl: helper.basepath('material.widgets.html'),
-                resolve: helper.resolveFor('weather-icons', 'loadGoogleMapsJS', function () {
-                    return loadGoogleMaps();
-                }, 'ui.map')
-            })
-            .state('app.ngmaterial', {
-                url: '/ngmaterial',
-                title: 'ngMaterial',
-                templateUrl: helper.basepath('material.ngmaterial.html')
-            });
 
         //
         // CUSTOM RESOLVES

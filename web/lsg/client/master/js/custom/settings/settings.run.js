@@ -18,7 +18,7 @@
         // -----------------------------------
         $rootScope.app = {
             name: "Let'SwapGames",
-            description: 'FREE FOR LIFE, FOR GAMERS BY GAMERS',
+            description: 'Free for life, for gamers by gamers',
             year: ((new Date()).getFullYear()),
             layout: {
                 isFixed: true,

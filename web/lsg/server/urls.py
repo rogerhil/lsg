@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include, static
 from django.contrib import admin
 from django.views.static import serve as static_serve
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -47,6 +47,9 @@ users_router.register('requests', AllRequestsViewSet)
 router.register('games', GameViewSet)
 router.register('platforms', PlatformViewSet)
 
+handler500 = RedirectView.as_view(url='/app/#/500')
+handler400 = RedirectView.as_view(url='/app/#/400')
+handler403 = RedirectView.as_view(url='/app/#/403')
 
 urlpatterns = [
     url(r'^admin/scripts/celerytask/(?P<pk>\d+)/watch/$',

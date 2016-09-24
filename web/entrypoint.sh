@@ -17,9 +17,11 @@ elif [ "$1" = 'init' ]; then
     python manage.py migrate
     echo Loading WorldBorder database
     python world/load.py
+    echo Creating Django Sites
     if [ -n "$2" ]; then
-       echo Creating Django Site $2
        python create-site.py $2
+    else
+       python create-site.py
     fi
     if [ "$LSG_DJANGO_DEBUG" = 'true' ]; then
         echo Debug mode        
