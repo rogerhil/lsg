@@ -12,6 +12,13 @@ production-env
 node_modules/
 bower_components/
 
+# Compiled frontend files
+web/lsg/client/app/css/
+web/lsg/client/app/js/
+web/lsg/client/app/views/
+web/lsg/client/index.html
+web/lsg/client/vendor/
+
 __pycache__/
 *.py[cod]
 
