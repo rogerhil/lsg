@@ -1,9 +1,5 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import RedirectView, FormView, View
-from django.http import HttpResponseForbidden, Http404
-from django.core.exceptions import SuspiciousOperation
-from django.core.urlresolvers import reverse
+from django.contrib.auth import logout
+from django.views.generic import RedirectView
 
 
 class Logout(RedirectView):

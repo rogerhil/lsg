@@ -143,6 +143,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_APP_URL = '/app/'
+
 STATIC_ROOT = '/app/static'
 
 
