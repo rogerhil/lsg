@@ -1,49 +1,57 @@
 #!/bin/bash
 
+if [ -z "$DOCKER_COMPOSE_ENV" ]; then
+    DOCKER_COMPOSE_ENV='docker-compose.dev.yml'
+fi
+
+echo "***********************************************************************"
+echo "*******      Using docker compose: $DOCKER_COMPOSE_ENV      ********"
+echo "***********************************************************************"
+
 if [ "$1" = 'init' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml build
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web init $(docker-machine ip dev)
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web createsuperuser
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev)
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
 elif [ "$1" = 'buildup' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop celery
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml rm web
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml rm celery
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml build
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm celery
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'rundev' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm --service-ports web devrun
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm --service-ports web devrun
 
 elif [ "$1" = 'runnginx' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'runnginxinit' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop web
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web init $(docker-machine ip dev)
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d --no-recreate
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev)
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'shell' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web shell
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web shell
 
 elif [ "$1" = 'dbshell' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web dbshell
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web dbshell
 
 elif [ "$1" = 'webbash' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml exec web bash
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV exec web bash
 
 elif [ "$1" = 'celerybash' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml exec celery bash
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV exec celery bash
 
 elif [ "$1" = 'celeryrestart' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml restart celery
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV restart celery
 
 elif [ "$1" = 'createsuperuser' ]; then
-    docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml run --rm web createsuperuser
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
 else
     echo
