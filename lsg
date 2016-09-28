@@ -41,6 +41,9 @@ elif [ "$1" = 'shell' ]; then
 elif [ "$1" = 'dbshell' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web dbshell
 
+elif [ "$1" = 'webbashrun' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web bash
+
 elif [ "$1" = 'webbash' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV exec web bash
 
@@ -53,9 +56,16 @@ elif [ "$1" = 'celeryrestart' ]; then
 elif [ "$1" = 'createsuperuser' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
+elif [ "$1" = 'setupelx' ]; then
+    docker-machine stop dev
+    VBoxManage sharedfolder add dev --name "erogehi" --hostpath "/home/erogehi/"
+    docker-machine start dev
+    docker-machine ssh dev 'sudo mkdir --parents /home/erogehi'
+    docker-machine ssh dev 'sudo mount -t vboxsf userhome /home/erogehi'
+    
 else
     echo
-    echo "Usage: ./lsg (init | buildup | rundev | runnginx | runnginxinit | shell | dbshell | webbash | celerybash | celeryrestart | createsuperuser)"
+    echo "Usage: ./lsg (init | buildup | rundev | runnginx | runnginxinit | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | createsuperuser | setupelx)"
     echo
 fi
 
