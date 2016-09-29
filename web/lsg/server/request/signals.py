@@ -61,15 +61,15 @@ def check_unique_requests(sender, instance=None, **kwargs):
     statuses = [Status.ongoing, Status.finalizing]
     if swap_request.id:
         return
+    msg = 'Can\'t create a request as there is already an ' \
+          'ongoing/finalizing request involving the game "%s".'
     count = SwapRequest.objects.filter(
         requester=swap_request.requester,
         requester_game=swap_request.requester_game,
         status__in=statuses
     ).count()
     if count:
-        raise StatusException('Can\'t create a request as there is already an '
-                              'ongoing/finalizing request involving the game '
-                              '"%s".' % swap_request.requester_game)
+        raise StatusException(msg % swap_request.requester_game)
 
     count = SwapRequest.objects.filter(
         requested=swap_request.requested,
@@ -77,9 +77,20 @@ def check_unique_requests(sender, instance=None, **kwargs):
         status__in=statuses
     ).count()
     if count:
-        raise StatusException('Can\'t create a request as there is already an '
-                              'ongoing/finalizing request involving the game '
-                              '"%s".' % swap_request.requested_game)
+        raise StatusException(msg % swap_request.requested_game)
+
+    count = SwapRequest.objects.filter(
+        requester=swap_request.requester,
+        requester_game=swap_request.requester_game,
+        requested=swap_request.requested,
+        requested_game=swap_request.requested_game,
+        status=Status.pending
+    ).count()
+
+    if count:
+        raise StatusException('Can\'t create a request as there is already a '
+                              'pending request involving the game "%s".' %
+                              swap_request.requester_game)
 
 
 @receiver(post_save, sender=SwapRequest)

@@ -31,6 +31,15 @@ NOTE: Get the ip using the command below to access through the browser:
 $ docker-machine ip dev
 
 
+## Tunneling ports to use smtp server
+ssh -L 3033:smtp.webfaction.com:587 root@178.62.58.228
+
+Then, run the folloing for testing:
+telnet smtp.webfaction.com 587
+
+Type "quit" to exit telnet.
+
+
 ###### PRODUCTION
 
 ## Create docker-machine in local host from digital ocean (178.62.58.228)
