@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from django.template import Context
 from django.core.mail import EmailMultiAlternatives
@@ -61,12 +62,14 @@ class MailBuilder(object):
     def swap_expire_notification(swap_request, days):
         subject = 'Game request swap expiring in %(days)s days'
         user = swap_request.requester
+        other_user = swap_request.requested
         emails = [user.email]
-        context = dict(swap_request=swap_request, user=user, days=days)
+        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days)
         sender1 = Sender(subject, 'swap-expire-notification', context, emails)
         user = swap_request.requested
+        other_user = swap_request.requester
         emails = [user.email]
-        context = dict(swap_request=swap_request, user=user, days=days)
+        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days)
         sender2 = Sender(subject, 'swap-expire-notification', context, emails)
         return SenderGroup(sender1, sender2)
 
@@ -85,7 +88,13 @@ class Sender(object):
     def _render(self):
         subject = self.subject % self.context
         template = get_template('mail/emails/%s.html' % self.template_name)
-        context = Context(self.context)
+        if settings.LOCAL_DEV:
+            site = Site.objects.get(domain='lsg.com')
+        else:
+            site = Site.objects.get(domain='letswapgames.com')
+        base_context = {'site': site}
+        base_context.update(self.context)
+        context = Context(base_context)
         return subject, template.render(context)
 
     def send(self):

@@ -83,13 +83,24 @@
                     var states = $state.get();
                     var state;
                     var matchedState;
+                    var toParams = {};
                     for (var k = 0; k < states.length; k++) {
                         state = states[k];
                         if (!state.$$state) continue;
                         var privatePortion = state.$$state();
-                        var match = privatePortion.url.exec(sref.split('#')[1]);
+                        var split = sref.split('#')[1].split('?');
+                        var u = split[0];
+                        toParams = {};
+                        var match = privatePortion.url.exec(u);
                         if (match) {
                             matchedState = state;
+                            if (split.length > 1) {
+                                var qs = split[1].split('&');
+                                for (var k = 0; k < qs.length; k++) {
+                                    var keyValue = qs[k].split('=');
+                                    toParams[keyValue[0]] = decodeURI(keyValue[1]);
+                                }
+                            }
                             break
                         }
                     }
@@ -97,7 +108,7 @@
                         if (matchedState.name == 'pages.signIn') {
                             $state.transitionTo("app.welcome");
                         } else {
-                            $state.transitionTo(matchedState.name);
+                            $state.transitionTo(matchedState.name, toParams);
                         }
                     } else {
                         $state.transitionTo("app.welcome");

@@ -1,23 +1,15 @@
-{% load static %}
+{% extends "mail/emails/base.html" %}
 
-<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+{% block body %}
+    <h2>Hello {{ swap_request.requester }},</h2>
 
-<h2>Hello {{ swap_request.requester }},</h2>
+    <p>
+        The swap requested at {{ swap_request.created }} was refused by the user
+        {{ swap_request.requested }} at Let'Swap Games.
+    </p>
 
-<p>
-    The swap requested at {{ swap_request.created }} was refused by the user
-    {{ swap_request.requested }} at Let'Swap Games.
-</p>
-
-<p>
-    You have offered your game "{{ swap_request.requester_game }}" to
-    be swapped with the game "{{ swap_request.requested_game }}".
-</p>
-
-<p>
-    Regards,
-</p>
-
-<p>
-    Let'Swap Games
-</p>
+    <p>
+        You have offered your game "{{ swap_request.requester_game }}" to
+        be swapped with the game "{{ swap_request.requested_game }}".
+    </p>
+{% endblock %}

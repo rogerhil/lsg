@@ -266,7 +266,7 @@ class User(AbstractUser):
         for game_collection in games_collections:
             user = game_collection.user
             user.address = qs.get(id=user.address.id)
-            if not user.address.distance:
+            if user.address.distance is None:
                 logger.error("Error while trying to find matches for user %s. "
                              "User %s doesn't have distance information: %s" %
                              (self, user, user.address))

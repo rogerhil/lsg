@@ -11,7 +11,7 @@ echo "***********************************************************************"
 if [ "$1" = 'init' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev)
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev),lsg.com
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
 elif [ "$1" = 'buildup' ]; then

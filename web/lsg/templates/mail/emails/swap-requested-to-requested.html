@@ -1,23 +1,15 @@
-{% load static %}
+{% extends "mail/emails/base.html" %}
 
-<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+{% block body %}
+    <h2>Hello {{ swap_request.requested }},</h2>
 
-<h2>Hello {{ swap_request.requested }},</h2>
+    <p>
+        Your game "{{ swap_request.requested_game }}" was requested to be
+        swapped with the game "{{ swap_request.requester_game }}" by the
+        user {{ swap_request.requester }} at Let'Swap Games.
+    </p>
 
-<p>
-    Your game "{{ swap_request.requested_game }}" was requested to be
-    swapped with the game "{{ swap_request.requester_game }}" by the
-    user {{ swap_request.requester }} at Let'Swap Games.
-</p>
-
-<p>
-    <a href="http://lsg.com/app/#/app/requests">Go check the request by clicking here.</a>
-</p>
-
-<p>
-    Regards,
-</p>
-
-<p>
-    Let'Swap Games
-</p>
+    <p>
+        <a href="http://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=You+can+accept+or+refuse+this+swap+request.">Go check the request by clicking here.</a>
+    </p>
+{% endblock %}

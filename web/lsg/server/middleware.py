@@ -17,6 +17,7 @@ class RedirectFallbackMiddleware(object):
         # the view (and later middleware) are called.
 
         response = self.get_response(request)
+        #return response
         if request.path.startswith(settings.STATIC_URL) or \
            self.app_static_regex.match(request.path):
             return response

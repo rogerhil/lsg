@@ -1,24 +1,16 @@
-{% load static %}
+{% extends "mail/emails/base.html" %}
 
-<h1><img src="{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+{% block body %}
+    <h2>Hello {{ user }},</h2>
 
-<h2>Hello {{ user }},</h2>
+    <p>
+        You still have a swap request ongoing at Let'Swap Games and it will expire
+        in {{ days }} days and it will consider that your negotiation didn't
+        succeed and you will be given a neutral feedback note.
+    </p>
 
-<p>
-    You still have a swap request ongoing at Let'Swap Games and it will expire
-    in {{ days }} days and it will consider that your negotiation didn't
-    succeed and you will be given a neutral feedback note.
-</p>
-
-<p>
-    Please <a href="http://lsg.com/app/#/app/requests">click here</a> to
-    finalize this request and give the other user a feedback note.
-</p>
-
-<p>
-    Regards,
-</p>
-
-<p>
-    Let'Swap Games
-</p>
+    <p>
+        Please <a href="http://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=Please+finalize+this+request+and+give+{{ other_user }}+a+feedback+note.">click here</a> to
+        finalize this request and give {{ other_user }} a feedback note.
+    </p>
+{% endblock %}

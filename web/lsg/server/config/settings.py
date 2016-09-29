@@ -347,6 +347,7 @@ SUPPORTED_PLATFORMS = [
     'Super Nintendo (SNES)'
 ]
 
+LOCAL_DEV = True
 
 from config.dockersettings import *
 

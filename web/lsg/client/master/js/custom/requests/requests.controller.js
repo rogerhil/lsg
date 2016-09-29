@@ -34,7 +34,7 @@
                 self.myRequests = requests;
                 $timeout(function () {
                     self.highlightRequest();
-                }, 1000);
+                }, 2000);
             });
         };
 
@@ -43,7 +43,7 @@
                 self.incomingRequests = requests;
                 $timeout(function () {
                     self.highlightRequest();
-                }, 1000);
+                }, 2000);
             });
         };
 
