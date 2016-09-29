@@ -35,6 +35,10 @@ elif [ "$1" = 'update' ]; then
     python manage.py migrate
     python manage.py collectstatic
 
+elif [ "$1" = 'createtestusers' ]; then
+    cd /app/lsg/server
+    python create-test-users.py $2
+
 elif [ "$1" = 'createsuperuser' ]; then
     cd /app/lsg/server
     python manage.py createsuperuser

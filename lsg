@@ -53,6 +53,9 @@ elif [ "$1" = 'celerybash' ]; then
 elif [ "$1" = 'celeryrestart' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV restart celery
 
+elif [ "$1" = 'createtestusers' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createtestusers $2
+
 elif [ "$1" = 'createsuperuser' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
@@ -65,7 +68,7 @@ elif [ "$1" = 'setupelx' ]; then
     
 else
     echo
-    echo "Usage: ./lsg (init | buildup | rundev | runnginx | runnginxinit | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | createsuperuser | setupelx)"
+    echo "Usage: ./lsg (init | buildup | rundev | runnginx | runnginxinit | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | createtestusers | createsuperuser | setupelx)"
     echo
 fi
 

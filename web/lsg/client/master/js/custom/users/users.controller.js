@@ -135,7 +135,9 @@
                 self.errors = {};
                 self.user = user;
                 $rootScope.user = user;
-                $rootScope.$apply();
+                // $rootScope.$apply(function () {
+                //     $rootScope.user = user;
+                // });
                 setupUserMap(user);
                 if (self.makeGameTour) {
                     gameTourActivate();
@@ -247,7 +249,9 @@
             UsersService.updateUserPicture(image).then(function (user) {
                 usersCtrl.user = user;
                 $rootScope.user = user;
-                $rootScope.$apply();
+                // $rootScope.$apply(function () {
+                //     $rootScope.user = user;
+                // });
                 $mdDialog.hide();
             });
         };

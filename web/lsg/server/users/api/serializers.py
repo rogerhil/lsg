@@ -41,12 +41,18 @@ class UserSerializer(serializers.ModelSerializer):
                             'neutral_feedback_count', 'stars')
         extra_kwargs = {'first_name': {'required': True, 'allow_blank': False},
                         'last_name': {'required': True, 'allow_blank': False},
-                        'phone1': {'required': True, 'allow_blank': False}}
+                        'phone1': {'required': True, 'allow_blank': False},
+                        'platforms': {'required': True, 'allow_blank': False}}
 
         depth = 2
 
     def is_valid(self, raise_exception=False):
         is_valid = super(UserSerializer, self).is_valid(raise_exception)
+        if not self._validated_data['platforms']:
+            self._errors['platforms'] = ['This field is required.']
+            if raise_exception:
+                raise ValidationError(self.errors)
+            return False
         if is_valid:
             if '_address' not in self._validated_data:
                 return True
