@@ -1,8 +1,4 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import Point
-from django.db.models.signals import pre_save
-
-from geopy.geocoders import Nominatim
 
 
 class WorldBorder(models.Model):
@@ -61,15 +57,4 @@ class Address(models.Model):
     def latitude(self):
         return self.point.coords[1] if self.point else None
 
-    @classmethod
-    def update_point(cls, sender, instance, **kwargs):
-        geolocator = Nominatim()
-        # XXX: the line below might fail due to socket.error exception
-        # XXX: location can also be None if the address is not found
-        location = geolocator.geocode(instance.full_address)
-        if location is not None:
-            instance.point = Point(location.longitude, location.latitude)
-
-
-#pre_save.connect(Address.update_point, sender=Address)
 

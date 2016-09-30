@@ -1,5 +1,5 @@
 psycopg2
-geopy
+geocoder
 Pillow
 python-social-auth
 django>=1.10

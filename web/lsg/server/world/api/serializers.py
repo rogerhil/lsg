@@ -1,5 +1,5 @@
+import geocoder
 from django.contrib.gis.geos import Point
-from geopy.geocoders import Nominatim
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
 
@@ -53,10 +53,9 @@ class AddressSerializer(serializers.ModelSerializer):
                 a('state'),
                 data.get('country', '').strip()
             )
-            geo_locator = Nominatim()
-            location = geo_locator.geocode(full_address, timeout=30)
-            if location:
-                self._point = Point(location.longitude, location.latitude)
+            results = geocoder.google(full_address, timeout=30)
+            if results.wkt:
+                self._point = results.wkt  # Point(location.longitude, location.latitude)
         return self._point
 
     def create(self, validated_data):
