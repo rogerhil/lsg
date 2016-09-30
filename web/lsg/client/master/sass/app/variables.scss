@@ -1,4 +1,4 @@
-@import '../app/material/colors';
+@import '../app/material/colors';                // LSG CHANGE
 
 //
 // Variables
@@ -18,8 +18,8 @@ $gray-lighter:           #edf1f2;
 
 // Classic brand colors
 
-//$brand-primary:          #3F51B5;
-$brand-primary:          $mdc-blue-grey-900;
+//$brand-primary:          #3F51B5;              // LSG CHANGE
+$brand-primary:          $mdc-blue-grey-900;     // LSG CHANGE
 $brand-success:          #4CAF50;
 $brand-info:             #2196F3;
 $brand-warning:          #FF9800;

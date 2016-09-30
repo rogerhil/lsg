@@ -1,3 +1,4 @@
+@import '../app/material/colors';
 
 /* some layout customization */
 
@@ -110,6 +111,9 @@ md-backdrop.md-select-backdrop {
   visibility: visible !important;
 }
 
+button.md-primary {
+  background-color: $mdc-blue-grey-900 !important;
+}
 
 .swap-indicator {
   position: absolute;
