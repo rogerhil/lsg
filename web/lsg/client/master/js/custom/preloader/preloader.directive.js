@@ -8,7 +8,6 @@
     preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams'];
     function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams) {
         var counter = 0;
-        var timeout;
         var failedToGetUser = false;
 
         var locationChange = function (event, next, current) {
@@ -192,26 +191,37 @@
             var remaining = 100 - counter;
             counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
             scope.loadCounter = parseInt(counter, 10);
-            timeout = $timeout(function () { startCounter(scope) }, 20);
+            var timeout = $timeout(function () { startCounter(scope) }, 20);
+            scope.$on('$destroy', function(){
+                scope.loadCounter = 100;
+                $timeout.cancel(timeout);
+            });
+            scope.$on('$locationChangeStart', function(){
+                scope.loadCounter = 100;
+                $timeout.cancel(timeout);
+            });
+            scope.$on('$stateChangeStart', function(){
+                scope.loadCounter = 100;
+                $timeout.cancel(timeout);
+            });
         }
 
         function endCounter(scope, el) {
-            $timeout.cancel(timeout);
             scope.loadCounter = 100;
-            counter = 0;
             $timeout(function () {
                 // animate preloader hiding
                 $animate.addClass(el, 'preloader-hidden');
                 // retore scrollbar
                 angular.element('body').css('overflow', '');
-            }, 300);
+                counter = 0;
+            }, 10);
         }
 
         function startLoader(scope, el) {
             scope.loadCounter = 0;
             angular.element('body').css('overflow', 'hidden');
             el.addClass('preloader');
-            timeout = $timeout(function () { startCounter(scope) });
+            $timeout(function () { startCounter(scope) });
         }
 
         function appReady(scope, event) {
