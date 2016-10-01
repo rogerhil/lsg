@@ -23,7 +23,9 @@
             roundedLine: true
         };
         self.loader = $('#percMatches').ClassyLoader(self.classyOptions);
-        self.loader.setPercent(self.matchesPercentage).draw();
+        $timeout(function () {
+            self.loader.setPercent(self.matchesPercentage).draw();
+        }, 10);
 
         var updateLatestFeedbacks = function () {
             UsersService.latestFeedbacks().then(function (latestFeedbacks) {
