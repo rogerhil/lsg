@@ -3,8 +3,9 @@ import django
 import argparse
 import logging
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from time import time
+from django.utils import timezone
 from thegamesdb import TheGamesDb
 from thegamesdb.test.mockdb import TheGamesDbMock
 
@@ -26,7 +27,7 @@ class BaseScript(object):
 
     def __init__(self, sufix=None):
         if sufix is None:
-            sufix = datetime.now().isoformat()
+            sufix = timezone.now().isoformat()
         self.log_file = self.build_log_filename(sufix)
         self.start = time()
         self.end = None

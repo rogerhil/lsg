@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from celery import shared_task, task
 from celery.signals import after_task_publish
 
@@ -10,14 +10,13 @@ from scripts.expire_old_ongoing_requests import ExpireOldOngoingRequests
 from scripts.send_scheduled_emails import SendScheduledEmails
 
 
-#@celery.decorators.periodic_task(run_every=datetime.timedelta(minutes=5))
 @shared_task(bind=True, script_class=PopulateGamesDb)
 def populate_games_db(self):
     days = Scripting.days_not_updated()
     script = self.script_class(self.request.id)
     script.run(update_days=days)
     scripting = Scripting.instance()
-    scripting.games_last_updated = datetime.now()
+    scripting.games_last_updated = timezone.now()
     scripting.save()
     return True
 
@@ -28,7 +27,7 @@ def download_boxart_images(self):
     script = self.script_class(self.request.id)
     script.run(update_days=days)
     scripting = Scripting.instance()
-    scripting.games_images_last_updated = datetime.now()
+    scripting.games_images_last_updated = timezone.now()
     scripting.save()
     return True
 
@@ -39,7 +38,7 @@ def make_thumbnails(self):
     script = self.script_class(self.request.id)
     script.run(update_days=days)
     scripting = Scripting.instance()
-    scripting.games_thumbnails_last_updated = datetime.now()
+    scripting.games_thumbnails_last_updated = timezone.now()
     scripting.save()
     return True
 

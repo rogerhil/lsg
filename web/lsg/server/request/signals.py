@@ -1,5 +1,5 @@
-from datetime import datetime
 
+from django.utils import timezone
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
@@ -42,7 +42,7 @@ def refuse_similar_pending_requests(sender, instance=None, **kwargs):
 @receiver(pre_save, sender=SwapRequest)
 def update_status_history(sender, instance=None, **kwargs):
     swap_request = instance
-    now = datetime.now().isoformat()
+    now = timezone.now().isoformat()
     if not swap_request.id:
         swap_request.status_history = [dict(status=Status.pending,
                                             datetime=now)]

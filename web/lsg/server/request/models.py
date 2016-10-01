@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from itertools import chain
 
+from django.utils import timezone
 from django.db import models
 from django.conf import settings
 
@@ -69,17 +70,17 @@ class SwapRequest(models.Model, StatusMethodsMixin):
 
     def cancel(self):
         self.status = Status.cancelled
-        self.closed_at = datetime.now()
+        self.closed_at = timezone.now()
 
     def refuse(self, automatically_refused=False):
         self.status = Status.refused
         self.automatically_refused = automatically_refused
-        self.finalized_at = datetime.now()
-        self.closed_at = datetime.now()
+        self.finalized_at = timezone.now()
+        self.closed_at = timezone.now()
 
     def accept(self):
         self.status = Status.ongoing
-        self.accepted_at = datetime.now()
+        self.accepted_at = timezone.now()
 
     def expire(self):
         self.status = Status.expired
@@ -92,8 +93,8 @@ class SwapRequest(models.Model, StatusMethodsMixin):
     def finalize_second(self, user, swapped, other_feedback,
                         other_feedback_notes):
         self._finalize(user, swapped, other_feedback, other_feedback_notes)
-        self.finalized_at = datetime.now()
-        self.closed_at = datetime.now()
+        self.finalized_at = timezone.now()
+        self.closed_at = timezone.now()
         self.status = RequestFlow.get_final_status(self)  # success or failed
 
     def _finalize(self, user, swapped, other_feedback, other_feedback_notes):
@@ -185,7 +186,7 @@ class SwapRequest(models.Model, StatusMethodsMixin):
 
     @classmethod
     def get_old_ongoing_requests(cls):
-        now = datetime.now()
+        now = timezone.now()
         expire_days = settings.EXPIRE_OLD_ONGOING_REQUESTS_IN_DAYS
         days = timedelta(expire_days)
         days_ago = now - days
@@ -195,7 +196,7 @@ class SwapRequest(models.Model, StatusMethodsMixin):
 
     @classmethod
     def get_old_finalizing_requests(cls):
-        now = datetime.now()
+        now = timezone.now()
         expire_days = settings.EXPIRE_OLD_FINALIZING_REQUESTS_IN_DAYS
         days = timedelta(expire_days)
         days_ago = now - days

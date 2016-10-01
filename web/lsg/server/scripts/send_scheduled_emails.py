@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from scripts.base import BaseScript
 
@@ -10,7 +10,7 @@ class SendScheduledEmails(BaseScript):
     name = 'send_scheduled_emails'
 
     def main(self):
-        now = datetime.now()
+        now = timezone.now()
         schedules = EmailSchedule.objects.filter(send_at__lte=now, sent=False,
                                                  cancelled=False)
         self.logger.info('Sending %s emails.' % schedules.count())

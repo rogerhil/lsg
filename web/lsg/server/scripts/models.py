@@ -1,11 +1,10 @@
 from celery.result import AsyncResult
 from celery.states import READY_STATES
 
-from datetime import datetime
-
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 
 class Scripting(models.Model):
@@ -23,7 +22,7 @@ class Scripting(models.Model):
     @classmethod
     def days_not_updated(cls, kind='games'):
         o = cls.instance()
-        now = datetime.now()
+        now = timezone.now()
         last_updated = getattr(o, '%s_last_updated' % kind, None)
         if not last_updated:
             return
