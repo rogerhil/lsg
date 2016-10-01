@@ -19,7 +19,7 @@
                                    'vendor/Flot/jquery.flot.time.js',
                                    'vendor/Flot/jquery.flot.categories.js',
                                    'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
+            'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.js'],
             'sparklines':         ['vendor/sparkline/index.js'],
             'spinkit':              ['vendor/spinkit/css/spinkit.css'],
             'loaders.css':          ['vendor/loaders.css/loaders.css']

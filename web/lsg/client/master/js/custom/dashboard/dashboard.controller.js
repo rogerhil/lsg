@@ -10,9 +10,9 @@
         var self = this;
         self.latestFeedbacks = [];
         self.latestActivities = [];
-        self.matchesLength;
-        self.wishlistLength;
-        self.matchesPercentage = (self.matchesLength / self.wishlistLength) * 100;
+        self.matchesLength = undefined;
+        self.wishlistLength = undefined;
+        self.matchesPercentage = 0;
         self.classyOptions = {
             speed: 5,
             fontSize: "30px",
@@ -23,6 +23,7 @@
             roundedLine: true
         };
         self.loader = $('#percMatches').ClassyLoader(self.classyOptions);
+        self.loader.setPercent(self.matchesPercentage).draw();
 
         var updateLatestFeedbacks = function () {
             UsersService.latestFeedbacks().then(function (latestFeedbacks) {
