@@ -261,7 +261,7 @@ ACTSTREAM_SETTINGS = {
 AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.google.GoogleOAuth2',
-    'social.backends.reddit.RedditOAuth2',
+    #'social.backends.reddit.RedditOAuth2',
     'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -274,10 +274,10 @@ LOGIN_REDIRECT_URL = '/done/'
 URL_PATH = ''
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
-SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
+#SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+#    'https://www.googleapis.com/auth/drive',
+#    'https://www.googleapis.com/auth/userinfo.profile'
+#]
 # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
 #SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'example.app.mail.send_validation'
@@ -303,14 +303,15 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
     'social.pipeline.debug.debug',
-    'users.pipeline.save_profile',
+    'users.pipeline.save_profile'
+
 )
 
 # FACEBOOK
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'locale': 'en_UK',
   'fields': 'id, name, first_name, last_name, gender, email, age_range,'
-            'verified, location, picture'
+            'verified, location, picture, link, updated_time'
 }
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_location']
 
@@ -319,13 +320,24 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_location']
 SOCIAL_AUTH_TWITTER_SCOPE = ['email']
 
 # GOOGLE
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile',
-                                   'https://www.googleapis.com/auth/plus.login',
-                                   'https://www.googleapis.com/auth/plus.me',
-                                   'https://www.googleapis.com/auth/plus.circles.read']
-SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
-    'access_type': 'offline'
-}
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    #'https://www.googleapis.com/auth/plus.login',
+    #'https://www.googleapis.com/auth/plus.me',
+    #'https://www.googleapis.com/auth/plus.circles.read'
+    #'https://www.googleapis.com/auth/userinfo.email',
+    #'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/plus.login',
+    #'https://www.googleapis.com/auth/plus.me',
+    #'https://www.googleapis.com/auth/plus.circles.read',
+    #'https://www.googleapis.com/auth/plus.circles.write',
+    #'https://www.googleapis.com/auth/plus.moments.write',
+    #'https://www.googleapis.com/auth/plus.profile.agerange.read',
+    #'https://www.googleapis.com/auth/plus.profile.language.read',
+    #'https://www.googleapis.com/auth/plus.circles.members.read'
+]
+#SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
+#    'access_type': 'offline'
+#}
 
 
 # END SOCIAL SETTINGS

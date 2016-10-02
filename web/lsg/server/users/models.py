@@ -133,6 +133,23 @@ class User(AbstractUser):
     def _address(self):
         return self.address or Address()
 
+    @property
+    def social_links(self):
+        prov_links = {
+            'google-oauth2': dict(name='Google+',
+                                  link='https://plus.google.com/%s'),
+            'facebook': dict(name='Facebook',
+                             link='https://www.facebook.com/%s'),
+            'twitter': dict(name='Twitter',
+                            link='https://twitter.com/%s')
+        }
+        links = [(prov_links[i.provider]['name'],
+                  prov_links[i.provider]['link'] %
+                  (i.extra_data['access_token']['screen_name']
+                   if i.provider == 'twitter' else i.extra_data.get('id')))
+                 for i in self.social_auth.all()]
+        return links
+
     def last_feedbacks(self, last=8):
         statuses = Status.closed_statuses()
         requests1 = SwapRequest.objects.filter(requester=self,

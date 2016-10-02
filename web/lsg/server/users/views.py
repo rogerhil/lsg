@@ -21,7 +21,8 @@ class Done(RedirectView):
         #social = self.request.user.social_auth.get(provider='google-oauth2')
         #resp = requests.get('https://www.googleapis.com/plus/v1/people/me/people/visible',
         #                    params={'access_token': social.extra_data['access_token']})
-        #print resp.json()['items']
+        #print(resp.json())
+        #print(resp.json()['items'])
         #import pdb; pdb.set_trace()
 
         return "/congratulations/"

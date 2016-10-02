@@ -49,6 +49,11 @@ def save_profile(backend, user, response, *args, **kwargs):
         if not user.gender:
             user.gender = response.get('gender')
             changed = True
+        #import requests
+        #social = user.social_auth.get(provider='facebook')
+        #url = u'https://graph.facebook.com/{0}/friends?fields=id,name,location,picture&access_token={1}'.format(social.uid, social.extra_data['access_token'])
+        #req = requests.get(url)
+        #print(req.json())
 
     elif backend.name == 'google-oauth2':
 
@@ -70,6 +75,11 @@ def save_profile(backend, user, response, *args, **kwargs):
         if not user.gender:
             user.gender = response.get('gender')
             changed = True
+        social_user = user.social_auth.get(provider='google-oauth2')
+        data = social_user.extra_data
+        data['id'] = response['id']
+        social_user.set_extra_data(data)
+        social_user.save()
 
     elif backend.name == 'twitter':
         if not user.address:
@@ -86,6 +96,7 @@ def save_profile(backend, user, response, *args, **kwargs):
                                                             'bigger.')
                 user.social_picture_url = url
                 changed = True
+
     if changed:
         if user.social_picture_url:
             resp = get_image_data(user.social_picture_url)
