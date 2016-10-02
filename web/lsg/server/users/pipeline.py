@@ -51,6 +51,7 @@ def save_profile(backend, user, response, *args, **kwargs):
             changed = True
 
     elif backend.name == 'google-oauth2':
+
         if not user.address:
             locations = [l['value'] for l in response.get('placesLived', [])
                          if l.get('primary') and l.get('value')]

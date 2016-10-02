@@ -298,12 +298,12 @@ SOCIAL_AUTH_PIPELINE = (
     #'example.app.pipeline.require_email',
     'social.pipeline.mail.mail_validation',
     'social.pipeline.user.create_user',
-    'users.pipeline.save_profile',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.debug.debug',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'social.pipeline.debug.debug'
+    'social.pipeline.debug.debug',
+    'users.pipeline.save_profile',
 )
 
 # FACEBOOK
@@ -319,7 +319,10 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_location']
 SOCIAL_AUTH_TWITTER_SCOPE = ['email']
 
 # GOOGLE
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile',
+                                   'https://www.googleapis.com/auth/plus.login',
+                                   'https://www.googleapis.com/auth/plus.me',
+                                   'https://www.googleapis.com/auth/plus.circles.read']
 SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
     'access_type': 'offline'
 }

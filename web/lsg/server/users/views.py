@@ -16,4 +16,13 @@ class Done(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        return "/app/#/app/welcome"
+        # FRIENDS LIST
+        #import requests
+        #social = self.request.user.social_auth.get(provider='google-oauth2')
+        #resp = requests.get('https://www.googleapis.com/plus/v1/people/me/people/visible',
+        #                    params={'access_token': social.extra_data['access_token']})
+        #print resp.json()['items']
+        #import pdb; pdb.set_trace()
+
+        return "/congratulations/"
+        #return "/app/#/app/welcome"
