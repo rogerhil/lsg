@@ -88,7 +88,7 @@ class Sender(object):
     def _render(self):
         subject = self.subject % self.context
         template = get_template('mail/emails/%s.html' % self.template_name)
-        if settings.LOCAL_DEV:
+        if settings.DEBUG:
             site = Site.objects.get(domain='lsg.com')
         else:
             site = Site.objects.get(domain='letswapgames.com')

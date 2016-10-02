@@ -126,5 +126,3 @@ if os.getenv('LSG_DB_NAME'):
     SERVER_EMAIL = os.getenv('LSG_SERVER_EMAIL')
 
     MOCK_SEND_EMAIL = bool_env('LSG_MOCK_SEND_EMAIL')
-
-    LOCAL_DEV = bool_env('LSG_LOCAL_DEV')
