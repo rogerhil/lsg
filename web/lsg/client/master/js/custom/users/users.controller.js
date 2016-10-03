@@ -18,6 +18,7 @@
 
         self.user = $rootScope.user;
         self.allPlatforms = [];
+        self.countries = ['Ireland', 'United Kingdom'];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
                               {id: 'female', label: 'Female'}];

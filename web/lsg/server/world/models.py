@@ -1,5 +1,12 @@
 from django.contrib.gis.db import models
 
+AVAILABLE_COUNTRIES = [
+    'United Kingdom',
+    'Ireland'
+]
+
+COUNTRIES_CHOICES = [(i, i) for i in AVAILABLE_COUNTRIES]
+
 
 class WorldBorder(models.Model):
     # Regular Django fields corresponding to the attributes in the
@@ -31,7 +38,7 @@ class Address(models.Model):
     address2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=128, null=True, blank=True)
-    country = models.CharField(max_length=128)
+    country = models.CharField(max_length=128, choices=COUNTRIES_CHOICES)
     postal_code = models.CharField(max_length=32, null=True, blank=True)
     point = models.PointField(blank=True, null=True)
 

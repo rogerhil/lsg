@@ -119,7 +119,9 @@ h3 My profile
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.country || ctrl.errors.addressGlobal}")
                                     label Country
-                                    input(ng-model='ctrl.user.address.country', required)
+                                    //input(ng-model='ctrl.user.address.country', required)
+                                    md-select(ng-model="ctrl.user.address.country", required)
+                                        md-option(ng-value="country", ng-repeat="country in ctrl.countries") {{country}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.address.country")
                                         .md-char-counter {{error}}
 
