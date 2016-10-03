@@ -202,7 +202,6 @@ GAMES_IMAGES_PARENT_DIR = BASE_DIR
 GAMES_IMAGES_DIR = os.path.join(BASE_DIR, 'media/img/games/')
 
 
-
 # Rest Framework
 
 REST_FRAMEWORK = {
@@ -335,9 +334,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     #'https://www.googleapis.com/auth/plus.profile.language.read',
     #'https://www.googleapis.com/auth/plus.circles.members.read'
 ]
-#SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
-#    'access_type': 'offline'
-#}
+SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline'
+}
 
 
 # END SOCIAL SETTINGS
