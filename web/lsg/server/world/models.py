@@ -2,7 +2,8 @@ from django.contrib.gis.db import models
 
 AVAILABLE_COUNTRIES = [
     'United Kingdom',
-    'Ireland'
+    'Ireland',
+    'Isle of Man'
 ]
 
 COUNTRIES_CHOICES = [(i, i) for i in AVAILABLE_COUNTRIES]

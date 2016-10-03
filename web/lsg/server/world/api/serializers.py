@@ -53,7 +53,12 @@ class AddressSerializer(serializers.ModelSerializer):
                 a('state'),
                 data.get('country', '').strip()
             )
+            print('$$$$$$$$$$$$$$$$')
+            print(full_address)
+            print('$$$$$$$$$$$$$$$$')
             results = geocoder.google(full_address, timeout=30)
+            print(results)
+            print(results.wkt)
             if results.wkt:
                 self._point = results.wkt  # Point(location.longitude, location.latitude)
         return self._point

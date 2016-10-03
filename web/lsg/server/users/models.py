@@ -288,6 +288,10 @@ class User(AbstractUser):
                              "User %s doesn't have distance information: %s" %
                              (self, user, user.address))
                 continue
+            if int(user.address.distance.km) > 9000:
+                logger.warn("Ignoring match for user %s: user %s is %skm far: %s" %
+                             (self, user, user.address.distance.km, user.address))
+                continue
             for my_game in self.collection.all():
                 for game_he_wishes in user.wishlist.all():
                     if my_game.id == game_he_wishes.id:
