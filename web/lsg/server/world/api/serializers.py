@@ -57,7 +57,8 @@ class AddressSerializer(serializers.ModelSerializer):
             city=geo.city_long,
             state=join(geo.state_long, geo.province_long),
             country=geo.country_long,
-            postal_code=geo.postal
+            postal_code=geo.postal,
+            geocoder_address=geo.address
         ))
 
     def create(self, validated_data):

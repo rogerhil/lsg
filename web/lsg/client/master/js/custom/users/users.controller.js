@@ -27,7 +27,6 @@
         self.searchText = null;
 
         self.queryAddress = function (query) {
-            console.log(query);
             return UsersService.queryAddress(query);
         }
 
@@ -139,6 +138,7 @@
         self.updateUser = function () {
             UsersService.updateUser(self.user).then(function (user) {
                 Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
+                self.searchText = null;
                 self.errors = {};
                 self.user = user;
                 $rootScope.user = user;

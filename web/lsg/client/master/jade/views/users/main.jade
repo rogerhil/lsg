@@ -91,12 +91,18 @@ h3 My profile
                                         .md-errors-spacer(ng-repeat="error in ctrl.errors.addressGlobal")
                                             .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
+                                md-input-container(flex='')
                                     label Address
+                                    input(ng-model='ctrl.user.address.geocoder_address', required, disabled)
+                            div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
+                                    label Query address
                                     //input(ng-model='ctrl.user.address.geocoder_address', required)
                                     //.md-errors-spacer(ng-repeat="error in ctrl.errors.address.geocoder_address")
                                     //    .md-char-counter {{error}}
-                                    md-autocomplete(md-no-cache='ctrl.noCache', md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
+                                    //input(ng-model='ctrl.user.address.geocoder_address', required)
+
+                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
                                         span(md-highlight-text='ctrl.searchText') {{item.display}}
 
                         div(layout='', layout-sm='column')
