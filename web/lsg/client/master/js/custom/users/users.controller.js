@@ -24,6 +24,12 @@
                               {id: 'female', label: 'Female'}];
         self.mapMarkers = [];
         self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
+        self.searchText = null;
+
+        self.queryAddress = function (query) {
+            console.log(query);
+            return UsersService.queryAddress(query);
+        }
 
         function tourActivate() {
             // BootstrapTour is not compatible with z-index based layout

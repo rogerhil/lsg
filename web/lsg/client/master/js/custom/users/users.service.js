@@ -10,6 +10,16 @@
         var userId = $rootScope.user.id;
         var baseUserUrl = '/api/users/' + userId + '/';
 
+        this.queryAddress = function (query) {
+            var q = $q.defer();
+            $http
+                .get(baseUserUrl + 'query-address/?search=' + query)
+                .success(function (response) {
+                    q.resolve(response);
+                });
+            return q.promise;
+        };
+
         this.getUserDetails = function () {
             var q = $q.defer();
             $http

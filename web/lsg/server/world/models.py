@@ -41,6 +41,7 @@ class Address(models.Model):
     state = models.CharField(max_length=128, null=True, blank=True)
     country = models.CharField(max_length=128, choices=COUNTRIES_CHOICES)
     postal_code = models.CharField(max_length=32, null=True, blank=True)
+    geocoder_address = models.CharField(max_length=255, null=True, blank=True)
     point = models.PointField(blank=True, null=True)
 
     objects = models.GeoManager()

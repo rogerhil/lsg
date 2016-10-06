@@ -10,9 +10,11 @@ class AddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Address
-        fields = ('address1', 'address2', 'postal_code', 'city', 'state',
-                  'country', 'latitude', 'longitude')
-        read_only_fields = ('latitude', 'longitude')
+        #fields = ('address1', 'address2', 'postal_code', 'city', 'state',
+        #          'country', 'latitude', 'longitude')
+        fields = ('geocoder_address', 'latitude', 'longitude')
+        read_only_fields = ('address1', 'address2', 'postal_code', 'city',
+                            'state', 'country',  'latitude', 'longitude')
         depth = 2
 
     def __init__(self, *args, **kwargs):
@@ -21,54 +23,47 @@ class AddressSerializer(serializers.ModelSerializer):
 
     def is_valid(self, raise_exception=False):
         is_valid = super(AddressSerializer, self).is_valid(raise_exception)
-        point = self.retrieve_point_from_address(self._validated_data)
-        if is_valid and not point:
-            self._errors['address'] = ['Full address does not seem be be valid']
+        geo = self.get_geocode_obj_from_address(self._validated_data)
+        if is_valid and not geo:
+            self._errors['address'] = ['Full address does not seem be be '
+                                       'valid']
             if raise_exception:
                 raise ValidationError(self.errors)
             return False
         return is_valid
 
-    def retrieve_point_from_address(self, data):
+    def get_geocode_obj_from_address(self, data):
+        if not data:
+            return
+        geocoder_address = data.get('geocoder_address')
+        print('$$$$$$$$$$$$$$$$')
+        print(geocoder_address)
+        print('$$$$$$$$$$$$$$$$')
+        geo = geocoder.google(geocoder_address, timeout=30)
+        print(geo)
+        print(geo.wkt)
+        return geo
 
-        if self.instance:
-            d = self._validated_data
-            if d.get('address1') == self.instance.address1 and \
-               d.get('address2') == self.instance.address2 and \
-               d.get('postal_code') == self.instance.postal_code and \
-               d.get('city') == self.instance.city and \
-               d.get('state') == self.instance.state and \
-               d.get('country') == self.instance.country:
-                self._point = self.instance.point
+    def parse_address_data(self, validated_data):
+        geo = self.get_geocode_obj_from_address(validated_data)
 
-        if self._point is None:
-            if not data:
-                return
-            a = lambda k: "%s, " % (data.get(k) or '').strip() if \
-                          (data.get(k) or '').strip() else ""
-            full_address = "%s%s%s%s%s" % (
-                a('address1'),
-                a('address2'),
-                a('city'),
-                a('state'),
-                data.get('country', '').strip()
-            )
-            print('$$$$$$$$$$$$$$$$')
-            print(full_address)
-            print('$$$$$$$$$$$$$$$$')
-            results = geocoder.google(full_address, timeout=30)
-            print(results)
-            print(results.wkt)
-            if results.wkt:
-                self._point = results.wkt  # Point(location.longitude, location.latitude)
-        return self._point
+        def join(*args):
+            return ' '.join(set([i for i in args if i and i.strip()]))
+
+        validated_data.update(dict(
+            point=str(geo.wkt),
+            address1=join(geo.housenumber, geo.street_long, geo.road_long),
+            address2=join(geo.neighborhood, geo.sublocality),
+            city=geo.city_long,
+            state=join(geo.state_long, geo.province_long),
+            country=geo.country_long,
+            postal_code=geo.postal
+        ))
 
     def create(self, validated_data):
-        point = self.retrieve_point_from_address(validated_data)
-        validated_data['point'] = str(point)
+        self.parse_address_data(validated_data)
         return super(AddressSerializer, self).create(validated_data)
 
     def update(self, instance, validated_data):
-        point = self.retrieve_point_from_address(validated_data)
-        validated_data['point'] = str(point)
+        self.parse_address_data(validated_data)
         return super(AddressSerializer, self).update(instance, validated_data)

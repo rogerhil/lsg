@@ -91,39 +91,13 @@ h3 My profile
                                         .md-errors-spacer(ng-repeat="error in ctrl.errors.addressGlobal")
                                             .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.address1 || ctrl.errors.addressGlobal}")
-                                    label Address 1
-                                    input(ng-model='ctrl.user.address.address1', required)
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.address1")
-                                        .md-char-counter {{error}}
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.address2 || ctrl.errors.addressGlobal}")
-                                    label Address 2
-                                    input(ng-model='ctrl.user.address.address2')
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.address2 ")
-                                        .md-char-counter {{error}}
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.postal_code || ctrl.errors.addressGlobal}")
-                                    label Postal Code
-                                    input(ng-model='ctrl.user.address.postalCode')
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.postal_code")
-                                        .md-char-counter {{error}}
-                            div(layout='', layout-sm='column')
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.city || ctrl.errors.addressGlobal}")
-                                    label City
-                                    input(ng-model='ctrl.user.address.city', required)
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.city")
-                                        .md-char-counter {{error}}
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.state || ctrl.errors.addressGlobal}")
-                                    label County / State
-                                    input(ng-model='ctrl.user.address.state')
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.state")
-                                        .md-char-counter {{error}}
-                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.country || ctrl.errors.addressGlobal}")
-                                    label Country
-                                    //input(ng-model='ctrl.user.address.country', required)
-                                    md-select(ng-model="ctrl.user.address.country", required)
-                                        md-option(ng-value="country", ng-repeat="country in ctrl.countries") {{country}}
-                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.address.country")
-                                        .md-char-counter {{error}}
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
+                                    label Address
+                                    //input(ng-model='ctrl.user.address.geocoder_address', required)
+                                    //.md-errors-spacer(ng-repeat="error in ctrl.errors.address.geocoder_address")
+                                    //    .md-char-counter {{error}}
+                                    md-autocomplete(md-no-cache='ctrl.noCache', md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
+                                        span(md-highlight-text='ctrl.searchText') {{item.display}}
 
                         div(layout='', layout-sm='column')
                             md-input-container(flex='')

@@ -1,3 +1,4 @@
+import geocoder
 from actstream.models import actor_stream
 
 from django.utils import formats
@@ -31,6 +32,11 @@ class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsSuperUserOrOwner]
+
+    @detail_route(methods=['get'], url_path='query-address')
+    def query_address(self, request, pk):
+        geo = geocoder.google(request.GET.get('search', ''))
+        return views.Response([dict(display=geo.address)])
 
     @detail_route(methods=['get'])
     def matches(self, request, pk):
