@@ -51,41 +51,41 @@ h3 My profile
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
                                     label First Name
-                                    input(ng-model='ctrl.user.first_name', required)
+                                    input(ng-model='ctrl.user.first_name', required, ng-blur="ctrl.updateUser()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
                                     label Last Name
-                                    input(ng-model='ctrl.user.last_name', required)
+                                    input(ng-model='ctrl.user.last_name', required, ng-blur="ctrl.updateUser()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
                                         .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone1}")
                                     label Phone 1
-                                    input(ng-model='ctrl.user.phone1', ui-mask="+999 (99) 999-9999" placeholder="", required)
+                                    input(ng-model='ctrl.user.phone1', ui-mask="+999 (99) 999-9999" placeholder="", required, ng-blur="ctrl.updateUser()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.phone1")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone2}")
                                     label Phone 2
-                                    input(ng-model='ctrl.user.phone2', ui-mask="+999 (99) 999-9999" placeholder="")
+                                    input(ng-model='ctrl.user.phone2', ui-mask="+999 (99) 999-9999" placeholder="", ng-blur="ctrl.updateUser()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.phone2")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.gender}")
                                     label Gender
-                                    md-select(ng-model="ctrl.user.gender")
+                                    md-select(ng-model="ctrl.user.gender", ng-blur="ctrl.updateUser()")
                                         md-option(ng-value="gender.id", ng-repeat="gender in ctrl.genderOptions") {{gender.label}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.gender")
                                         .md-char-counter {{error}}
                         div#platforms-field(layout='', layout-sm='column')
                             md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.platforms}")
                                 label Platforms you have
-                                md-select(ng-model="ctrl.user.platforms", multiple, required)
+                                md-select(ng-model="ctrl.user.platforms", multiple, required, ng-change="ctrl.updateUser()")
                                     md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms") {{platform.name}}
                                 .md-errors-spacer(ng-repeat="error in ctrl.errors.platforms")
                                     .md-char-counter {{error}}
                         div#address-form
                             div(layout='', layout-sm='column')
-                                input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required)
+                                input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required, ng-change="ctrl.updateUser()")
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
                                     md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
@@ -95,9 +95,9 @@ h3 My profile
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.addressGlobal")
                                         .md-char-counter {{error}}
 
-                        div(layout='', layout-sm='column')
-                            md-input-container(flex='')
-                                //md-button.md-raised.md-primary.md-ink-ripple(type="submit" ng-transclude="" aria-label="Save")
-                                button.mb-sm.btn.btn-primary(type="submit" aria-label="Save")
-                                    span.ng-scope Save
-                                    .md-ripple-container
+                        //div(layout='', layout-sm='column')
+                        //    md-input-container(flex='')
+                        //        //md-button.md-raised.md-primary.md-ink-ripple(type="submit" ng-transclude="" aria-label="Save")
+                        //        button.mb-sm.btn.btn-primary(type="submit" aria-label="Save")
+                        //            span.ng-scope Save
+                        //            .md-ripple-container

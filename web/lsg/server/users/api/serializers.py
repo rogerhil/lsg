@@ -39,10 +39,10 @@ class UserSerializer(serializers.ModelSerializer):
                             'negative_feedback_count',
                             'positive_feedback_count',
                             'neutral_feedback_count', 'stars')
-        extra_kwargs = {'first_name': {'required': True, 'allow_blank': False},
-                        'last_name': {'required': True, 'allow_blank': False},
-                        'phone1': {'required': True, 'allow_blank': False},
-                        'platforms': {'required': True, 'allow_blank': False}}
+        #extra_kwargs = {'first_name': {'required': True, 'allow_blank': False},
+        #                'last_name': {'required': True, 'allow_blank': False},
+        #                'phone1': {'required': True, 'allow_blank': False},
+        #                'platforms': {'required': True, 'allow_blank': False}}
 
         depth = 2
 
