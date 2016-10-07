@@ -15,7 +15,6 @@
     function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
-
         self.user = $rootScope.user;
         self.allPlatforms = [];
         self.countries = ['Ireland', 'United Kingdom', 'Isle of Man'];
@@ -136,8 +135,10 @@
         });
 
         self.updateUser = function () {
+            $('.profile-loading').fadeIn();
             UsersService.updateUser(self.user).then(function (user) {
-                Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
+                //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
+                $('.profile-loading').fadeOut();
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};
                 self.user = user;

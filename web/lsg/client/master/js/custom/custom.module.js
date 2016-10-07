@@ -55,7 +55,9 @@
         return {
             'request': function(config) {
                 if (config.url.slice(0,5) == '/api/' && config.method != 'GET') {
-                    $('#spinner').fadeIn();
+                    if (!/^\/api\/users\/\d+\/$/.test(config.url)) {
+                        $('#spinner').fadeIn();
+                    }
                 }
                 return config;
             },

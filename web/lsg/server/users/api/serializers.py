@@ -23,13 +23,13 @@ class UserPictureImageSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(source='_address')
-    platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False,
-                                             queryset=PlatformViewSet.queryset)
+    platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False, required=False,
+                                                   queryset=PlatformViewSet.queryset)
 
     class Meta:
         model = User
         fields = ('username', 'name', 'email', 'picture', 'first_name',
-                  'last_name', 'gender', 'address', 'phone1', 'phone2',
+                  'last_name', 'gender', 'address', 'phone1_prefix', 'phone1',
                   'platforms', 'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count', 'id')
@@ -44,15 +44,17 @@ class UserSerializer(serializers.ModelSerializer):
         #                'phone1': {'required': True, 'allow_blank': False},
         #                'platforms': {'required': True, 'allow_blank': False}}
 
+        extra_kwargs = {'platforms': {'required': False, 'allow_blank': True}}
+
         depth = 2
 
     def is_valid(self, raise_exception=False):
         is_valid = super(UserSerializer, self).is_valid(raise_exception)
-        if not self._validated_data['platforms']:
-            self._errors['platforms'] = ['This field is required.']
-            if raise_exception:
-                raise ValidationError(self.errors)
-            return False
+        #if not self._validated_data['platforms']:
+        #    self._errors['platforms'] = ['This field is required.']
+        #    if raise_exception:
+        #        raise ValidationError(self.errors)
+        #    return False
         if is_valid:
             if '_address' not in self._validated_data:
                 return True
@@ -70,8 +72,11 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         address_serializer = self.fields['address']
         if instance.address:
-            address_serializer.update(instance.address,
-                                      address_serializer.validated_data)
+            if address_serializer.validated_data.get('geocoder_address'):
+                address_serializer.update(instance.address,
+                                          address_serializer.validated_data)
+            else:
+                instance.address.delete()
         else:
             instance.address = address_serializer.create(
                                       address_serializer.validated_data)

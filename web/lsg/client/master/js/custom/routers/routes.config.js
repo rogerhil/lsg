@@ -39,19 +39,19 @@
                 url: '/app',
                 abstract: true,
                 templateUrl: helper.basepath('app.html'),
-                resolve: helper.resolveFor('modernizr', 'icons')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'modernizr', 'icons')
             })
             .state('app.welcome', {
                 url: '/welcome',
                 title: 'Welcome',
                 templateUrl: helper.basepath('welcome.html'),
-                resolve: helper.resolveFor('bm.bsTour')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour')
             })
             .state('pages', {
                 url: '',
                 abstract: true,
                 templateUrl: helper.basepath('single-page.html'),
-                resolve: helper.resolveFor('modernizr', 'icons'),
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'modernizr', 'icons'),
                 controller: ['$rootScope', function($rootScope) {
                     $rootScope.app.layout.isBoxed = false;
                 }]
@@ -83,24 +83,25 @@
                 url: '/dashboard',
                 title: 'Dashboard',
                 templateUrl: helper.basepath('dashboard/main.html'),
-                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons', 'sparklines', 'classyloader')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'flot-chart', 'flot-chart-plugins', 'weather-icons', 'sparklines', 'classyloader')
             })
             .state('app.games', {
                 url: '/games?tour',
                 title: 'Games',
                 templateUrl: helper.basepath('games/main.html'),
-                resolve: helper.resolveFor('bm.bsTour')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour')
             })
             .state('app.users', {
                 url: '/profile',
                 title: 'Profile',
                 templateUrl: helper.basepath('users/main.html'),
-                resolve: helper.resolveFor('ngImgCrop', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'ngImgCrop', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
             })
             .state('app.matches', {
                 url: '/matches',
                 title: 'Matches',
-                templateUrl: helper.basepath('matches/main.html')
+                templateUrl: helper.basepath('matches/main.html'),
+                resolve: helper.resolveFor('loaders.css', 'spinkit')
             })
             .state('app.requests', {
                 url: '/requests?id&msg',
@@ -112,7 +113,7 @@
                 url: '/requests/archived',
                 title: 'Archived Requests',
                 templateUrl: helper.basepath('requests/archived/main.html'),
-                resolve: helper.resolveFor('ngTable')
+                resolve: helper.resolveFor('loaders.css', 'spinkit', 'ngTable')
             })
 
         //

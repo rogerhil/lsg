@@ -27,5 +27,6 @@
   "bower_components/angular-loading-bar/build/loading-bar.js",
   "bower_components/jquery.browser/dist/jquery.browser.js",
   "bower_components/angular-aria/angular-aria.js",
-  "bower_components/angular-messages/angular-messages.js"
+  "bower_components/angular-messages/angular-messages.js",
+  "bower_components/loaders.css/loaders.css"
 ]

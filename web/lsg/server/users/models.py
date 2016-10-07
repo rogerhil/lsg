@@ -83,9 +83,9 @@ class User(AbstractUser):
                                       null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True,
                               choices=Gender.choices())
-    address = models.ForeignKey(Address, null=True, blank=True)
+    address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.SET_NULL)
+    phone1_prefix = models.CharField(max_length=3, blank=True)
     phone1 = models.CharField(max_length=16, blank=True)
-    phone2 = models.CharField(max_length=16, blank=True)
     platforms = models.ManyToManyField(Platform)
     succeeded_swaps_count = models.PositiveIntegerField(default=0)
     failed_swaps_count = models.PositiveIntegerField(default=0)
@@ -197,8 +197,12 @@ class User(AbstractUser):
         return self.address and len(self.platforms.all()) > 0
 
     @property
+    def phone1_display(self):
+        return "+%s %s" % (self.phone1_prefix, self.phone1)
+
+    @property
     def phones(self):
-        phones = [self.phone1, self.phone2]
+        phones = [self.phone1_display]
         return ', '.join([i for i in phones if i])
 
     @property
