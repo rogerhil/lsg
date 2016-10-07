@@ -10,7 +10,7 @@
         this.query = function (query, excludeGames) {
             var url = '/api/games/?search=' + query;
             var q = $q.defer();
-            if ($rootScope.user.platforms.length) {
+            if ($rootScope.user.havePlatforms()) {
                 url += '&platform_id=' + $rootScope.user.platforms.join(',');
             } else {
                 Notify.closeAll(false, true);
@@ -18,9 +18,15 @@
                 q.resolve([]);
                 return q.promise;
             }
-            if (!$rootScope.user.address.latitude || !$rootScope.user.address.longitude) {
+            if (!$rootScope.user.hasAddress()) {
                 Notify.closeAll(false, true);
-                Notify.alert("You need to provide your address in the profile form in order to use the application.", {status: 'warning', group: true});
+                Notify.alert("You need to provide your address in the profile form in order to use the application.", {group: true});
+                q.resolve([]);
+                return q.promise;
+            }
+            if (!$rootScope.user.hasBasicProfile()) {
+                Notify.closeAll(false, true);
+                Notify.alert("You need to complete your profile in order to use the application.", {group: true});
                 q.resolve([]);
                 return q.promise;
             }

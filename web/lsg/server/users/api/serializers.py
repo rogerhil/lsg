@@ -75,8 +75,6 @@ class UserSerializer(serializers.ModelSerializer):
             if address_serializer.validated_data.get('geocoder_address'):
                 address_serializer.update(instance.address,
                                           address_serializer.validated_data)
-            else:
-                instance.address.delete()
         else:
             if address_serializer.validated_data.get('geocoder_address'):
                 instance.address = address_serializer.create(address_serializer.validated_data)

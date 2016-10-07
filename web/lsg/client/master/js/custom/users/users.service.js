@@ -3,10 +3,33 @@
 
     angular
         .module('app.users')
-        .service('UsersService', UsersService);
+        .service('UsersService', UsersService)
+        .factory('User', User);
 
-    UsersService.$inject = ['$q', '$http', '$rootScope'];
-    function UsersService($q, $http, $rootScope) {
+    User.$inject = [];
+    function User() {
+        var User = function(data) {
+            for (var key in data) {
+                this[key] = data[key];
+            }
+        };
+        User.prototype.hasBasicProfile = function () {
+            return this.first_name && this.last_name && this.phone1 && this.phone1_prefix;
+        };
+        User.prototype.havePlatforms = function () {
+            return this.platforms.length;
+        };
+        User.prototype.hasAddress = function () {
+            return this.address.latitude && this.address.longitude;
+        };
+        User.prototype.isProfileComplete = function () {
+            return this.hasBasicProfile() && this.havePlatforms() && this.hasAddress();
+        };
+        return User;
+    }
+
+    UsersService.$inject = ['$q', '$http', '$rootScope', 'User'];
+    function UsersService($q, $http, $rootScope, User) {
         var userId = $rootScope.user.id;
         var baseUserUrl = '/api/users/' + userId + '/';
 
@@ -25,7 +48,7 @@
             $http
                 .get(baseUserUrl)
                 .success(function (response) {
-                    q.resolve(response);
+                    q.resolve(new User(response));
                 });
             return q.promise;
         };
@@ -52,7 +75,7 @@
             $http
                 .put(baseUserUrl, data)
                 .success(function (response) {
-                    q.resolve(response);
+                    q.resolve(new User(response));
                 }).error(function(response, status) {
                     if (status == 400) {
                         q.reject(response);
@@ -66,7 +89,7 @@
             $http
                 .put(url, {picture_image: image})
                 .success(function (response) {
-                    q.resolve(response);
+                    q.resolve(new User(response));
                 }).error(function(response, status) {
                     if (status == 400) {
                         q.reject(response);

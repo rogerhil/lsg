@@ -5,8 +5,8 @@
         .module('app.preloader')
         .directive('preloader', preloader);
 
-    preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams'];
-    function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams) {
+    preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams', 'User'];
+    function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams, User) {
         var counter = 0;
         var failedToGetUser = false;
 
@@ -142,7 +142,7 @@
                 return q;
             }
             $http.get('/api/users/authenticated/').success(function (response) {
-                var user = response;
+                var user = new User(response);
                 $rootScope.user = user;
                 if (user) {
                     q.resolve(user);
@@ -156,12 +156,11 @@
                     return;
                 }
                 var initialAlert = function () {
-                    if (!user.address.latitude || !user.address.longitude) {
+                    if (!$rootScope.user.isProfileComplete()) {
                         Notify.closeAll(false, true);
-                        Notify.alert("You need to provide your own address details in " +
-                            "order to use the application. <a style='color: yellow;' href='#/app/profile'>" +
-                            "Click here to access the profile form to update your " +
-                            "address.</a>", {status: 'danger', timeout: 7000});
+                        Notify.alert("You need to complete your profile details in " +
+                            "order to continue using the application. <a style='color: yellow;' href='#/app/profile'>" +
+                            "Click here to access the profile form.</a>", {status: 'danger', timeout: 7000});
                     }
                 };
 
@@ -169,7 +168,7 @@
                     if (toState.name == 'app.welcome' || toState.name == 'app.users') {
                         return;
                     }
-                    if (!$rootScope.user.address.latitude || !$rootScope.user.address.longitude) {
+                    if (!user.hasBasicProfile()) {
                         initialAlert();
                     }
                 });

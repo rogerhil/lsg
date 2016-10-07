@@ -30,7 +30,7 @@
             return UsersService.queryAddress(query);
         };
 
-        function tourActivate() {
+        function tourActivate(onlySteps) {
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -40,21 +40,7 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
-            self.tour = new Tour({
-                backdrop: true,
-                backdropPadding: 10,
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <h3 class='popover-title'></h3>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
-                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
-                    "</div>",
-                steps: [
+            var baseSteps = [
                 {
                     element: "#profile-form",
                     title: "Complete the form",
@@ -70,18 +56,50 @@
                 {
                     element: "#address-form",
                     title: "Address information",
-                    content: "The most important is to provide your address so you will be able fo find swappers near you.",
+                    content: "It is important to provide your address so you will be able fo find swappers near you.",
                     placement: 'top'
                 }
-            ]});
+            ];
+            var steps = [];
+            if (onlySteps) {
+                for (var k = 0; k < onlySteps.length; k++) {
+                    steps.push(baseSteps[onlySteps[k]]);
+                }
+            } else {
+                steps = baseSteps;
+            }
+            self.tour = new Tour({
+                backdrop: true,
+                backdropPadding: 10,
+                template: "" +
+                    "<div class='popover tour'>" +
+                    "  <div class='arrow'></div>" +
+                    "  <h3 class='popover-title'></h3>" +
+                    "  <div class='popover-content'></div>" +
+                    "  <div class='popover-navigation'>" +
+                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
+                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
+                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
+                    "  </div>" +
+                    "</div>",
+                steps: steps});
             self.tour.init();
             self.tour.start();
             self.tour.restart(true);
         }
-        if (!self.user.address.latitude || !self.user.address.longitude) {
-            $timeout(tourActivate, 1000);
+        var tourSteps = [];
+        if (!self.user.hasBasicProfile()) {
+            tourSteps.push(0);
         }
-
+        if (!self.user.havePlatforms()) {
+            tourSteps.push(1);
+        }
+        if (!self.user.hasAddress()) {
+            tourSteps.push(2);
+        }
+        if (tourSteps) {
+            $timeout(function () {tourActivate(tourSteps)}, 1000);
+        }
 
         function gameTourActivate() {
             // BootstrapTour is not compatible with z-index based layout
@@ -147,11 +165,12 @@
                 // $rootScope.$apply(function () {
                 //     $rootScope.user = user;
                 // });
+
                 if (updateMap) {
-                    self.tour.end();
                     setupUserMap(user);
                 }
-                if (self.makeGameTour && self.user.address.latitude && self.user.address.longitude && self.user.platforms.length) {
+                if (self.makeGameTour && self.user.isProfileComplete()) {
+                    self.tour.end();
                     gameTourActivate();
                     var el = $('li[sref="app.games"] a');
                     el.attr('href', '#/app/games?tour=true');
