@@ -134,7 +134,7 @@
             self.allPlatforms = platforms;
         });
 
-        self.updateUser = function () {
+        self.updateUser = function (updateMap) {
             $('.profile-loading').fadeIn();
             UsersService.updateUser(self.user).then(function (user) {
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
@@ -146,8 +146,10 @@
                 // $rootScope.$apply(function () {
                 //     $rootScope.user = user;
                 // });
-                setupUserMap(user);
-                if (self.makeGameTour) {
+                if (updateMap) {
+                    setupUserMap(user);
+                }
+                if (self.makeGameTour && self.user.address.latitude && self.user.address.longitude && self.user.platforms.length) {
                     gameTourActivate();
                     var el = $('li[sref="app.games"] a');
                     el.attr('href', '#/app/games?tour=true');

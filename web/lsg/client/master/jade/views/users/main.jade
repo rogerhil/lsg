@@ -55,12 +55,12 @@ h3 My profile
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
                                     label First Name
-                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()")
+                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
                                     label Last Name
-                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()")
+                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='15', ng-class="{'md-input-invalid': ctrl.errors.gender}")
@@ -81,7 +81,7 @@ h3 My profile
                                             span +44
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone1}")
                                     label Phone 1
-                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()")
+                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.phone1")
                                         .md-char-counter {{error}}
                         div#platforms-field(layout='', layout-sm='column')
@@ -96,7 +96,7 @@ h3 My profile
                                 input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required)
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
-                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser();" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
+                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
                                         span(md-highlight-text='ctrl.searchText') {{item.display}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.address.geocoder_address")
                                         .md-char-counter {{error}}

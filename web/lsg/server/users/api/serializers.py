@@ -78,8 +78,8 @@ class UserSerializer(serializers.ModelSerializer):
             else:
                 instance.address.delete()
         else:
-            instance.address = address_serializer.create(
-                                      address_serializer.validated_data)
+            if address_serializer.validated_data.get('geocoder_address'):
+                instance.address = address_serializer.create(address_serializer.validated_data)
         instance = super(UserSerializer, self).update(instance, validated_data)
         Verbs.changed_profile_details.send(instance)
         return instance
@@ -91,6 +91,13 @@ class UserSerializer(serializers.ModelSerializer):
         user.address = address
         user.save()
         return user
+
+    def to_representation(self, instance):
+        serialized = super(UserSerializer, self).to_representation(instance)
+        address_serializer = self.fields['address']
+        if not serialized.get('address'):
+            serialized['address'] = address_serializer.to_representation(instance._address)
+        return serialized
 
 
 class UserGameMixin(object):

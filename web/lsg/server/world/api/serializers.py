@@ -12,9 +12,9 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         #fields = ('address1', 'address2', 'postal_code', 'city', 'state',
         #          'country', 'latitude', 'longitude')
-        fields = ('geocoder_address', 'latitude', 'longitude')
+        fields = ('geocoder_address', 'address1', 'latitude', 'longitude')
         read_only_fields = ('address1', 'address2', 'postal_code', 'city',
-                            'state', 'country',  'latitude', 'longitude')
+                            'state', 'country', 'latitude', 'longitude')
         depth = 2
 
     def __init__(self, *args, **kwargs):
@@ -24,7 +24,7 @@ class AddressSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         is_valid = super(AddressSerializer, self).is_valid(raise_exception)
         geo = self.get_geocode_obj_from_address(self._validated_data)
-        if is_valid and not geo:
+        if geo and not geo.wkt:
             self._errors['address'] = ['Full address does not seem be be '
                                        'valid']
             if raise_exception:
@@ -33,7 +33,7 @@ class AddressSerializer(serializers.ModelSerializer):
         return is_valid
 
     def get_geocode_obj_from_address(self, data):
-        if not data:
+        if not data or not data.get('geocoder_address'):
             return
         geocoder_address = data.get('geocoder_address')
         print('$$$$$$$$$$$$$$$$')
@@ -46,6 +46,9 @@ class AddressSerializer(serializers.ModelSerializer):
 
     def parse_address_data(self, validated_data):
         geo = self.get_geocode_obj_from_address(validated_data)
+
+        if geo is None:
+            return
 
         def join(*args):
             return ' '.join(set([i for i in args if i and i.strip()]))
