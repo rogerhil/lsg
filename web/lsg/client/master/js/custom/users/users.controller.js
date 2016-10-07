@@ -15,6 +15,7 @@
     function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        self.tour = undefined;
         self.user = $rootScope.user;
         self.allPlatforms = [];
         self.countries = ['Ireland', 'United Kingdom', 'Isle of Man'];
@@ -39,7 +40,7 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
-            var tour = new Tour({
+            self.tour = new Tour({
                 backdrop: true,
                 backdropPadding: 10,
                 template: "" +
@@ -73,9 +74,9 @@
                     placement: 'top'
                 }
             ]});
-            tour.init();
-            tour.start();
-            tour.restart(true);
+            self.tour.init();
+            self.tour.start();
+            self.tour.restart(true);
         }
         if (!self.user.address.latitude || !self.user.address.longitude) {
             $timeout(tourActivate, 1000);
@@ -147,6 +148,7 @@
                 //     $rootScope.user = user;
                 // });
                 if (updateMap) {
+                    self.tour.end();
                     setupUserMap(user);
                 }
                 if (self.makeGameTour && self.user.address.latitude && self.user.address.longitude && self.user.platforms.length) {
