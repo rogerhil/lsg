@@ -24,11 +24,11 @@
                               {id: 'female', label: 'Female'}];
         self.mapMarkers = [];
         self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
-        self.searchText = null;
+        self.searchText = self.user.address.geocoder_address;
 
         self.queryAddress = function (query) {
             return UsersService.queryAddress(query);
-        }
+        };
 
         function tourActivate() {
             // BootstrapTour is not compatible with z-index based layout
@@ -138,7 +138,7 @@
         self.updateUser = function () {
             UsersService.updateUser(self.user).then(function (user) {
                 Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
-                self.searchText = null;
+                self.searchText = user.address.geocoder_address;
                 self.errors = {};
                 self.user = user;
                 $rootScope.user = user;
