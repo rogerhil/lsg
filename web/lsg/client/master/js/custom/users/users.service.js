@@ -6,15 +6,15 @@
         .service('UsersService', UsersService)
         .factory('User', User);
 
-    User.$inject = [];
-    function User() {
+    User.$inject = ['$rootScope'];
+    function User($rootScope) {
         var User = function(data) {
             for (var key in data) {
                 this[key] = data[key];
             }
         };
         User.prototype.hasBasicProfile = function () {
-            return this.first_name && this.last_name && this.phone1 && this.phone1_prefix;
+            return this.first_name && this.last_name && this.phone1;
         };
         User.prototype.havePlatforms = function () {
             return this.platforms.length;
@@ -25,28 +25,12 @@
         User.prototype.isProfileComplete = function () {
             return this.hasBasicProfile() && this.havePlatforms() && this.hasAddress();
         };
-        User.prototype.flag = function () {
-            var url;
-            switch (this.address.country.toLowerCase()) {
-                case 'ireland':
-                    url = 'app/img/ie64px.png';
-                    break;
-                case 'united kingdom':
-                    url = 'app/img/uk64px.png';
-                    break;
-                case 'isle of man':
-                    url = 'app/img/im64px.png';
-                    break;
-                default:
-                    url = 'app/img/questionmark.png';
-                    break;
-            }
-            return url;
-        };
         User.prototype.isCountrySupported = function () {
-            var supported = ['ireland', 'unied kingdom', 'isle of man'];
+            var supported = $rootScope.constants.countries.map(function(o) {
+                return o.code;
+            });
             if (this.address.country) {
-                return supported.indexOf(this.address.country.toLowerCase()) != -1;
+                return supported.indexOf(this.address.country.code) != -1;
             }
             return false;
         };

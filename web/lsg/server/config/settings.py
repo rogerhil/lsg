@@ -90,6 +90,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+#COUNTRIES_ONLY = ['GB', 'IE', 'IM']
+
+SUPPORTED_COUNTRIES = ['GB', 'IE', 'IM']
+COUNTRIES_FLAG_URL = 'img/flags/48x48/{code}.png'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

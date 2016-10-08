@@ -17,9 +17,10 @@
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.tour = undefined;
         self.countryTour = undefined;
+        self.gameTour = undefined;
         self.user = $rootScope.user;
         self.allPlatforms = [];
-        self.countries = ['Ireland', 'United Kingdom', 'Isle of Man'];
+        self.countries = ['IE', 'GB', 'IM'];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
                               {id: 'female', label: 'Female'}];
@@ -27,23 +28,24 @@
         self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
         self.searchText = self.user.address.geocoder_address;
 
-        var tourSteps = [];
-        if (!self.user.hasBasicProfile()) {
-            tourSteps.push(0);
-        }
-        if (!self.user.havePlatforms()) {
-            tourSteps.push(1);
-        }
-        if (!self.user.hasAddress()) {
-            tourSteps.push(2);
-        }
+        $('body').on('click', function (e) {
+            if ($(e.target).hasClass('tour-backdrop')) {
+                if (self.tour) self.tour.end();
+                if (self.countryTour) self.countryTour.end();
+                if (self.gameTour) self.gameTour.end();
+            }
+        });
 
         self.queryAddress = function (query) {
             return UsersService.queryAddress(query);
         };
 
         self.changeCountry = function () {
-            $('#change-country-form').slideDown();
+            if ($('#change-country-form').is(':hidden')) {
+                $('#change-country-form').slideDown();
+            } else {
+                $('#change-country-form').slideUp();
+            }
         };
 
         function countryTourActivate() {
@@ -59,8 +61,8 @@
             var steps = [
                 {
                     element: "#user-profile-change",
-                    content: 'The country "' + self.user.address.country + '" information coming from your social ' +
-                             'account is not supported. Please select a valid country.',
+                    content: 'The country "' + self.user.address.country.name + '" coming from your social ' +
+                             'account is not supported. Please select a valid country on the left.',
                     placement: 'right'
                 }
             ];
@@ -72,9 +74,6 @@
                     "  <div class='arrow'></div>" +
                     "  <h3 class='popover-title'></h3>" +
                     "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
                     "</div>",
                 steps: steps});
             self.countryTour.init();
@@ -82,7 +81,8 @@
             self.countryTour.restart(true);
         }
 
-        function tourActivate(onlySteps) {
+        function tourActivate() {
+
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -112,6 +112,16 @@
                     placement: 'top'
                 }
             ];
+            var onlySteps = [];
+            if (!self.user.hasBasicProfile()) {
+                onlySteps.push(0);
+            }
+            if (!self.user.havePlatforms()) {
+                onlySteps.push(1);
+            }
+            if (!self.user.hasAddress()) {
+                onlySteps.push(2);
+            }
             var steps = [];
             if (onlySteps) {
                 for (var k = 0; k < onlySteps.length; k++) {
@@ -140,8 +150,8 @@
             self.tour.restart(true);
         }
 
-        if (tourSteps && self.user.isCountrySupported()) {
-            $timeout(function () {tourActivate(tourSteps)}, 1000);
+        if (self.user.isCountrySupported()) {
+            $timeout(function () {tourActivate()}, 1000);
         }
 
         if (!self.user.isCountrySupported()) {
@@ -159,8 +169,8 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
-            var tour = new Tour({
-                //backdrop: true,
+            self.gameTour = new Tour({
+                backdrop: true,
                 backdropContainer: 'header.topnavbar-wrapper',
                 container: 'header.topnavbar-wrapper',
                 template: "" +
@@ -172,6 +182,9 @@
                     "    <button class='btn btn-default' data-role='end'>Close</button>" +
                     "  </div>" +
                     "</div>",
+                onEnd: function (tour) {
+                    $('.popover.tour').remove();
+                },
                 steps: [
                 {
                     element: 'li[sref="app.games"]',
@@ -180,9 +193,16 @@
                     placement: 'right'
                 }
             ]});
-            tour.init();
-            tour.start();
-            tour.restart(true);
+            self.gameTour.init();
+            self.gameTour.start();
+            self.gameTour.restart(true);
+            $timeout(function () {
+                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
+                $('.tour-step-background').css('background', '#fff');
+                $('.tour-step-background').click(function () {
+                    self.gameTour.end();
+                });
+            }, 700);
         }
 
         self.changePicture = function () {
@@ -197,6 +217,9 @@
             });
         };
 
+
+        //$timeout(function () {gameTourActivate()}, 1000);
+
         GamesService.getPlatforms().then(function (platforms) {
             self.allPlatforms = platforms;
         });
@@ -207,16 +230,27 @@
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 $('.profile-loading').fadeOut();
                 $('#change-country-form').slideUp();
-                self.countryTour.end();
+                if (self.countryTour) {
+                    self.countryTour.end();
+                    self.countryTour = null;
+                    tourActivate();
+                } else {
+                    $timeout(function () {
+                        self.tour.end();
+                        tourActivate();
+                    });
+                }
+                if (!user.address.geocoder_address && user.address.country) {
+                    setupMapInCountry(user.address.country.name);
+
+                }
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};
                 self.user = user;
                 $rootScope.user = user;
-                // $rootScope.$apply(function () {
-                //     $rootScope.user = user;
-                // });
 
                 if (updateMap) {
+                    self.tour.end();
                     setupUserMap(user);
                 }
                 if (self.makeGameTour && self.user.isProfileComplete()) {
@@ -233,7 +267,9 @@
                 }
             }).catch(function (a) {
                 $('.profile-loading').fadeOut();
-                self.countryTour.end();
+                if (self.countryTour) {
+                    self.countryTour.end();
+                }
                 if (a.address && a.address.length) {
                     self.errors = {addressGlobal: a.address};
                 } else {
@@ -242,12 +278,33 @@
             });
         };
 
+        function setupMapInCountry(country) {
+            if (self.mapMarkers.length) {
+                self.mapMarkers[0].setMap(null);
+                self.mapMarkers = [];
+            }
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode( {'address': country}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    self.userMap.fitBounds(results[0].geometry.viewport);
+                } else {
+                    console.log("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+
         function setupUserMap(user) {
-            if (!user.address.latitude || !user.address.longitude) return;
+            if (!user.address.latitude || !user.address.longitude) {
+                if (self.user.address.country) {
+                    setupMapInCountry(self.user.address.country.name);
+                }
+                return;
+            }
             var userPosition = new google.maps.LatLng(user.address.latitude,
                                                       user.address.longitude);
             var userMarker;
             self.userMapOptions.center = userPosition;
+            self.userMapOptions.zoom = 16;
             if (self.mapMarkers.length) {
                 self.mapMarkers[0].setMap(null);
                 self.mapMarkers = [];
@@ -256,7 +313,7 @@
                 userMarker = new google.maps.Marker({map: self.userMap, position: userPosition, title: user.name, visible:true});
                 self.mapMarkers.push(userMarker);
                 var userInfoWindow = new google.maps.InfoWindow({
-                    content: user.address.address1
+                    content: user.address.address1 || user.address.address2 || user.address.city || user.address.state
                 });
                 userInfoWindow.open(self.userMap, userMarker);
                 $timeout(function () {
@@ -265,7 +322,7 @@
             });
         }
         self.userMapOptions = {
-            zoom: 14,
+            zoom: 16,
             center: new google.maps.LatLng(1, 1),
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scrollwheel: false

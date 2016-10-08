@@ -178,7 +178,7 @@
                     q.reject();
                     return;
                 }
-                q.resolve();
+                //q.resolve();
                 $state.transitionTo("pages.500");
             });
             return q;

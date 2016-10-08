@@ -25,7 +25,7 @@ script(type='text/ng-template', id="sidebar-renderer.html")
                                     img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
                                 //.circle.circle-success.circle-lg
                                 .user-flag
-                                    img(ng-src="{{user.flag()}}", alt="{{user.address.country}}")
+                                    img(ng-src="{{user.address.country.flag}}", alt="{{user.address.country.name}}")
                         // Name and Job
                         .user-block-info
                             span.user-block-name {{ 'sidebar.WELCOME' | translate }} {{user.name}}

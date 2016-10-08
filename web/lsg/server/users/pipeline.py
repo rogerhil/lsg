@@ -1,7 +1,9 @@
 import logging
+import geocoder
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
+from django_countries import countries
 
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
@@ -37,7 +39,8 @@ def save_profile(backend, user, response, *args, **kwargs):
             if location:
                 city, country = map(lambda x: x.strip(),
                                     location['name'].split(','))
-                address = Address(city=city, country=country)
+                code = countries.by_name(country)
+                address = Address(city=city, country=code)
                 address.save()
                 user.address = address
                 changed = True
@@ -63,7 +66,8 @@ def save_profile(backend, user, response, *args, **kwargs):
             if locations:
                 city, country = map(lambda x: x.strip(),
                                     locations[0].split('/'))
-                address = Address(city=city, country=country)
+                code = countries.by_name(country)
+                address = Address(city=city, country=code)
                 address.save()
                 user.address = address
                 changed = True
@@ -85,10 +89,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         if not user.address:
             location = response.get('location', '').strip()
             if location:
-                city, state = map(lambda x: x.strip(), location.split(','))
-                address = Address(city=city, state=state)
-                address.save()
-                user.address = address
+                user.address = Address.create_from_location(location)
                 changed = True
         if not user.social_picture_url:
             if not response['default_profile']:

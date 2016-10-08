@@ -164,6 +164,14 @@ class Status(Choices):
     def finalized_statuses(cls):
         return [cls.succeeded, cls.failed]
 
+    @classmethod
+    def to_dict(cls):
+        data = dict([(j, i) for i, j in cls.raw_choices()])
+        data['open_statuses'] = cls.open_statuses()
+        data['closed_statuses'] = cls.closed_statuses()
+        data['finalized_statuses'] = cls.finalized_statuses()
+        return data
+
 
 class RequestFlow(object):
     # below possible next states

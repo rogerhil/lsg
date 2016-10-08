@@ -23,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework_nested import routers
 
+from constants import ConstantsView
 from mail.views import SwapRequestEmailPreview
 from scripts.views import CeleryTaskLog, WatchCeleryTask, StopCeleryTask, \
     KillCeleryTask
@@ -79,6 +80,7 @@ urlpatterns = [
     url('^activity/', include('actstream.urls')),
 
     url(r'^api/users/authenticated/', AuthenticatedUserView.as_view()),
+    url(r'^api/constants/', ConstantsView.as_view()),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(users_router.urls)),
 

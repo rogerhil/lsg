@@ -5,9 +5,15 @@
         .module('app.customSettings')
         .run(customSettingsRun);
 
-    customSettingsRun.$inject = ['$rootScope'];
+    customSettingsRun.$inject = ['$rootScope', 'ConstantsService'];
 
-    function customSettingsRun($rootScope) {
+    function customSettingsRun($rootScope, ConstantsService) {
+
+        $rootScope.constants = {};
+
+        ConstantsService.get().then(function (constants) {
+           $rootScope.constants = constants;
+        });
 
         // Hides/show user avatar on sidebar from any element
         $rootScope.toggleUserBlock = function () {

@@ -1,12 +1,14 @@
+import geocoder
 from django.contrib.gis.db import models
+from django_countries.fields import CountryField
 
-AVAILABLE_COUNTRIES = [
-    'United Kingdom',
-    'Ireland',
-    'Isle of Man'
-]
-
-COUNTRIES_CHOICES = [(i, i) for i in AVAILABLE_COUNTRIES]
+# AVAILABLE_COUNTRIES = [
+#     'United Kingdom',
+#     'Ireland',
+#     'Isle of Man'
+# ]
+#
+# COUNTRIES_CHOICES = [(i, i) for i in AVAILABLE_COUNTRIES]
 
 
 class WorldBorder(models.Model):
@@ -39,7 +41,7 @@ class Address(models.Model):
     address2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=128, null=True, blank=True)
-    country = models.CharField(max_length=128, choices=COUNTRIES_CHOICES)
+    country = CountryField()  #choices=COUNTRIES_CHOICES)
     postal_code = models.CharField(max_length=32, null=True, blank=True)
     geocoder_address = models.CharField(max_length=255, null=True, blank=True)
     point = models.PointField(blank=True, null=True)
@@ -66,4 +68,43 @@ class Address(models.Model):
     def latitude(self):
         return self.point.coords[1] if self.point else None
 
+    @staticmethod
+    def get_geocode_obj_from_address(location, country=None):
+        print('$$$$$$$$$$$$$$$$')
+        print(location)
+        print('$$$$$$$$$$$$$$$$')
+        kwargs = {}
+        if country:
+            kwargs['components'] = "country:%s" % country
+        geo = geocoder.google(location, timeout=30, **kwargs)
+        print(geo)
+        print(geo.wkt)
+        return geo
 
+    @classmethod
+    def parse_address_data(cls, location, country=None):
+        geo = cls.get_geocode_obj_from_address(location, country)
+        if geo is None:
+            return {}
+
+        def join(*args):
+            return ' '.join(set([i for i in args if i and i.strip()]))
+
+        data = dict(
+            point=str(geo.wkt),
+            address1=join(geo.housenumber, geo.street_long, geo.road_long),
+            address2=join(geo.neighborhood, geo.sublocality),
+            city=geo.city_long,
+            state=join(geo.state_long, geo.province_long),
+            country=geo.country,
+            postal_code=geo.postal,
+            geocoder_address=geo.address
+        )
+        return data
+
+    @classmethod
+    def create_from_location(cls, location, country=None):
+        data = cls.parse_address_data(location, country)
+        address = cls(**data)
+        address.save()
+        return address

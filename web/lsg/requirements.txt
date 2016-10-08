@@ -15,6 +15,7 @@ django-debug-toolbar
 admin-extra-urls
 eventlet
 celery
+django-countries
 django-extra-fields
 django-activity-stream
 git+https://github.com/celery/django-celery.git
