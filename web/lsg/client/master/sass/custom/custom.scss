@@ -23,6 +23,40 @@
 
 /* END some layout customization */
 
+.user-flag {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.user-flag:hover {
+  opacity: .7;
+}
+
+.user-flag img {
+  width: 24px;
+  height: 24px;
+}
+
+.profile-user {
+  position: relative;
+  padding: 25px 0 10px;
+  @include clearfix();
+  > .user-block-picture {
+    position: relative;
+    width: 90px;
+    margin: 0 auto;
+    > img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+}
+
 md-virtual-repeat-container {
   z-index: 9999 !important;
 }

@@ -21,9 +21,11 @@ script(type='text/ng-template', id="sidebar-renderer.html")
                         // User picture
                         .user-block-picture
                             .user-block-status
-                                div.img-circle.user-img.left-menu
-                                    img.img-thumbnail.img-circle(ng-src="{{user.picture}}", alt="{{user.name}}")
-                                .circle.circle-success.circle-lg
+                                div.user-img.left-menu
+                                    img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
+                                //.circle.circle-success.circle-lg
+                                .user-flag
+                                    img(ng-src="{{user.flag()}}", alt="{{user.address.country}}")
                         // Name and Job
                         .user-block-info
                             span.user-block-name {{ 'sidebar.WELCOME' | translate }} {{user.name}}

@@ -35,7 +35,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'], url_path='query-address')
     def query_address(self, request, pk):
-        geo = geocoder.google(request.GET.get('search', ''))
+        geo = geocoder.google(request.GET.get('search', ''), components="country:IE")
         return views.Response([dict(display=geo.address)])
 
     @detail_route(methods=['get'])

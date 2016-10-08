@@ -6,10 +6,29 @@ h3 My profile
         .col-md-4
             .panel.panel-default
                 .panel-body.text-center
-                    .pv-lg
-                        div.user-img.center.clickable(ng-click="ctrl.changePicture()")
-                            img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
-                            md-tooltip(md-direction="top") Change Picture
+                    #user-profile-change.profile-user
+                        .user-block-picture
+                            .user-img.center.clickable(ng-click="ctrl.changePicture()")
+                                img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
+                                md-tooltip(md-direction="top") Change Picture
+                            #change-country.user-flag(ng-click="ctrl.changeCountry()")
+                                img(ng-src="{{user.flag()}}", alt="{{user.address.country}}")
+                                md-tooltip(md-direction="right") Change Country
+
+                        form#change-country-form(name='countryForm', ng-submit="ctrl.updateUser()", style="display: none; margin-top: 20px;")
+                            md-input-container(ng-class="{'md-input-invalid': ctrl.errors.country}", style="width: 40%;")
+                                label Select your country
+                                md-select(ng-model="ctrl.user.address.country", required, md-on-close="ctrl.updateUser()", md-no-asterisk="true", style="")
+                                    md-option(value="Ireland")
+                                        img(src="app/img/ie64px.png" alt="Ireland" style="height: 24px")
+                                        span Ireland
+                                    md-option(value="Isle of Man")
+                                        img(src="app/img/im64px.png" alt="Isle of Man" style="height: 24px")
+                                        span Isle of Man
+                                    md-option(value="United Kingdom")
+                                        img(src="app/img/uk64px.png" alt="United Kingdom" style="height: 24px")
+                                        span United Kingdom
+
                     h3.m0.text-bold {{ user.first_name }} {{ user.last_name }}
                     .mv-lg
                         user-ratings(user="user")
@@ -34,7 +53,7 @@ h3 My profile
                 .panel-heading
                     .panel-title Map
                 .panel-body
-                    .media(ng-if="!user.address.latitude || !user.address.longitude")
+                    .media(ng-if="!user.hasAddress()")
                         p No address has been provided yet
                     .media
                         .gmap(ui-map='ctrl.userMap', ui-options='ctrl.userMapOptions', class="map-canvas")
@@ -48,55 +67,58 @@ h3 My profile
                         div(style="background-color: #fff;")
                     .card-title Profile Form
                 .card-body
-                    div.alert.alert-warning(ng-if="!user.address.latitude || !user.address.longitude")
+                    div.alert.alert-warning(ng-if="ctrl.user.isCountrySupported() && !ctrl.user.isProfileComplete()")
                         span Please complete the form below to be able to start using the application.
+                    div.alert.alert-warning(ng-if="!ctrl.user.isCountrySupported()")
+                        span You must provide your country on the left before completing your profile data.
                     form(name='profileForm', ng-submit="ctrl.updateUser()")
                         div#profile-form
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
                                     label First Name
-                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
+                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
                                     label Last Name
-                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
+                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='15', ng-class="{'md-input-invalid': ctrl.errors.gender}")
                                     label Gender
-                                    md-select(ng-model="ctrl.user.gender", ng-change="ctrl.updateUser()")
+                                    md-select(ng-model="ctrl.user.gender", ng-change="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()")
                                         md-option(ng-value="gender.id", ng-repeat="gender in ctrl.genderOptions") {{gender.label}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.gender")
                                         .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
-                                md-input-container(flex='25', ng-class="{'md-input-invalid': ctrl.errors.phone1_prefix}")
-                                    label Prefix
-                                    md-select(ng-model="ctrl.user.phone1_prefix", required, md-on-close="ctrl.updateUser()")
-                                        md-option(value="353")
-                                            img(src="app/img/ir64px.png" alt="Ireland" style="height: 24px")
-                                            span +353
-                                        md-option(value="44")
-                                            img(src="app/img/uk64px.png" alt="United Kingdom" style="height: 24px")
-                                            span +44
+                                div(style="height: 24px; margin: 18px 10px 18px 0;")
+                                    span(ng-if="ctrl.user.address.country == 'Ireland'")
+                                        img(src="app/img/ie64px.png" alt="Ireland" style="height: 24px")
+                                        span +353
+                                    span(ng-if="ctrl.user.address.country == 'Isle of Man'")
+                                        img(src="app/img/im64px.png" alt="Isle of Man" style="height: 24px")
+                                        span +44
+                                    span(ng-if="ctrl.user.address.country == 'United Kingdom'")
+                                        img(src="app/img/uk64px.png" alt="United Kingdom" style="height: 24px")
+                                        span +44
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone1}")
                                     label Phone 1
-                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}")
+                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.phone1")
                                         .md-char-counter {{error}}
                         div#platforms-field(layout='', layout-sm='column')
                             md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.platforms}")
                                 label Platforms you have
-                                md-select(ng-model="ctrl.user.platforms", multiple, required, md-on-close="ctrl.updateUser()")
+                                md-select(ng-model="ctrl.user.platforms", multiple, required, md-on-close="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()")
                                     md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms") {{platform.name}}
                                 .md-errors-spacer(ng-repeat="error in ctrl.errors.platforms")
                                     .md-char-counter {{error}}
                         div#address-form
                             div(layout='', layout-sm='column')
-                                input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required)
+                                input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required, ng-disabled="!ctrl.user.isCountrySupported()")
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
-                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...')
+                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...', ng-disabled="!ctrl.user.isCountrySupported()")
                                         span(md-highlight-text='ctrl.searchText') {{item.display}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.address.geocoder_address")
                                         .md-char-counter {{error}}

@@ -25,6 +25,31 @@
         User.prototype.isProfileComplete = function () {
             return this.hasBasicProfile() && this.havePlatforms() && this.hasAddress();
         };
+        User.prototype.flag = function () {
+            var url;
+            switch (this.address.country.toLowerCase()) {
+                case 'ireland':
+                    url = 'app/img/ie64px.png';
+                    break;
+                case 'united kingdom':
+                    url = 'app/img/uk64px.png';
+                    break;
+                case 'isle of man':
+                    url = 'app/img/im64px.png';
+                    break;
+                default:
+                    url = 'app/img/questionmark.png';
+                    break;
+            }
+            return url;
+        };
+        User.prototype.isCountrySupported = function () {
+            var supported = ['ireland', 'unied kingdom', 'isle of man'];
+            if (this.address.country) {
+                return supported.indexOf(this.address.country.toLowerCase()) != -1;
+            }
+            return false;
+        };
         return User;
     }
 

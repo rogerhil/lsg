@@ -16,6 +16,7 @@
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.tour = undefined;
+        self.countryTour = undefined;
         self.user = $rootScope.user;
         self.allPlatforms = [];
         self.countries = ['Ireland', 'United Kingdom', 'Isle of Man'];
@@ -26,9 +27,60 @@
         self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
         self.searchText = self.user.address.geocoder_address;
 
+        var tourSteps = [];
+        if (!self.user.hasBasicProfile()) {
+            tourSteps.push(0);
+        }
+        if (!self.user.havePlatforms()) {
+            tourSteps.push(1);
+        }
+        if (!self.user.hasAddress()) {
+            tourSteps.push(2);
+        }
+
         self.queryAddress = function (query) {
             return UsersService.queryAddress(query);
         };
+
+        self.changeCountry = function () {
+            $('#change-country-form').slideDown();
+        };
+
+        function countryTourActivate() {
+            // BootstrapTour is not compatible with z-index based layout
+            // so adding position:static for this case makes the browser
+            // to ignore the property
+            var section = angular.element('.wrapper > section');
+            section.css({'position': 'static'});
+            // finally restore on destroy and reuse the value declared in stylesheet
+            $scope.$on('$destroy', function(){
+                section.css({'position': ''});
+            });
+            var steps = [
+                {
+                    element: "#user-profile-change",
+                    content: 'The country "' + self.user.address.country + '" information coming from your social ' +
+                             'account is not supported. Please select a valid country.',
+                    placement: 'right'
+                }
+            ];
+            self.countryTour = new Tour({
+                backdrop: true,
+                backdropPadding: 0,
+                template: "" +
+                    "<div class='popover tour'>" +
+                    "  <div class='arrow'></div>" +
+                    "  <h3 class='popover-title'></h3>" +
+                    "  <div class='popover-content'></div>" +
+                    "  <div class='popover-navigation'>" +
+                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
+                    "  </div>" +
+                    "</div>",
+                steps: steps});
+            self.countryTour.init();
+            self.countryTour.start();
+            self.countryTour.restart(true);
+        }
 
         function tourActivate(onlySteps) {
             // BootstrapTour is not compatible with z-index based layout
@@ -87,18 +139,14 @@
             self.tour.start();
             self.tour.restart(true);
         }
-        var tourSteps = [];
-        if (!self.user.hasBasicProfile()) {
-            tourSteps.push(0);
-        }
-        if (!self.user.havePlatforms()) {
-            tourSteps.push(1);
-        }
-        if (!self.user.hasAddress()) {
-            tourSteps.push(2);
-        }
-        if (tourSteps) {
+
+        if (tourSteps && self.user.isCountrySupported()) {
             $timeout(function () {tourActivate(tourSteps)}, 1000);
+        }
+
+        if (!self.user.isCountrySupported()) {
+            self.changeCountry();
+            $timeout(function () {countryTourActivate()}, 1000);
         }
 
         function gameTourActivate() {
@@ -158,6 +206,8 @@
             UsersService.updateUser(self.user).then(function (user) {
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 $('.profile-loading').fadeOut();
+                $('#change-country-form').slideUp();
+                self.countryTour.end();
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};
                 self.user = user;
@@ -182,6 +232,8 @@
                     });
                 }
             }).catch(function (a) {
+                $('.profile-loading').fadeOut();
+                self.countryTour.end();
                 if (a.address && a.address.length) {
                     self.errors = {addressGlobal: a.address};
                 } else {

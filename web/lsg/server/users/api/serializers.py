@@ -72,7 +72,8 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         address_serializer = self.fields['address']
         if instance.address:
-            if address_serializer.validated_data.get('geocoder_address'):
+            if address_serializer.validated_data.get('geocoder_address') or \
+               address_serializer.validated_data.get('country'):
                 address_serializer.update(instance.address,
                                           address_serializer.validated_data)
         else:

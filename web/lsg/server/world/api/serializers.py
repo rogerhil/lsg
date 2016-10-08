@@ -3,7 +3,7 @@ from django.contrib.gis.geos import Point
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
 
-from world.models import Address
+from world.models import Address, AVAILABLE_COUNTRIES
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -12,9 +12,9 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         #fields = ('address1', 'address2', 'postal_code', 'city', 'state',
         #          'country', 'latitude', 'longitude')
-        fields = ('geocoder_address', 'address1', 'latitude', 'longitude')
+        fields = ('geocoder_address', 'address1', 'country', 'latitude', 'longitude')
         read_only_fields = ('address1', 'address2', 'postal_code', 'city',
-                            'state', 'country', 'latitude', 'longitude')
+                            'state', 'latitude', 'longitude')
         depth = 2
 
     def __init__(self, *args, **kwargs):
@@ -23,10 +23,27 @@ class AddressSerializer(serializers.ModelSerializer):
 
     def is_valid(self, raise_exception=False):
         is_valid = super(AddressSerializer, self).is_valid(raise_exception)
+        country = self._validated_data.get('country')
+        if is_valid and country in AVAILABLE_COUNTRIES:
+            return True
         geo = self.get_geocode_obj_from_address(self._validated_data)
-        if geo and not geo.wkt:
-            self._errors['address'] = ['Full address does not seem be be '
-                                       'valid']
+        if geo:
+            if not geo.wkt:
+                self._errors.setdefault('address', [])
+                self._errors['address'].append('Full address does not seem be be valid')
+            if geo.country_long not in AVAILABLE_COUNTRIES:
+                self._errors.setdefault('address', [])
+                self._errors['address'].append("Let'SwapGames is only supported in the following "
+                                               "countries: %s" % ', '.join(AVAILABLE_COUNTRIES))
+            if not geo.city_long:
+                self._errors.setdefault('address', [])
+                self._errors['address'].append("City must be specified.")
+            if not geo.housenumber and not geo.street_long and not geo.road_long:
+                self._errors.setdefault('address', [])
+                self._errors['address'].append("Minimum location required, e.g.: street, road, "
+                                               "number, etc.")
+
+        if self.errors:
             if raise_exception:
                 raise ValidationError(self.errors)
             return False
@@ -39,14 +56,13 @@ class AddressSerializer(serializers.ModelSerializer):
         print('$$$$$$$$$$$$$$$$')
         print(geocoder_address)
         print('$$$$$$$$$$$$$$$$')
-        geo = geocoder.google(geocoder_address, timeout=30)
+        geo = geocoder.google(geocoder_address, components="country:IE", timeout=30)
         print(geo)
         print(geo.wkt)
         return geo
 
     def parse_address_data(self, validated_data):
         geo = self.get_geocode_obj_from_address(validated_data)
-
         if geo is None:
             return
 

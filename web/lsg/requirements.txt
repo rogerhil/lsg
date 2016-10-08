@@ -1,10 +1,10 @@
 psycopg2
-geocoder
 Pillow
 python-social-auth
 django>=1.10
 xmltodict
 djangorestframework
+geocoder
 markdown
 django-filter
 drf-nested-routers
@@ -19,4 +19,3 @@ django-extra-fields
 django-activity-stream
 git+https://github.com/celery/django-celery.git
 thegamesdb
-
