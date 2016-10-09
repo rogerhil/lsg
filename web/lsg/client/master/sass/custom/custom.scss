@@ -57,6 +57,10 @@
 
 }
 
+md-tooltip {
+  z-index: 9999;
+}
+
 md-virtual-repeat-container {
   z-index: 9999 !important;
 }
@@ -85,8 +89,16 @@ md-backdrop.md-select-backdrop {
 .arrow:after {
   border-top-color: rgba(0, 0, 0, 0.6) !important;
   border-bottom-color: rgba(0, 0, 0, 0.6) !important;
-  //border-left-color: #111 !important;
-  //border-right-color: #111 !important;
+  //border-left-color: rgba(0, 0, 0, 0.6) !important;
+  //border-right-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.popover-navigation .btn {
+  border: none !important;
+  background-color: #333 !important;
+  color: #fff !important;
+  padding: 3px 10px !important;
+  border-radius: 3px;
 }
 */
 

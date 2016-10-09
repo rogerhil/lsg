@@ -21,6 +21,17 @@
         self.wishlist = [];
         self.tour = null;
 
+        $('body').on('click', function (e) {
+            if ($(e.target).hasClass('tour-backdrop')) {
+                if (self.tour) self.tour.end();
+            }
+        });
+        $(document).on('keyup',function(evt) {
+            if (evt.keyCode == 27) {
+                if (self.tour) self.tour.end();
+            }
+        });
+
         UsersService.getCollection().then(function (collection) {
             self.collection = collection;
         });
@@ -77,8 +88,17 @@
                     element: 'li[sref="app.matches"]',
                     title: "Matches",
                     content: "Check if there is any match.",
-                    placement: 'right'
-                },
+                    placement: 'right',
+                    onShow: function (tour) {
+                        $timeout(function () {
+                            $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
+                            $('.tour-step-background').css('background', '#fff');
+                            $('.tour-step-background').click(function () {
+                                self.tour.end();
+                            });
+                        }, 700);
+                    }
+                }
             ]});
             self.tour.init();
             self.tour.start();
@@ -99,6 +119,7 @@
                 $timeout(function () {
                     var $card = $('.' + context + '-card ');
                     $('.popover.tour').css('top', ($card.offset().top + $card.height()) + 'px');
+                    $('.tour-step-background').css('height', $card.height() + 'px');
                 }, 100 * k);
             }
         }

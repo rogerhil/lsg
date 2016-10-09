@@ -35,13 +35,23 @@
                 if (self.gameTour) self.gameTour.end();
             }
         });
+        $(document).on('keyup',function(evt) {
+            if (evt.keyCode == 27) {
+                if (self.tour) self.tour.end();
+                if (self.countryTour) self.countryTour.end();
+                if (self.gameTour) self.gameTour.end();
+            }
+        });
 
         self.queryAddress = function (query) {
             return UsersService.queryAddress(query);
         };
 
-        self.changeCountry = function () {
-            if ($('#change-country-form').is(':hidden')) {
+        self.changeCountry = function (open) {
+            if (self.countryTour && !self.countryTour.ended()) {
+                return;
+            }
+            if (open || $('#change-country-form').is(':hidden')) {
                 $('#change-country-form').slideDown();
             } else {
                 $('#change-country-form').slideUp();
@@ -132,7 +142,7 @@
             }
             self.tour = new Tour({
                 backdrop: true,
-                backdropPadding: 10,
+                backdropPadding: 20,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -240,9 +250,9 @@
                         tourActivate();
                     });
                 }
+
                 if (!user.address.geocoder_address && user.address.country) {
                     setupMapInCountry(user.address.country.name);
-
                 }
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};
@@ -269,9 +279,6 @@
                 }
             }).catch(function (a) {
                 $('.profile-loading').fadeOut();
-                if (self.countryTour) {
-                    self.countryTour.end();
-                }
                 if (a.address && a.address.length) {
                     self.errors = {addressGlobal: a.address};
                 } else {

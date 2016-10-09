@@ -33,9 +33,6 @@
                     "  <div class='arrow'></div>" +
                     "  <h3 class='popover-title'></h3>" +
                     "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
                     "</div>",
                 steps: [
                 {
