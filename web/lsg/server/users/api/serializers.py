@@ -77,7 +77,8 @@ class UserSerializer(serializers.ModelSerializer):
                 address_serializer.update(instance.address,
                                           address_serializer.validated_data)
         else:
-            if address_serializer.validated_data.get('geocoder_address'):
+            if address_serializer.validated_data.get('geocoder_address') or \
+               address_serializer.validated_data.get('country'):
                 instance.address = address_serializer.create(address_serializer.validated_data)
         instance = super(UserSerializer, self).update(instance, validated_data)
         Verbs.changed_profile_details.send(instance)

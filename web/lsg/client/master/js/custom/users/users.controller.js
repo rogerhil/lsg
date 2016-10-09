@@ -62,6 +62,11 @@
         };
 
         function countryTourActivate() {
+
+            if (self.countryTour) {
+                return;
+            }
+
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -71,11 +76,17 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
+            var msg;
+            if (self.user.address.country.name) {
+                msg = 'The country "' + self.user.address.country.name + '" coming from your social ' +
+                      'account is not supported. Please select a valid country on the left.';
+            } else {
+                msg = 'Please select your country on the left.';
+            }
             var steps = [
                 {
                     element: "#user-profile-change",
-                    content: 'The country "' + self.user.address.country.name + '" coming from your social ' +
-                             'account is not supported. Please select a valid country on the left.',
+                    content: msg,
                     placement: 'right'
                 }
             ];
@@ -94,7 +105,31 @@
             self.countryTour.restart(true);
         }
 
+        function tourMoveSteps() {
+            if (self.tour && !self.tour.ended()) {
+                var currentStep = self.tour.getCurrentStep();
+                var goStep = 0;
+                if (self.user.hasBasicProfile()) {
+                    goStep = 1;
+                    if (self.user.havePlatforms()) {
+                        goStep = 2;
+                        if (self.user.hasAddress()) {
+                            goStep = -1;
+                        }
+                    }
+                }
+                if (goStep == -1) {
+                    self.tour.end();
+                } else if (currentStep < goStep) {
+                    self.tour.next();
+                }
+            }
+        }
+
         function tourActivate() {
+            if (self.user.isProfileComplete()) {
+                return;
+            }
 
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
@@ -110,7 +145,7 @@
                     element: "#profile-form",
                     title: "Complete the form",
                     content: "Please provide missing information below.",
-                    placement: 'top',
+                    placement: 'top'
                 },
                 {
                     element: "#platforms-field",
@@ -125,24 +160,24 @@
                     placement: 'top'
                 }
             ];
-            var onlySteps = [];
-            if (!self.user.hasBasicProfile()) {
-                onlySteps.push(0);
-            }
-            if (!self.user.havePlatforms()) {
-                onlySteps.push(1);
-            }
-            if (!self.user.hasAddress()) {
-                onlySteps.push(2);
-            }
+            // var onlySteps = [];
+            // if (!self.user.hasBasicProfile()) {
+            //     onlySteps.push(0);
+            // }
+            // if (!self.user.havePlatforms()) {
+            //     onlySteps.push(1);
+            // }
+            // if (!self.user.hasAddress()) {
+            //     onlySteps.push(2);
+            // }
             var steps = [];
-            if (onlySteps) {
-                for (var k = 0; k < onlySteps.length; k++) {
-                    steps.push(baseSteps[onlySteps[k]]);
-                }
-            } else {
+            // if (onlySteps) {
+            //     for (var k = 0; k < onlySteps.length; k++) {
+            //         steps.push(baseSteps[onlySteps[k]]);
+            //     }
+            // } else {
                 steps = baseSteps;
-            }
+            //}
             self.tour = new Tour({
                 backdrop: true,
                 backdropPadding: 20,
@@ -176,6 +211,9 @@
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
+            if (self.gameTour) {
+                return;
+            }
             var section = angular.element('.wrapper > section');
             section.css({'position': 'static'});
             // finally restore on destroy and reuse the value declared in stylesheet
@@ -215,7 +253,7 @@
                 $('.tour-step-background').click(function () {
                     self.gameTour.end();
                 });
-            }, 700);
+            }, 900);
         }
 
         self.changePicture = function () {
@@ -246,13 +284,14 @@
                 if (self.countryTour) {
                     self.countryTour.end();
                     self.countryTour = null;
-                    tourActivate();
-                } else {
-                    $timeout(function () {
-                        self.tour.end();
+                    if (!self.tour) {
                         tourActivate();
-                    });
+                    }
                 }
+
+                $timeout(function () {
+                    tourMoveSteps();
+                });
 
                 if (!user.address.geocoder_address && user.address.country) {
                     setupMapInCountry(user.address.country.name);
@@ -265,12 +304,16 @@
                 $($('input, md-select')[$('input, md-select').index($(':focus')) + 1]).focus();
 
                 if (updateMap) {
-                    self.tour.end();
                     setupUserMap(user);
                 }
-                if (self.makeGameTour && self.user.isProfileComplete()) {
+                if (self.user.isProfileComplete()) {
                     self.tour.end();
-                    gameTourActivate();
+                }
+                if (self.makeGameTour && self.user.isProfileComplete()) {
+                    $timeout(function () {
+                        gameTourActivate();
+                    }, 1000);
+
                     var el = $('li[sref="app.games"] a');
                     el.attr('href', '#/app/games?tour=true');
                     el.click(function () {

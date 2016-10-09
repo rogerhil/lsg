@@ -34,15 +34,15 @@ class AddressSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         is_valid = super(AddressSerializer, self).is_valid(raise_exception)
         country = self._validated_data.get('country')
-        if is_valid and country in settings.SUPPORTED_COUNTRIES:
-            return True
         location = self._validated_data.get('geocoder_address')
+        if is_valid and country in settings.SUPPORTED_COUNTRIES and not location:
+            return True
         geo = Address.get_geocode_obj_from_address(location, country)
         if geo:
             if not geo.wkt:
                 self._errors.setdefault('address', [])
                 self._errors['address'].append('Full address does not seem be be valid')
-            if geo.country_long not in settings.SUPPORTED_COUNTRIES:
+            if geo.country not in settings.SUPPORTED_COUNTRIES:
                 self._errors.setdefault('address', [])
                 self._errors['address'].append("Let'SwapGames is only supported in the following "
                                                "countries: %s" % ', '.join(COUNTRIES_NAMES))
