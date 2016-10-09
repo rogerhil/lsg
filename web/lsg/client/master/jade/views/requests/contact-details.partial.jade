@@ -1,8 +1,8 @@
-md-dialog(aria-label="Contact Details", ng-cloak, style="max-width: 600px;")
+md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
     form
         md-toolbar
             .md-toolbar-tools
-                h2 Contact Details
+                h2 {{ ctrl.swapUser.first_name }} Contact Details
                 span(flex)
                 md-button.md-icon-button(ng-click="ctrl.close()")
                     md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
@@ -13,29 +13,48 @@ md-dialog(aria-label="Contact Details", ng-cloak, style="max-width: 600px;")
                     br
                     br
                 div(layout="row")
-                    div(flex=20)
-                        div.user-img.center
-                            img.img-thumbnail(ng-src='{{ ctrl.swapUser.picture }}', alt='{{ctrl.swapUser.name}}')
-                    div(flex=80 style="white-space: nowrap; padding-left: 15px;")
+                    div(style="width: 120px;")
+                        .user-details
+                            .user-img.center
+                                img.img-thumbnail(ng-src='{{ ctrl.swapUser.picture }}', alt='{{ctrl.swapUser.name}}')
+                            .user-info
+                                p {{ ctrl.swapUser.first_name }} {{ swapUser.last_name }}
+                                p
+                                    user-ratings(user="ctrl.swapUser")
+                                p {{ctrl.request.distance}}km far
+
+                    div(flex style="white-space: nowrap; padding-left: 15px;")
                         table.table.bb: tbody
+                            //tr
+                            //    td: strong Name
+                            //    td {{ ctrl.swapUser.first_name }} {{ swapUser.last_name }}
+                            //tr(ng-if="ctrl.swapUser.gender")
+                            //    td: strong Gender
+                            //    td {{ ctrl.swapUser.gender }}
+                            tr(ng-if="ctrl.swapUser.phone1")
+                                td(style="width: 20px;")
+                                    em.fa.fa-phone
+                                    md-tooltip(md-direction="top") Phone
+                                td
+                                    span {{ ctrl.swapUser.phone1 }}
+                            tr(ng-repeat="social in ctrl.swapUser.social_links")
+                                td
+                                    em(class="icon-social-{{ social[2] }}")
+                                    md-tooltip(md-direction="top") {{ social[0] }} social account
+                                td
+                                    a(href="{{ social[1] }}", target="_blank") {{ social[0] }} account
                             tr
-                                td: strong Username
-                                td {{ ctrl.swapUser.name }}
-                            tr
-                                td: strong Name
-                                td {{ ctrl.swapUser.first_name }} {{ swapUser.last_name }}
-                            tr(ng-if="swapUser.gender")
-                                td: strong Gender
-                                td {{ ctrl.swapUser.gender }}
-                            tr(ng-if="swapUser.phone1")
-                                td: strong Phone 1
-                                td {{ ctrl.swapUser.phone1 }}
-                            tr(ng-if="swapUser.phone2")
-                                td: strong Phone 2
-                                td {{ ctrl.swapUser.phone2 }}
-                            tr
-                                td: strong Address
-                                td {{ ctrl.swapUser.address.address1 }}, {{ ctrl.swapUser.address.city }}, {{ ctrl.swapUser.address.state }}, {{ ctrl.swapUser.address.country }}
+                                td
+                                    em.icon-location-pin
+                                    md-tooltip(md-direction="top") Address
+                                td
+                                    span {{ ctrl.swapUser.address.address1 }}
+                                    br
+                                    span {{ ctrl.swapUser.address.city }}
+                                    br
+                                    span {{ ctrl.swapUser.address.state }}
+                                    br
+                                    span {{ ctrl.swapUser.address.country.name }}
                 br
                 .gmap(ui-map='ctrl.contactDetailsMap', ui-options='ctrl.contactDetailsMapOptions', class="map-canvas")
 

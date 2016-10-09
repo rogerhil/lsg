@@ -32,13 +32,13 @@ class UserSerializer(serializers.ModelSerializer):
                   'last_name', 'gender', 'address', 'phone1_prefix', 'phone1',
                   'platforms', 'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
-                  'positive_feedback_count', 'neutral_feedback_count', 'id')
+                  'positive_feedback_count', 'neutral_feedback_count', 'social_links', 'id')
         read_only_fields = ('username', 'name', 'email', 'picture',
                             'succeeded_swaps_count',
                             'failed_swaps_count', 'expired_swaps_count',
                             'negative_feedback_count',
                             'positive_feedback_count',
-                            'neutral_feedback_count', 'stars')
+                            'neutral_feedback_count', 'stars', 'social_links', 'id')
         #extra_kwargs = {'first_name': {'required': True, 'allow_blank': False},
         #                'last_name': {'required': True, 'allow_blank': False},
         #                'phone1': {'required': True, 'allow_blank': False},

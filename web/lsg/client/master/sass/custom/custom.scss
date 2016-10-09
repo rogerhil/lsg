@@ -106,6 +106,13 @@ md-backdrop.md-select-backdrop {
 //  z-index: 110 !important;
 //}
 
+.user-details {
+  text-align: center;
+  .user-info p {
+    margin: 5px 0 0 0;
+  }
+}
+
 .user-block {
   padding-right: 18px;
 }

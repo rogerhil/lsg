@@ -137,16 +137,20 @@ class User(AbstractUser):
     def social_links(self):
         prov_links = {
             'google-oauth2': dict(name='Google+',
+                                  slug="gplus",
                                   link='https://plus.google.com/%s'),
             'facebook': dict(name='Facebook',
+                             slug="facebook",
                              link='https://www.facebook.com/%s'),
             'twitter': dict(name='Twitter',
+                            slug="twitter",
                             link='https://twitter.com/%s')
         }
         links = [(prov_links[i.provider]['name'],
                   prov_links[i.provider]['link'] %
                   (i.extra_data['access_token']['screen_name']
-                   if i.provider == 'twitter' else i.extra_data.get('id')))
+                   if i.provider == 'twitter' else i.extra_data.get('id')),
+                  prov_links[i.provider]['slug'])
                  for i in self.social_auth.all()]
         return links
 
