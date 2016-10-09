@@ -11,10 +11,13 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope', 'ConstantsService'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope, ConstantsService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+
+        Tour.prototype._reposition = ConstantsService._Tour_reposition;
+
         self.tour = undefined;
         self.countryTour = undefined;
         self.gameTour = undefined;
@@ -107,7 +110,7 @@
                     element: "#profile-form",
                     title: "Complete the form",
                     content: "Please provide missing information below.",
-                    placement: 'top'
+                    placement: 'top',
                 },
                 {
                     element: "#platforms-field",

@@ -16,5 +16,64 @@
             });
             return q.promise;
         };
+
+        // Tour.prototype._reposition
+        this._Tour_reposition = function ($tip, step) {
+            var offsetBottom, offsetHeight, offsetRight, offsetWidth, originalLeft, originalTop, tipOffset;
+            offsetWidth = $tip[0].offsetWidth;
+            offsetHeight = $tip[0].offsetHeight;
+            tipOffset = $tip.offset();
+            originalLeft = tipOffset.left;
+
+            if (typeof step.backdropPadding === 'object') {
+                if (step.placement === 'bottom') {
+                    tipOffset.top += step.backdropPadding.bottom;
+                } else if (step.placement === 'top') {
+                    tipOffset.top -= step.backdropPadding.top;
+                } else if (step.placement === 'right') {
+                    tipOffset.left += step.backdropPadding.right;
+                } else {
+                    tipOffset.left -= step.backdropPadding.left;
+                }
+            } else {
+                if (step.placement === 'bottom') {
+                    tipOffset.top += step.backdropPadding;
+                } else if (step.placement === 'top') {
+                    tipOffset.top -= step.backdropPadding;
+                } else if (step.placement === 'right') {
+                    tipOffset.left += step.backdropPadding;
+                } else {
+                    tipOffset.left -= step.backdropPadding;
+                }
+            }
+
+            originalTop = tipOffset.top;
+            offsetBottom = $(document).outerHeight() - tipOffset.top - $tip.outerHeight();
+
+            if (offsetBottom < 0) {
+                tipOffset.top = tipOffset.top + offsetBottom;
+            }
+            offsetRight = $('html').outerWidth() - tipOffset.left - $tip.outerWidth();
+            if (offsetRight < 0) {
+                tipOffset.left = tipOffset.left + offsetRight;
+            }
+            if (tipOffset.top < 0) {
+                tipOffset.top = 0;
+            }
+            if (tipOffset.left < 0) {
+                tipOffset.left = 0;
+            }
+            $tip.offset(tipOffset);
+            if (step.placement === 'bottom' || step.placement === 'top') {
+                if (originalLeft !== tipOffset.left) {
+                    return this._replaceArrow($tip, (tipOffset.left - originalLeft) * 2, offsetWidth, 'left');
+                }
+            } else {
+                if (originalTop !== tipOffset.top) {
+                    return this._replaceArrow($tip, (tipOffset.top - originalTop) * 2, offsetHeight, 'top');
+                }
+            }
+        };
+
     }
 })();
