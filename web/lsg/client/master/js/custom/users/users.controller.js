@@ -249,6 +249,8 @@
                 self.user = user;
                 $rootScope.user = user;
 
+                $($('input, md-select')[$('input, md-select').index($(':focus')) + 1]).focus();
+
                 if (updateMap) {
                     self.tour.end();
                     setupUserMap(user);

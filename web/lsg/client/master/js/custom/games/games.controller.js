@@ -94,6 +94,15 @@
             return GamesService.query(query, gameIds);
         };
 
+        function updatePopever(context) {
+            for (var k = 1; k < 7; k++) {
+                $timeout(function () {
+                    var $card = $('.' + context + '-card ');
+                    $('.popover.tour').css('top', ($card.offset().top + $card.height()) + 'px');
+                }, 100 * k);
+            }
+        }
+
         self.addGameTo = function (context) {
             if (!self.selectedItem) return;
             var ids = self[context].map(function (o) {return o.game.id});
@@ -105,6 +114,8 @@
                 });
                 self.selectedItem = null;
                 self.searchText = null;
+                updatePopever(context);
+
             }, function (errors) {
                 var reasons = [];
                 for (var k in errors) {
@@ -123,6 +134,7 @@
         self.removeGameFrom = function (itemId, context) {
             UsersService.removeGameFrom(itemId,  context).then(function (response) {
                 self[context] = self[context].filter(function (o) {return o.id != itemId});
+                updatePopever(context);
             }, function (errors) {
                 var reasons = [];
                 for (var k in errors) {
