@@ -11,12 +11,12 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope', 'ConstantsService'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope, ConstantsService) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope', 'GlobalFixes'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope, GlobalFixes) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
-        Tour.prototype._reposition = ConstantsService._Tour_reposition;
+        Tour.prototype._reposition = GlobalFixes._Tour_reposition;
 
         self.tour = undefined;
         self.countryTour = undefined;
@@ -111,17 +111,21 @@
                 var goStep = 0;
                 if (self.user.hasBasicProfile()) {
                     goStep = 1;
+                    console.log('has basic profile');
                     if (self.user.havePlatforms()) {
                         goStep = 2;
+                        console.log('have platforms');
+                        console.log(currentStep);
                         if (self.user.hasAddress()) {
                             goStep = -1;
+                            console.log('has address');
                         }
                     }
                 }
                 if (goStep == -1) {
                     self.tour.end();
                 } else if (currentStep < goStep) {
-                    self.tour.next();
+                    self.tour.goTo(goStep);
                 }
             }
         }
@@ -140,7 +144,7 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
-            var baseSteps = [
+            var steps = [
                 {
                     element: "#profile-form",
                     title: "Complete the form",
@@ -160,24 +164,6 @@
                     placement: 'top'
                 }
             ];
-            // var onlySteps = [];
-            // if (!self.user.hasBasicProfile()) {
-            //     onlySteps.push(0);
-            // }
-            // if (!self.user.havePlatforms()) {
-            //     onlySteps.push(1);
-            // }
-            // if (!self.user.hasAddress()) {
-            //     onlySteps.push(2);
-            // }
-            var steps = [];
-            // if (onlySteps) {
-            //     for (var k = 0; k < onlySteps.length; k++) {
-            //         steps.push(baseSteps[onlySteps[k]]);
-            //     }
-            // } else {
-                steps = baseSteps;
-            //}
             self.tour = new Tour({
                 backdrop: true,
                 backdropPadding: 20,
@@ -196,6 +182,7 @@
             self.tour.init();
             self.tour.start();
             self.tour.restart(true);
+            tourMoveSteps();
         }
 
         if (self.user.isCountrySupported()) {
@@ -247,13 +234,7 @@
             self.gameTour.init();
             self.gameTour.start();
             self.gameTour.restart(true);
-            $timeout(function () {
-                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
-                $('.tour-step-background').css('background', '#fff');
-                $('.tour-step-background').click(function () {
-                    self.gameTour.end();
-                });
-            }, 900);
+            GlobalFixes.fixTourLeftMenu(self.gameTour.end);
         }
 
         self.changePicture = function () {

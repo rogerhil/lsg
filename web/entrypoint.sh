@@ -53,7 +53,15 @@ elif [ "$1" = 'shell' ]; then
 
 elif [ "$1" = 'dbshell' ]; then
     cd /app/lsg/server
-    python manage.py shell
+    python manage.py dbshell
+
+elif [ "$1" = 'migrate' ]; then
+    cd /app/lsg/server
+    python manage.py migrate
+
+elif [ "$1" = 'makemigrations' ]; then
+    cd /app/lsg/server
+    python manage.py makemigrations
 
 elif [ "$1" = 'bash' ]; then
     bash

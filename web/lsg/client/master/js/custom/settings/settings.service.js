@@ -3,7 +3,8 @@
 
     angular
         .module('app.customSettings')
-        .service('ConstantsService', ConstantsService);
+        .service('ConstantsService', ConstantsService)
+        .service('GlobalFixes', GlobalFixes);
 
     ConstantsService.$inject = ['$q', '$http'];
     function ConstantsService($q, $http) {
@@ -16,6 +17,11 @@
             });
             return q.promise;
         };
+
+    }
+
+    GlobalFixes.$inject = ['$timeout'];
+    function GlobalFixes($timeout) {
 
         // Tour.prototype._reposition
         this._Tour_reposition = function ($tip, step) {
@@ -75,5 +81,16 @@
             }
         };
 
+        this.fixTourLeftMenu = function (callback) {
+            $timeout(function () {
+                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px; overflow: hidden;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
+                $('.tour-step-background').css('background', '#fff');
+                $('.tour-step-background').click(function () {
+                    //self.gameTour.end();
+                    callback();
+                });
+            }, 900);
+        };
     }
+
 })();
