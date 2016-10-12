@@ -111,14 +111,10 @@
                 var goStep = 0;
                 if (self.user.hasBasicProfile()) {
                     goStep = 1;
-                    console.log('has basic profile');
                     if (self.user.havePlatforms()) {
                         goStep = 2;
-                        console.log('have platforms');
-                        console.log(currentStep);
                         if (self.user.hasAddress()) {
                             goStep = -1;
-                            console.log('has address');
                         }
                     }
                 }
@@ -164,21 +160,23 @@
                     placement: 'top'
                 }
             ];
-            self.tour = new Tour({
-                backdrop: true,
-                backdropPadding: 20,
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <h3 class='popover-title'></h3>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
-                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
-                    "</div>",
-                steps: steps});
+            if (!self.tour) {
+                self.tour = new Tour({
+                    backdrop: true,
+                    backdropPadding: 20,
+                    template: "" +
+                        "<div class='popover tour'>" +
+                        "  <div class='arrow'></div>" +
+                        "  <h3 class='popover-title'></h3>" +
+                        "  <div class='popover-content'></div>" +
+                        "  <div class='popover-navigation'>" +
+                        "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
+                        "    <button class='btn btn-default' data-role='next'>Next »</button>" +
+                        "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
+                        "  </div>" +
+                        "</div>",
+                    steps: steps});
+            }
             self.tour.init();
             self.tour.start();
             self.tour.restart(true);
@@ -272,13 +270,18 @@
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 $('.profile-loading').fadeOut();
                 $('#change-country-form').slideUp();
+                self.searchText = user.address.geocoder_address;
+                self.errors = {};
+                self.user = user;
+                $rootScope.user = user;
+
                 if (self.countryTour) {
                     self.countryTour.end();
                     self.countryTour = null;
-                    if (!self.tour) {
-                        tourActivate();
-                    }
                 }
+                // if (!self.tour) {
+                //     tourActivate();
+                // }
 
                 $timeout(function () {
                     tourMoveSteps();
@@ -287,10 +290,8 @@
                 if (!user.address.geocoder_address && user.address.country) {
                     setupMapInCountry(user.address.country.name);
                 }
-                self.searchText = user.address.geocoder_address;
-                self.errors = {};
-                self.user = user;
-                $rootScope.user = user;
+
+                tourActivate();
 
                 $($('input, md-select')[$('input, md-select').index($(':focus')) + 1]).focus();
 
@@ -332,7 +333,7 @@
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode( {'address': country}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    self.userMap.fitBounds(results[0].geometry.viewport);
+                    //self.userMap.fitBounds(results[0].geometry.viewport);
                 } else {
                     console.log("Geocode was not successful for the following reason: " + status);
                 }
@@ -364,7 +365,7 @@
                 userInfoWindow.open(self.userMap, userMarker);
                 $timeout(function () {
                     google.maps.event.trigger(self.userMap, 'resize');
-                });
+                }, 100);
             });
         }
         self.userMapOptions = {

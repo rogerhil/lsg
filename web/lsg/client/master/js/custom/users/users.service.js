@@ -17,7 +17,7 @@
             return this.first_name && this.last_name && this.phone1;
         };
         User.prototype.havePlatforms = function () {
-            return this.platforms.length;
+            return this.platforms && this.platforms.length;
         };
         User.prototype.hasAddress = function () {
             return this.address.latitude && this.address.longitude;

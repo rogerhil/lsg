@@ -70,15 +70,10 @@ class Address(models.Model):
 
     @staticmethod
     def get_geocode_obj_from_address(location, country=None):
-        print('$$$$$$$$$$$$$$$$')
-        print(location)
-        print('$$$$$$$$$$$$$$$$')
         kwargs = {}
         if country:
             kwargs['components'] = "country:%s" % country
         geo = geocoder.google(location, timeout=30, **kwargs)
-        print(geo)
-        print(geo.wkt)
         return geo
 
     @classmethod
