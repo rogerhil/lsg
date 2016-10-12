@@ -10,8 +10,8 @@
     /*
       GamesCtrl
      */
-    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout', 'GlobalFixes'];
-    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout, GlobalFixes) {
+    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout', 'GlobalFixes', '$rootScope'];
+    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout, GlobalFixes, $rootScope) {
         var self = this;
 
         self.selectedItem = null;
@@ -90,7 +90,15 @@
                     content: "Check if there is any match.",
                     placement: 'right',
                     onShow: function (tour) {
-                        GlobalFixes.fixTourLeftMenu(self.tour.end);
+                        $rootScope.app.asideToggled = true;
+                        GlobalFixes.fixTourLeftMenu(self.tour);
+                        $timeout(function () {
+                            $('nav.sidebar');
+                        }, 100);
+                    },
+                    onHide: function (tour) {
+                        $rootScope.app.asideToggled = false;
+                        $rootScope.$apply();
                     }
                 }
             ]});

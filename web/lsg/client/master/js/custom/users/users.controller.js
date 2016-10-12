@@ -228,13 +228,23 @@
                     element: 'li[sref="app.games"]',
                     title: "Add games",
                     content: "You need to specify which games you have and specify which games you wish by clicking in the menu on the left.",
-                    placement: 'right'
+                    placement: 'right',
+                    onShow: function (tour) {
+                        $rootScope.app.asideToggled = true;
+                        GlobalFixes.fixTourLeftMenu(self.gameTour);
+                        $timeout(function () {
+                            $('nav.sidebar');
+                        }, 100);
+                    },
+                    onHide: function (tour) {
+                        $rootScope.app.asideToggled = false;
+                        $rootScope.$apply();
+                    }
                 }
             ]});
             self.gameTour.init();
             self.gameTour.start();
             self.gameTour.restart(true);
-            GlobalFixes.fixTourLeftMenu(self.gameTour.end);
         }
 
         self.changePicture = function () {
@@ -287,7 +297,7 @@
                 if (updateMap) {
                     setupUserMap(user);
                 }
-                if (self.user.isProfileComplete()) {
+                if (self.tour && self.user.isProfileComplete()) {
                     self.tour.end();
                 }
                 if (self.makeGameTour && self.user.isProfileComplete()) {
