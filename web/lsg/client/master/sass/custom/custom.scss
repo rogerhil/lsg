@@ -134,6 +134,20 @@ md-backdrop.md-select-backdrop {
   margin: 0 auto;
 }
 
+/*  THE CODE BELOW IS A WORKAROUND FOR THE TOUR WHEN IS MOBILE (check layout.scss: look for XXX) */
+@media only screen and (max-width: $mq-up-to-tablet) {
+  .csstransforms3d .wrapper > section {
+    -webkit-transform: none;
+            transform: none;
+    -webkit-transition: none;
+       -moz-transition: none;
+         -o-transition: none;
+            transition: none;
+  }
+}
+/*  END OF WORKAROUND */
+
+
 .aside-collapsed {
   .user-block {
     padding-right: 18px !important;
