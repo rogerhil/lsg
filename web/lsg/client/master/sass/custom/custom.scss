@@ -134,6 +134,20 @@ md-backdrop.md-select-backdrop {
   margin: 0 auto;
 }
 
+.md-button.md-default-theme.md-primary, .md-button.md-primary {
+  color: #fff;
+  -webkit-transition: all 0.4s;
+     -moz-transition: all 0.4s;
+       -o-transition: all 0.4s;
+          transition: all 0.4s;
+}
+
+.md-button.md-primary:hover {
+  opacity: 0.9;
+}
+
+
+
 /*  THE CODE BELOW IS A WORKAROUND FOR THE TOUR WHEN IS MOBILE (check layout.scss: look for XXX) */
 @media only screen and (max-width: $mq-up-to-tablet) {
   .csstransforms3d .wrapper > section {

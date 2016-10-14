@@ -43,5 +43,17 @@
     "sref": "app.archived",
     "icon": "fa fa-archive",
     "label": "label label-primary"
+  },
+  {
+    "text": "Invite",
+    "sref": "app.invite",
+    "icon": "fa fa-group",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Contact",
+    "sref": "app.contact",
+    "icon": "fa fa-envelope-o",
+    "label": "label label-primary"
   }
 ]
