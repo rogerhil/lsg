@@ -1,6 +1,7 @@
 import geocoder
 from actstream.models import actor_stream
 
+from django.conf import settings
 from django.utils import formats
 
 from rest_framework import viewsets, views
@@ -37,7 +38,7 @@ class UsersViewSet(viewsets.ModelViewSet):
     def query_address(self, request, pk):
         code = request.user.address.country.code
         geo = geocoder.google(request.GET.get('search', ''), components="country:%s" % code,
-                              timeout=30)
+                              timeout=30, key=settings.GOOGLE_GEOCODING_KEY)
         return views.Response([dict(display=geo.address)])
 
     @detail_route(methods=['get'])

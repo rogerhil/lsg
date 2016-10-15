@@ -1,4 +1,6 @@
 import geocoder
+
+from django.conf import settings
 from django.contrib.gis.db import models
 from django_countries.fields import CountryField
 
@@ -73,7 +75,7 @@ class Address(models.Model):
         kwargs = {}
         if country:
             kwargs['components'] = "country:%s" % country
-        geo = geocoder.google(location, timeout=30, **kwargs)
+        geo = geocoder.google(location, timeout=30, key=settings.GOOGLE_GEOCODING_KEY, **kwargs)
         return geo
 
     @classmethod

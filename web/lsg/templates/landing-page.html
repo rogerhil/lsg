@@ -34,6 +34,10 @@
         <!-- Favicon and touch icons -->
         <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" id="st_insights_js" src="http://w.sharethis.com/button/buttons.js?publisher=023fcf4a-4582-470d-8c44-a22303a1ce96&product=widget"></script>
+        <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
+
     </head>
 
     <body>
@@ -326,6 +330,12 @@
         <script src="{% static 'landing-page/js/jquery.countdown.min.js' %}"></script>
         <script src="{% static 'landing-page/js/jquery.tweet.min.js' %}"></script>
         <script src="{% static 'landing-page/js/scripts.js' %}"></script>
+
+        <script type="text/javascript">stLight.options({publisher: "023fcf4a-4582-470d-8c44-a22303a1ce96", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+        <script>
+            var options={ "publisher": "023fcf4a-4582-470d-8c44-a22303a1ce96", "position": "left", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "whatsapp", "email", "sharethis"]}};
+            var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+        </script>
 
         <!--[if lt IE 10]>
             <script src="{% static 'landing-page/js/placeholder.js"></script>

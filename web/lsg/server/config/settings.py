@@ -258,6 +258,8 @@ ACTSTREAM_SETTINGS = {
     'USE_JSONFIELD': True
 }
 
+GOOGLE_GEOCODING_KEY = ''
+
 
 ###############################################################################
 # START SOCIAL SETTINGS
