@@ -333,7 +333,7 @@
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode( {'address': country}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    //self.userMap.fitBounds(results[0].geometry.viewport);
+                    self.userMap.fitBounds(results[0].geometry.viewport);
                 } else {
                     console.log("Geocode was not successful for the following reason: " + status);
                 }
@@ -342,8 +342,8 @@
 
         function setupUserMap(user) {
             if (!user.address.latitude || !user.address.longitude) {
-                if (self.user.address.country) {
-                    setupMapInCountry(self.user.address.country.name);
+                if (user.address.country) {
+                    setupMapInCountry(user.address.country.name);
                 }
                 return;
             }
@@ -357,6 +357,8 @@
                 self.mapMarkers = [];
             }
             $timeout(function () {
+                self.userMap.setCenter(userPosition);
+                self.userMap.setZoom(16);
                 userMarker = new google.maps.Marker({map: self.userMap, position: userPosition, title: user.name, visible:true});
                 self.mapMarkers.push(userMarker);
                 var userInfoWindow = new google.maps.InfoWindow({
