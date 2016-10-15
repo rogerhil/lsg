@@ -141,7 +141,7 @@
 
         self.submit = submitRequestSwap;
         self.actionButtons = [
-            {title: "Request Swap", icon: "fa fa-hand-o-up", class: "btn-info", action: submitRequestSwap}
+            {title: "Request Swap", icon: "fa fa-hand-o-up", class: "btn-primary", action: submitRequestSwap}
         ];
     }
 

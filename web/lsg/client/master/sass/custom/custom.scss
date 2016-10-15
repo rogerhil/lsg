@@ -196,6 +196,10 @@ button.md-primary {
   background-color: $mdc-blue-grey-900 !important;
 }
 
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+  background-color: $mdc-blue-grey-900 !important;
+}
+
 .swap-indicator {
   position: absolute;
   right: 10px;
