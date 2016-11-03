@@ -32,7 +32,7 @@
         button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="ctrl.showContactDetails(request, context)", ng-if="request.isOngoing()", style="margin-right: 5px;")
             em.fa.fa-phone
             md-tooltip(md-direction="top") Contact details
-        button.btn.btn-default.btn-circle.btn-lg.bg-primary(type="button" ng-click="ctrl.openFinalizeRequestDialog(request)", ng-if="request.isOngoing() || (request.isFinalizing() && !request.isFinalizedByAuthenticatedUser())")
+        button.btn.btn-primary.btn-circle.btn-lg(type="button" ng-click="ctrl.openFinalizeRequestDialog(request)", ng-if="request.isOngoing() || (request.isFinalizing() && !request.isFinalizedByAuthenticatedUser())")
             em.fa.fa-power-off
             md-tooltip(md-direction="top") Finalize it!
         button.btn.btn-default.btn-circle.btn-lg.bg-gray(type="button" ng-click="ctrl.confirmArchiveRequest(request)" ng-if="request.isClosed()")

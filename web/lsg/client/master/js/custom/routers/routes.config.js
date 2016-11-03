@@ -115,6 +115,16 @@
                 templateUrl: helper.basepath('requests/archived/main.html'),
                 resolve: helper.resolveFor('loaders.css', 'spinkit', 'ngTable')
             })
+            .state('app.contact', {
+                url: '/contact',
+                title: 'Contact',
+                templateUrl: helper.basepath('contact/main.html')
+            })
+            .state('app.invite', {
+                url: '/invite',
+                title: 'Invite',
+                templateUrl: helper.basepath('invite/main.html')
+            })
 
         //
         // CUSTOM RESOLVES

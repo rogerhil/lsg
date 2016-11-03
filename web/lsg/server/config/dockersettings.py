@@ -104,6 +104,8 @@ if os.getenv('LSG_DB_NAME'):
 
     GAMES_IMAGES_DIR = '/app/media/img/games/'
 
+    GOOGLE_GEOCODING_KEY = os.getenv('LSG_GOOGLE_GEOCODING_KEY')
+
     # FACEBOOK
     SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('LSG_AUTH_FACEBOOK_KEY')
     SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('LSG_AUTH_FACEBOOK_SECRET')

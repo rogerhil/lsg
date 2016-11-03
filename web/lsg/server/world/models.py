@@ -1,4 +1,6 @@
 import geocoder
+
+from django.conf import settings
 from django.contrib.gis.db import models
 from django_countries.fields import CountryField
 
@@ -70,15 +72,10 @@ class Address(models.Model):
 
     @staticmethod
     def get_geocode_obj_from_address(location, country=None):
-        print('$$$$$$$$$$$$$$$$')
-        print(location)
-        print('$$$$$$$$$$$$$$$$')
         kwargs = {}
         if country:
             kwargs['components'] = "country:%s" % country
-        geo = geocoder.google(location, timeout=30, **kwargs)
-        print(geo)
-        print(geo.wkt)
+        geo = geocoder.google(location, timeout=30, key=settings.GOOGLE_GEOCODING_KEY, **kwargs)
         return geo
 
     @classmethod

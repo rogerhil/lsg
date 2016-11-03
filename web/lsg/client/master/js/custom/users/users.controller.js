@@ -111,14 +111,10 @@
                 var goStep = 0;
                 if (self.user.hasBasicProfile()) {
                     goStep = 1;
-                    console.log('has basic profile');
                     if (self.user.havePlatforms()) {
                         goStep = 2;
-                        console.log('have platforms');
-                        console.log(currentStep);
                         if (self.user.hasAddress()) {
                             goStep = -1;
-                            console.log('has address');
                         }
                     }
                 }
@@ -164,21 +160,23 @@
                     placement: 'top'
                 }
             ];
-            self.tour = new Tour({
-                backdrop: true,
-                backdropPadding: 20,
-                template: "" +
-                    "<div class='popover tour'>" +
-                    "  <div class='arrow'></div>" +
-                    "  <h3 class='popover-title'></h3>" +
-                    "  <div class='popover-content'></div>" +
-                    "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
-                    "    <button class='btn btn-default' data-role='next'>Next »</button>" +
-                    "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
-                    "  </div>" +
-                    "</div>",
-                steps: steps});
+            if (!self.tour) {
+                self.tour = new Tour({
+                    backdrop: true,
+                    backdropPadding: 20,
+                    template: "" +
+                        "<div class='popover tour'>" +
+                        "  <div class='arrow'></div>" +
+                        "  <h3 class='popover-title'></h3>" +
+                        "  <div class='popover-content'></div>" +
+                        "  <div class='popover-navigation'>" +
+                        "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
+                        "    <button class='btn btn-default' data-role='next'>Next »</button>" +
+                        "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
+                        "  </div>" +
+                        "</div>",
+                    steps: steps});
+            }
             self.tour.init();
             self.tour.start();
             self.tour.restart(true);
@@ -228,13 +226,23 @@
                     element: 'li[sref="app.games"]',
                     title: "Add games",
                     content: "You need to specify which games you have and specify which games you wish by clicking in the menu on the left.",
-                    placement: 'right'
+                    placement: 'right',
+                    onShow: function (tour) {
+                        $rootScope.app.asideToggled = true;
+                        GlobalFixes.fixTourLeftMenu(self.gameTour);
+                        $timeout(function () {
+                            $('nav.sidebar');
+                        }, 100);
+                    },
+                    onHide: function (tour) {
+                        $rootScope.app.asideToggled = false;
+                        $rootScope.$apply();
+                    }
                 }
             ]});
             self.gameTour.init();
             self.gameTour.start();
             self.gameTour.restart(true);
-            GlobalFixes.fixTourLeftMenu(self.gameTour.end);
         }
 
         self.changePicture = function () {
@@ -262,13 +270,18 @@
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 $('.profile-loading').fadeOut();
                 $('#change-country-form').slideUp();
+                self.searchText = user.address.geocoder_address;
+                self.errors = {};
+                self.user = user;
+                $rootScope.user = user;
+
                 if (self.countryTour) {
                     self.countryTour.end();
                     self.countryTour = null;
-                    if (!self.tour) {
-                        tourActivate();
-                    }
                 }
+                // if (!self.tour) {
+                //     tourActivate();
+                // }
 
                 $timeout(function () {
                     tourMoveSteps();
@@ -277,17 +290,15 @@
                 if (!user.address.geocoder_address && user.address.country) {
                     setupMapInCountry(user.address.country.name);
                 }
-                self.searchText = user.address.geocoder_address;
-                self.errors = {};
-                self.user = user;
-                $rootScope.user = user;
+
+                tourActivate();
 
                 $($('input, md-select')[$('input, md-select').index($(':focus')) + 1]).focus();
 
                 if (updateMap) {
                     setupUserMap(user);
                 }
-                if (self.user.isProfileComplete()) {
+                if (self.tour && self.user.isProfileComplete()) {
                     self.tour.end();
                 }
                 if (self.makeGameTour && self.user.isProfileComplete()) {
@@ -331,8 +342,8 @@
 
         function setupUserMap(user) {
             if (!user.address.latitude || !user.address.longitude) {
-                if (self.user.address.country) {
-                    setupMapInCountry(self.user.address.country.name);
+                if (user.address.country) {
+                    setupMapInCountry(user.address.country.name);
                 }
                 return;
             }
@@ -346,6 +357,8 @@
                 self.mapMarkers = [];
             }
             $timeout(function () {
+                self.userMap.setCenter(userPosition);
+                self.userMap.setZoom(16);
                 userMarker = new google.maps.Marker({map: self.userMap, position: userPosition, title: user.name, visible:true});
                 self.mapMarkers.push(userMarker);
                 var userInfoWindow = new google.maps.InfoWindow({
@@ -354,7 +367,7 @@
                 userInfoWindow.open(self.userMap, userMarker);
                 $timeout(function () {
                     google.maps.event.trigger(self.userMap, 'resize');
-                });
+                }, 100);
             });
         }
         self.userMapOptions = {

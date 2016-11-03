@@ -81,13 +81,13 @@
             }
         };
 
-        this.fixTourLeftMenu = function (callback) {
+        this.fixTourLeftMenu = function (tour) {
             $timeout(function () {
                 $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px; overflow: hidden;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
                 $('.tour-step-background').css('background', '#fff');
-                $('.tour-step-background').click(function () {
-                    //self.gameTour.end();
-                    callback();
+                $('.tour-step-background').click(function (e) {
+                    tour.end();
+
                 });
             }, 900);
         };

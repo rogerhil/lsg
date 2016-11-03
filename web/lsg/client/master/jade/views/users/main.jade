@@ -62,7 +62,7 @@ h3 My profile
                     .card-title Profile Form
                 .card-body
                     div.alert.alert-warning(ng-if="ctrl.user.isCountrySupported() && !ctrl.user.isProfileComplete()")
-                        span Please complete the form below to be able to start using the application.
+                        span Please complete the form below
                     div.alert.alert-warning(ng-if="!ctrl.user.isCountrySupported()")
                         span You must provide your country on the left before completing your profile data.
                     form(name='profileForm', ng-submit="ctrl.updateUser()")
