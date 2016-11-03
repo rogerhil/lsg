@@ -19,6 +19,15 @@ img { max-width: 100%; }
 ::-moz-selection { background: #f44336; color: #fff; text-shadow: none; }
 ::selection { background: #f44336; color: #fff; text-shadow: none; }
 
+a.yellow {
+	color: #FFC107;
+	-o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+a.yellow:hover {
+	color: #f44336;
+}
+
 #social-sign-in a:hover {
 	opacity: 0.7;
 	cursor: pointer;
