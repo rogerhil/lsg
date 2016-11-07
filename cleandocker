@@ -19,8 +19,15 @@ elif [ "$1" = 'all' ]; then
     docker ps -a | grep 'pycharm' | awk '{print $1}' | xargs docker rm
     docker images | grep 'pycharm' | awk '{print $3}' | xargs docker rmi -f
     docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi -f
+
+elif [ "$1" = 'ALL!' ]; then
+    docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker rm
+    docker ps -a | grep 'pycharm' | awk '{print $1}' | xargs docker rm
+    docker images | grep 'pycharm' | awk '{print $3}' | xargs docker rmi -f
+    docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi -f
     docker ps -a | grep 'web' | awk '{print $1}' | xargs docker rm -f
     docker ps -a | grep 'celery' | awk '{print $1}' | xargs docker rm -f
+
 else
    echo
    echo "Usage: ./cleandocker exited | pycharm | none | webcelery | all"

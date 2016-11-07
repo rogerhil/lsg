@@ -180,6 +180,9 @@ class PopulateGamesDb(BaseScript):
         except ExpatError as err:
             self.logger.error("ERROR while parsing: %s" % err)
             return
+        except Exception as err:
+            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
+            return
 
         if g.players and g.players.isdigit():  # e.g: 4+
             game.players = int(g.players)
@@ -195,9 +198,9 @@ class PopulateGamesDb(BaseScript):
                                   "to the value '%s'. Error: %s" %
                                   (g.name, getattr(g, 'co_op',
                                    'NO SUCH rating ATTRIBUTE'), err))
+:q
 
-        game.publisher = g.publisher
-        game.developer = g.developer
+
         if getattr(g, 'rating', None):
             try:
                 game.api_rating = Decimal(g.rating) \

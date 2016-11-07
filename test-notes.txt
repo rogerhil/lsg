@@ -1,0 +1,29 @@
+FLAVIA:
+
+Landing Page:
+We're coming soon, tirar "We're"
+
+Sign in below and you'll be the first to know when it's launched
+
+Remove "Choose one of the social medias below:"
+
+"You can only *sign-in* with a social account."
+
+
+PROBLEMA: imagens social footer, nao aparecem no chrome da flavia
+
+
+* congratulations page:
+
+include share buttons
+
+
+
+
+GUILHERME test:
+
+finalize pau
+accept: doesn't close
+requests: my request doesn't show
+email, parece q nao ta enviando
+mostrar feedback no dialog de match
