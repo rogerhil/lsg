@@ -198,8 +198,12 @@ class PopulateGamesDb(BaseScript):
                                   "to the value '%s'. Error: %s" %
                                   (g.name, getattr(g, 'co_op',
                                    'NO SUCH rating ATTRIBUTE'), err))
-:q
-
+        try:
+            game.publisher = g.publisher
+            game.developer = g.developer
+        except Exception as err:
+            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
+            return
 
         if getattr(g, 'rating', None):
             try:
@@ -221,7 +225,11 @@ class PopulateGamesDb(BaseScript):
 
         self.save_xml(self.api.last_response, self.api.game.get_path, id=g.id)
 
-        genres = g.genres or {}
+        try:
+            genres = g.genres or {}
+        except Exception as err:
+            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
+            return
 
         for genre in genres.get('Genre', []):
             genre_db = Genre.objects.get_or_create(name=genre)[0]
