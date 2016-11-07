@@ -12,15 +12,15 @@ jQuery(document).ready(function() {
     , "/static/landing-page/img/backgrounds/5.jpg?a"
     , "/static/landing-page/img/backgrounds/6.jpg?a"
     ], {duration: 3000, fade: 750});
-    
+
     //$('.about-container').backstretch("/static/landing-page/img/backgrounds/5.jpg");
-    
+
     //$('.whos-behind-container').backstretch("/static/landing-page/img/backgrounds/6.jpg");
 
     /*
         Countdown initializer
     */
-    var now = new Date(2016, 10, 21, 19, 0);
+    var now = new Date(2016, 11, 1, 19, 0);
     var countTo = now.valueOf();
     $('.timer').countdown(countTo, function(event) {
     	$(this).find('.days').text(event.offset.totalDays);
@@ -36,12 +36,12 @@ jQuery(document).ready(function() {
             if (target.length) {
                 $('html, body').animate({
                 scrollTop: target.offset().top
-            }, 500);
+            }, 1000);
                 return false;
             }
         }
     });
 
-    
+
 });
 
