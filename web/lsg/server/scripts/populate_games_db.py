@@ -85,7 +85,11 @@ class PopulateGamesDb(BaseScript):
                           platform=platform_name_plus)
 
             for i, g in enumerate(games):
-                self.save_game(g, i, total, platform)
+                try:
+                    self.save_game(g, i, total, platform)
+                except Exception as err:
+                    self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id,
+                                                                err))
 
         self.logger.info('#########################')
         self.logger.info('Finished populating games')
@@ -171,17 +175,11 @@ class PopulateGamesDb(BaseScript):
         except HTTPError as err:
             self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
             return
-        except Exception as err:
-            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
-            return
 
         try:
             game.overview = g.overview
         except ExpatError as err:
             self.logger.error("ERROR while parsing: %s" % err)
-            return
-        except Exception as err:
-            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
             return
 
         if g.players and g.players.isdigit():  # e.g: 4+
@@ -198,12 +196,9 @@ class PopulateGamesDb(BaseScript):
                                   "to the value '%s'. Error: %s" %
                                   (g.name, getattr(g, 'co_op',
                                    'NO SUCH rating ATTRIBUTE'), err))
-        try:
-            game.publisher = g.publisher
-            game.developer = g.developer
-        except Exception as err:
-            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
-            return
+
+        game.publisher = g.publisher
+        game.developer = g.developer
 
         if getattr(g, 'rating', None):
             try:
@@ -225,11 +220,7 @@ class PopulateGamesDb(BaseScript):
 
         self.save_xml(self.api.last_response, self.api.game.get_path, id=g.id)
 
-        try:
-            genres = g.genres or {}
-        except Exception as err:
-            self.logger.error("ERROR! %s (#%s) - %s" % (g.name, g.id, err))
-            return
+        genres = g.genres or {}
 
         for genre in genres.get('Genre', []):
             genre_db = Genre.objects.get_or_create(name=genre)[0]
