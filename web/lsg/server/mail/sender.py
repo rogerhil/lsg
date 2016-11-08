@@ -91,7 +91,7 @@ class Sender(object):
         if settings.DEBUG:
             site = Site.objects.get(domain='lsg.com')
         else:
-            site = Site.objects.get(domain='letswapgames.com')
+            site = Site.objects.get(domain='www.letswapgames.com')
         base_context = {'site': site}
         base_context.update(self.context)
         context = Context(base_context)
