@@ -7,6 +7,7 @@ from datetime import timedelta
 from time import time
 from django.utils import timezone
 from thegamesdb import TheGamesDb
+from thegamesdb.base import GamesDbException
 from thegamesdb.test.mockdb import TheGamesDbMock
 
 if "DJANGO_SETTINGS_MODULE" not in os.environ:
@@ -102,9 +103,14 @@ class BaseScript(object):
         elif update_days:
             self.logger.info('Update days: %s' % update_days)
             seconds = int(update_days) * 24 * 60 * 60
-            updates = self.api.game.updates(seconds)
-            self.games_ids = updates['games'] or []
-            self.logger.info('Games not updated: %s' % games_ids)
+            try:
+                updates = self.api.game.updates(seconds)
+                self.games_ids = updates['games'] or []
+                self.logger.info('Games not updated: %s' % games_ids)
+            except GamesDbException as err:
+                if 'Time is greater than' not in str(err):
+                    raise err
+                self.logger.warning("!!! Doing a full download: %s" % str(err))
 
         self.xml_path = xml_path
         self.skip_existent_platforms = skip_existent_platforms

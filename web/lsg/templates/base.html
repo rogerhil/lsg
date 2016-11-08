@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Let'SwapGames - Free for life, for gamers by gamers</title>
+
+        <meta property="og:title" content="Let'SwapGames - Free for life, by gamers for gamers">
+        <meta property="og:description" content="some description">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://letswapgames.com">
+        <meta property="og:image" content="http://letswapgames.com/static/img/logo-96x50.png">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,100,100italic,300italic,400italic,700,700italic">
+        <link rel="stylesheet" href="{% static 'landing-page/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'landing-page/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'landing-page/css/form-elements.css' %}">
+        <link rel="stylesheet" href="{% static 'landing-page/css/ultm.css' %}">
+        <link rel="stylesheet" href="{% static 'landing-page/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'landing-page/css/media-queries.css' %}">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" id="st_insights_js" src="http://w.sharethis.com/button/buttons.js?publisher=023fcf4a-4582-470d-8c44-a22303a1ce96&product=widget"></script>
+        <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
+
+    </head>
+
+    <body>
+
+        {% block container %}
+
+        {% endblock %}
+
+        <!-- Javascript -->
+        <script src="{% static 'landing-page/js/jquery-1.11.1.min.js' %}"></script>
+        <script src="{% static 'landing-page/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'landing-page/js/jquery.backstretch.min.js' %}"></script>
+        <script src="{% static 'landing-page/js/jquery.countdown.min.js' %}"></script>
+        <script src="{% static 'landing-page/js/jquery.tweet.min.js' %}"></script>
+        <script src="{% static 'landing-page/js/scripts.js' %}"></script>
+
+
+        {% block bottomjs %}
+        {% endblock %}
+
+        <!--[if lt IE 10]>
+            <script src="{% static 'landing-page/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>

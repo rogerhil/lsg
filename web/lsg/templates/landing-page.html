@@ -1,350 +1,298 @@
+{% extends "base.html" %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
 
-    <head>
+{% block container %}
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Let'SwapGames - Free for life, for gamers by gamers</title>
+    <!-- Top menu -->
+    {% comment %}
+    <nav>
+        <a class="menu-top" href="index.html">Top</a>
+        <a class="menu-subscribe" href="index.html">Subscribe</a>
+        <a class="menu-project" href="index.html">The project</a>
+        <a class="menu-testimonials" href="index.html">Testimonials</a>
+        <a class="menu-about-us" href="index.html">About us</a>
+        <a class="menu-contact" href="index.html">Contact</a>
+        <div class="hide-menu">
+            <a href="index.html" rel="tooltip" data-placement="bottom" data-original-title="Hide menu">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </nav>
+    <div class="show-menu">
+        <a href="index.html" rel="tooltip" data-placement="bottom" data-original-title="Show menu">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    {% endcomment %}
 
-        <meta property="og:title" content="Let'SwapGames - Free for life, by gamers for gamers">
-        <meta property="og:description" content="some description">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="http://letswapgames.com">
-        <meta property="og:image" content="http://letswapgames.com/static/img/logo-96x50.png">
+    <!-- Coming Soon -->
+    <div class="coming-soon intro">
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,100,100italic,300italic,400italic,700,700italic">
-        <link rel="stylesheet" href="{% static 'landing-page/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'landing-page/css/font-awesome.min.css' %}">
-        <link rel="stylesheet" href="{% static 'landing-page/css/form-elements.css' %}">
-        <link rel="stylesheet" href="{% static 'landing-page/css/ultm.css' %}">
-        <link rel="stylesheet" href="{% static 'landing-page/css/style.css' %}">
-        <link rel="stylesheet" href="{% static 'landing-page/css/media-queries.css' %}">
+    </div>
+    <div class="coming-soon relative-container">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
-
-        <script type="text/javascript">var switchTo5x=true;</script>
-        <script type="text/javascript" id="st_insights_js" src="http://w.sharethis.com/button/buttons.js?publisher=023fcf4a-4582-470d-8c44-a22303a1ce96&product=widget"></script>
-        <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-
-    </head>
-
-    <body>
-
-		<!-- Top menu -->
-		{% comment %}
-		<nav>
-			<a class="menu-top" href="index.html">Top</a>
-			<a class="menu-subscribe" href="index.html">Subscribe</a>
-			<a class="menu-project" href="index.html">The project</a>
-			<a class="menu-testimonials" href="index.html">Testimonials</a>
-			<a class="menu-about-us" href="index.html">About us</a>
-			<a class="menu-contact" href="index.html">Contact</a>
-			<div class="hide-menu">
-				<a href="index.html" rel="tooltip" data-placement="bottom" data-original-title="Hide menu">
-					<i class="fa fa-bars"></i>
-				</a>
-			</div>
-		</nav>
-		<div class="show-menu">
-			<a href="index.html" rel="tooltip" data-placement="bottom" data-original-title="Show menu">
-				<i class="fa fa-bars"></i>
-			</a>
-		</div>
-		{% endcomment %}
-
-        <!-- Coming Soon -->
-		<div class="coming-soon intro">
-
-		</div>
-		<div class="coming-soon relative-container">
-
-		<!-- </div>
-        <div class="coming-soon"> -->
-            <div class="inner-bg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                        	<div class="logo">
-                        		<h1><a href="index.html">Let'SwapGames</a></h1>
-                        	</div>
-                            <h2>Let'SwapGames</h2>
-                            <p style="*text-transform: uppercase;">
-                            	free for life, for gamers by gamers
-                            </p>
-                            <h2>
-                                coming soon
-                            </h2>
-                            <div class="timer">
-                                <div class="days-wrapper" title="Users">
-                                    <span class="days">8987</span> <br>days{# <br><i class="fa fa-group"></i> #}
-                                </div>
-                                <div class="hours-wrapper" title="Games">
-                                    <span class="hours">1298</span> <br>hours{# <br><i class="fa fa-gamepad"></i> #}
-                                </div>
-                                <div class="minutes-wrapper" title="Matches">
-                                    <span class="minutes">451</span> <br>minutes{# <br><i class="fa fa-exchange"></i> #}
-                                </div>
-                                <div class="seconds-wrapper">
-                                    <span class="seconds">231</span> <br>seconds{# <br><i class="fa fa-thumbs-up"></i> #}
-                                </div>
-                            </div>
-                            <p class="top-arrow">
-                            	<i class="fa fa-chevron-down"></i>
-                            </p>
+    <!-- </div>
+    <div class="coming-soon"> -->
+        <div class="inner-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="logo">
+                            <h1><a href="index.html">Let'SwapGames</a></h1>
                         </div>
+                        <h2>Let'SwapGames</h2>
+                        <p style="*text-transform: uppercase;">
+                            free for life, for gamers by gamers
+                        </p>
+                        <h2>
+                            coming soon
+                        </h2>
+                        <div class="timer">
+                            <div class="days-wrapper" title="Users">
+                                <span class="days">8987</span> <br>days{# <br><i class="fa fa-group"></i> #}
+                            </div>
+                            <div class="hours-wrapper" title="Games">
+                                <span class="hours">1298</span> <br>hours{# <br><i class="fa fa-gamepad"></i> #}
+                            </div>
+                            <div class="minutes-wrapper" title="Matches">
+                                <span class="minutes">451</span> <br>minutes{# <br><i class="fa fa-exchange"></i> #}
+                            </div>
+                            <div class="seconds-wrapper">
+                                <span class="seconds">231</span> <br>seconds{# <br><i class="fa fa-thumbs-up"></i> #}
+                            </div>
+                        </div>
+                        <p class="top-arrow">
+                            <i class="fa fa-chevron-down"></i>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Subscription form -->
-		<div class="relative-container white-container">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 subscribe">
-						<h3>
-                            Sign in below
-                        </h3>
-                        <br>
-                        <h4>
-                            and you'll be the first to know when it's launched
-                        </h4>
-                        <br>
-                        <br>
-						{% include "social-sign-in-up.html" %}
-						<p></p>
-						<i class="italic">
-							You can only sign-in with a social account. <a href="#why-social">Why?</a>
-						</i>
-					</div>
-				</div>
-			</div>
-		</div>
-
-        <!-- About the new site -->
-        <div class="about-container">
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-sm-12 about">
-	                    <h3>About Let'SwapGames</h3>
-	                    <p>
-	                    	Your platform to swap games with other players for free.
-	                    </p>
-	                </div>
-	            </div>
-	            <div class="row">
-	                <div class="col-sm-4 about-box-1">
-	                	<div class="about-box-1-icon">
-	                		<i class="fa fa-cogs"></i>
-	                	</div>
-	                    <h4>How does it work?</h4>
-						<p>
-							You just say which games you want and which games you have
-							available and we automatically give you the best
-							matches and the nearest user to swap with.
-						</p>
-	                </div>
-	                <div class="col-sm-4 about-box-1">
-	                	<div class="about-box-1-icon">
-	                		<i class="fa fa-user-secret"></i>
-	                	</div>
-	                    <h4>is it safe?</h4>
-	                    <p>
-	                    	We do our best to build a trustworthy gamers community, and you can always check
-							the rank and social network of the players you swap games with. If you have
-							any problem, give a bad review on the user and report the issue.
-	                    </p>
-	                </div>
-	                <div class="col-sm-4 about-box-1">
-	                	<div class="about-box-1-icon">
-	                		<i class="fa fa-money"></i>
-	                	</div>
-	                    <h4>Is it free?</h4>
-	                    <p>
-	                    	Absolutely! And no such thing as paid or premium plans here.
-	                    </p>
-	                </div>
-	            </div>
-	        </div>
+    <!-- Subscription form -->
+    <div class="relative-container white-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 subscribe">
+                    <h3>
+                        Sign in below
+                    </h3>
+                    <br>
+                    <h4>
+                        and you'll be the first to know when it's launched
+                    </h4>
+                    <br>
+                    <br>
+                    {% include "social-sign-in-up.html" %}
+                    <p></p>
+                    <i class="italic">
+                        You can only sign-in with a social account. <a href="#why-social">Why?</a>
+                    </i>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Testimonials -->
-		<div class="relative-container white-container">
-			<div class="container testimonials instructions">
-				<div class="row">
-					<div class="col-sm-12">
-						<h3>How it works</h3>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon">
-							<i class="fa fa-sign-in"></i>
-						</div>
-						<p>
-							Sign-in
-						</p>
-					</div>
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon even">
-							<i class="fa fa-book"></i>
-						</div>
-						<p>
-							Build your game's library
-						</p>
-					</div>
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon">
-							<i class="fa fa-heart"></i>
-						</div>
-						<p>
-							Make your wish list
-						</p>
-					</div>
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon even">
-							<i class="fa fa-exchange"></i>
-						</div>
-						<p>
-							We automatically match your games with other users wishes
-						</p>
-					</div>
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon">
-							<i class="fa fa-hand-o-up"></i>
-						</div>
-						<p>
-							Request users to swap games with
-						</p>
-					</div>
-					<div class="col-sm-2 about-box-1">
-						<div class="about-box-1-icon even">
-							<i class="fa fa-envelope"></i>
-						</div>
-						<p>
-							Receive requests from other users
-						</p>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-        <!-- Who's behind this -->
-        <div class="whos-behind-container">
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-sm-12 whos-behind">
-	                    <h3>FAQ</h3>
-	                </div>
-	            </div>
-
-	            <div class="row">
-	                <div class="col-sm-4 about-box-1" id="why-social">
-	                	<div class="about-box-1-icon">
-	                		<i class="fa fa-facebook"></i>
-	                	</div>
-	                    <h4>Why can I only sign-in with a social media account?</h4>
-						<p>
-							Our community is based on trust. We need evidence of who you are,
-							so other players will be more confident to swap games with you.
-						</p>
-	                </div>
-	                <div class="col-sm-4 about-box-1">
-	                	<div class="about-box-1-icon even">
-	                		<i class="fa fa-globe"></i>
-	                	</div>
-	                    <h4>In which countries is it available?</h4>
-	                    <p>
-	                    	At the moment only in Ireland, United Kingdom and Isle of Man. But
-                            pretty soon we'll be all over the world. So sign up to be the first to
-                            know when it's available in your country.
-	                    </p>
-	                </div>
-	                <div class="col-sm-4 about-box-1">
-	                	<div class="about-box-1-icon">
-	                		<i class="fa fa-gamepad"></i>
-	                	</div>
-	                    <h4>Who are you anyway?</h4>
-	                    <p>
-	                    	????? We are gamers from Ireland who were tired of trying to sell and swap
-                            games in ad sites, forums and groups
-	                    </p>
-	                </div>
-	            </div>
-
-	        </div>
+    <!-- About the new site -->
+    <div class="about-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 about">
+                    <h3>About Let'SwapGames</h3>
+                    <p>
+                        Your platform to swap games with other players for free.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-cogs"></i>
+                    </div>
+                    <h4>How does it work?</h4>
+                    <p>
+                        You just say which games you want and which games you have
+                        available and we automatically give you the best
+                        matches and the nearest user to swap with.
+                    </p>
+                </div>
+                <div class="col-sm-4 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-user-secret"></i>
+                    </div>
+                    <h4>is it safe?</h4>
+                    <p>
+                        We do our best to build a trustworthy gamers community, and you can always check
+                        the rank and social network of the players you swap games with. If you have
+                        any problem, give a bad review on the user and report the issue.
+                    </p>
+                </div>
+                <div class="col-sm-4 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <h4>Is it free?</h4>
+                    <p>
+                        Absolutely! And no such thing as paid or premium plans here.
+                    </p>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- How to contact us -->
-		<div class="relative-container white-container">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 contact">
-						<h3>How to contact us</h3>
-						<p>
-							Still have questions? <br>
-                            No problem. <br>
-                            We'll be happy to help you out in any way we can. Just shoot us an email at:
-						</p>
-						<p>
-							<a href="mailto:contact@letswapgames.com">
-								contact@letswapgames.com
-							</a>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+    <!-- Testimonials -->
+    <div class="relative-container white-container">
+        <div class="container testimonials instructions">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>How it works</h3>
+                </div>
+            </div>
 
-        <!-- Footer -->
-        <footer class="relative-container">
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-sm-7 footer-copyright">
-	                    <p style="margin-top: 15px;">&copy; Let'SwapGames - all rights reserved.</p>
-	                </div>
-	                <div class="col-sm-5 footer-social">
-	                    <a class="ultm ultm-facebook ultm-48 ultm-square ultm-gray-to-color" href="https://www.facebook.com/letswapgames.com"></a>
-	                    <a class="ultm ultm-twitter ultm-48 ultm-square ultm-gray-to-color" href="https://twitter.com/letswapgames.com"></a>
-	                    <a class="ultm ultm-google-plus-1 ultm-48 ultm-square ultm-gray-to-color" href="#"></a>
-	                </div>
-	            </div>
-	        </div>
-        </footer>
+            <div class="row">
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-sign-in"></i>
+                    </div>
+                    <p>
+                        Sign-in
+                    </p>
+                </div>
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon even">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <p>
+                        Build your game's library
+                    </p>
+                </div>
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    <p>
+                        Make your wish list
+                    </p>
+                </div>
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon even">
+                        <i class="fa fa-exchange"></i>
+                    </div>
+                    <p>
+                        We automatically match your games with other users wishes
+                    </p>
+                </div>
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-hand-o-up"></i>
+                    </div>
+                    <p>
+                        Request users to swap games with
+                    </p>
+                </div>
+                <div class="col-sm-2 about-box-1">
+                    <div class="about-box-1-icon even">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <p>
+                        Receive requests from other users
+                    </p>
+                </div>
+            </div>
 
+        </div>
+    </div>
 
-        <!-- Javascript -->
-        <script src="{% static 'landing-page/js/jquery-1.11.1.min.js' %}"></script>
-        <script src="{% static 'landing-page/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'landing-page/js/jquery.backstretch.min.js' %}"></script>
-        <script src="{% static 'landing-page/js/jquery.countdown.min.js' %}"></script>
-        <script src="{% static 'landing-page/js/jquery.tweet.min.js' %}"></script>
-        <script src="{% static 'landing-page/js/scripts.js' %}"></script>
+    <!-- Who's behind this -->
+    <div class="whos-behind-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 whos-behind">
+                    <h3>FAQ</h3>
+                </div>
+            </div>
 
-        <script type="text/javascript">stLight.options({publisher: "023fcf4a-4582-470d-8c44-a22303a1ce96", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-        <script>
-            var options={ "publisher": "023fcf4a-4582-470d-8c44-a22303a1ce96", "position": "left", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "whatsapp", "email", "sharethis"]}};
-            var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
-        </script>
+            <div class="row">
+                <div class="col-sm-4 about-box-1" id="why-social">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-facebook"></i>
+                    </div>
+                    <h4>Why can I only sign-in with a social media account?</h4>
+                    <p>
+                        Our community is based on trust. We need evidence of who you are,
+                        so other players will be more confident to swap games with you.
+                    </p>
+                </div>
+                <div class="col-sm-4 about-box-1">
+                    <div class="about-box-1-icon even">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <h4>In which countries is it available?</h4>
+                    <p>
+                        At the moment only in Ireland, United Kingdom and Isle of Man. But
+                        pretty soon we'll be all over the world. So sign up to be the first to
+                        know when it's available in your country.
+                    </p>
+                </div>
+                <div class="col-sm-4 about-box-1">
+                    <div class="about-box-1-icon">
+                        <i class="fa fa-gamepad"></i>
+                    </div>
+                    <h4>Who are you anyway?</h4>
+                    <p>
+                        ????? We are gamers from Ireland who were tired of trying to sell and swap
+                        games in ad sites, forums and groups
+                    </p>
+                </div>
+            </div>
 
-        <!--[if lt IE 10]>
-            <script src="{% static 'landing-page/js/placeholder.js"></script>
-        <![endif]-->
+        </div>
+    </div>
 
-    </body>
+    <!-- How to contact us -->
+    <div class="relative-container white-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 contact">
+                    <h3>How to contact us</h3>
+                    <p>
+                        Still have questions? <br>
+                        No problem. <br>
+                        We'll be happy to help you out in any way we can. Just shoot us an email at:
+                    </p>
+                    <p>
+                        <a href="mailto:contact@letswapgames.com">
+                            contact@letswapgames.com
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-</html>
+    <!-- Footer -->
+    <footer class="relative-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7 footer-copyright">
+                    <p style="margin-top: 15px;">&copy; Let'SwapGames - all rights reserved.</p>
+                </div>
+                <div class="col-sm-5 footer-social">
+                    <a class="ultm ultm-facebook ultm-48 ultm-square ultm-gray-to-color" href="https://www.facebook.com/letswapgames.com"></a>
+                    <a class="ultm ultm-twitter ultm-48 ultm-square ultm-gray-to-color" href="https://twitter.com/letswapgames.com"></a>
+                    <a class="ultm ultm-google-plus-1 ultm-48 ultm-square ultm-gray-to-color" href="#"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+{% block bottomjs %}
+    <script type="text/javascript">stLight.options({publisher: "023fcf4a-4582-470d-8c44-a22303a1ce96", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+    <script>
+        var options={ "publisher": "023fcf4a-4582-470d-8c44-a22303a1ce96", "position": "left", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "whatsapp", "email", "sharethis"]}};
+        var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+    </script>
+{% endblock %}

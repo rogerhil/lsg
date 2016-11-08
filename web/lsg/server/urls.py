@@ -67,7 +67,9 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name="landing-page.html"),
         name="landing-page"),
-    url(r'^congratulations/$', TemplateView.as_view(template_name="congratulations.html"),
+    url(r'^congratulations/$', login_required(
+        TemplateView.as_view(template_name="congratulations.html"),
+        redirect_field_name='landing-page'),
         name="congratualtions"),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^done/$', Done.as_view(), name='done'),
