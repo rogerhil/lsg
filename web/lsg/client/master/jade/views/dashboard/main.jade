@@ -84,18 +84,8 @@ div(ng-controller="DashboardController as ctrl")
                                 .media-box(ng-if="!ctrl.latestFeedbacks.length")
                                     p No swaps yet.
                             // START list group item
-                            a.list-group-item(href='javascript:;' ng-repeat="feedback in ctrl.latestFeedbacks")
-                                .media-box
-                                    .pull-left
-                                        img.media-box-object.img-circle.thumb32(ng-src="{{ feedback.user.picture }}", alt="{{ feedback.user.name }}")
-                                    .media-box-body.clearfix
-                                        small.pull-right {{ feedback.closed_at }}
-                                        strong.media-box-heading.text-primary
-                                            span.circle.circle-success.circle-lg.text-left(ng-if="feedback.feedback == 1")
-                                            span.circle.circle-lg.text-left(ng-if="feedback.feedback == 0")
-                                            span.circle.circle-danger.circle-lg.text-left(ng-if="feedback.feedback == -1")
-                                            | {{ feedback.user.name }}
-                                        p.mb-sm: small {{ feedback.notes }}
+                            user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
+
                             // END list group item
                         // END list group
                         // START panel footer

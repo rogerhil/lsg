@@ -12,8 +12,8 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                     span {{ ctrl.msg }}
                     br
                     br
-                div(layout="row")
-                    div(style="width: 120px;")
+                div.row()
+                    div.col-md-4(style="width: 120px; margin: 0 auto 20px auto;")
                         .user-details
                             .user-img.center
                                 img.img-thumbnail(ng-src='{{ ctrl.swapUser.picture }}', alt='{{ctrl.swapUser.name}}')
@@ -23,7 +23,7 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                     user-ratings(user="ctrl.swapUser")
                                 p {{ctrl.request.distance}}km far
 
-                    div(flex style="white-space: nowrap; padding-left: 15px;")
+                    div.col-md-4(style="white-space: nowrap; padding-left: 15px;")
                         table.table.bb: tbody
                             //tr
                             //    td: strong Name
@@ -55,6 +55,13 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                     span {{ ctrl.swapUser.address.state }}
                                     br
                                     span {{ ctrl.swapUser.address.country.name }}
+                    div.col-md-4(style="max-height: 300px; overflow: auto;")
+                        p(ng-if="!ctrl.latestFeedbacks.length")
+                            em.fa.fa-comments-o
+                            span This user has no feedbacks yet.
+                        h4(ng-if="ctrl.latestFeedbacks.length")
+                            span {{ ctrl.swapUser.name }}'s latest feedbacks
+                        user-latest-feedbacks(user="ctrl.swapUser" latestfeedbacks="ctrl.latestFeedbacks")
                 br
                 .gmap(ui-map='ctrl.contactDetailsMap', ui-options='ctrl.contactDetailsMapOptions', class="map-canvas")
 
