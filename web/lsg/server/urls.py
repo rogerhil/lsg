@@ -67,6 +67,8 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name="landing-page.html"),
         name="landing-page"),
+    url(r'^privacy-policy/$', TemplateView.as_view(template_name="privacy-policy.html"),
+        name="privacy-policy"),
     url(r'^congratulations/$', login_required(
         TemplateView.as_view(template_name="congratulations.html"),
         redirect_field_name='landing-page'),
