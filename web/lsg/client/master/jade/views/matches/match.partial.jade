@@ -36,11 +36,11 @@ md-dialog(aria-label="Match", ng-cloak, style="max-width: 580px;")
                     ng-pluralize(count="ctrl.match.swaps.length", when="{'one': 'from {{ctrl.match.swaps.length}} user', 'other': 'from {{ctrl.match.swaps.length}} users'}")
                 div(style="clear: both;")
                 br
-                h4 The following users want to swap the game "{{match.iwish.name}}" with one of your games listed below:
+                h4 The following users want to swap the game "{{ctrl.match.iwish.name}}" with one of your games listed below:
                 .panel.panel-default(ng-repeat="swap in ctrl.match.swaps")
                     .panel-body
                         div(ng-style="match.ongoing && {opacity: 0.4}")
-                            user-photo-ratings-distance(user="swap.user")
+                            user-photo-ratings-distance(user="swap.user" onfeedbacksclose="ctrl.openMatchCallback")
 
                         .media(style="margin: 0 -15px -15px 0; padding-top: 15px;")
                             .game-img-holder.animate(ng-repeat='game in swap.wanted_games')

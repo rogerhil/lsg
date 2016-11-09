@@ -69,11 +69,16 @@
         self.close = function () {
             $mdDialog.hide();
         };
+
+        self.openMatchCallback = function() {
+            matchesCtrl.openMatch(match);
+        };
+
         self.requestSwap = function(match, game, swapUser) {
             $mdDialog.show({
                 controllerAs: 'ctrl',
                 controller: 'RequestSwapDialogCtrl',
-                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl},
+                locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl, matchCtrl: self},
                 templateUrl: 'app/views/requests/swap.partial.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
@@ -85,8 +90,8 @@
     /*
      RequestSwapDialogCtrl
      */
-    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'matchesCtrl', '$rootScope', 'Notify']
-    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, matchesCtrl, $rootScope, Notify) {
+    RequestSwapDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'match', 'game', 'swapUser', 'RequestsService', 'UsersService', 'matchesCtrl', 'matchCtrl', '$rootScope', 'Notify']
+    function RequestSwapDialogCtrl($scope, $mdDialog, $mdMedia, match, game, swapUser, RequestsService, UsersService, matchesCtrl, matchCtrl, $rootScope, Notify) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.title = "Request Swap";
@@ -94,6 +99,7 @@
         self.game = game;
         self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
+        self.latestFeedbacks = [];
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
         };
@@ -111,6 +117,22 @@
             } else {
                 self.createSwapRequest()
             }
+        };
+
+        UsersService.latestFeedbacks(swapUser).then(function (latestFeedbacks) {
+            self.latestFeedbacks = latestFeedbacks;
+        });
+
+        self.toggleFeedbacks = function () {
+            if ($('#feedbacks').is(':hidden')) {
+                $('#feedbacks').slideDown();
+            } else {
+                $('#feedbacks').slideUp();
+            }
+        };
+
+        self.openRequestSwappCallback = function() {
+            matchCtrl.requestSwap(match, game, swapUser);
         };
 
         self.warnUserAboutPendingRequest = function () {

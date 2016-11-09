@@ -61,10 +61,14 @@
                 });
             return q.promise;
         };
-        this.latestFeedbacks = function () {
+        this.latestFeedbacks = function (user) {
             var q = $q.defer();
+            var baseUrl = baseUserUrl;
+            if (user) {
+                baseUrl = '/api/users/' + user.id + '/';
+            }
             $http
-                .get(baseUserUrl + 'latest-feedbacks/')
+                .get(baseUrl + 'latest-feedbacks/')
                 .success(function (response) {
                     q.resolve(response);
                 });

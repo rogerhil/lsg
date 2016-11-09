@@ -3,8 +3,14 @@
         a(href='#')
             img.media-object.img-circle.img-thumbnail.thumb48(ng-src="{{user.picture}}", alt='{{user.name}}')
     .media-body.pt-sm(style="width: auto;")
-        .text-bold {{ user.name }}&nbsp;&nbsp;
-            user-ratings(user="user")
+        .text-bold
+            span(style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; display: inline-block;") {{ user.name }}&nbsp;&nbsp;
+            span(style="display: inline-block; vertical-align: top;")
+                user-ratings(user="user")
             .text-sm.text-muted
+                a(href="javascript:;" ng-click="showUserFeedbacks(user, onfeedbacksclose)" ng-if="!hidefeedbacks")
+                    em.fa.fa-comments-o
+                    md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
+                span(ng-if="!hidefeedbacks") &nbsp;&nbsp;
                 span(ng-if="distance") {{ distance }}km far
                 span(ng-if="!distance") {{ user.address.distance }}km far

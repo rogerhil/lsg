@@ -333,14 +333,28 @@
     /*
      ContactDetailsCtrl
      */
-    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'request', 'context', 'msg', 'requestsCtrl']
-    function ContactDetailsCtrl($scope, $timeout, $mdDialog, request, context, msg, requestsCtrl) {
+    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'request', 'context', 'msg', 'requestsCtrl', 'UsersService']
+    function ContactDetailsCtrl($scope, $timeout, $mdDialog, request, context, msg, requestsCtrl, UsersService) {
         var self = this;
         self.msg = msg;
         self.user = requestsCtrl.user;
         self.swapUser = context == 'incomingRequests' ? request.requester : request.requested;
         self.request = request;
         self.context = context;
+        self.latestFeedbacks = [];
+
+        UsersService.latestFeedbacks(self.swapUser).then(function (latestFeedbacks) {
+            self.latestFeedbacks = latestFeedbacks;
+        });
+
+        self.toggleFeedbacks = function () {
+            if ($('#feedbacks').is(':hidden')) {
+                $('#feedbacks').slideDown();
+            } else {
+                $('#feedbacks').slideUp();
+            }
+        };
+
         self.close = function () {
             $mdDialog.hide();
         };

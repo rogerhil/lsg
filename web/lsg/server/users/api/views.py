@@ -49,7 +49,8 @@ class UsersViewSet(viewsets.ModelViewSet):
     def latest_feedbacks(self, request, pk):
         serialized = []
         serializer = UserSerializer()
-        for feedback in request.user.last_feedbacks():
+        user = User.objects.get(pk=pk)
+        for feedback in user.last_feedbacks():
             feedback['user'] = serializer.to_representation(feedback['user'])
             feedback['closed_at'] = formats.date_format(feedback['closed_at'],
                                                        "SHORT_DATETIME_FORMAT")
