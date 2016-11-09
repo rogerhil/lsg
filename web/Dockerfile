@@ -7,16 +7,19 @@ MAINTAINER rogerhil
 ENV CC=gcc
 
 RUN apt-get update && apt-get install -y \
-        vim \
+    vim \
 	git \
 	nginx \
-        python-gdal \
+    python-gdal \
 	supervisor \
+	apache2-utils \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo python --version
 
 RUN easy_install pip
+
+RUN pip install pip --upgrade
 
 # install uwsgi now because it takes a little while
 RUN pip install uwsgi
@@ -26,6 +29,8 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY nginx-app.conf /etc/nginx/sites-available/default
 COPY supervisor-app.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor/
+
+RUN htpasswd -bc /etc/nginx/.htpasswd lsg Identificad0
 
 # COPY requirements.txt and RUN pip install BEFORE adding the rest of your code, this will cause Docker's caching mechanism
 # to prevent re-installinig (all your) dependencies when you made a change a line or two in your app. 

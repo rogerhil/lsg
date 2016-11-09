@@ -75,20 +75,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 subscribe">
-                    <h3>
-                        Sign in below
-                    </h3>
-                    <br>
-                    <h4>
-                        and you'll be the first to know when it's launched
-                    </h4>
-                    <br>
-                    <br>
-                    {% include "social-sign-in-up.html" %}
-                    <p></p>
-                    <i class="italic">
-                        You can only sign-in with a social account. <a href="#why-social">Why?</a>
-                    </i>
+                    {% if user.is_authenticated %}
+                        <h3>You have already signed in</h3>
+                        <br>
+                        <h4>You will know soon when it's launched</h4>
+                    {% else %}
+                        <h3>
+                            Sign in below
+                        </h3>
+                        <br>
+                        <h4>
+                            and you'll be the first to know when it's launched
+                        </h4>
+                        <br>
+                        <br>
+                        {% include "social-sign-in-up.html" %}
+                        <p></p>
+                        <i class="italic">
+                            You can only sign-in with a social account. <a href="#why-social">Why?</a>
+                        </i>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -279,7 +285,7 @@
                     <p style="margin-top: 15px;">&copy; Let'SwapGames - all rights reserved.</p>
                 </div>
                 <div class="col-sm-2 footer-copyright">
-                    <p style="margin-top: 15px; font-size: 14px;">
+                    <p style="margin-top: 15px; font-size: 14px; text-align: center;">
                         <a href="{% url 'privacy-policy' %}">Privacy Policy</a>
                     </p>
                 </div>
