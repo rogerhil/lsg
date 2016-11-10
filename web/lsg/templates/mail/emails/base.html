@@ -1,41 +1,48 @@
 {% load static %}
 
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
+<div style="background: #eee; font-family: 'Roboto', sans-serif;">
+    {% block header %}
+        <div style="background-color: #263238; color: #fff; padding: 10px 20px; margin: 0; text-align: left;">
+            <a href="http://www.letswapgames.com" style="color: #eee;">
+                <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px;">
+                    <img src="http://{{ site.domain }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
+                    <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px;">Let'SwapGames</span>
+                </h2>
+            </a>
+        </div>
 
-</style>
+    {% endblock %}
 
-{% block header %}
-    <div style="background-color: #263238; color: #fff; padding: 10px 20px; text-align: left;">
-        <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px;">
-            <img src="http://{{ site.domain }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
-            <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px;">Let'SwapGames</span>
-        </h2>
-    </div>
+    {% block body %}
+    {% endblock %}
 
-{% endblock %}
+    {% block signature %}
+        <p>
+            Kind regards,
+        </p>
 
-{% block body %}
-{% endblock %}
-
-{% block signature %}
-    <p>
-        Kind regards,
-    </p>
-
-    <p>
-        Let'SwapGames Automatic Service
-    </p>
-    <p style="font-size: 11px; color: #555;">
-        You have received this email because you are listed as an Let'SwapGames
-        account holder. If you no longer wish to receive automatic emails of
-        this kind you must delete your account from our system at http://www.letswapgames.com/app/.
-        This email and any files transmitted with it are confidential and
-        intended solely for the use of the individual or entity to whom they
-        are addressed. If you have received this email in error please notify
-        us immediately.<br>
-        36 The Orchard, Athlone, Westmeath, Ireland
-    </p>
-{% endblock %}
+        <p>
+            Let'SwapGames Automatic Service
+        </p>
+        <p style="font-size: 11px; color: #555;">
+            You have received this email because you are listed as an Let'SwapGames
+            account holder. If you no longer wish to receive automatic emails of
+            this kind you must delete your account from our system at http://www.letswapgames.com/app/.
+            This email and any files transmitted with it are confidential and
+            intended solely for the use of the individual or entity to whom they
+            are addressed. If you have received this email in error please notify
+            us immediately.<br>
+            36 The Orchard, Athlone, Westmeath, Ireland
+        </p>
+        <div style="background: #ddd; padding: 2px 20px;">
+            <p style="text-align: center;">
+                <a href="http://www.letswapgames.com">
+                    <img src="http://{{ site.domain }}{% static 'img/logo-96x50-dark.png'%}" style="height: 20px;" alt="Let'SwapGames">
+                </a>
+            </p>
+            <p style="font-size: 12px; text-align: center;">
+                &copy; Let'SwapGames - all rights reserved.
+            </p>
+        </div>
+    {% endblock %}
+</div>
