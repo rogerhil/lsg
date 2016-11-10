@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from django.template import Context
 from django.views.generic import TemplateView
@@ -17,6 +19,10 @@ class SwapRequestEmailPreview(TemplateView):
         else:
             requests = SwapRequest.objects.all()
             swap_request = requests[0] if requests.count() else None
-        context = Context(dict(swap_request=swap_request))
+        if settings.DEBUG:
+            site = Site.objects.get(domain='lsg.com')
+        else:
+            site = Site.objects.get(domain='www.letswapgames.com')
+        context = Context(dict(swap_request=swap_request, site=site))
         kwargs['email_rendered'] = template.render(context)
         return super(SwapRequestEmailPreview, self).get_context_data(**kwargs)

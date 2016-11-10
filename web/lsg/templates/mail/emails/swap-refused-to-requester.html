@@ -1,7 +1,7 @@
 {% extends "mail/emails/base.html" %}
 
 {% block body %}
-    <h2>Hello {{ swap_request.requester }},</h2>
+    <h4>Hello {{ swap_request.requester }},</h4>
 
     <p>
         The swap requested at {{ swap_request.created }} was refused by the user

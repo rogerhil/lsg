@@ -1,10 +1,10 @@
 {
-  "name": "angle",
+  "name": "Let'SwapGames",
   "version": "0.0.0",
   "authors": [
-    "@themicon_co"
+    "@letswapgames.com"
   ],
-  "description": "Angle - Bootstrap Admin App + AngularJS",
+  "description": "Let'SwapGames",
   "main": "index.html",
   "keywords": [
     "bootstrap",
@@ -13,8 +13,8 @@
     "theme",
     "dashboard"
   ],
-  "license": "http://support.wrapbootstrap.com/knowledge_base/topics/usage-licenses",
-  "homepage": "http://themicon.co",
+  "license": "",
+  "homepage": "http://www.letswapgames.com",
   "private": true,
   "ignore": [
     "**/.*"

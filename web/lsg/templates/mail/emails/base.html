@@ -1,7 +1,20 @@
 {% load static %}
 
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+</style>
+
 {% block header %}
-    <h1><img src="http://{{ site.domain }}{% static 'img/logo-77x40.png'%}" alt="Let'Swap Games"> Let'Swap Games</h1>
+    <div style="background-color: #263238; color: #fff; padding: 10px 20px; text-align: left;">
+        <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px;">
+            <img src="http://{{ site.domain }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
+            <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px;">Let'SwapGames</span>
+        </h2>
+    </div>
+
 {% endblock %}
 
 {% block body %}
@@ -9,10 +22,20 @@
 
 {% block signature %}
     <p>
-        Regards,
+        Kind regards,
     </p>
 
     <p>
-        Let'Swap Games
+        Let'SwapGames Automatic Service
+    </p>
+    <p style="font-size: 11px; color: #555;">
+        You have received this email because you are listed as an Let'SwapGames
+        account holder. If you no longer wish to receive automatic emails of
+        this kind you must delete your account from our system at http://www.letswapgames.com/app/.
+        This email and any files transmitted with it are confidential and
+        intended solely for the use of the individual or entity to whom they
+        are addressed. If you have received this email in error please notify
+        us immediately.<br>
+        36 The Orchard, Athlone, Westmeath, Ireland
     </p>
 {% endblock %}
