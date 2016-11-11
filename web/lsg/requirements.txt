@@ -20,3 +20,5 @@ django-extra-fields
 django-activity-stream
 git+https://github.com/celery/django-celery.git
 thegamesdb
+python-memcached
+rest-framework-cache

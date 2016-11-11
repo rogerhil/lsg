@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
 	nginx \
     python-gdal \
 	supervisor \
+	memcached \
 	apache2-utils \
   && rm -rf /var/lib/apt/lists/*
 

@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
+from rest_framework_cache.registry import cache_registry
+from rest_framework_cache.serializers import CachedSerializerMixin
 
 from games.api.serializers import GameSerializer
 from users.api.serializers import UserSerializer
@@ -8,7 +10,7 @@ from request.flow import RequestFlow, StatusException, Status
 from request.models import SwapRequest, Feedback
 
 
-class SwapRequestSerializer(serializers.ModelSerializer):
+class SwapRequestSerializer(CachedSerializerMixin):
     requester_id = serializers.IntegerField(write_only=True)
     requester_game_id = serializers.IntegerField(write_only=True)
     requested_id = serializers.IntegerField(write_only=True)
@@ -39,6 +41,8 @@ class SwapRequestSerializer(serializers.ModelSerializer):
         instance = super(SwapRequestSerializer, self).create(*args, **kwargs)
         Verbs.requested.send(instance.requester, instance)
         return instance
+
+cache_registry.register(SwapRequestSerializer)
 
 
 class ChangeRequestStatusSerializerMixin(object):
@@ -93,7 +97,7 @@ class CancelRequestSerializer(ChangeRequestStatusSerializerMixin,
         fields = ()
 
 
-class ArchiveRequestSerializer(serializers.ModelSerializer):
+class ArchiveRequestSerializer(CachedSerializerMixin):
 
     class Meta:
         model = SwapRequest
@@ -112,6 +116,8 @@ class ArchiveRequestSerializer(serializers.ModelSerializer):
         if not is_valid and raise_exception:
             raise ValidationError(self.errors)
         return is_valid
+
+cache_registry.register(ArchiveRequestSerializer)
 
 
 class FinalizeRequestSerializer(ChangeRequestStatusSerializerMixin,

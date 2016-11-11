@@ -21,6 +21,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework_cache.registry import cache_registry
 from rest_framework_nested import routers
 
 from constants import ConstantsView
@@ -36,6 +37,8 @@ from request.api.views import MyRequestsViewSet, IncomingRequestsViewSet, \
 
 is_superuser = user_passes_test(lambda u: u.is_superuser, 'landing-page')
 s = lambda v: csrf_exempt(is_superuser(v))
+
+cache_registry.autodiscover()
 
 router = routers.DefaultRouter()
 router.register('users', UsersViewSet)

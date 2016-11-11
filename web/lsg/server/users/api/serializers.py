@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
+from rest_framework_cache.registry import cache_registry
+from rest_framework_cache.serializers import CachedSerializerMixin
 
 from drf_extra_fields.fields import Base64ImageField
 
@@ -20,7 +22,7 @@ class UserPictureImageSerializer(serializers.ModelSerializer):
         fields = ('picture_image',)
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(CachedSerializerMixin):
 
     address = AddressSerializer(source='_address')
     platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False, required=False,
@@ -101,6 +103,8 @@ class UserSerializer(serializers.ModelSerializer):
             serialized['address'] = address_serializer.to_representation(instance._address)
         return serialized
 
+cache_registry.register(UserSerializer)
+
 
 class UserGameMixin(object):
 
@@ -124,7 +128,7 @@ class UserGameMixin(object):
         return is_valid
 
 
-class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):
+class CollectionItemSerializer(UserGameMixin, CachedSerializerMixin):
     game_id = serializers.IntegerField(write_only=True)
     user_id = serializers.IntegerField(read_only=True)
     game = GameSerializer(read_only=True)
@@ -140,8 +144,10 @@ class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):
         Verbs.added_to_collection.send(instance.user, instance.game)
         return instance
 
+cache_registry.register(CollectionItemSerializer)
 
-class WishlistItemSerializer(UserGameMixin, serializers.ModelSerializer):
+
+class WishlistItemSerializer(UserGameMixin, CachedSerializerMixin):
     game_id = serializers.IntegerField(write_only=True)
     user_id = serializers.IntegerField(read_only=True)
     game = GameSerializer(read_only=True)
@@ -155,3 +161,5 @@ class WishlistItemSerializer(UserGameMixin, serializers.ModelSerializer):
         instance = super(WishlistItemSerializer, self).create(*args, **kwargs)
         Verbs.added_to_wishlist.send(instance.user, instance.game)
         return instance
+
+cache_registry.register(WishlistItemSerializer)

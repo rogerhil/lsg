@@ -3,6 +3,8 @@ from django_countries import countries
 from django.conf import settings
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
+from rest_framework_cache.registry import cache_registry
+from rest_framework_cache.serializers import CachedSerializerMixin
 
 from world.models import Address
 from constants import serialize_country
@@ -16,7 +18,7 @@ class CustomCountryField(CountryField):
         return serialize_country(obj)
 
 
-class AddressSerializer(serializers.ModelSerializer):
+class AddressSerializer(CachedSerializerMixin):
     country = CustomCountryField()
 
     class Meta:
@@ -77,3 +79,5 @@ class AddressSerializer(serializers.ModelSerializer):
         else:
             validated_data['point'] = None
         return super(AddressSerializer, self).update(instance, validated_data)
+
+cache_registry.register(AddressSerializer)
