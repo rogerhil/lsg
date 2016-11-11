@@ -24,7 +24,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework_nested import routers
 
 from constants import ConstantsView
-from mail.views import SwapRequestEmailPreview
+from mail.views import SwapRequestEmailPreview, SwapRequestEmailSendTest
 from scripts.views import CeleryTaskLog, WatchCeleryTask, StopCeleryTask, \
     KillCeleryTask
 from users.views import Logout, Done
@@ -80,6 +80,10 @@ urlpatterns = [
     url(r'^mail/swap-request/(?P<template_name>[\w\-]+)/preview/',
         s(SwapRequestEmailPreview.as_view()),
         name="swap_request_email_preview"),
+
+    url(r'^mail/swap-request/(?P<template_name>[\w\-]+)/testsend/',
+        s(SwapRequestEmailSendTest.as_view()),
+        name="swap_request_email_test_send"),
 
     url('^activity/', include('actstream.urls')),
 

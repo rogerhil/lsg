@@ -12,4 +12,11 @@
         You have offered your game "{{ swap_request.requester_game }}" to
         be swapped with the game "{{ swap_request.requested_game }}".
     </p>
+
+    <div style="text-align: center;">
+        <img src="http://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
+        &nbsp;&nbsp;&nbsp;
+        <img src="http://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
+    </div>
+
 {% endblock %}

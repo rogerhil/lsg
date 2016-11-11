@@ -2,9 +2,11 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from django.template import Context
-from django.views.generic import TemplateView
+from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView, RedirectView
 
 from request.models import SwapRequest
+from mail.sender import MailBuilder
 
 
 class SwapRequestEmailPreview(TemplateView):
@@ -26,3 +28,23 @@ class SwapRequestEmailPreview(TemplateView):
         context = Context(dict(swap_request=swap_request, site=site))
         kwargs['email_rendered'] = template.render(context)
         return super(SwapRequestEmailPreview, self).get_context_data(**kwargs)
+
+
+class SwapRequestEmailSendTest(RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+        tname = kwargs['template_name']
+        self.url = reverse('swap_request_email_preview', kwargs=dict(template_name=tname))
+        rid = self.request.GET.get('id')
+        if rid:
+            swap_request = SwapRequest.objects.get(pk=rid)
+        else:
+            requests = SwapRequest.objects.all()
+            swap_request = requests[0] if requests.count() else None
+        sender = None
+        if tname == 'swap-accepted-to-requested':
+            sender = MailBuilder.swap_accepted(swap_request)
+
+        if sender:
+            sender.send('rogerhil@gmail.com')
+        return super(SwapRequestEmailSendTest, self).get_redirect_url(*args, **kwargs)

@@ -13,4 +13,11 @@
         Please <a href="http://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=Please+finalize+this+request+and+give+{{ user_who_finalized }}+a+feedback+note.">click here</a> to
         finalize this request and give {{ user_who_finalized }} a feedback note.
     </p>
+
+    <div style="text-align: center;">
+        <img src="http://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
+        &nbsp;&nbsp;&nbsp;
+        <img src="http://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
+    </div>
+
 {% endblock %}

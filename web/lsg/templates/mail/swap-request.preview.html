@@ -4,6 +4,9 @@
     <body>
         <h1>Email preview</h1>
         <h2>Subject: {{ subject }}</h2>
+        <a href="{% url 'swap_request_email_test_send' template_name %}">
+            Test send
+        </a>
         <hr>
         {% autoescape off %}
             {{ email_rendered }}

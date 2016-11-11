@@ -97,10 +97,10 @@ class Sender(object):
         context = Context(base_context)
         return subject, template.render(context)
 
-    def send(self):
+    def send(self, force_to=None):
         subject, body = self._render()
         from_email = self.from_email
-        if settings.MOCK_SEND_EMAIL:
+        if settings.MOCK_SEND_EMAIL and not force_to:
             print
             print("#" * 80)
             print("Email to: %s" % ', '.join(self.emails))
@@ -113,6 +113,8 @@ class Sender(object):
             emails = self.emails
             if settings.FAKE_ALL_EMAILS_TO:
                 emails = settings.FAKE_ALL_EMAILS_TO
+            if force_to:
+                emails = [force_to]
             msg = EmailMultiAlternatives(subject, body, from_email, emails)
             if self.html:
                 msg.attach_alternative(body, 'text/html')
@@ -135,9 +137,9 @@ class SenderGroup(object):
     def __init__(self, *senders):
         self.senders = senders
 
-    def send(self):
+    def send(self, force_to=None):
         for sender in self.senders:
-            sender.send()
+            sender.send(force_to)
 
     def schedule(self, send_at):
         for sender in self.senders:

@@ -9,4 +9,11 @@
         be swapped with your game "{{ swap_request.requested_game }}", but
         he unfortunately cancelled this swap request now.
     </p>
+
+    <div style="text-align: center;">
+        <img src="http://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
+        &nbsp;&nbsp;&nbsp;
+        <img src="http://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
+    </div>
+
 {% endblock %}

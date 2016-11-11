@@ -14,14 +14,14 @@
         be swapped with your game "{{ swap_request.requested_game }}".
     </p>
 
-    <p>
-        Se below {{ swap_request.requester }}'s details:
+    <div style="text-align: center;">
+        <img src="http://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
+        &nbsp;&nbsp;&nbsp;
+        <img src="http://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
+    </div>
+
+    <p style="text-align: center;">
+        <a href="http://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=Check-the-user-contact-details.">Click here to contact {{ swap_request.requester }}</a>
     </p>
 
-    <p>
-        <strong>Email: </strong>
-        <a href="sendto:{{ swap_request.requested.email }}">{{ swap_request.requester.email }}</a><br>
-        <strong>Phone number:</strong> {{ swap_request.requester.phones }}<br>
-        <strong>Address:</strong> {{ swap_request.requester.address }}
-    </p>
 {% endblock %}
