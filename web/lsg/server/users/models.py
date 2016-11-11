@@ -93,6 +93,7 @@ class User(AbstractUser):
     negative_feedback_count = models.PositiveIntegerField(default=0)
     positive_feedback_count = models.PositiveIntegerField(default=0)
     neutral_feedback_count = models.PositiveIntegerField(default=0)
+    deleted = models.BooleanField(default=False)
 
     wishlist = models.ManyToManyField(Game, related_name="wished",
                                       through=WishlistItem,
@@ -250,7 +251,8 @@ class User(AbstractUser):
                          (self, self.address))
             return []
         games_collections = CollectionItem.objects \
-            .filter(game__in=self.wishlist.all()) \
+            .filter(game__in=self.wishlist.all(),
+                    user__deleted=False) \
             .exclude(user=self)
         my_pending_tuples = SwapRequest.objects.filter(requester=self,
                           status=Status.pending).values_list('requested_id',

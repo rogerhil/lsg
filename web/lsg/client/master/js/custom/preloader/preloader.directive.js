@@ -47,6 +47,11 @@
                 }
             }
 
+            if ($rootScope.user && $rootScope.user.deleted) {
+                window.location = '/logout/';
+                return;
+            }
+
             if (nextSplitted.length > 1 && nextSplitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
@@ -102,7 +107,7 @@
                                         toParams[keyValue[0]] = decodeURI(keyValue[1]);
                                     }
                                 }
-                                break;s
+                                break;
                             }
                         }
                     }

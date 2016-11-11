@@ -61,6 +61,19 @@
                 });
             return q.promise;
         };
+        this.delete = function () {
+            var q = $q.defer();
+            $http
+                .delete(baseUserUrl)
+                .success(function (response) {
+                    q.resolve(response);
+                }).error(function(response, status) {
+                    if (status == 403) {
+                        q.reject(response);
+                    }
+                });
+            return q.promise;
+        };
         this.latestFeedbacks = function (user) {
             var q = $q.defer();
             var baseUrl = baseUserUrl;

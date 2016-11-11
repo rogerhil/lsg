@@ -52,6 +52,7 @@
 
 
     var mainHttpInterceptor = function($q) {
+
         return {
             'request': function(config) {
                 if (config.url.slice(0,5) == '/api/' && config.method != 'GET') {

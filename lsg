@@ -17,6 +17,12 @@ if [ "$1" = 'init' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev),lsg.com
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
+elif [ "$1" = 'update' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
+
+elif [ "$1" = 'makemigrations' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web makemigrations
+
 elif [ "$1" = 'deployweb' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
@@ -101,7 +107,7 @@ elif [ "$1" = 'setupelx' ]; then
     
 else
     echo
-    echo "Usage: ./lsg (init | rundev | runnginx | runnginxinit | deployweb | deploycelery | deployall | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | migrate | makemigrations | createtestusers | createsuperuser | setupelx)"
+    echo "Usage: ./lsg (init | update | rundev | runnginx | runnginxinit | deployweb | deploycelery | deployall | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | migrate | makemigrations | createtestusers | createsuperuser | setupelx)"
     echo
 fi
 

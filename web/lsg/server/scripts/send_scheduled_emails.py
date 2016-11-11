@@ -2,6 +2,7 @@ from django.utils import timezone
 
 from scripts.base import BaseScript
 
+from users.models import User
 from mail.models import EmailSchedule
 from mail.sender import Sender
 
@@ -11,8 +12,10 @@ class SendScheduledEmails(BaseScript):
 
     def main(self):
         now = timezone.now()
+        deleted = [u.email for u in User.objects.filter(deleted=True)]
         schedules = EmailSchedule.objects.filter(send_at__lte=now, sent=False,
-                                                 cancelled=False)
+                                                 cancelled=False)\
+                                         .exclude(email__in=deleted)
         self.logger.info('Sending %s emails.' % schedules.count())
         for schedule in schedules:
             self.logger.debug('Sending email: %s' % schedule)

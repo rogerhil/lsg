@@ -61,6 +61,30 @@
             }
         };
 
+        self.deleteMyAccount = function () {
+
+            var confirm = $mdDialog.confirm()
+                .title('Are you really sure you want to delete your account? \n You might have all your data lost!')
+                .textContent('')
+                .ariaLabel('Delete my account')
+                .ok("Yes, I'm sure")
+                .cancel('No');
+            $mdDialog.show(confirm).then(function () {
+                UsersService.delete().then(function () {
+                    window.location = '/logout/';
+                }).catch(function (msg) {
+                    var alert = $mdDialog.alert({
+                        title: 'Failed to delete your account',
+                        textContent: msg,
+                        ok: 'Ok'
+                    });
+                    $mdDialog.show(alert);
+                });
+            }, function () {
+                // TODO: maybe do something if cancel confirm
+            });
+        };
+
         function countryTourActivate() {
 
             if (self.countryTour) {

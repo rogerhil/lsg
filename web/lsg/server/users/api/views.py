@@ -3,10 +3,13 @@ from actstream.models import actor_stream
 
 from django.conf import settings
 from django.utils import formats
+from django.core.urlresolvers import resolve
 
-from rest_framework import viewsets, views
+from rest_framework import viewsets, views, status
 from rest_framework.decorators import detail_route
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.response import Response
 
 from utils import short_timesince
 from users.api.serializers import CollectionItemSerializer, UserSerializer, \
@@ -30,14 +33,42 @@ class AuthenticatedUserView(views.APIView):
 
 
 class UsersViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.filter()
     serializer_class = UserSerializer
     permission_classes = [IsSuperUserOrOwner]
+
+    def check_permissions(self, request):
+        """ Don't apply the same IsSuperUserOrOwner permission to the
+        latest_feedbacks view.
+        """
+        try:
+            super(UsersViewSet, self).check_permissions(request)
+        except PermissionDenied as err:
+            url_name = resolve(request.path).url_name
+            if url_name == 'user-latest-feedbacks':
+                return
+            raise err
+
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        resp = Response("You still have unfinished open requests, so you "
+                        "need to close them before you delete your account.",
+                        status=status.HTTP_403_FORBIDDEN)
+        for item in CollectionItem.objects.filter(user=user):
+            if item.is_in_open_request():
+                return resp
+        for item in WishlistItem.objects.filter(user=user):
+            if item.is_in_open_request():
+                return resp
+        user.deleted = True
+        user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @detail_route(methods=['get'], url_path='query-address')
     def query_address(self, request, pk):
         code = request.user.address.country.code
-        geo = geocoder.google(request.GET.get('search', ''), components="country:%s" % code,
+        geo = geocoder.google(request.GET.get('search', ''),
+                              components="country:%s" % code,
                               timeout=30, key=settings.GOOGLE_GEOCODING_KEY)
         return views.Response([dict(display=geo.address)])
 
@@ -46,7 +77,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         return views.Response(request.user.serialized_matches)
 
     @detail_route(methods=['get'], url_path='latest-feedbacks')
-    def latest_feedbacks(self, request, pk):
+    def latest_feedbacks(self, request, pk, permission_classes=[]):
         serialized = []
         serializer = UserSerializer()
         user = User.objects.get(pk=pk)

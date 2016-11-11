@@ -59,7 +59,7 @@ h3 My profile
                         div(style="background-color: #fff;")
                         div(style="background-color: #fff;")
                         div(style="background-color: #fff;")
-                    .card-title Profile Form
+                    .card-title Profile form
                 .card-body
                     div.alert.alert-warning(ng-if="ctrl.user.isCountrySupported() && !ctrl.user.isProfileComplete()")
                         span Please complete the form below
@@ -120,3 +120,14 @@ h3 My profile
                         //        button.mb-sm.btn.btn-primary(type="submit" aria-label="Save")
                         //            span.ng-scope Save
                         //            .md-ripple-container
+
+            .card
+                .card-heading.bg-primary
+                    .card-title General settings
+                .card-body
+
+                    button.btn.mb-sm.btn-labeled.btn-danger(ng-click="ctrl.deleteMyAccount()" style="margin: 0 auto;")
+                        span.btn-label
+                            em.fa.fa-close
+                        span Delete my account
+                    div(style="clear: both;")
