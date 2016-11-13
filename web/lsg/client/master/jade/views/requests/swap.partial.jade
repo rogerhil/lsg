@@ -40,16 +40,17 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 br
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
                     p
-                        span The user
-                        strong {{ ctrl.user.name }}
-                        span provided information about his game condition:
+                        span {{ ctrl.user.name }} provided information about the "{{ ctrl.iwish.name }}" game condition:
+                div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
+                    p
                         .media.shadow-z1(style="font-style: italic; padding: 0 10px;")
                             .media-left.media-middle
                                 a(href='#')
                                     img.media-object.img-circle.img-thumbnail.thumb48(ng-src='{{ ctrl.user.picture }}', alt='{{ctrl.user.name}}')
                             .media-body.pt-sm(style="width: auto;")
                                 p.mv-lg "{{ ctrl.requesterGameConditionNotes }}"
-                        br
+                div(layout="row")
+                    span &nbsp;
                 div(layout="row")
                     div(flex=15)
                         em.fa.fa-info-circle.text-info(style="font-size: 40px;") &nbsp
