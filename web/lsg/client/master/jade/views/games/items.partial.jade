@@ -7,5 +7,5 @@ div(style="margin-right: -22px;")
     div(style="clear: both;")
 
 form(ng-submit="ctrl.addGameTo(context)")
-    md-autocomplete(ng-disabled='ctrl.isDisabled', md-no-cache='ctrl.noCache', md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText', md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display', placeholder='Add more games...', md-min-length="3", md-delay="500", md-autoselect="true")
+    md-autocomplete(ng-disabled='ctrl.isDisabled', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache', md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText', md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display', placeholder='Add more games...', md-min-length="3", md-delay="500", md-autoselect="true")
         span(md-highlight-text='ctrl.searchText') {{item.display}}

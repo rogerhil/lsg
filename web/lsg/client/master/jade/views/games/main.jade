@@ -5,12 +5,16 @@ h3 Games
     .col-lg-6
         .card.collection-card
             .card-heading.bg-primary
-                .card-title My Collection
+                .card-title
+                    .em.icon-layers(style="display: inline;") &nbsp;
+                    span My Collection
             .card-body
                 ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='collection'; ctrl.gameTour()")
     .col-lg-6
         .card.wishlist-card
             .card-heading.bg-primary
-                .card-title Wish list
+                .card-title
+                    .em.icon-heart(style="display: inline;") &nbsp;
+                    span Wish list
             .card-body
                 ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='wishlist'")
