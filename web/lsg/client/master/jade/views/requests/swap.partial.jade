@@ -9,7 +9,7 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
         md-dialog-content
             .md-dialog-content(style="min-width: 320px; max-width: 550px;")
                 div(style="margin: 0 auto; max-width: 260px;")
-                    user-photo-ratings-distance(user="ctrl.user" onfeedbacksclose="ctrl.openRequestSwapCallback" hidefeedbacks="true")
+                    user-photo-ratings-distance(user="ctrl.user" onfeedbacksclose="ctrl.openRequestSwapCallback" hidefeedbacks="true" distance="ctrl.request.distance")
                 br
                 div(layout="row" style="width: 250px; margin: 0 auto;")
                     flex(style="position: relative;")
