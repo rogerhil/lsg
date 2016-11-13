@@ -9,7 +9,7 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
         md-dialog-content
             .md-dialog-content(style="min-width: 320px; max-width: 550px;")
                 div(style="margin: 0 auto; max-width: 260px;")
-                    user-photo-ratings-distance(user="ctrl.swapUser" onfeedbacksclose="ctrl.openRequestSwappCallback" hidefeedbacks="true")
+                    user-photo-ratings-distance(user="ctrl.user" onfeedbacksclose="ctrl.openRequestSwapCallback" hidefeedbacks="true")
                 br
                 div(layout="row" style="width: 250px; margin: 0 auto;")
                     flex(style="position: relative;")
@@ -34,9 +34,9 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 a(ng-if="ctrl.latestFeedbacks.length" href="javascript:;" ng-click="ctrl.toggleFeedbacks()")
                     p(style="text-align: center;")
                         em.fa.fa-comments-o
-                        span Show/hide latest {{ ctrl.swapUser.name }}'s feedback
+                        span Show/hide latest {{ ctrl.user.name }}'s feedback
                 div#feedbacks(style="display:none;")
-                    user-latest-feedbacks(user="ctrl.swapUser" latestfeedbacks="ctrl.latestFeedbacks")
+                    user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
                 br
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
                     p
