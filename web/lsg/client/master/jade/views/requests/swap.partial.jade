@@ -30,11 +30,11 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 br
                 p(ng-if="!ctrl.latestFeedbacks.length" style="text-align: center;")
                     em.fa.fa-comments-o
-                    span This user has no feedbacks yet.
+                    span This user has no feedback yet.
                 a(ng-if="ctrl.latestFeedbacks.length" href="javascript:;" ng-click="ctrl.toggleFeedbacks()")
                     p(style="text-align: center;")
                         em.fa.fa-comments-o
-                        span Show/hide latest {{ ctrl.swapUser.name }}'s feedbacks
+                        span Show/hide latest {{ ctrl.swapUser.name }}'s feedback
                 div#feedbacks(style="display:none;")
                     user-latest-feedbacks(user="ctrl.swapUser" latestfeedbacks="ctrl.latestFeedbacks")
                 br
@@ -42,7 +42,7 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                     p
                         span The user
                         strong {{ ctrl.user.name }}
-                        span provided information about his game usage condition:
+                        span provided information about his game condition:
                         .media.shadow-z1(style="font-style: italic; padding: 0 10px;")
                             .media-left.media-middle
                                 a(href='#')
@@ -54,8 +54,8 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                     div(flex=15)
                         em.fa.fa-info-circle.text-info(style="font-size: 40px;") &nbsp
                     flex(style="text-align: justify;")
-                        span(ng-if="!ctrl.requesterGameConditionNotes") Please consider providing information about your game usage condition in the field below:
-                        span(ng-if="ctrl.requesterGameConditionNotes") Please consider as well providing information about your game usage condition before accepting the Swap Request in the field below:
+                        span(ng-if="!ctrl.requesterGameConditionNotes") Please provide information about your game condition in the field below:
+                        span(ng-if="ctrl.requesterGameConditionNotes") Please provide information about your game condition in the field below:
                 br
                 // XXX: The fields "requester_game_condition" and "requested_game_condition" were removed for a while...
                     div(layout='', layout-sm='column')
@@ -69,7 +69,7 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                                 .md-char-counter {{error}}
                 div(layout='', layout-sm='column')
                     md-input-container(flex='', layout-sm='column')
-                        label My game usage condition
+                        label My game condition
                         input(ng-model='ctrl.data.requester_game_condition_notes', ng-if="ctrl.data.requester_game_condition_notes !== undefined")
                         input(ng-model='ctrl.data.requested_game_condition_notes', ng-if="ctrl.data.requested_game_condition_notes !== undefined")
 

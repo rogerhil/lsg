@@ -1,6 +1,6 @@
 div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
     h3 Incoming Requests
-        small Some description
+        small &nbsp;
         button.btn.btn-default.btn-circle.btn-lg.bg-gray(type="button" ng-click="ctrl.confirmArchiveAllRequests()" ng-if="ctrl.hasClosedRequests()" style="position: absolute; right: 15px; top: 10px;")
             em.fa.fa-archive
             md-tooltip(md-direction="top") Archive all finished requests
@@ -8,16 +8,16 @@ div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
     .card(style="margin-right: 20px; float: left; height: 250px;" ng-repeat='request in ctrl.incomingRequests' request-id="{{ request.id }}")
         ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requester; context='incomingRequests'")
 
-    p(ng-if="!ctrl.incomingRequests.length" style="margin-bottom: 40px;") No incoming requests.
+    p(ng-if="!ctrl.incomingRequests.length" style="margin-bottom: 40px;") Loading incoming requests...
 
     div(style="clear: both; margin-bottom: 20px;")
 
     h3 My Requests
-      small Some description
+      small &nbsp;
 
     .card(style="margin-right: 20px; float: left; height: 250px;" ng-repeat='request in ctrl.myRequests' request-id="{{ request.id }}")
         ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requested; context='myRequests'")
 
-    p(ng-if="!ctrl.myRequests.length") No requests.
+    p(ng-if="!ctrl.myRequests.length") Loading my requests...
 
     div(style="clear: both; margin-bottom: 20px;")

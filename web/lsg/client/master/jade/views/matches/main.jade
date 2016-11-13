@@ -5,9 +5,9 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
             //    | Show Ongoing Swaps
             md-switch(ng-model='ctrl.showPendingSwaps', aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
                 | Show Pending Swaps
-            Some description about matches...
+            span &nbsp;
 
-    p(ng-if="!ctrl.matches.length") No matches.
+    p(ng-if="!ctrl.matches.length") Loading...
 
     .card(style="margin-right: 20px; float: left; max-width: 170px; height: 250px;" ng-repeat='match in ctrl.matches' ng-if="(ctrl.showOngoingSwaps || !match.ongoing) && (ctrl.showPendingSwaps || !match.iwish.swap_pending)")
         .card-item
