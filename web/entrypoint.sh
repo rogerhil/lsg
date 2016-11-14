@@ -12,7 +12,7 @@ if [ "$1" = 'run' ]; then
     supervisord -n
 
 elif [ "$1" = 'init' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     echo Migrating database
     python manage.py migrate
     echo Loading WorldBorder database
@@ -31,36 +31,37 @@ elif [ "$1" = 'init' ]; then
     fi
     
 elif [ "$1" = 'update' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
+    git pull
     python manage.py migrate
     python manage.py collectstatic --no-input
 
 elif [ "$1" = 'createtestusers' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python create-test-users.py $2
 
 elif [ "$1" = 'createsuperuser' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py createsuperuser
 
 elif [ "$1" = 'devrun' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py runserver 0.0.0.0:80
 
 elif [ "$1" = 'shell' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py shell
 
 elif [ "$1" = 'dbshell' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py dbshell
 
 elif [ "$1" = 'migrate' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py migrate
 
 elif [ "$1" = 'makemigrations' ]; then
-    cd /app/lsg/server
+    cd /app/lsg-docker/web/lsg/server
     python manage.py makemigrations
 
 elif [ "$1" = 'bash' ]; then
@@ -69,4 +70,3 @@ elif [ "$1" = 'bash' ]; then
 else
     exec "$@"
 fi
-

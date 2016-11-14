@@ -9,6 +9,7 @@ web:
     - postgres:postgres
     - rabbitmq:rabbitmq
   volumes_from:
+    - code
     - static
     - media
     - logs
@@ -27,6 +28,13 @@ data:
   image: alpine
   volumes:
     - /var/lib/postgresql/data
+  command: "true"
+
+code:
+  restart: always
+  image: alpine
+  volumes:
+    - /app/lsg
   command: "true"
 
 static:
