@@ -277,6 +277,7 @@
         self.iwish = request.requester_game;
         self.game = request.requested_game;
         self.user = request.requester;
+        self.swapUser = request.requester;
         self.requesterGameConditionNotes = request.requester_game_condition_notes;
         self.data = {
             requested_game_condition_notes: null  // IMPORTANT: now is the REQUESTED field!
