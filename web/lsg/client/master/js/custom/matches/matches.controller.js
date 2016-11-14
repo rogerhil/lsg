@@ -18,16 +18,15 @@
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.matches = [];
+        self.loaded = false;
         self.showOngoingSwaps = false;
         self.showPendingSwaps = true;
         self.matchesPollingInterval = 3000;
         self.matchesPromise = undefined;
 
-        var count = 0;
-        //$scope.selectedMatch = null;
-
         self.loadMatches = function () {
             MatchesService.getMatches().then(function (matches) {
+                self.loaded = true;
                 self.matches = matches;
             });
         };
