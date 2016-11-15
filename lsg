@@ -17,6 +17,9 @@ if [ "$1" = 'init' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web init $(docker-machine ip dev),lsg.com
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web createsuperuser
 
+elif [ "$1" = 'pull' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web pull
+
 elif [ "$1" = 'update' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
 
