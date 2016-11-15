@@ -29,10 +29,14 @@ elif [ "$1" = 'init' ]; then
         echo Collecting static files
         python manage.py collectstatic --no-input
     fi
-    
+
+elif [ "$1" = 'pull' ]; then
+    cd /app/lsg-docker/web/lsg/server
+    git pull origin master
+
 elif [ "$1" = 'update' ]; then
     cd /app/lsg-docker/web/lsg/server
-    git pull
+    git pull origin master
     python manage.py migrate
     python manage.py collectstatic --no-input
 

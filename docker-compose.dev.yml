@@ -1,7 +1,7 @@
 web:
   env_file: dev-env
   volumes:
-    - ./web/lsg:/app/lsg/
+    - .:/app/lsg-docker/
 
 postgres:
   env_file: dev-env

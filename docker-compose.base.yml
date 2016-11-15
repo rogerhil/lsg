@@ -34,7 +34,7 @@ code:
   restart: always
   image: alpine
   volumes:
-    - /app/lsg
+    - /app/lsg-docker
   command: "true"
 
 static:

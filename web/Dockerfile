@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
 	supervisor \
 	memcached \
 	apache2-utils \
-	sshpass \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo python --version
@@ -41,8 +40,12 @@ RUN htpasswd -bc /etc/nginx/.htpasswd lsg Identificad0
 #COPY lsg/ /app/lsg/
 RUN mkdir -p /root/.ssh/
 RUN ssh-keyscan bitbucket.org > ~/.ssh/known_hosts
-WORKDIR "/app"
-RUN /usr/bin/sshpass -p "<PASSWORD>" git clone https://rogerhil@bitbucket.org/rogerhil/lsg-docker.git
+COPY id_rsa /root/.ssh/
+COPY id_rsa.pub /root/.ssh/
+RUN chmod 400 /root/.ssh/id_rsa
+RUN git config --global user.email "support@letswapgames.com"
+RUN git config --global user.name "Let'SwapGames Support"
+RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
 
 RUN pip install -r /app/lsg-docker/web/lsg/requirements.txt
 
@@ -50,10 +53,10 @@ COPY uwsgi_params /app
 COPY uwsgi.ini /app
 
 # apply patches
-COPY /app/lsg-docker/web/lsg/patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstream/
-COPY /app/lsg-docker/web/lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packages/djcelery/backends/
-COPY /app/lsg-docker/web/lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
-COPY /app/lsg-docker/web/lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
+COPY lsg/patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstream/
+COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packages/djcelery/backends/
+COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
+COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
 # add unprivileged lsg
 RUN groupadd lsg && useradd --create-home --home-dir /home/lsg -g lsg lsg
@@ -65,4 +68,3 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 80
 CMD ["run"]
-
