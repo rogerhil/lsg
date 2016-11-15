@@ -19,7 +19,9 @@
         self.isDisabled = false;
         self.collection = [];
         self.wishlist = [];
+        self.loaded = {collection: false, wishlist: false};
         self.tour = null;
+
 
         $('body').on('click', function (e) {
             if ($(e.target).hasClass('tour-backdrop')) {
@@ -33,9 +35,11 @@
         });
 
         UsersService.getCollection().then(function (collection) {
+            self.loaded.collection = true;
             self.collection = collection;
         });
         UsersService.getWishlist().then(function (wishlist) {
+            self.loaded.wishlist = true;
             self.wishlist = wishlist;
         });
 

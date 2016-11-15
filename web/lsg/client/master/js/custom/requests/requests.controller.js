@@ -19,7 +19,9 @@
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
         self.myRequests = [];
+        self.myRequestsLoaded = false;
         self.incomingRequests = [];
+        self.incomingRequestsLoaded = false;
 
         self.pendingMyRequests = [];
         self.pendingIncomingRequests = [];
@@ -32,6 +34,7 @@
         self.loadMyRequests = function () {
             RequestsService.getMyRequests().then(function (requests) {
                 self.myRequests = requests;
+                self.myRequestsLoaded = true;
                 $timeout(function () {
                     self.highlightRequest();
                 }, 2000);
@@ -41,6 +44,7 @@
         self.loadIncomingRequests = function () {
             RequestsService.getIncomingRequests().then(function (requests) {
                 self.incomingRequests = requests;
+                self.incomingRequestsLoaded = true;
                 $timeout(function () {
                     self.highlightRequest();
                 }, 2000);
