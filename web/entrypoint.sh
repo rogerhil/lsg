@@ -6,7 +6,13 @@ if [ "${1:0:1}" = '-' ]; then
 	set -- run "$@"
 fi
 
+if [ ! -d /app/lsg-docker/.git ]; then
+    git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
+fi
+
 chown -R lsg:lsg /app
+
+ls /app/lsg-docker/.git
 
 if [ "$1" = 'run' ]; then
     supervisord -n

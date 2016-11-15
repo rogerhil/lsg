@@ -45,9 +45,10 @@ COPY id_rsa.pub /root/.ssh/
 RUN chmod 400 /root/.ssh/id_rsa
 RUN git config --global user.email "support@letswapgames.com"
 RUN git config --global user.name "Let'SwapGames Support"
-RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
+#RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
 
-RUN pip install -r /app/lsg-docker/web/lsg/requirements.txt
+COPY lsg/requirements.txt /app/
+RUN pip install -r /app/requirements.txt
 
 COPY uwsgi_params /app
 COPY uwsgi.ini /app
