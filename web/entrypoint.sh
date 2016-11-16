@@ -42,9 +42,13 @@ elif [ "$1" = 'pull' ]; then
 
 elif [ "$1" = 'update' ]; then
     cd /app/lsg-docker/web/lsg/server
-    git pull origin master
-    python manage.py migrate
-    python manage.py collectstatic --no-input
+    sudo -u lsg -E HOME=/home/lsg/ git pull origin master
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py migrate
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py collectstatic --no-input
+    cd /app/lsg-docker/web/lsg/client/master
+    sudo -u lsg -E HOME=/home/lsg/ npm install
+    sudo -u lsg -E HOME=/home/lsg/ bower install
+    sudo -u lsg -E HOME=/home/lsg/ gulp build --usesass
 
 elif [ "$1" = 'createtestusers' ]; then
     cd /app/lsg-docker/web/lsg/server

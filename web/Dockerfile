@@ -6,6 +6,11 @@ MAINTAINER rogerhil
 
 ENV CC=gcc
 
+RUN curl -sL https://deb.nodesource.com/setup_6.x > node-setup.sh
+RUN sed 's/deb https:/deb http:/g' node-setup.sh > node-setup.sh.modified
+RUN sed 's/deb-src https:/deb-src http:/g' node-setup.sh.modified > node-setup.sh
+RUN sh node-setup.sh
+
 RUN apt-get update && apt-get install -y \
     vim \
 	git \
@@ -14,7 +19,15 @@ RUN apt-get update && apt-get install -y \
 	supervisor \
 	memcached \
 	apache2-utils \
+	sudo \
+	nodejs \
+	ruby-full \
   && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g gulp
+RUN npm install -g bower
+RUN gem install --no-rdoc --no-ri sass
+RUN gem install --no-rdoc --no-ri compass
 
 RUN echo python --version
 
@@ -34,21 +47,35 @@ COPY supervisord.conf /etc/supervisor/
 RUN htpasswd -bc /etc/nginx/.htpasswd lsg Identificad0
 
 # COPY requirements.txt and RUN pip install BEFORE adding the rest of your code, this will cause Docker's caching mechanism
-# to prevent re-installinig (all your) dependencies when you made a change a line or two in your app. 
-
-# add (the rest of) our code
-#COPY lsg/ /app/lsg/
-RUN mkdir -p /root/.ssh/
-RUN ssh-keyscan bitbucket.org > ~/.ssh/known_hosts
-COPY id_rsa /root/.ssh/
-COPY id_rsa.pub /root/.ssh/
-RUN chmod 400 /root/.ssh/id_rsa
-RUN git config --global user.email "support@letswapgames.com"
-RUN git config --global user.name "Let'SwapGames Support"
-#RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
+# to prevent re-installinig (all your) dependencies when you made a change a line or two in your app.
 
 COPY lsg/requirements.txt /app/
 RUN pip install -r /app/requirements.txt
+
+# add unprivileged lsg
+RUN groupadd lsg && useradd --create-home --home-dir /home/lsg -g lsg lsg
+RUN chown -R lsg:lsg /app
+
+# add (the rest of) our code
+#COPY lsg/ /app/lsg/
+#RUN mkdir -p /root/.ssh/
+RUN sudo -u lsg mkdir -p /home/lsg/.ssh/
+#RUN ssh-keyscan bitbucket.org > /root/.ssh/known_hosts
+RUN sudo -u lsg ssh-keyscan bitbucket.org > /home/lsg/.ssh/known_hosts
+#COPY id_rsa /root/.ssh/
+#COPY id_rsa.pub /root/.ssh/
+COPY id_rsa /home/lsg/.ssh/
+COPY id_rsa.pub /home/lsg/.ssh/
+RUN chown -R lsg:lsg /home/lsg/.ssh/
+RUN chown -R lsg:lsg /var/log/
+
+#RUN chmod 400 /root/.ssh/id_rsa
+RUN sudo -u lsg chmod 400 /home/lsg/.ssh/id_rsa
+#RUN git config --global user.email "support@letswapgames.com"
+#RUN git config --global user.name "Let'SwapGames Support"
+RUN sudo -u lsg git config --global user.email "support@letswapgames.com"
+RUN sudo -u lsg git config --global user.name "Let'SwapGames Support"
+#RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
 
 COPY uwsgi_params /app
 COPY uwsgi.ini /app
@@ -58,10 +85,6 @@ COPY lsg/patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstr
 COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packages/djcelery/backends/
 COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
 COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
-
-# add unprivileged lsg
-RUN groupadd lsg && useradd --create-home --home-dir /home/lsg -g lsg lsg
-RUN chown -R lsg:lsg /app
 
 COPY entrypoint.sh /
 
