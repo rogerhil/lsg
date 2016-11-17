@@ -12,5 +12,5 @@
                     em.fa.fa-comments-o
                     md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
                 span(ng-if="!hidefeedbacks") &nbsp;&nbsp;
-                span(ng-if="distance") {{ distance }}km far
-                span(ng-if="!distance") {{ user.address.distance }}km far
+                span(ng-if="distance") {{ distance }}km away
+                span(ng-if="!distance") {{ user.address.distance }}km away
