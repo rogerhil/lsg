@@ -21,7 +21,10 @@ elif [ "$1" = 'pull' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web pull
 
 elif [ "$1" = 'update' ]; then
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'makemigrations' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web makemigrations
