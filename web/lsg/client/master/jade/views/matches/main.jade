@@ -3,17 +3,17 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         small
             //md-switch(ng-model='ctrl.showOngoingSwaps', aria-label='Show Ongoing Swaps', style="position: absolute; right: 3px; top: -5px;")
             //    | Show Ongoing Swaps
-            md-switch(ng-model='ctrl.showPendingSwaps', aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
+            md-switch(ng-model='ctrl.showPendingSwaps', ng-chang="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
                 | Show Pending Swaps
             span &nbsp;
 
-    p(ng-if="!ctrl.matches.length && ctrl.loaded") No matches.
+    p(ng-if="!ctrl.filteredMatches.length && ctrl.loaded") No matches.
     .ball-pulse(ng-if="!ctrl.loaded")
         div
         div
         div
 
-    .card(style="margin-right: 20px; float: left; max-width: 170px; height: 250px;" ng-repeat='match in ctrl.matches' ng-if="(ctrl.showOngoingSwaps || !match.ongoing) && (ctrl.showPendingSwaps || !match.iwish.swap_pending)")
+    .card(style="margin-right: 20px; float: left; max-width: 170px; height: 250px;" ng-repeat='match in ctrl.filteredMatches')
         .card-item
             .label.label-warning.swap-indicator(ng-if="match.iwish.swap_pending")
                 .em(ng-class="StatusIcons[Status.pending]")

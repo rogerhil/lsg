@@ -48,6 +48,7 @@ elif [ "$1" = 'update' ]; then
     sudo -u lsg -E HOME=/home/lsg/ npm install
     sudo -u lsg -E HOME=/home/lsg/ bower install
     sudo -u lsg -E HOME=/home/lsg/ gulp build --usesass
+    cd /app/lsg-docker/web/lsg/server
     sudo -u lsg -E HOME=/home/lsg/ python manage.py collectstatic --no-input
 
 elif [ "$1" = 'createtestusers' ]; then

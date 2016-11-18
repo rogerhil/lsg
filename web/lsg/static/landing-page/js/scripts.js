@@ -20,7 +20,7 @@ jQuery(document).ready(function() {
     /*
         Countdown initializer
     */
-    var now = new Date(2016, 11, 1, 19, 0);
+    var now = new Date(2016, 11, 18, 19, 0);
     var countTo = now.valueOf();
     $('.timer').countdown(countTo, function(event) {
     	$(this).find('.days').text(event.offset.totalDays);

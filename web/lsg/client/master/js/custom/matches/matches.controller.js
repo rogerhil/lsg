@@ -18,6 +18,7 @@
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.matches = [];
+        self.filteredMatches = [];
         self.loaded = false;
         self.showOngoingSwaps = false;
         self.showPendingSwaps = true;
@@ -28,8 +29,19 @@
             MatchesService.getMatches().then(function (matches) {
                 self.loaded = true;
                 self.matches = matches;
+                self.filterMatches();
             });
         };
+
+        self.filterMatches = function () {
+            self.filteredMatches = self.matches.filter(function (match) {
+                if ((self.showOngoingSwaps || !match.ongoing) &&
+                    (self.showPendingSwaps || !match.iwish.swap_pending)) {
+                    return match;
+                }
+            });
+        };
+
 
         self.pollMatches = function () {
             self.loadMatches();

@@ -57,25 +57,16 @@ RUN groupadd lsg && useradd --create-home --home-dir /home/lsg -g lsg lsg
 RUN chown -R lsg:lsg /app
 
 # add (the rest of) our code
-#COPY lsg/ /app/lsg/
-#RUN mkdir -p /root/.ssh/
 RUN sudo -u lsg mkdir -p /home/lsg/.ssh/
-#RUN ssh-keyscan bitbucket.org > /root/.ssh/known_hosts
 RUN sudo -u lsg ssh-keyscan bitbucket.org > /home/lsg/.ssh/known_hosts
-#COPY id_rsa /root/.ssh/
-#COPY id_rsa.pub /root/.ssh/
 COPY id_rsa /home/lsg/.ssh/
 COPY id_rsa.pub /home/lsg/.ssh/
 RUN chown -R lsg:lsg /home/lsg/.ssh/
 RUN chown -R lsg:lsg /var/log/
 
-#RUN chmod 400 /root/.ssh/id_rsa
 RUN sudo -u lsg chmod 400 /home/lsg/.ssh/id_rsa
-#RUN git config --global user.email "support@letswapgames.com"
-#RUN git config --global user.name "Let'SwapGames Support"
 RUN sudo -u lsg git config --global user.email "support@letswapgames.com"
 RUN sudo -u lsg git config --global user.name "Let'SwapGames Support"
-#RUN git clone git@bitbucket.org:rogerhil/lsg-docker.git /app/lsg-docker
 
 COPY uwsgi_params /app
 COPY uwsgi.ini /app
