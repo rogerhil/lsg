@@ -171,14 +171,16 @@ class User(AbstractUser):
                 user=request.requested,
                 notes=request.requester_feedback_notes,
                 feedback=request.requester_feedback,
-                closed_at=request.closed_at
+                closed_at=request.closed_at,
+                closed_at_since=request.closed_at_since
             ))
         for request in requests2:
             feedbacks.append(dict(
                 user=request.requester,
                 notes=request.requested_feedback_notes,
                 feedback=request.requested_feedback,
-                closed_at=request.closed_at
+                closed_at=request.closed_at,
+                closed_at_since=request.closed_at_since
             ))
         feedbacks.sort(key=lambda x: x['closed_at'], reverse=True)
         return feedbacks[:last]

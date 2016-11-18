@@ -21,6 +21,7 @@ class SwapRequestSerializer(CachedSerializerMixin):
     status_history_display = serializers.CharField(read_only=True)
     previous_status = serializers.IntegerField(read_only=True)
     previous_status_display = serializers.CharField(read_only=True)
+    closed_at_since = serializers.CharField(read_only=True)
     distance = serializers.DecimalField(decimal_places=1, max_digits=10)
 
     requester = UserSerializer(read_only=True)
@@ -33,7 +34,8 @@ class SwapRequestSerializer(CachedSerializerMixin):
                             'requested_feedback', 'requester_feedback',
                             'created', 'updated', 'accepted_at', 'closed_at',
                             'finalized_at', 'status_history_display',
-                            'previous_status', 'previous_status_display')
+                            'previous_status', 'previous_status_display',
+                            'closed_at_since')
         exclude = ('status_history',)
         depth = 2
 

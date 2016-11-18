@@ -1,13 +1,13 @@
 from datetime import timedelta
 from itertools import chain
 
-from django.utils import timezone
 from django.db import models
 from django.conf import settings
 
 from jsonfield import JSONField
 
 from games.models import Game
+from utils import short_timesince
 from .flow import StatusMethodsMixin, Status
 
 
@@ -67,6 +67,10 @@ class SwapRequest(models.Model, StatusMethodsMixin):
     def __str__(self):
         return "%s (%s) X %s (%s)" % (self.requester, self.requester_game,
                                       self.requested, self.requested_game)
+
+    @property
+    def closed_at_since(self):
+        return short_timesince(self.closed_at)
 
     def cancel(self):
         self.status = Status.cancelled
