@@ -1,6 +1,45 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block style %}
+    <style>
+        .watch {
+            width: 250px;
+            height: 148px;
+            transition: all 0.2s;
+            margin: 0 auto;
+            background: #333;
+            color: #ccc;
+            cursor: pointer;
+            border-radius: 10px;
+            position: relative;
+        }
+        .watch iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 10px;
+        }
+        .play {
+            width: 800px !important;
+            height: 480px !important;
+            background: transparent;
+            padding: 0;
+        }
+        .play iframe {
+            display: block;
+        }
+        .glass {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(40, 40, 40, 0.6);
+            border-radius: 10px;
+            left: 0;
+            top: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block container %}
 
     <!-- Top menu -->
@@ -158,10 +197,12 @@
             </div>
 
             <br>
-            <iframe width="800" height="480" src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen></iframe>
+            <div class="watch">
+                <iframe src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen></iframe>
+                <div class="glass"></div>
+            </div>
             <br>
             <br>
-
 
             <div class="row">
                 <div class="col-sm-2 about-box-1">
@@ -311,5 +352,11 @@
     <script>
         var options={ "publisher": "023fcf4a-4582-470d-8c44-a22303a1ce96", "position": "left", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "whatsapp", "email", "sharethis"]}};
         var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+    </script>
+    <script>
+        $('.glass').click(function () {
+            $(this).remove();
+            $('.watch').addClass('play');
+        });
     </script>
 {% endblock %}
