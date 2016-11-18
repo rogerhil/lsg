@@ -34,10 +34,10 @@
         };
 
         self.filterMatches = function () {
-            self.filteredMatches = self.matches.map(function () {
-                if ((this.showOngoingSwaps || !match.ongoing) &&
-                    (self.showPendingSwaps || !this.iwish.swap_pending)) {
-                    return this;
+            self.filteredMatches = self.matches.filter(function (match) {
+                if ((self.showOngoingSwaps || !match.ongoing) &&
+                    (self.showPendingSwaps || !match.iwish.swap_pending)) {
+                    return match;
                 }
             });
         };
