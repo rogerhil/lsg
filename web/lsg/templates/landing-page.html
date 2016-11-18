@@ -4,15 +4,18 @@
 {% block style %}
     <style>
         .watch {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             transition: all 0.2s;
-            margin: 0 auto;
+            margin: 10px auto 0 auto;
             color: #ccc;
             cursor: pointer;
             border-radius: 50%;
             position: relative;
             border: 1px solid #fff;
+        }
+        .watch:hover {
+            border-color: #FFC107;
         }
         .watch iframe {
             width: 100% !important;
@@ -26,14 +29,46 @@
             border-radius: 5px !important;
         }
         .play {
+            border: none;
+        }
+        .play:hover {
+            border: none;
+        }
+        .play {
+            width: 100% !important;
+            height: 560px !important;
             transition: all 0.2s;
-            width: 800px !important;
-            height: 480px !important;
             border-radius: 5px !important;
             background: transparent;
             padding: 0;
             transition: all 0.2s;
         }
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .play {
+                height: 470px !important;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 991px) {
+            .play {
+                height: 360px !important;
+            }
+        }
+        @media (max-width: 991px) {
+            .play {
+                height: 360px !important;
+            }
+        }
+        @media (max-width: 767px) {
+            .play {
+                height: 320px !important;
+            }
+        }
+        @media (max-width: 400px) {
+            .play {
+                height: 220px !important;
+            }
+        }
+
         .play iframe {
             display: block;
         }
@@ -49,9 +84,6 @@
             *color: #000;
             color: #fff;
         }
-        .watch:hover {
-            border-color: #FFC107;
-        }
         .glass:hover {
             opacity: 1;
             *background: rgba(220, 220, 220, 0);
@@ -64,19 +96,24 @@
         }
         .glass img {
             width: 40px;
-            margin-top: 0px;
+            margin-top: 8px;
+            transition: all 0.5s;
         }
         .glass img.red {
             display: none;
+            transition: all 0.5s;
         }
         .glass img.gray {
             display: inline;
+            transition: all 0.5s;
         }
         .glass:hover img.red {
             display: inline;
+            transition: all 0.5s;
         }
         .glass:hover img.gray {
             display: none;
+            transition: all 0.5s;
         }
     </style>
 {% endblock %}
@@ -124,18 +161,26 @@
                         <p style="*text-transform: uppercase;">
                             free for life, for gamers by gamers
                         </p>
-                        <br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
                         <div class="watch">
                             <iframe src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen></iframe>
                             <div class="glass">
-                                <div style="padding: 25px 0 0 0; font-size: 16px;">
+                                <div style="padding: 30px 0 0 0; font-size: 16px;">
                                     what is it?
                                 </div>
-                                <img class="gray" src="{% static 'landing-page/img/youtubeplay-gray.png' %}">
+                                <img class="gray" src="{% static 'landing-page/img/youtubeplay-white.png' %}">
                                 <img class="red" src="{% static 'landing-page/img/youtubeplay.png' %}">
                             </div>
                         </div>
-                        <br>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
                         <h2>
                             coming soon
                         </h2>
