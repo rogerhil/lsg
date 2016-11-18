@@ -4,26 +4,35 @@
 {% block style %}
     <style>
         .watch {
-            width: 250px;
-            height: 148px;
+            width: 100px;
+            height: 100px;
             transition: all 0.2s;
             margin: 0 auto;
-            background: #333;
             color: #ccc;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 50%;
             position: relative;
+            border: 1px solid #fff;
         }
         .watch iframe {
             width: 100% !important;
             height: 100% !important;
-            border-radius: 10px;
+            border-radius: 50%;
+            display: none;
+        }
+        .play iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 5px !important;
         }
         .play {
+            transition: all 0.2s;
             width: 800px !important;
             height: 480px !important;
+            border-radius: 5px !important;
             background: transparent;
             padding: 0;
+            transition: all 0.2s;
         }
         .play iframe {
             display: block;
@@ -32,10 +41,42 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(40, 40, 40, 0.6);
-            border-radius: 10px;
+            transition: all 0.2s;
+            border-radius: 50%;
             left: 0;
             top: 0;
+            opacity: 1;
+            *color: #000;
+            color: #fff;
+        }
+        .watch:hover {
+            border-color: #FFC107;
+        }
+        .glass:hover {
+            opacity: 1;
+            *background: rgba(220, 220, 220, 0);
+            *background: rgba(255, 255, 255, 1);
+            background: #FFC107;
+
+        }
+        .glass:hover div {
+            color: #fff !important;
+        }
+        .glass img {
+            width: 40px;
+            margin-top: 0px;
+        }
+        .glass img.red {
+            display: none;
+        }
+        .glass img.gray {
+            display: inline;
+        }
+        .glass:hover img.red {
+            display: inline;
+        }
+        .glass:hover img.gray {
+            display: none;
         }
     </style>
 {% endblock %}
@@ -83,6 +124,18 @@
                         <p style="*text-transform: uppercase;">
                             free for life, for gamers by gamers
                         </p>
+                        <br>
+                        <div class="watch">
+                            <iframe src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen></iframe>
+                            <div class="glass">
+                                <div style="padding: 25px 0 0 0; font-size: 16px;">
+                                    what is it?
+                                </div>
+                                <img class="gray" src="{% static 'landing-page/img/youtubeplay-gray.png' %}">
+                                <img class="red" src="{% static 'landing-page/img/youtubeplay.png' %}">
+                            </div>
+                        </div>
+                        <br>
                         <h2>
                             coming soon
                         </h2>
@@ -195,14 +248,6 @@
                     <h3>How it works</h3>
                 </div>
             </div>
-
-            <br>
-            <div class="watch">
-                <iframe src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen></iframe>
-                <div class="glass"></div>
-            </div>
-            <br>
-            <br>
 
             <div class="row">
                 <div class="col-sm-2 about-box-1">
@@ -354,9 +399,14 @@
         var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
     </script>
     <script>
-        $('.glass').click(function () {
-            $(this).remove();
+        $('.glass').click(function (e) {
+            e.stopPropagation();
+            $(this).hide();
             $('.watch').addClass('play');
+        });
+        $('body').click(function () {
+            $('.glass').show();
+            $('.watch').removeClass('play');
         });
     </script>
 {% endblock %}
