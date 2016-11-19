@@ -106,16 +106,16 @@ var vendorUglifyOpts = {
 
 var compassOpts = {
     project: path.join(__dirname, '../'),
-    css: 'app/build/css',
+    css: 'build/app/css/',
     sass: 'master/sass/',
-    image: 'app/build/img'
+    image: 'build/app/img/'
 };
 
 var compassOptsThemes = {
     project: path.join(__dirname, '../'),
-    css: 'app/build/css',
+    css: 'build/app/css/',
     sass: 'master/sass/themes/', // themes in a subfolders
-    image: 'app/build/img'
+    image: 'build/app/img/'
 };
 
 var tplCacheOptions = {
