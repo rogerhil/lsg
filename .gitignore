@@ -13,11 +13,12 @@ node_modules/
 bower_components/
 
 # Compiled frontend files
-web/lsg/client/app/css/
-web/lsg/client/app/js/
-web/lsg/client/app/views/
-web/lsg/client/index.html
-web/lsg/client/vendor/
+web/lsg/client/build/app/css/
+web/lsg/client/build/app/js/
+web/lsg/client/build/app/views/
+web/lsg/client/build/index.html
+web/lsg/client/build/vendor/
+web/lsg/client/build/chart/
 
 __pycache__/
 *.py[cod]

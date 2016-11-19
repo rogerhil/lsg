@@ -1,0 +1,59 @@
+[
+  {
+    "text": "Main Navigation",
+    "heading": "true",
+    "translate": "sidebar.heading.HEADER"
+  },
+  {
+    "text": "Welcome",
+    "sref": "app.welcome",
+    "icon": "icon-tag"
+  },
+  {
+    "text": "Profile",
+    "sref": "app.users",
+    "icon": "icon-user"
+  },
+  {
+    "text": "Dashboard",
+    "sref": "app.dashboard",
+    "icon": "icon-graph",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Games",
+    "sref": "app.games",
+    "icon": "icon-game-controller",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Matches",
+    "sref": "app.matches",
+    "icon": "icon-people",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Requests",
+    "sref": "app.requests",
+    "icon": "fa fa-hand-o-up",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Archived Requests",
+    "sref": "app.archived",
+    "icon": "fa fa-archive",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Invite",
+    "sref": "app.invite",
+    "icon": "fa fa-group",
+    "label": "label label-primary"
+  },
+  {
+    "text": "Contact",
+    "sref": "app.contact",
+    "icon": "fa fa-envelope-o",
+    "label": "label label-primary"
+  }
+]

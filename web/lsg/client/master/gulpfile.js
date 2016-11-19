@@ -29,7 +29,7 @@ var ignored_files = '!' + hidden_files;
 
 // MAIN PATHS
 var paths = {
-    app: '../app/',
+    app: '../build/app/',
     markup: 'jade/',
     styles: 'less/',
     scripts: 'js/'
@@ -53,7 +53,7 @@ var vendor = {
     // vendor scripts to make the app work. Usually via lazy loading
     app: {
         source: require('./vendor.json'),
-        dest: '../vendor'
+        dest: '../build/vendor/'
     }
 };
 
@@ -84,7 +84,7 @@ var build = {
     scripts: paths.app + 'js',
     styles: paths.app + 'css',
     templates: {
-        index: '../',
+        index: '../build/',
         views: paths.app,
         cache: paths.app + 'js/' + 'templates.js',
     }
@@ -106,16 +106,16 @@ var vendorUglifyOpts = {
 
 var compassOpts = {
     project: path.join(__dirname, '../'),
-    css: 'app/css',
+    css: 'app/build/css',
     sass: 'master/sass/',
-    image: 'app/img'
+    image: 'app/build/img'
 };
 
 var compassOptsThemes = {
     project: path.join(__dirname, '../'),
-    css: 'app/css',
+    css: 'app/build/css',
     sass: 'master/sass/themes/', // themes in a subfolders
-    image: 'app/img'
+    image: 'app/build/img'
 };
 
 var tplCacheOptions = {

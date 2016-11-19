@@ -160,7 +160,7 @@ STATIC_APP_URL = '/app/'
 STATIC_ROOT = '/app/static'
 
 
-STATIC_APP_ROOT = os.path.join(BASE_DIR, 'client/')
+STATIC_APP_ROOT = os.path.join(BASE_DIR, 'client/build/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'client/'),
@@ -213,20 +213,6 @@ GAMES_IMAGES_PARENT_DIR = BASE_DIR
 
 GAMES_IMAGES_DIR = os.path.join(BASE_DIR, 'media/img/games/')
 
-
-# Rest Framework
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20,
-}
-
 # Geo IP
 
 GEOIP_PATH = os.path.join(BASE_DIR, 'geoipdata')
@@ -254,7 +240,8 @@ ADMINS = (
     ('Rogerio Hilbert', 'rogerhil@gmail.com'),
 )
 
-FAKE_ALL_EMAILS_TO = ['rogerhil@gmail.com']
+#FAKE_ALL_EMAILS_TO = ['rogerhil@gmail.com']
+FAKE_ALL_EMAILS_TO = []
 
 MOCK_SEND_EMAIL = False
 

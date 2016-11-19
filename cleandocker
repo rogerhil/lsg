@@ -1,32 +1,32 @@
 #!/bin/bash
 
 if [ "$1" = 'exited' ]; then
-    docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker rm
+    docker ps -a | grep 'Exited' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
 
 elif [ "$1" = 'pycharm' ]; then
-    docker ps -a | grep 'pycharm' | awk '{print $1}' | xargs docker rm
-    docker images | grep 'pycharm' | awk '{print $3}' | xargs docker rmi -f
+    docker ps -a | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
+    docker images | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi -f
 
 elif [ "$1" = 'none' ]; then 
-    docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
+    docker images | grep '<none>' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi
 
 elif [ "$1" = 'webcelery' ]; then
-    docker ps -a | grep 'web' | awk '{print $1}' | xargs docker rm -f
-    docker ps -a | grep 'celery' | awk '{print $1}' | xargs docker rm -f
+    docker ps -a | grep 'web' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm -f
+    docker ps -a | grep 'celery' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm -f
 
 elif [ "$1" = 'all' ]; then
-    #docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker rm
-    docker ps -a | grep 'pycharm' | awk '{print $1}' | xargs docker rm
-    docker images | grep 'pycharm' | awk '{print $3}' | xargs docker rmi -f
-    docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi -f
+    #docker ps -a | grep 'Exited' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
+    docker ps -a | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
+    docker images | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi -f
+    docker images | grep '<none>' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi -f
 
-elif [ "$1" = 'ALL!' ]; then
-    #docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker rm
-    docker ps -a | grep 'pycharm' | awk '{print $1}' | xargs docker rm
-    docker images | grep 'pycharm' | awk '{print $3}' | xargs docker rmi -f
-    docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi -f
-    docker ps -a | grep 'web' | awk '{print $1}' | xargs docker rm -f
-    docker ps -a | grep 'celery' | awk '{print $1}' | xargs docker rm -f
+elif [ "$1" = 'webceleryall' ]; then
+    #docker ps -a | grep 'Exited' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
+    docker ps -a | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm
+    docker images | grep 'pycharm' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi -f
+    docker images | grep '<none>' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $3}' | xargs docker rmi -f
+    docker ps -a | grep 'web' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm -f
+    docker ps -a | grep 'celery' | grep -v lsgdocker_data | grep -v lsgdocker_media | grep -v lsgdocker_logs | grep -v lsgdocker_static | awk '{print $1}' | xargs docker rm -f
 
 else
    echo

@@ -21,6 +21,21 @@ if os.getenv('LSG_DB_NAME'):
     
     DEBUG = bool_env('LSG_DJANGO_DEBUG')
 
+    # Rest Framework
+    REST_FRAMEWORK = {
+        # Use Django's standard `django.contrib.auth` permissions,
+        # or allow read-only access for unauthenticated users.
+        'DEFAULT_PERMISSION_CLASSES': [
+            # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ],
+        'DEFAULT_PAGINATION_CLASS':
+            'rest_framework.pagination.LimitOffsetPagination',
+        'PAGE_SIZE': 20,
+    }
+
+    if not DEBUG:
+        REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)
+
     ALLOWED_HOSTS = ['letswapgames.com', 'letswapgames.ie', 'letswapgames.co.uk',
                      'www.letswapgames.com', 'www.letswapgames.ie', 'www.letswapgames.co.uk']
 
