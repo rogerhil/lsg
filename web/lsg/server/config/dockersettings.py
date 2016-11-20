@@ -96,8 +96,7 @@ if os.getenv('LSG_DB_NAME'):
             },
             'mail_admins': {
                 'level': 'ERROR',
-                'class': 'django.utils.log.AdminEmailHandler',
-                'filters': ['special']
+                'class': 'django.utils.log.AdminEmailHandler'
             }
         },
         'loggers': {
