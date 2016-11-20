@@ -20,6 +20,7 @@ from django.views.static import serve as static_serve
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sitemaps.views import sitemap
 
 from rest_framework_cache.registry import cache_registry
 from rest_framework_nested import routers
@@ -34,11 +35,16 @@ from users.api.views import UsersViewSet, CollectionItemViewSet, \
     WishlistViewSet, AuthenticatedUserView
 from request.api.views import MyRequestsViewSet, IncomingRequestsViewSet, \
     AllRequestsViewSet
+from sitemaps import HomeSitemap
 
 is_superuser = user_passes_test(lambda u: u.is_superuser, 'landing-page')
 s = lambda v: csrf_exempt(is_superuser(v))
 
 cache_registry.autodiscover()
+
+sitemaps = dict(
+    home=HomeSitemap,
+)
 
 router = routers.DefaultRouter()
 router.register('users', UsersViewSet)
@@ -97,6 +103,9 @@ urlpatterns = [
 
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
+
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'debug_toolbar',
     'rest_framework',
     'social.apps.django_app.default',
