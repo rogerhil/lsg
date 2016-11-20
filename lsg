@@ -35,9 +35,6 @@ elif [ "$1" = 'deployweb' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm web
     ./cleandocker all
-    cd web/lsg/client/master/
-    gulp build --usesass
-    cd -
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'deploycelery' ]; then
@@ -56,9 +53,6 @@ elif [ "$1" = 'deployall' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm web
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm celery
     ./cleandocker all
-    cd web/lsg/client/master/
-    gulp build --usesass
-    cd -
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'rundev' ]; then
