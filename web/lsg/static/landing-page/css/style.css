@@ -721,16 +721,18 @@ footer {
 .watch:hover {
 	border-color: #FFC107;
 }
-.watch iframe {
+.watch #player {
 	width: 100% !important;
 	height: 100% !important;
 	border-radius: 50%;
-	display: none;
+	display: none !important;
+	transition: all 0.2s;
 }
-.play iframe {
-	width: 100% !important;
-	height: 100% !important;
+.play #player {
+	display: block !important;
 	border-radius: 5px !important;
+	background: #000;
+	transition: all 0.2s;
 }
 .play {
 	border: none;
@@ -773,9 +775,6 @@ footer {
 	}
 }
 
-.play iframe {
-	display: block;
-}
 .glass {
 	position: absolute;
 	width: 100%;
