@@ -229,7 +229,8 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'rogerhil@gmail.com'
 
 ADMINS = (
-    ('Rogerio Hilbert', 'rogerhil@gmail.com'),
+    ('Rogerio Hilbert', 'letswapgames@gmail.com'),
+    ('Rogerio Hilbert', 'rogerhil@gmail.com')
 )
 
 SERVER_EMAIL = 'rogerhil@gmail.com'
@@ -237,7 +238,8 @@ SERVER_EMAIL = 'rogerhil@gmail.com'
 CONTACT_FORM_TO = ['rogerhil@gmail.com']
 
 ADMINS = (
-    ('Rogerio Hilbert', 'rogerhil@gmail.com'),
+    ('Rogerio Hilbert', 'letswapgames@gmail.com'),
+    ('Rogerio Hilbert', 'rogerhil@gmail.com')
 )
 
 #FAKE_ALL_EMAILS_TO = ['rogerhil@gmail.com']

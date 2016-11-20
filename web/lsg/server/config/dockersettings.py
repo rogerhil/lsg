@@ -94,16 +94,28 @@ if os.getenv('LSG_DB_NAME'):
                 'filename': os.path.join(LOGS_BASE, 'web/dba.log'),
                 'formatter': 'simple'
             },
+            'mail_admins': {
+                'level': 'ERROR',
+                'class': 'django.utils.log.AdminEmailHandler',
+                'filters': ['special']
+            }
         },
         'loggers': {
             'coffeehouse': {
-                'handlers': ['console', 'development_logfile', 'production_logfile'],
+                'handlers': ['console', 'development_logfile', 'production_logfile',
+                             'mail_admins'],
             },
             'dba': {
-                'handlers': ['console', 'dba_logfile'],
+                'handlers': ['console', 'dba_logfile', 'mail_admins'],
             },
             'django': {
-                'handlers': ['console', 'development_logfile', 'production_logfile'],
+                'handlers': ['console', 'development_logfile', 'production_logfile',
+                             'mail_admins'],
+            },
+            'django.request': {
+                'handlers': ['mail_admins'],
+                'level': 'ERROR',
+                #'propagate': False,
             },
             'py.warnings': {
                 'handlers': ['console', 'development_logfile'],
