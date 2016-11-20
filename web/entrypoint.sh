@@ -12,8 +12,6 @@ fi
 
 chown -R lsg:lsg /app
 
-ls /app/lsg-docker/.git
-
 if [ "$1" = 'run' ]; then
     supervisord -n
 

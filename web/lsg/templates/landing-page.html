@@ -1,123 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block style %}
-    <style>
-        .watch {
-            width: 120px;
-            height: 120px;
-            transition: all 0.2s;
-            margin: 10px auto 0 auto;
-            color: #ccc;
-            cursor: pointer;
-            border-radius: 50%;
-            position: relative;
-            border: 1px solid #fff;
-        }
-        .watch:hover {
-            border-color: #FFC107;
-        }
-        .watch iframe {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 50%;
-            display: none;
-        }
-        .play iframe {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 5px !important;
-        }
-        .play {
-            border: none;
-        }
-        .play:hover {
-            border: none;
-        }
-        .play {
-            width: 100% !important;
-            height: 560px !important;
-            transition: all 0.2s;
-            border-radius: 5px !important;
-            background: transparent;
-            padding: 0;
-            transition: all 0.2s;
-        }
-        @media (min-width: 992px) and (max-width: 1199px) {
-            .play {
-                height: 470px !important;
-            }
-        }
-        @media (min-width: 768px) and (max-width: 991px) {
-            .play {
-                height: 360px !important;
-            }
-        }
-        @media (max-width: 991px) {
-            .play {
-                height: 360px !important;
-            }
-        }
-        @media (max-width: 767px) {
-            .play {
-                height: 320px !important;
-            }
-        }
-        @media (max-width: 400px) {
-            .play {
-                height: 220px !important;
-            }
-        }
-
-        .play iframe {
-            display: block;
-        }
-        .glass {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transition: all 0.2s;
-            border-radius: 50%;
-            left: 0;
-            top: 0;
-            opacity: 1;
-            *color: #000;
-            color: #fff;
-        }
-        .glass:hover {
-            opacity: 1;
-            *background: rgba(220, 220, 220, 0);
-            *background: rgba(255, 255, 255, 1);
-            background: #FFC107;
-
-        }
-        .glass:hover div {
-            color: #fff !important;
-        }
-        .glass img {
-            width: 40px;
-            margin-top: 8px;
-            transition: all 0.5s;
-        }
-        .glass img.red {
-            display: none;
-            transition: all 0.5s;
-        }
-        .glass img.gray {
-            display: inline;
-            transition: all 0.5s;
-        }
-        .glass:hover img.red {
-            display: inline;
-            transition: all 0.5s;
-        }
-        .glass:hover img.gray {
-            display: none;
-            transition: all 0.5s;
-        }
-    </style>
-{% endblock %}
-
 {% block container %}
 
     <!-- Top menu -->
@@ -211,7 +94,7 @@
     <div class="relative-container white-container">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 subscribe">
+                <div class="col-sm-12 subscribe" id="sign-up">
 
                     {% if user.is_authenticated %}
                         <h3>You have already signed up</h3>
@@ -295,14 +178,16 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-2 about-box-1">
-                    <div class="about-box-1-icon">
-                        <i class="fa fa-sign-in"></i>
+                <a href="#sign-up">
+                    <div class="col-sm-2 about-box-1">
+                        <div class="about-box-1-icon">
+                            <i class="fa fa-sign-in"></i>
+                        </div>
+                        <p>
+                            Sign-in
+                        </p>
                     </div>
-                    <p>
-                        Sign-in
-                    </p>
-                </div>
+                </a>
                 <div class="col-sm-2 about-box-1">
                     <div class="about-box-1-icon even">
                         <i class="fa fa-book"></i>
@@ -384,8 +269,10 @@
                     </div>
                     <h4>Who are you anyway?</h4>
                     <p>
-                        ????? We are gamers from Ireland who were tired of trying to sell and swap
-                        games in ad sites, forums and groups
+                        We are gamers from Ireland who were tired of trying to sell and swap
+                        games in ad sites, forums and groups, finding it difficult to do the search
+                        for games and proper users to swap with. Let'SwapGames comes to automate
+                        all this painful process.
                     </p>
                 </div>
             </div>
