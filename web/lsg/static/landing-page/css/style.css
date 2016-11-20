@@ -785,13 +785,10 @@ footer {
 	left: 0;
 	top: 0;
 	opacity: 1;
-	*color: #000;
 	color: #fff;
 }
 .glass:hover {
 	opacity: 1;
-	*background: rgba(220, 220, 220, 0);
-	*background: rgba(255, 255, 255, 1);
 	background: #FFC107;
 
 }
