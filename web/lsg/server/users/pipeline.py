@@ -37,7 +37,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         if not user.address:
             location = response.get('location')
             if location:
-                city_country = map(lambda x: x.strip(), location['name'].split(','))
+                city_country = [i for i in map(lambda x: x.strip(), location['name'].split(','))]
                 if len(city_country) == 2:
                     city, country = city_country
                     code = countries.by_name(country)
@@ -65,8 +65,8 @@ def save_profile(backend, user, response, *args, **kwargs):
             locations = [l['value'] for l in response.get('placesLived', [])
                          if l.get('primary') and l.get('value')]
             if locations:
-                city_country = map(lambda x: x.strip(),
-                                    locations[0].split('/'))
+                city_country = [i for i in map(lambda x: x.strip(),
+                                           locations[0].split('/'))]
                 if len(city_country) == 2:
                     city, country = city_country
                     code = countries.by_name(country)
