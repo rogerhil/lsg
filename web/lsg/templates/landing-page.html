@@ -360,10 +360,15 @@
             e.stopPropagation();
             $(this).hide();
             $('.watch').addClass('play');
+            window.setTimeout(function () {
+                player.playVideo();
+            }, 1000);
+
         });
         $('body').click(function () {
             $('.glass').show();
             $('.watch').removeClass('play');
+            player.stopVideo();
         });
     </script>
 {% endblock %}
