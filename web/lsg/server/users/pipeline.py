@@ -37,13 +37,14 @@ def save_profile(backend, user, response, *args, **kwargs):
         if not user.address:
             location = response.get('location')
             if location:
-                city, country = map(lambda x: x.strip(),
-                                    location['name'].split(','))
-                code = countries.by_name(country)
-                address = Address(city=city, country=code)
-                address.save()
-                user.address = address
-                changed = True
+                city_country = map(lambda x: x.strip(), location['name'].split(','))
+                if len(city_country) == 2:
+                    city, country = city_country
+                    code = countries.by_name(country)
+                    address = Address(city=city, country=code)
+                    address.save()
+                    user.address = address
+                    changed = True
         if not user.social_picture_url:
             picture_data = response['picture']['data']
             if not picture_data['is_silhouette']:
@@ -64,13 +65,15 @@ def save_profile(backend, user, response, *args, **kwargs):
             locations = [l['value'] for l in response.get('placesLived', [])
                          if l.get('primary') and l.get('value')]
             if locations:
-                city, country = map(lambda x: x.strip(),
+                city_country = map(lambda x: x.strip(),
                                     locations[0].split('/'))
-                code = countries.by_name(country)
-                address = Address(city=city, country=code)
-                address.save()
-                user.address = address
-                changed = True
+                if len(city_country) == 2:
+                    city, country = city_country
+                    code = countries.by_name(country)
+                    address = Address(city=city, country=code)
+                    address.save()
+                    user.address = address
+                    changed = True
         if not user.social_picture_url:
             if not response['image'].get('isDefault'):
                 url = "%s?sz=100" % response['image']['url'].split('?sz=')[0]
