@@ -12,6 +12,8 @@ fi
 
 chown -R lsg:lsg /app
 
+sudo -u lsg ssh-keyscan bitbucket.org > /home/lsg/.ssh/known_hosts
+
 if [ "$1" = 'run' ]; then
     supervisord -n
 
