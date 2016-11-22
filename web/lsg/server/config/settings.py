@@ -67,7 +67,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
-    'middleware.RedirectFallbackMiddleware'
+    'middleware.RedirectFallbackMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'urls'
@@ -269,8 +270,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_RAISE_EXCEPTIONS = True
-RAISE_EXCEPTIONS = True
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+RAISE_EXCEPTIONS = False
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/done/'
