@@ -74,6 +74,10 @@ urlpatterns = [
         CeleryTaskLog.as_view(), name='read_log'),
     url(r'^lsgmanagement/', admin.site.urls),
 
+    url(r'^googlef0a7a1331fbe461f.html$',
+        TemplateView.as_view(template_name="googlef0a7a1331fbe461f.html"),
+        name="landing-page"),
+
     url(r'^$', TemplateView.as_view(template_name="landing-page.html"),
         name="landing-page"),
     url(r'^privacy-policy/$', TemplateView.as_view(template_name="privacy-policy.html"),
