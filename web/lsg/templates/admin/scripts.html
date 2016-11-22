@@ -37,7 +37,7 @@
         var intervalId;
         function updateGames() {
             $.ajax({
-                url: '/admin/games/gamescripting/update_games/',
+                url: '/lsgmanagement/games/gamescripting/update_games/',
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
@@ -51,7 +51,7 @@
         }
         function readUpdateGamesLog(logFile) {
             $.ajax({
-                url: '/admin/games/gamescripting/update_games/log/?log_file=' + logFile,
+                url: '/lsgmanagement/games/gamescripting/update_games/log/?log_file=' + logFile,
                 data: {log_file: logFile},
                 success: function (data) {
                     $("#log").html(data);

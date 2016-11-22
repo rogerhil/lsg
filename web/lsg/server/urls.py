@@ -62,17 +62,17 @@ handler400 = RedirectView.as_view(url='/app/#/400')
 handler403 = RedirectView.as_view(url='/app/#/403')
 
 urlpatterns = [
-    url(r'^admin/scripts/celerytask/(?P<pk>\d+)/watch/$',
+    url(r'^lsgmanagement/scripts/celerytask/(?P<pk>\d+)/watch/$',
         WatchCeleryTask.as_view(), name='watch_log'),
-    url(r'^admin/scripts/celerytask/(?P<task_id>[\w\-]+)/watch/$',
+    url(r'^lsgmanagement/scripts/celerytask/(?P<task_id>[\w\-]+)/watch/$',
         WatchCeleryTask.as_view(), name='watch_log'),
-    url(r'^admin/scripts/celerytask/(?P<pk>\d+)/stop/$',
+    url(r'^lsgmanagement/scripts/celerytask/(?P<pk>\d+)/stop/$',
         StopCeleryTask.as_view(), name='stop_task'),
-    url(r'^admin/scripts/celerytask/(?P<pk>\d+)/kill/$',
+    url(r'^lsgmanagement/scripts/celerytask/(?P<pk>\d+)/kill/$',
         KillCeleryTask.as_view(), name='kill_task'),
-    url(r'^admin/scripts/celerytask/(?P<pk>\d+)/log/$',
+    url(r'^lsgmanagement/scripts/celerytask/(?P<pk>\d+)/log/$',
         CeleryTaskLog.as_view(), name='read_log'),
-    url(r'^admin/', admin.site.urls),
+    url(r'^lsgmanagement/', admin.site.urls),
 
     url(r'^$', TemplateView.as_view(template_name="landing-page.html"),
         name="landing-page"),

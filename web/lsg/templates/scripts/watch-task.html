@@ -10,9 +10,9 @@
 {% block breadcrumbs %}
     <div class="breadcrumbs">
         <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-        &rsaquo; <a href="/admin/scripts/">{% trans 'Scripts' %}</a>
-        &rsaquo; <a href="/admin/scripts/celerytask/">{% trans 'Celery Tasks' %}</a>
-        &rsaquo; <a href="/admin/scripts/celerytask/{{ object.id }}/">{% trans 'Task' %} {{ object.id }}</a>
+        &rsaquo; <a href="/lsgmanagement/scripts/">{% trans 'Scripts' %}</a>
+        &rsaquo; <a href="/lsgmanagement/scripts/celerytask/">{% trans 'Celery Tasks' %}</a>
+        &rsaquo; <a href="/lsgmanagement/scripts/celerytask/{{ object.id }}/">{% trans 'Task' %} {{ object.id }}</a>
         &rsaquo; Watch task {{ object }}
     </div>
 {% endblock %}
