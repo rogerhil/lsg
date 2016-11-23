@@ -10,12 +10,12 @@
     </p>
 
     <div style="text-align: center;">
-        <img src="http://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
+        <img src="https://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
         &nbsp;&nbsp;&nbsp;
-        <img src="http://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
+        <img src="https://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
     </div>
 
     <p style="text-align: center;">
-        <a href="http://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=You+can+accept+or+refuse+this+swap+request.">Go check the request by clicking here.</a>
+        <a href="https://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=You+can+accept+or+refuse+this+swap+request.">Go check the request by clicking here.</a>
     </p>
 {% endblock %}
