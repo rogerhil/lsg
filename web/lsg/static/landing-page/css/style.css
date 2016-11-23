@@ -18,6 +18,16 @@ a:hover {
 	color: #FFC107;
 }
 
+.white-link a {
+	color: #fff;
+	-o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+.white-link a:hover {
+	color: #FFC107;
+	-o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
 img { max-width: 100%; }
 
 ::-moz-selection { background: #f44336; color: #fff; text-shadow: none; }
