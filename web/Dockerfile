@@ -11,6 +11,8 @@ RUN sed 's/deb https:/deb http:/g' node-setup.sh > node-setup.sh.modified
 RUN sed 's/deb-src https:/deb-src http:/g' node-setup.sh.modified > node-setup.sh
 RUN sh node-setup.sh
 
+RUN echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     vim \
 	git \
@@ -22,7 +24,11 @@ RUN apt-get update && apt-get install -y \
 	sudo \
 	nodejs \
 	ruby-full \
+	net-tools \
+	dnsutils \
   && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y certbot -t jessie-backports && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g gulp
 RUN npm install -g bower
@@ -77,9 +83,14 @@ COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packag
 COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
 COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
+COPY letsencrypt.tar.gz /
+
+RUN tar zxf letsencrypt.tar.gz
+#RUN certbot certonly --text --webroot -w /app -d letswapgames.com -d www.letswapgames.com -d www.letswapgames.co.uk -d letswapgames.co.uk
+
 COPY entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-EXPOSE 80
+EXPOSE 80 443
 CMD ["run"]
