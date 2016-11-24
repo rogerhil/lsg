@@ -30,28 +30,26 @@
                         return;
                 }
             }
-            if (currentSplitted.length > 1) {
-                switch (currentSplitted[1]) {
-                    case '/500':
-                        $state.transitionTo("pages.500");
-                        endCounter($rootScope, el);
-                        return;
-                    case '/403':
-                        $state.transitionTo("pages.403");
-                        endCounter($rootScope, el);
-                        return;
-                    case '/400':
-                        $state.transitionTo("pages.400");
-                        endCounter($rootScope, el);
-                        return;
-                }
-            }
-
+            // if (currentSplitted.length > 1) {
+            //     switch (currentSplitted[1]) {
+            //         case '/500':
+            //             $state.transitionTo("pages.500");
+            //             endCounter($rootScope, el);
+            //             return;
+            //         case '/403':
+            //             $state.transitionTo("pages.403");
+            //             endCounter($rootScope, el);
+            //             return;
+            //         case '/400':
+            //             $state.transitionTo("pages.400");
+            //             endCounter($rootScope, el);
+            //             return;
+            //     }
+            // }
             if ($rootScope.user && $rootScope.user.deleted) {
                 window.location = '/logout/';
                 return;
             }
-
             if (nextSplitted.length > 1 && nextSplitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
