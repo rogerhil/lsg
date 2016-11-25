@@ -10,7 +10,10 @@
         p In the meantime, please try one of the following links:
 
     ul.list-inline.text-center.text-sm.mb-xl
-        li: a.text-muted(href="", ui-sref="app.welcome") Go to App
+        li(ng-if="user.enabled")
+            a.text-muted(href="", ui-sref="app.welcome") App
+        li(ng-if="!user.enabled")
+            a.text-muted(href="/") Home
         li.text-muted |
         li: a.text-muted(href="", ui-sref="pages.signIn") Login
 
