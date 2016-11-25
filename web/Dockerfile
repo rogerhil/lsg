@@ -84,6 +84,9 @@ COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packag
 COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
 COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
+COPY bashrc /root/.bashrc
+COPY vimrc /root/.vimrc
+
 COPY letsencrypt.tar.gz /
 
 COPY crontab-root /var/spool/cron/crontabs/root
