@@ -14,7 +14,7 @@
             }
         };
         User.prototype.hasBasicProfile = function () {
-            return this.first_name && this.last_name && this.phone1;
+            return this.first_name && this.last_name && this.email && this.phone1;
         };
         User.prototype.havePlatforms = function () {
             return this.platforms && this.platforms.length;

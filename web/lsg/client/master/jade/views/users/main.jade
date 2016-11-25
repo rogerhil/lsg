@@ -85,6 +85,11 @@ h3 My profile
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.gender")
                                         .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
+                                md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.email}")
+                                    label Email
+                                    input(ng-model='ctrl.user.email', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    .md-errors-spacer(ng-repeat="error in ctrl.errors.email")
+                                        .md-char-counter {{error}}
                                 div(style="height: 24px; margin: 24px 10px 14px 0;")
                                     img(ng-src="{{ ctrl.user.address.country.flag }}" alt="{{ ctrl.user.address.country.name }}" style="height: 24px")
                                     span +{{ ctrl.user.address.country.phone_code }}

@@ -36,7 +36,7 @@ class UserSerializer(CachedSerializerMixin):
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'social_links', 'enabled', 'id', 'deleted')
-        read_only_fields = ('username', 'name', 'email', 'picture',
+        read_only_fields = ('username', 'name', 'picture', 'enabled',
                             'succeeded_swaps_count',
                             'failed_swaps_count', 'expired_swaps_count',
                             'negative_feedback_count',
