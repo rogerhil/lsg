@@ -165,7 +165,8 @@ STATIC_ROOT = '/app/static'
 STATIC_APP_ROOT = os.path.join(BASE_DIR, 'client/build/')
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'client/'),
+    os.path.join(BASE_DIR, 'client/build/'),
+    os.path.join(BASE_DIR, 'client/server/'),
     os.path.join(BASE_DIR, 'static/'),
 )
 
