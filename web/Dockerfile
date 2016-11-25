@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y \
 	ruby-full \
 	net-tools \
 	dnsutils \
+	cron \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y certbot -t jessie-backports && rm -rf /var/lib/apt/lists/*
@@ -84,6 +85,10 @@ COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
 COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
 COPY letsencrypt.tar.gz /
+
+COPY crontab-root /var/spool/cron/crontabs/root
+RUN chown root:crontab /var/spool/cron/crontabs/root
+RUN chmod 600 /var/spool/cron/crontabs/root
 
 RUN tar zxf letsencrypt.tar.gz
 #RUN certbot certonly --text --webroot -w /app -d letswapgames.com -d www.letswapgames.com -d www.letswapgames.co.uk -d letswapgames.co.uk
