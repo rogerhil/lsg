@@ -154,3 +154,9 @@ if os.getenv('LSG_DB_NAME'):
     SERVER_EMAIL = os.getenv('LSG_SERVER_EMAIL')
 
     MOCK_SEND_EMAIL = bool_env('LSG_MOCK_SEND_EMAIL')
+
+    if not DEBUG:
+        SESSION_COOKIE_SECURE=True
+        SESSION_COOKIE_HTTPONLY=True
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+        SESSION_COOKIE_SECURE = True
