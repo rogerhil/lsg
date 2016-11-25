@@ -101,18 +101,18 @@ if os.getenv('LSG_DB_NAME'):
         },
         'loggers': {
             'coffeehouse': {
-                'handlers': ['console', 'development_logfile', 'production_logfile',
-                             'mail_admins'],
+                'handlers': ['console', 'development_logfile',
+                             'production_logfile'],
             },
             'dba': {
-                'handlers': ['console', 'dba_logfile', 'mail_admins'],
+                'handlers': ['console', 'dba_logfile'],
             },
             'django': {
-                'handlers': ['console', 'development_logfile', 'production_logfile',
-                             'mail_admins'],
+                'handlers': ['console', 'development_logfile',
+                             'production_logfile'],
             },
             'django.request': {
-                'handlers': ['mail_admins'],
+                'handlers': ['console'],
                 'level': 'ERROR',
                 #'propagate': False,
             },
@@ -121,6 +121,13 @@ if os.getenv('LSG_DB_NAME'):
             },
         }
     }
+
+    if not DEBUG:
+        LOGGING['loggers']['coffeehouse']['handlers'].append('mail_admins')
+        LOGGING['loggers']['dba']['handlers'].append('mail_admins')
+        LOGGING['loggers']['django']['handlers'].append('mail_admins')
+        LOGGING['loggers']['django.request']['handlers'].append('mail_admins')
+
 
     SCRIPTS_LOGS_DIR = os.path.join(LOGS_BASE, 'scripts/')
 

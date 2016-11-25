@@ -50,6 +50,10 @@
                 window.location = '/logout/';
                 return;
             }
+            if ($rootScope.user && !$rootScope.user.enabled) {
+                window.location = '/';
+                return;
+            }
             if (nextSplitted.length > 1 && nextSplitted[1].slice(0, 8) == '/sign-in' && failedToGetUser) {
                 endCounter($rootScope, el);
                 return;
@@ -145,9 +149,14 @@
                 return q;
             }
             $http.get('/api/users/authenticated/').success(function (response) {
-                var user = new User(response);
-                $rootScope.user = user;
-                if (user) {
+                var user;
+                if (response) {
+                    user = new User(response);
+                    if (!user.enabled) {
+                        window.location = '/';
+                        return;
+                    }
+                    $rootScope.user = user;
                     q.resolve(user);
                 } else {
                     if (event) {

@@ -55,12 +55,14 @@ class Address(models.Model):
 
     @property
     def full_address(self):
+        if self.geocoder_address:
+            return self.geocoder_address
         addr1 = self.address1 or ""
         addr2 = ", %s" % self.address2 \
                     if self.address2 and self.address2.strip() else ""
         address = "%s%s" % (addr1.strip(), addr2)
-        return "%s, %s, %s, %s" % (address, self.city, self.state,
-                                   self.country)
+        address_list = [address, self.city, self.state, str(self.country)]
+        return ', '.join([i for i in address_list if i and i.strip()])
 
     @property
     def longitude(self):

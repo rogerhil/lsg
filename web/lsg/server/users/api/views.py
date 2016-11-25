@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import geocoder
 from actstream.models import actor_stream
 
@@ -61,6 +63,7 @@ class UsersViewSet(viewsets.ModelViewSet):
             if item.is_in_open_request():
                 return resp
         user.deleted = True
+        user.deleted_date = datetime.now()
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

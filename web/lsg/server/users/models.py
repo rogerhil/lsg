@@ -94,6 +94,8 @@ class User(AbstractUser):
     positive_feedback_count = models.PositiveIntegerField(default=0)
     neutral_feedback_count = models.PositiveIntegerField(default=0)
     deleted = models.BooleanField(default=False)
+    deleted_date = models.DateTimeField(null=True, blank=True)
+    enabled = models.BooleanField(default=False)
 
     wishlist = models.ManyToManyField(Game, related_name="wished",
                                       through=WishlistItem,
