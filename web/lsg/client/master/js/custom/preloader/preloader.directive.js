@@ -152,10 +152,15 @@
                 var user;
                 if (response) {
                     user = new User(response);
-                    if (!user.enabled) {
-                        window.location = '/';
-                        return;
-                    }
+                    $timeout(function () {
+                        if (!user.enabled) {
+                            if ($state.current.name != 'pages.500' && $state.current.name != 'pages.403' && $state.current.name != 'pages.400') {
+                                window.location = '/';
+                                return;
+                            }
+                        }
+                    }, 500);
+
                     $rootScope.user = user;
                     q.resolve(user);
                 } else {
