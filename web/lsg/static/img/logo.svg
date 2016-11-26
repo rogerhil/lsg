@@ -59,8 +59,8 @@
      inkscape:window-height="1100"
      id="namedview3392"
      showgrid="false"
-     inkscape:zoom="3.4022172"
-     inkscape:cx="-276.50774"
+     inkscape:zoom="0.42527715"
+     inkscape:cx="-324.27071"
      inkscape:cy="1130.8828"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -937,8 +937,8 @@
      id="rect4250"
      style="fill:#263238;fill-opacity:1;fill-rule:evenodd;stroke:none" />
   <image
-     inkscape:export-ydpi="22.5"
-     inkscape:export-xdpi="22.5"
+     inkscape:export-ydpi="90"
+     inkscape:export-xdpi="90"
      inkscape:export-filename="/home/erogehi/Mine/gdb/lsg-docker/web/lsg/static/img/cs.png"
      width="339.56329"
      height="200"
@@ -947,7 +947,7 @@
      x="-495.13037"
      y="-1046.1045"
      clip-path="url(#clipPath4290)"
-     transform="matrix(3.9999998,0,0,3.9999987,1298.3951,2558.5373)" />
+     transform="matrix(5.1199997,0,0,5.1199981,884.49874,3181.6795)" />
   <g
      inkscape:export-ydpi="22.5"
      inkscape:export-xdpi="22.5"
@@ -996,19 +996,19 @@
   <rect
      style="opacity:0.63374484;fill:#000000;fill-opacity:1"
      id="rect4284"
-     width="800"
-     height="799.99976"
-     x="-473.38519"
-     y="-1625.8796"
+     width="1024"
+     height="1023.9996"
+     x="-1383.38"
+     y="-2174.3738"
      inkscape:export-filename="/home/erogehi/Mine/gdb/lsg-docker/web/lsg/static/img/cs.png"
-     inkscape:export-xdpi="22.5"
-     inkscape:export-ydpi="22.5" />
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
   <g
      id="g4294"
-     transform="matrix(5.3333328,0,0,5.3333316,-3475.3874,-405.37168)"
+     transform="matrix(6.8266659,0,0,6.8266642,-5225.9428,-612.12375)"
      inkscape:export-filename="/home/erogehi/Mine/gdb/lsg-docker/web/lsg/static/img/square-logo-1024x1024.png"
-     inkscape:export-xdpi="22.5"
-     inkscape:export-ydpi="22.5">
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90">
     <path
        sodipodi:nodetypes="ssssccssssssccsss"
        inkscape:connector-curvature="0"
