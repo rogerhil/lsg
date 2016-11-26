@@ -108,12 +108,12 @@ class BaseScript(object):
                     updates = self.api.game.updates(seconds)
                 except Exception as err:
                     self.logger.error("Error while trying to load games updates: %s" % str(err))
-                    raise err
+                    raise
                 self.games_ids = updates['games'] or []
                 self.logger.info('Games not updated: %s' % self.games_ids)
             except GamesDbException as err:
                 if 'Time is greater than' not in str(err):
-                    raise err
+                    raise
                 self.logger.warning("!!! Doing a full download: %s" % str(err))
 
         self.xml_path = xml_path
