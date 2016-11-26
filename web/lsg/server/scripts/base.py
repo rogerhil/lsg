@@ -104,9 +104,13 @@ class BaseScript(object):
             self.logger.info('Update days: %s' % update_days)
             seconds = int(update_days) * 24 * 60 * 60
             try:
-                updates = self.api.game.updates(seconds)
+                try:
+                    updates = self.api.game.updates(seconds)
+                except Exception as err:
+                    self.logger.error("Error while trying to load games updates: %s" % str(err))
+                    raise err
                 self.games_ids = updates['games'] or []
-                self.logger.info('Games not updated: %s' % games_ids)
+                self.logger.info('Games not updated: %s' % self.games_ids)
             except GamesDbException as err:
                 if 'Time is greater than' not in str(err):
                     raise err
