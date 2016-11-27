@@ -118,6 +118,11 @@
                         <i class="italic">
                             You can only sign up with a social account. <a href="#why-social">Why?</a>
                         </i>
+                        <p></p>
+                        <i class="italic">
+                            During sign up we never request your friends contact list information.<br>
+                            We only need basic permissions such as: name, email, gender and country/city.
+                        </i>
                     {% endif %}
                 </div>
             </div>
@@ -359,19 +364,24 @@
             }
         }
 
-        $('.glass').click(function (e) {
+        function playVideo(e) {
             e.stopPropagation();
+            $('.glass').unbind('mouseover');
             $(this).hide();
             $('.watch').addClass('play');
             window.setTimeout(function () {
                 player.playVideo();
-            }, 200);
+            }, 20);
+        }
 
-        });
+        $('.glass').mouseover(playVideo);
+
+
         $('body').click(function () {
             $('.glass').show();
             $('.watch').removeClass('play');
             player.stopVideo();
+            $('.glass').mouseover(playVideo);
         });
     </script>
 {% endblock %}
