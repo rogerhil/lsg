@@ -367,6 +367,7 @@
         function playVideo(e) {
             e.stopPropagation();
             $('.glass').unbind('mouseover');
+            $('.glass').unbind('click');
             $(this).hide();
             $('.watch').addClass('play');
             window.setTimeout(function () {
@@ -375,13 +376,14 @@
         }
 
         $('.glass').mouseover(playVideo);
-
+        $('.glass').click(playVideo);
 
         $('body').click(function () {
             $('.glass').show();
             $('.watch').removeClass('play');
             player.stopVideo();
             $('.glass').mouseover(playVideo);
+            $('.glass').click(playVideo);
         });
     </script>
 {% endblock %}
