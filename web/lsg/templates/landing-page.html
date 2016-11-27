@@ -371,9 +371,11 @@
             $('.glass').unbind('click');
             $(this).hide();
             $('.watch').addClass('play');
-            window.setTimeout(function () {
-                player.playVideo();
-            }, 200);
+            for (var k = 0; k < 11; k++) {
+                window.setTimeout(function () {
+                    player.playVideo();
+                }, (k * 100) + 50);
+            }
         }
 
         function isMobile() {
