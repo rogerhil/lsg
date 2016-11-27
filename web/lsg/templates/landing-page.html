@@ -340,6 +340,7 @@
     </script>
 
     <script>
+
         var player;
         var tag = document.createElement('script');
         tag.src = 'https://www.youtube.com/player_api';
@@ -372,17 +373,25 @@
             $('.watch').addClass('play');
             window.setTimeout(function () {
                 player.playVideo();
-            }, 20);
+            }, 200);
         }
 
-        $('.glass').mouseover(playVideo);
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        if(!isMobile()) {
+            $('.glass').mouseover(playVideo);
+        }
         $('.glass').click(playVideo);
 
         $('body').click(function () {
             $('.glass').show();
             $('.watch').removeClass('play');
             player.stopVideo();
-            $('.glass').mouseover(playVideo);
+            if(!isMobile()) {
+                $('.glass').mouseover(playVideo);
+            }
             $('.glass').click(playVideo);
         });
     </script>
