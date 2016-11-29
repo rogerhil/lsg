@@ -14,6 +14,9 @@ chown -R lsg:lsg /app
 
 sudo -u lsg ssh-keyscan bitbucket.org > /home/lsg/.ssh/known_hosts
 
+/etc/init.d/memcached restart
+/etc/init.d/memcached status
+
 if [ "$1" = 'run' ]; then
     supervisord -n
 

@@ -2,6 +2,8 @@ import logging
 from decimal import Decimal, ROUND_UP
 from copy import deepcopy
 from functools import reduce
+from rest_framework_cache.cache import cache
+from rest_framework_cache.settings import api_settings
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -367,8 +369,21 @@ class User(AbstractUser):
             match['swaps'].sort(key=lambda p: p['user'].address.distance)
         return matches.values()
 
+    @staticmethod
+    def get_matches_cache_key_for(user_id):
+        return "matches_%s" % user_id
+
+    @property
+    def matches_cache_key(self):
+        return self.get_matches_cache_key_for(self.id)
+
     @property
     def serialized_matches(self):
+        cache_key = self.matches_cache_key
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+
         from games.api.serializers import GameSerializer
         from users.api.serializers import UserSerializer
         gs = GameSerializer()
@@ -400,6 +415,8 @@ class User(AbstractUser):
                 serialized_match['swaps'].append(dict(user=user,
                                                       wanted_games=games))
             serialized_matches.append(serialized_match)
+        cache.set(cache_key, serialized_matches,
+                  api_settings.DEFAULT_CACHE_TIMEOUT)
         return serialized_matches
 
     @property
