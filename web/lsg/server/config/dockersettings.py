@@ -167,3 +167,9 @@ if os.getenv('LSG_DB_NAME'):
         SESSION_COOKIE_HTTPONLY=True
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
         SESSION_COOKIE_SECURE = True
+
+    if DEBUG:
+        DEBUG_TOOLBAR_CONFIG = {
+            "SHOW_TOOLBAR_CALLBACK": lambda r: True,
+            "INTERNAL_IPS": ['192.168.99.100', '127.0.0.1']
+        }

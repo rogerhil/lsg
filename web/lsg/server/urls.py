@@ -126,3 +126,8 @@ if settings.DEBUG:
         url(r'^app/(?P<path>(vendor/.*|app/.*|server/.*))$', s,
             kwargs=dict(document_root=settings.STATIC_APP_ROOT)),
     ] + static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
