@@ -41,7 +41,7 @@ class WorldBorder(models.Model):
 class Address(models.Model):
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=128)
+    city = models.CharField(max_length=128, null=True, blank=True)
     state = models.CharField(max_length=128, null=True, blank=True)
     country = CountryField()  #choices=COUNTRIES_CHOICES)
     postal_code = models.CharField(max_length=32, null=True, blank=True)
@@ -93,7 +93,7 @@ class Address(models.Model):
             point=str(geo.wkt),
             address1=join(geo.housenumber, geo.street_long, geo.road_long),
             address2=join(geo.neighborhood, geo.sublocality),
-            city=geo.city_long,
+            city=geo.city_long or "",
             state=join(geo.state_long, geo.province_long),
             country=geo.country,
             postal_code=geo.postal,
