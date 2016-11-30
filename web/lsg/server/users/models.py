@@ -370,12 +370,25 @@ class User(AbstractUser):
         return matches.values()
 
     @staticmethod
+    def get_collection_cache_key_for(user_id):
+        return "collection_%s" % user_id
+
+    @staticmethod
+    def get_wishlist_cache_key_for(user_id):
+        return "wishlist_%s" % user_id
+
+    @staticmethod
     def get_matches_cache_key_for(user_id):
         return "matches_%s" % user_id
 
     @property
+    def collection_cache_key(self):
+        return self.get_collection_cache_key_for(self.id)
+
+    @property
     def matches_cache_key(self):
         return self.get_matches_cache_key_for(self.id)
+
 
     @property
     def serialized_matches(self):

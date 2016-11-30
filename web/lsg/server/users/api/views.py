@@ -20,6 +20,7 @@ from users.api.permissions import IsSuperUserOrOwner
 from users.models import User, CollectionItem, WishlistItem
 from users.exceptions import CollectionGameDeleteException
 from users.activities import Verbs
+from cache import CachedViewSetMixin
 
 
 class AuthenticatedUserView(views.APIView):
@@ -121,10 +122,12 @@ class UsersViewSet(viewsets.ModelViewSet):
         return views.Response(user_serializer.to_representation(user))
 
 
-class CollectionItemViewSet(viewsets.ModelViewSet):
+class CollectionItemViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
     queryset = CollectionItem.objects.all().order_by('game__name')
     serializer_class = CollectionItemSerializer
     permission_classes = [IsSuperUserOrOwner]
+    cache_kwargs_key = 'user_pk'
+    cache_obj_key = ['user_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
@@ -145,10 +148,12 @@ class CollectionItemViewSet(viewsets.ModelViewSet):
             return views.Response(errors, status=HTTP_400_BAD_REQUEST)
 
 
-class WishlistViewSet(viewsets.ModelViewSet):
+class WishlistViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
     queryset = WishlistItem.objects.all().order_by('game__name')
     serializer_class = WishlistItemSerializer
     permission_classes = [IsSuperUserOrOwner]
+    cache_kwargs_key = 'user_pk'
+    cache_obj_key = ['user_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')

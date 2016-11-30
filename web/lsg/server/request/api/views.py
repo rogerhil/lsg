@@ -21,13 +21,16 @@ from request.api.serializers import SwapRequestSerializer, \
     AcceptRequestSerializer, RefuseRequestSerializer, \
     CancelRequestSerializer, FinalizeFirstRequestSerializer, \
     FinalizeSecondRequestSerializer, ArchiveRequestSerializer
+from cache import CachedViewSetMixin
 
 
-class MyRequestsViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
+class MyRequestsViewSet(CachedViewSetMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
                         mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = SwapRequest.objects.all().exclude(requester_archived=True)
     serializer_class = SwapRequestSerializer
     permission_classes = [IsSuperUserOrOwner]
+    cache_kwargs_key = 'user_pk'
+    cache_obj_keys = ['requester_id', 'requested_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
@@ -62,11 +65,13 @@ class MyRequestsViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
         return views.Response(serialized)
 
 
-class IncomingRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
+class IncomingRequestsViewSet(CachedViewSetMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin,
                               viewsets.GenericViewSet):
     queryset = SwapRequest.objects.all().exclude(requested_archived=True)
     serializer_class = SwapRequestSerializer
     permission_classes = [IsSuperUserOrOwner]
+    cache_kwargs_key = 'user_pk'
+    cache_obj_keys = ['requester_id', 'requested_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')

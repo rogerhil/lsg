@@ -25,6 +25,8 @@ from django.contrib.sitemaps.views import sitemap
 from rest_framework_cache.registry import cache_registry
 from rest_framework_nested import routers
 
+from django.utils.module_loading import autodiscover_modules
+
 from constants import ConstantsView
 from mail.views import SwapRequestEmailPreview, SwapRequestEmailSendTest
 from scripts.views import CeleryTaskLog, WatchCeleryTask, StopCeleryTask, \
