@@ -127,7 +127,7 @@ class CollectionItemViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = CollectionItemSerializer
     permission_classes = [IsSuperUserOrOwner]
     cache_kwargs_key = 'user_pk'
-    cache_obj_key = ['user_id']
+    cache_obj_keys = ['user_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
@@ -153,7 +153,7 @@ class WishlistViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = WishlistItemSerializer
     permission_classes = [IsSuperUserOrOwner]
     cache_kwargs_key = 'user_pk'
-    cache_obj_key = ['user_id']
+    cache_obj_keys = ['user_id']
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')

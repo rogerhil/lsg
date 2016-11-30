@@ -40,6 +40,10 @@ class ModelViewsetCacheRegistry(object):
         viewsets = registry.get(instance._meta.model)
         keys = []
         for viewset in viewsets:
+            if not viewset.cache_obj_keys:
+                print('NOT!!!')
+                print(viewset)
+                print('------')
             for cache_obj_key in viewset.cache_obj_keys:
                 cache_key = get_cache_key_for_viewset(viewset,
                                               getattr(instance, cache_obj_key))
@@ -58,6 +62,7 @@ class MetaCachedViewSet(type):
         klass = super(MetaCachedViewSet, mcs).__new__(mcs, name, bases, attrs, **kwargs)
         print(klass)
         if getattr(klass, 'queryset', None):
+            print('registered')
             registry.register(klass)
         return klass
 

@@ -42,8 +42,11 @@ class SwapRequestSerializer(CachedSerializerMixin):
 
     def to_representation(self, instance):
         serial = super(SwapRequestSerializer, self).to_representation(instance)
-        unit = self.context['request'].user.distance_unit
-        serial['distance_display'] = distance_format(instance.distance, unit)
+        request = self.context.get('request')
+        if request:
+            unit = request.user.distance_unit
+            serial['distance_display'] = distance_format(instance.distance,
+                                                         unit)
         return serial
 
     def create(self, *args, **kwargs):

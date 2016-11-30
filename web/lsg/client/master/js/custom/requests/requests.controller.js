@@ -13,8 +13,8 @@
     /*
      RequestsCtrl
      */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams'];
-    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams) {
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$interval', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams'];
+    function RequestsCtrl($scope, $q, $timeout, $interval, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
@@ -26,7 +26,7 @@
         self.pendingMyRequests = [];
         self.pendingIncomingRequests = [];
 
-        self.requestsPollingInterval = 5000;
+        self.requestsPollingInterval = 3000;
         self.requestsPromise = undefined;
         self.tour = undefined;
 
@@ -37,7 +37,7 @@
                 self.myRequestsLoaded = true;
                 $timeout(function () {
                     self.highlightRequest();
-                }, 2000);
+                }, 2500);
             });
         };
 
@@ -57,23 +57,24 @@
         };
 
         self.pollRequests = function () {
-            self.loadAllRequests();
-            self.requestsPromise = $timeout(function () {
-                self.pollRequests();
-            }, self.requestsPollingInterval);
+            self.requestsPromise = $interval(self.loadAllRequests, self.requestsPollingInterval);
         };
 
-        self.pollRequests();
+        if (self.requestsPromise == undefined) {
+            self.pollRequests();
+        }
 
         $scope.$on('$destroy', function() {
-            $timeout.cancel(self.requestsPromise);
+            $interval.cancel(self.requestsPromise);
         });
 
         self.highlightRequest = function () {
             if (self.tour || $stateParams.id === undefined) {
                 return;
             }
-            $timeout.cancel(self.requestsPromise);
+            //$timeout.cancel(self.requestsPromise);
+            $interval.cancel(self.requestsPromise);
+            self.requestsPromise = undefined;
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -87,7 +88,7 @@
             self.tour = new Tour({
                 backdrop: true,
                 backdropPadding: 5,
-                //duration: 2000,
+                //duration: 5000,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -97,7 +98,9 @@
                     "  </div>" +
                     "</div>",
                 onEnd: function (t) {
-                    self.pollRequests();
+                    if (self.requestsPromise == undefined) {
+                        self.pollRequests();
+                    }
                 },
                 steps: [
                 {

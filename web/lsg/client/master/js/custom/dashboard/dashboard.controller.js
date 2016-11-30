@@ -13,6 +13,9 @@
         self.matchesLength = undefined;
         self.wishlistLength = undefined;
         self.matchesPercentage = 0;
+        self.updateLatestFeedbacksPromise = undefined;
+        self.updateLatestActivitiesPromise = undefined;
+        self.updateMatchesPercentagePromise = undefined;
         self.classyOptions = {
             speed: 5,
             fontSize: "30px",
@@ -27,17 +30,23 @@
             self.loader.setPercent(self.matchesPercentage).draw();
         }, 10);
 
+        $scope.$on('$destroy', function() {
+            $timeout.cancel(self.updateLatestFeedbacksPromise);
+            $timeout.cancel(self.updateLatestActivitiesPromise);
+            $timeout.cancel(self.updateMatchesPercentagePromise);
+        });
+
         var updateLatestFeedbacks = function () {
             UsersService.latestFeedbacks().then(function (latestFeedbacks) {
                 self.latestFeedbacks = latestFeedbacks;
             });
-            $timeout(updateLatestFeedbacks, 30000);
+            self.updateLatestFeedbacksPromise = $timeout(updateLatestFeedbacks, 30000);
         };
         var updateLatestActivities = function () {
             UsersService.latestActivities().then(function (latestActivities) {
                 self.latestActivities = latestActivities;
             });
-            $timeout(updateLatestActivities, 60000);
+            self.updateLatestActivitiesPromise = $timeout(updateLatestActivities, 60000);
         };
         var reloadPerc = function () {
             if (self.matchesLength === undefined || self.wishlistLength === undefined) {
@@ -62,7 +71,7 @@
                 self.wishlistLength = wishlist.length || 1;
                 reloadPerc();
             });
-            $timeout(updateMatchesPercentage, 20000);
+            self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 20000);
         };
 
         updateLatestFeedbacks();
