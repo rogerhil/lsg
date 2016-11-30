@@ -130,9 +130,19 @@ h3 My profile
                 .card-heading.bg-primary
                     .card-title General settings
                 .card-body
-
-                    button.btn.mb-sm.btn-labeled.btn-danger(ng-click="ctrl.deleteMyAccount()" style="margin: 0 auto;")
-                        span.btn-label
-                            em.fa.fa-close
-                        span Delete my account
+                    div(layout='', layout-sm='column')
+                        md-input-container(flex='')
+                            md-radio-group(ng-model='ctrl.user.distance_unit' ng-required="true" name="distance_unit" ng-change="ctrl.updateUser()")
+                                div(layout="row")
+                                    label Preferred distance unit
+                                div(layout="row" style="margin-top: 30px")
+                                    div(flex="30")
+                                        md-radio-button(ng-value="'mi'") Miles
+                                    div(flex="30")
+                                        md-radio-button(ng-value="'km'") Kilometers
+                    div(layout='', layout-sm='column')
+                        button.btn.mb-sm.btn-labeled.btn-danger(ng-click="ctrl.deleteMyAccount()" style="margin: 0 0 0 auto;")
+                            span.btn-label
+                                em.fa.fa-close
+                            span Delete my account
                     div(style="clear: both;")

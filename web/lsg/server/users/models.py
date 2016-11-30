@@ -12,7 +12,7 @@ from django.contrib.gis.measure import Distance
 from games.models import Game, Platform
 from world.models import Address
 from request.models import SwapRequest, Status
-from utils import Choices
+from utils import Choices, distance_format
 
 logger = logging.getLogger('django')
 
@@ -26,6 +26,11 @@ class Discard(Choices):
 class Gender(Choices):
     male = 'male'
     female = 'female'
+
+
+class DistanceUnit(Choices):
+    km = 'km'
+    miles = 'mi'
 
 
 class CollectionItem(models.Model):
@@ -95,6 +100,8 @@ class User(AbstractUser):
     negative_feedback_count = models.PositiveIntegerField(default=0)
     positive_feedback_count = models.PositiveIntegerField(default=0)
     neutral_feedback_count = models.PositiveIntegerField(default=0)
+    distance_unit = models.CharField(max_length=10, default=DistanceUnit.miles,
+                                     choices=DistanceUnit.choices())
     deleted = models.BooleanField(default=False)
     deleted_date = models.DateTimeField(null=True, blank=True)
     enabled = models.BooleanField(default=False)
@@ -416,8 +423,12 @@ class User(AbstractUser):
                 user = us.to_representation(swap['user'])
                 user['feedback'] = swap['user'].rating
                 dist = swap['user'].address.distance
-                km = Decimal(dist.km).quantize(Decimal(".1"), ROUND_UP)
-                user['address']['distance'] = km
+                unit = self.distance_unit
+                distance = Decimal(getattr(dist, unit)).quantize(Decimal(".1"),
+                                                                 ROUND_UP)
+                user['address']['distance'] = str(distance)
+                user['address']['distance_display'] = distance_format(dist,
+                                                                      unit)
                 games = []
                 for game_obj in swap['wanted_games']:
                     game = gs.to_representation(game_obj)

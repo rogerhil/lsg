@@ -21,7 +21,7 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                 p {{ ctrl.swapUser.first_name }} {{ swapUser.last_name }}
                                 p
                                     user-ratings(user="ctrl.swapUser")
-                                p {{ctrl.request.distance}}km away
+                                p {{ctrl.request.distance_display}} away
 
                     div.col-md-4(style="white-space: nowrap; padding-left: 15px;")
                         table.table.bb: tbody

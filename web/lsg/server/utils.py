@@ -1,5 +1,6 @@
 import inspect
 import re
+from decimal import Decimal, ROUND_UP
 
 from django.utils.timesince import timesince
 
@@ -26,6 +27,11 @@ class Choices:
 
 
 timesince_regex = re.compile(r'^(\d+)\s+(\w+)$')
+
+
+def distance_format(dist, unit):
+    distance = Decimal(getattr(dist, unit)).quantize(Decimal(".1"), ROUND_UP)
+    return "%s%s" % (str(int(distance)), unit)
 
 
 def short_timesince(timestamp):

@@ -39,7 +39,7 @@
             em.fa.fa-archive
             md-tooltip(md-direction="top") Archive
 .card-body
-    user-photo-ratings-distance(user="user" distance="request.distance")
+    user-photo-ratings-distance(user="user" distance="request.distance_display")
     .pull-right.mt(style="position: absolute; right: 15px; bottom: 25px;")
         status-display(request="request")
         md-tooltip(md-direction="bottom" ng-if="request.isFinalizing() && ((context == 'myRequests' && request.requested_feedback != null) || (context == 'incomingRequests' && request.requester_feedback != null))") Waiting for {{ user.name }} to close this request.

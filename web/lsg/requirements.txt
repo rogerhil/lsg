@@ -5,6 +5,7 @@ django>=1.10
 xmltodict
 djangorestframework
 geocoder
+geopy
 markdown
 django-filter
 drf-nested-routers

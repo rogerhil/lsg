@@ -10,6 +10,10 @@ def get_cache_key(key, obj_id):
     return "%s_%s" % (key, obj_id)
 
 
+def get_cache_key_for_viewset(viewset, obj_id):
+    return get_cache_key(viewset.__name__, obj_id)
+
+
 class ModelViewsetCacheRegistry(object):
 
     def __init__(self):
@@ -37,8 +41,8 @@ class ModelViewsetCacheRegistry(object):
         keys = []
         for viewset in viewsets:
             for cache_obj_key in viewset.cache_obj_keys:
-                cache_key = get_cache_key(viewset.__name__,
-                                          getattr(instance, cache_obj_key))
+                cache_key = get_cache_key_for_viewset(viewset,
+                                              getattr(instance, cache_obj_key))
                 keys.append(cache_key)
         cache.delete_many(keys)
 
@@ -67,7 +71,7 @@ class CachedViewSetMixin(object, metaclass=MetaCachedViewSet):
         if self.cache_kwargs_key is None:
             raise Exception('cache_kwargs_key must be set for %s' % self)
         obj_id = self.kwargs.get(self.cache_kwargs_key)
-        cache_key = get_cache_key(self.__class__.__name__, obj_id)
+        cache_key = get_cache_key_for_viewset(self.__class__, obj_id)
         cached = cache.get(cache_key)
         if cached is not None:
             return Response(cached)

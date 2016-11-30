@@ -7,7 +7,7 @@ div.media.shadow-z2(style="margin: 20px 20px 0 0; float: left;" ng-repeat="reque
         flex(style="z-index: 1;")
             img.media-object.img-circle.img-thumbnail.thumb48(ng-src='{{ request[otherContext].picture }}', style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 15px;")
             md-tooltip(md-direction="top")
-                span(ng-bind="request[otherContext].name + ' ' + request.distance + ' km far'")
+                span(ng-bind="request[otherContext].name + ' ' + request.distance_display + ' away'")
         flex.game-border-highlight(ng-class="{highlighted: game.swap_pending && request[otherContext + '_game'].id == game.id}" ng-init="src2=request[otherContext + '_game'].images.front_thumb_medium")
             img.img-responsive(ng-src="{{ src2 }}", style="max-height: 80px;")
             md-tooltip(md-direction="top")

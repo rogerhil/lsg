@@ -8,6 +8,7 @@ from users.api.serializers import UserSerializer
 from users.activities import Verbs
 from request.flow import RequestFlow, StatusException, Status
 from request.models import SwapRequest, Feedback
+from utils import distance_format
 
 
 class SwapRequestSerializer(CachedSerializerMixin):
@@ -22,7 +23,7 @@ class SwapRequestSerializer(CachedSerializerMixin):
     previous_status = serializers.IntegerField(read_only=True)
     previous_status_display = serializers.CharField(read_only=True)
     closed_at_since = serializers.CharField(read_only=True)
-    distance = serializers.DecimalField(decimal_places=1, max_digits=10)
+    #distance = serializers.DecimalField(decimal_places=1, max_digits=10)
 
     requester = UserSerializer(read_only=True)
     requested = UserSerializer(read_only=True)
@@ -38,6 +39,12 @@ class SwapRequestSerializer(CachedSerializerMixin):
                             'closed_at_since')
         exclude = ('status_history',)
         depth = 2
+
+    def to_representation(self, instance):
+        serial = super(SwapRequestSerializer, self).to_representation(instance)
+        unit = self.context['request'].user.distance_unit
+        serial['distance_display'] = distance_format(instance.distance, unit)
+        return serial
 
     def create(self, *args, **kwargs):
         instance = super(SwapRequestSerializer, self).create(*args, **kwargs)

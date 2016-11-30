@@ -25,7 +25,8 @@ class UserPictureImageSerializer(serializers.ModelSerializer):
 class UserSerializer(CachedSerializerMixin):
 
     address = AddressSerializer(source='_address')
-    platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False, required=False,
+    platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False,
+                                                   required=False,
                                                    queryset=PlatformViewSet.queryset)
 
     class Meta:
@@ -35,7 +36,7 @@ class UserSerializer(CachedSerializerMixin):
                   'platforms', 'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
-                  'social_links', 'enabled', 'id', 'deleted')
+                  'social_links', 'enabled', 'id', 'distance_unit', 'deleted')
         read_only_fields = ('username', 'name', 'picture', 'enabled',
                             'succeeded_swaps_count',
                             'failed_swaps_count', 'expired_swaps_count',

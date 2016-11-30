@@ -5,6 +5,8 @@ from rest_framework_cache.cache import cache
 from users.models import CollectionItem, WishlistItem, User
 from users.exceptions import CollectionGameDeleteException
 from request.models import SwapRequest
+from request.api.views import MyRequestsViewSet, IncomingRequestsViewSet
+from cache import get_cache_key_for_viewset
 
 
 @receiver(pre_delete, sender=CollectionItem)
@@ -60,4 +62,15 @@ def clear_matches_cache_request_changed(sender, instance=None, **kwargs):
     if keys:
         keys.append(User.get_matches_cache_key_for(instance.requester.id))
         keys.append(User.get_matches_cache_key_for(instance.requested.id))
+    cache.delete_many(keys)
+
+
+@receiver(post_save, sender=User)
+def clear_matches_and_requests_cache_user_changed(sender, instance=None,
+                                                  **kwargs):
+    keys = [
+        User.get_matches_cache_key_for(instance.id),
+        get_cache_key_for_viewset(MyRequestsViewSet, instance.id),
+        get_cache_key_for_viewset(IncomingRequestsViewSet, instance.id)
+    ]
     cache.delete_many(keys)

@@ -1,8 +1,11 @@
 from datetime import timedelta
 from itertools import chain
+from geopy.distance import distance
 
 from django.db import models
 from django.conf import settings
+from django.contrib.gis.measure import Distance
+
 
 from jsonfield import JSONField
 
@@ -67,6 +70,14 @@ class SwapRequest(models.Model, StatusMethodsMixin):
     def __str__(self):
         return "%s (%s) X %s (%s)" % (self.requester, self.requester_game,
                                       self.requested, self.requested_game)
+
+    @property
+    def distance(self):
+        coords1 = self.requester.address.point.coords
+        coords2 = self.requested.address.point.coords
+        # must invert :/
+        return Distance(m=distance((coords1[1], coords1[0]),
+                                   (coords2[1], coords2[0])).meters)
 
     @property
     def closed_at_since(self):
