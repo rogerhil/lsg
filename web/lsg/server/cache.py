@@ -67,8 +67,10 @@ class CachedViewSetMixin(object, metaclass=MetaCachedViewSet):
     cache_obj_keys = None
 
     def list(self, request, *args, **kwargs):
-        if self.cache_kwargs_key is None or self.cache_obj_keys is None:
+        if self.cache_kwargs_key is None:
             raise Exception('cache_kwargs_key must be set for %s' % self)
+        if self.cache_obj_keys is None:
+            raise Exception('cache_obj_keys must be set for %s' % self)
         obj_id = self.kwargs.get(self.cache_kwargs_key)
         cache_key = get_cache_key_for_viewset(self.__class__, obj_id)
         cached = cache.get(cache_key)

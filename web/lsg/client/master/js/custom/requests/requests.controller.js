@@ -26,7 +26,7 @@
         self.pendingMyRequests = [];
         self.pendingIncomingRequests = [];
 
-        self.requestsPollingInterval = 3000;
+        self.requestsPollingInterval = 10000;
         self.requestsPromise = undefined;
         self.tour = undefined;
 
@@ -52,11 +52,14 @@
         };
 
         self.loadAllRequests = function () {
-            self.loadMyRequests();
-            self.loadIncomingRequests();
+            if (!$('md-dialog').length) {
+                self.loadMyRequests();
+                self.loadIncomingRequests();
+            }
         };
 
         self.pollRequests = function () {
+            self.loadAllRequests();
             self.requestsPromise = $interval(self.loadAllRequests, self.requestsPollingInterval);
         };
 
@@ -226,7 +229,7 @@
         self.archiveRequest = function (request) {
             RequestsService.archiveRequest(request.id).then(function (request) {
                 var index = globalFunctions.getIndexByObjectAttribute(self.incomingRequests, 'id', request.id);
-                if (index) {
+                if (index != undefined) {
                     self.incomingRequests.splice(index, 1);
                 } else {
                     index = globalFunctions.getIndexByObjectAttribute(self.myRequests, 'id', request.id);

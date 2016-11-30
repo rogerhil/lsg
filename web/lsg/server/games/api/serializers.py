@@ -1,7 +1,7 @@
 from games.models import Game, Platform
 from rest_framework import serializers
-from rest_framework_cache.registry import cache_registry
-from rest_framework_cache.serializers import CachedSerializerMixin
+#from rest_framework_cache.registry import cache_registry
+#from rest_framework_cache.serializers import CachedSerializerMixin
 
 
 class LocalGameImagesSerializer(serializers.Serializer):
@@ -10,16 +10,16 @@ class LocalGameImagesSerializer(serializers.Serializer):
     front_thumb = serializers.URLField()
 
 
-class PlatformSerializer(CachedSerializerMixin):
+class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Platform
         fields = ('id', 'name', )
 
-cache_registry.register(PlatformSerializer)
+#cache_registry.register(PlatformSerializer)
 
 
-class GameSerializer(CachedSerializerMixin):
+class GameSerializer(serializers.ModelSerializer):
     images = LocalGameImagesSerializer()
 
     class Meta:
@@ -28,7 +28,7 @@ class GameSerializer(CachedSerializerMixin):
                    'youtube', 'genres')
         depth = 1
 
-cache_registry.register(GameSerializer)
+#cache_registry.register(GameSerializer)
 
 
 class CategorizedGameSerializer(serializers.Serializer):

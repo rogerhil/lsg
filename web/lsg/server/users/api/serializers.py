@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import ValidationError
-from rest_framework_cache.registry import cache_registry
-from rest_framework_cache.serializers import CachedSerializerMixin
+#from rest_framework_cache.registry import cache_registry
+#from rest_framework_cache.serializers import CachedSerializerMixin
 
 from drf_extra_fields.fields import Base64ImageField
 
@@ -22,7 +22,7 @@ class UserPictureImageSerializer(serializers.ModelSerializer):
         fields = ('picture_image',)
 
 
-class UserSerializer(CachedSerializerMixin):
+class UserSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(source='_address')
     platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False,
@@ -104,7 +104,7 @@ class UserSerializer(CachedSerializerMixin):
             serialized['address'] = address_serializer.to_representation(instance._address)
         return serialized
 
-cache_registry.register(UserSerializer)
+#cache_registry.register(UserSerializer)
 
 
 class UserGameMixin(object):
@@ -129,7 +129,7 @@ class UserGameMixin(object):
         return is_valid
 
 
-class CollectionItemSerializer(UserGameMixin, CachedSerializerMixin):
+class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):
     game_id = serializers.IntegerField(write_only=True)
     user_id = serializers.IntegerField(read_only=True)
     game = GameSerializer(read_only=True)
@@ -145,10 +145,10 @@ class CollectionItemSerializer(UserGameMixin, CachedSerializerMixin):
         Verbs.added_to_collection.send(instance.user, instance.game)
         return instance
 
-cache_registry.register(CollectionItemSerializer)
+#cache_registry.register(CollectionItemSerializer)
 
 
-class WishlistItemSerializer(UserGameMixin, CachedSerializerMixin):
+class WishlistItemSerializer(UserGameMixin, serializers.ModelSerializer):
     game_id = serializers.IntegerField(write_only=True)
     user_id = serializers.IntegerField(read_only=True)
     game = GameSerializer(read_only=True)
@@ -163,4 +163,4 @@ class WishlistItemSerializer(UserGameMixin, CachedSerializerMixin):
         Verbs.added_to_wishlist.send(instance.user, instance.game)
         return instance
 
-cache_registry.register(WishlistItemSerializer)
+#cache_registry.register(WishlistItemSerializer)

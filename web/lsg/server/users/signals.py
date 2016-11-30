@@ -31,7 +31,7 @@ def clear_matches_cache_collection(sender, instance=None, **kwargs):
     ids = WishlistItem.objects.filter(game=instance.game)\
                               .exclude(user=instance.user)\
                               .values_list('user__id', flat=True)
-    keys = [User.get_matches_cache_key_for(i) for i in ids]
+    keys = [User.get_matches_cache_key_for(i) for i in set(ids)]
     if keys:
         keys.append(User.get_matches_cache_key_for(instance.user.id))
     cache.delete_many(keys)
@@ -43,7 +43,7 @@ def clear_matches_cache_wishlist(sender, instance=None, **kwargs):
     ids = CollectionItem.objects.filter(game=instance.game)\
                               .exclude(user=instance.user)\
                               .values_list('user__id', flat=True)
-    keys = [User.get_matches_cache_key_for(i) for i in ids]
+    keys = [User.get_matches_cache_key_for(i) for i in set(ids)]
     if keys:
         keys.append(User.get_matches_cache_key_for(instance.user.id))
     cache.delete_many(keys)
@@ -57,8 +57,8 @@ def clear_matches_cache_request_changed(sender, instance=None, **kwargs):
                                 .values_list('user__id', flat=True)
     idsw = WishlistItem.objects.filter(game__in=games)\
                                 .values_list('user__id', flat=True)
-    keys = [User.get_matches_cache_key_for(i) for i in idsc]
-    keys += [User.get_matches_cache_key_for(i) for i in idsw]
+    keys = [User.get_matches_cache_key_for(i) for i in set(idsc)]
+    keys += [User.get_matches_cache_key_for(i) for i in set(idsw)]
     if keys:
         keys.append(User.get_matches_cache_key_for(instance.requester.id))
         keys.append(User.get_matches_cache_key_for(instance.requested.id))
@@ -73,4 +73,13 @@ def clear_matches_and_requests_cache_user_changed(sender, instance=None,
         get_cache_key_for_viewset(MyRequestsViewSet, instance.id),
         get_cache_key_for_viewset(IncomingRequestsViewSet, instance.id)
     ]
+    ids = SwapRequest.objects.filter(requester=instance,
+                                     requested_archived=False)\
+                             .values_list('requested_id', flat=True)
+    keys += [get_cache_key_for_viewset(IncomingRequestsViewSet, i)
+             for i in set(ids)]
+    ids = SwapRequest.objects.filter(requested=instance,
+                                     requester_archived=False)\
+                             .values_list('requester_id', flat=True)
+    keys += [get_cache_key_for_viewset(MyRequestsViewSet, i) for i in set(ids)]
     cache.delete_many(keys)

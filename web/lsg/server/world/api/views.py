@@ -1,4 +1,4 @@
-from rest_framework import viewsets, views
+from rest_framework import viewsets
 
 from world.models import Address
 from world.api.serializers import AddressSerializer

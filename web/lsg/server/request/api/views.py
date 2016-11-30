@@ -4,6 +4,7 @@ from django.db.models import Q
 from django_filters.filters import BaseInFilter
 from django.conf import settings
 
+from rest_framework_cache.cache import cache
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import viewsets, views, mixins
 from rest_framework.status import HTTP_400_BAD_REQUEST
@@ -21,7 +22,7 @@ from request.api.serializers import SwapRequestSerializer, \
     AcceptRequestSerializer, RefuseRequestSerializer, \
     CancelRequestSerializer, FinalizeFirstRequestSerializer, \
     FinalizeSecondRequestSerializer, ArchiveRequestSerializer
-from cache import CachedViewSetMixin
+from cache import CachedViewSetMixin, get_cache_key_for_viewset
 
 
 class MyRequestsViewSet(CachedViewSetMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
@@ -234,6 +235,11 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         incoming = requested_qs.values_list('id', flat=True)
         count_requester = requester_qs.update(requester_archived=True)
         count_requested = requested_qs.update(requested_archived=True)
+        cache_keys = [
+            get_cache_key_for_viewset(MyRequestsViewSet, user.id),
+            get_cache_key_for_viewset(IncomingRequestsViewSet, user.id)
+        ]
+        cache.delete_many(cache_keys)
         Verbs.archived_all.send(user)
         count = count_requester + count_requested
         return views.Response({'count': count, 'my': my, 'incoming': incoming})

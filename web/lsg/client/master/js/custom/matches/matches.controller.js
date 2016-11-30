@@ -44,7 +44,9 @@
 
 
         self.pollMatches = function () {
-            self.loadMatches();
+            if (!$('md-dialog').length) {
+                self.loadMatches();
+            }
             self.matchesPromise = $timeout(function () {
                 self.pollMatches();
             }, self.matchesPollingInterval);
