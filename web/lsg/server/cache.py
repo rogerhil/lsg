@@ -40,10 +40,6 @@ class ModelViewsetCacheRegistry(object):
         viewsets = registry.get(instance._meta.model)
         keys = []
         for viewset in viewsets:
-            if not viewset.cache_obj_keys:
-                print('NOT!!!')
-                print(viewset)
-                print('------')
             for cache_obj_key in viewset.cache_obj_keys:
                 cache_key = get_cache_key_for_viewset(viewset,
                                               getattr(instance, cache_obj_key))
@@ -60,9 +56,7 @@ class MetaCachedViewSet(type):
 
     def __new__(mcs, name, bases, attrs, **kwargs):
         klass = super(MetaCachedViewSet, mcs).__new__(mcs, name, bases, attrs, **kwargs)
-        print(klass)
         if getattr(klass, 'queryset', None):
-            print('registered')
             registry.register(klass)
         return klass
 
@@ -73,7 +67,7 @@ class CachedViewSetMixin(object, metaclass=MetaCachedViewSet):
     cache_obj_keys = None
 
     def list(self, request, *args, **kwargs):
-        if self.cache_kwargs_key is None:
+        if self.cache_kwargs_key is None or self.cache_obj_keys is None:
             raise Exception('cache_kwargs_key must be set for %s' % self)
         obj_id = self.kwargs.get(self.cache_kwargs_key)
         cache_key = get_cache_key_for_viewset(self.__class__, obj_id)
