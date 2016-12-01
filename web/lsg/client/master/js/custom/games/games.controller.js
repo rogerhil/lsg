@@ -24,9 +24,9 @@
 
 
         $('body').on('click', function (e) {
-            if ($(e.target).hasClass('tour-backdrop')) {
-                if (self.tour) self.tour.end();
-            }
+            //if ($(e.target).hasClass('tour-backdrop')) {
+            //    if (self.tour) self.tour.end();
+            //}
         });
         $(document).on('keyup',function(evt) {
             if (evt.keyCode == 27) {

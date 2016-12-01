@@ -207,12 +207,15 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
 
     @list_route(methods=['get'], serializer_class=SwapRequestSerializer)
     def archived(self, request, user_pk):
-        queryset = self.filter_queryset(self.get_queryset())
+        #queryset = self.filter_queryset(self.get_queryset())
         user_id = int(user_pk)
-        queryset = queryset.filter(Q(requester_archived=True,
+        queryset = self.queryset.filter(Q(requester_archived=True,
                                      requester_id=user_id) |
                                    Q(requested_archived=True,
-                                     requested_id=user_id))
+                                     requested_id=user_id)) \
+            .select_related('requester').select_related('requested') \
+            .select_related('requester__address').select_related('requested__address') \
+            .select_related('requester_game').select_related('requested_game')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

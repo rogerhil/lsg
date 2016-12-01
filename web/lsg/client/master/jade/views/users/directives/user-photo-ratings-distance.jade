@@ -1,7 +1,8 @@
 .media
     .media-left.media-middle
-        a(href='#')
+        a(href='javascript:;' ng-click="showUserFeedbacks(user, onfeedbacksclose)")
             img.media-object.img-circle.img-thumbnail.thumb48(ng-src="{{user.picture}}", alt='{{user.name}}')
+        md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
     .media-body.pt-sm(style="width: auto;")
         .text-bold
             span(style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; display: inline-block;") {{ user.name }}&nbsp;&nbsp;

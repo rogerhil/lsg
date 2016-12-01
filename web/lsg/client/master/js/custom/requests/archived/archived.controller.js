@@ -14,8 +14,10 @@
         var self = this;
         self.user = $rootScope.user;
         self.archivedRequests = [];
+        self.loaded = false;
         ArchivedRequestsService.getArchivedRequests().then(function (requests) {
             self.archivedRequests = requests;
+            self.loaded = true;
         });
 
         self.tableParams = new ngTableParams({

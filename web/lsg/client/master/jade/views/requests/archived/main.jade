@@ -7,6 +7,12 @@ h3 Archived Requests
             .panel-title Archived requests
 
         table.table.ng-table-rowselected(ng-table='ctrl.tableParams')
+            tr(ng-if="!ctrl.loaded")
+                td
+                    .ball-pulse(style="margin: 0 auto; text-align: center;")
+                        div
+                        div
+                        div
             tr(ng-repeat=" request in ctrl.archivedRequests")
                 td(data-title="'Game1'") {{ request.requester_game.name }}
                 td(data-title="'Game2'") {{ request.requested_game.name }}
