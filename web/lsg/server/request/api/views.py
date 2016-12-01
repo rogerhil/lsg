@@ -21,8 +21,8 @@ from request.models import SwapRequest
 from request.api.serializers import SwapRequestSerializer, \
     AcceptRequestSerializer, RefuseRequestSerializer, \
     CancelRequestSerializer, FinalizeFirstRequestSerializer, \
-    FinalizeSecondRequestSerializer, ArchiveRequestSerializer, \
-    ArchivedSwapRequestSerializer
+    FinalizeSecondRequestSerializer, ArchivedSwapRequestSerializer, \
+    ArchiveRequestSerializer
 from cache import CachedViewSetMixin, get_cache_key_for_viewset
 
 
@@ -37,7 +37,15 @@ class MyRequestsViewSet(CachedViewSetMixin, mixins.CreateModelMixin, mixins.List
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
         return self.queryset.filter(requester_id=user_id)\
-            .select_related('requester').select_related('requested')
+            .select_related('requester').select_related('requested') \
+            .select_related('requester_game') \
+            .select_related('requested_game') \
+            .select_related('requester_game__platform') \
+            .select_related('requested_game__platform') \
+            .select_related('requester__address') \
+            .select_related('requested__address') \
+            .prefetch_related('requester__social_auth') \
+            .prefetch_related('requested__social_auth')
 
     def perform_create(self, serializer):
         super(MyRequestsViewSet, self).perform_create(serializer)
@@ -78,7 +86,15 @@ class IncomingRequestsViewSet(CachedViewSetMixin, mixins.ListModelMixin, mixins.
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
         return self.queryset.filter(requested_id=user_id)\
-            .select_related('requester').select_related('requested')
+            .select_related('requester').select_related('requested') \
+            .select_related('requester_game')\
+            .select_related('requested_game') \
+            .select_related('requester_game__platform') \
+            .select_related('requested_game__platform') \
+            .select_related('requester__address')\
+            .select_related('requested__address')\
+            .prefetch_related('requester__social_auth')\
+            .prefetch_related('requested__social_auth')
 
     @detail_route(methods=['post'], serializer_class=AcceptRequestSerializer)
     def accept(self, request, user_pk, pk):
@@ -217,8 +233,9 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                                      requested_id=user_id)) \
             .select_related('requester').select_related('requested') \
             .select_related('requester__address').select_related('requested__address') \
-            .select_related('requester_game').select_related('requested_game')\
+            .select_related('requester_game').select_related('requested_game') \
             .select_related('requester_game__platform').select_related('requested_game__platform')
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

@@ -166,15 +166,19 @@ class User(AbstractUser):
                  for i in self.social_auth.all()]
         return links
 
-    def last_feedbacks(self, last=8):
+
+    @staticmethod
+    def user_last_feedbacks(user_id, last=8):
         statuses = Status.closed_statuses()
-        requests1 = SwapRequest.objects.filter(requester=self,
+        requests1 = SwapRequest.objects.filter(requester_id=user_id,
                                                status__in=statuses)\
                                .exclude(requester_feedback_notes=None)\
+                               .select_related('requested') \
                                .order_by('-closed_at')[:last]
-        requests2 = SwapRequest.objects.filter(requested=self,
+        requests2 = SwapRequest.objects.filter(requested_id=user_id,
                                                status__in=statuses)\
-                               .exclude(requested_feedback_notes=None)\
+                               .exclude(requested_feedback_notes=None) \
+                               .select_related('requester') \
                                .order_by('-closed_at')[:last]
         feedbacks = []
         for request in requests1:
@@ -195,6 +199,9 @@ class User(AbstractUser):
             ))
         feedbacks.sort(key=lambda x: x['closed_at'], reverse=True)
         return feedbacks[:last]
+
+    def last_feedbacks(self, last=8):
+        return self.user_last_feedbacks(self.id, last)
 
     def _categorized_games(self, games):
         categorized = {}
@@ -264,9 +271,14 @@ class User(AbstractUser):
                          (self, self.address))
             return []
         games_collections = CollectionItem.objects \
-            .filter(game__in=self.wishlist.all(),
+            .filter(game_id__in=self.wishlist.all().values_list('id'),
                     user__deleted=False) \
-            .exclude(user=self)
+            .exclude(user=self)\
+            .select_related('user')\
+            .select_related('game') \
+            .select_related('game__platform') \
+            .select_related('user__address')
+
         my_pending_tuples = SwapRequest.objects.filter(requester=self,
                           status=Status.pending).values_list('requested_id',
                                                            'requested_game_id',
@@ -303,9 +315,17 @@ class User(AbstractUser):
 
         qs = Address.objects.distance(self.address.point)
         matches = dict()
+
+        address_cache = {}
+        users_wishlist_cache = {}
+
+        my_collection = self.collection.all().select_related('platform')
+
         for game_collection in games_collections:
             user = game_collection.user
-            user.address = qs.get(id=user.address.id)
+            if user.address.id not in address_cache:
+                address_cache[user.address.id] = qs.get(id=user.address.id)
+            user.address = address_cache[user.address.id]
             if user.address.distance is None:
                 logger.error("Error while trying to find matches for user %s. "
                              "User %s doesn't have distance information: %s" %
@@ -315,8 +335,11 @@ class User(AbstractUser):
                 logger.warn("Ignoring match for user %s: user %s is %skm far: %s" %
                              (self, user, user.address.distance.km, user.address))
                 continue
-            for my_game in self.collection.all():
-                for game_he_wishes in user.wishlist.all():
+            if user.id not in users_wishlist_cache:
+                users_wishlist_cache[user.id] = user.wishlist.all()\
+                                                    .select_related('platform')
+            for my_game in my_collection:
+                for game_he_wishes in users_wishlist_cache[user.id]:
                     if my_game.id == game_he_wishes.id:
                         # matched!!!
                         iwish = deepcopy(game_collection.game)  # important
@@ -396,7 +419,6 @@ class User(AbstractUser):
     def matches_cache_key(self):
         return self.get_matches_cache_key_for(self.id)
 
-
     @property
     def serialized_matches(self):
         cache_key = self.matches_cache_key
@@ -405,9 +427,9 @@ class User(AbstractUser):
             return cached
 
         from games.api.serializers import GameSerializer
-        from users.api.serializers import UserSerializer
+        from users.api.serializers import SmallUserSerializer
         gs = GameSerializer()
-        us = UserSerializer()
+        us = SmallUserSerializer()
         serialized_matches = []
         for match in self.matches:
             iwish = gs.to_representation(match['iwish'])
@@ -426,6 +448,7 @@ class User(AbstractUser):
                 unit = self.distance_unit
                 distance = Decimal(getattr(dist, unit)).quantize(Decimal(".1"),
                                                                  ROUND_UP)
+                user['address'] = {}
                 user['address']['distance'] = str(distance)
                 user['address']['distance_display'] = distance_format(dist,
                                                                       unit)

@@ -26,9 +26,23 @@ class SmallUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'name', 'email', 'id')
+        fields = ('username', 'name', 'email', 'id', 'picture')
         read_only_fields = fields
 
+
+class RequestUserSerializer(serializers.ModelSerializer):
+
+    address = AddressSerializer(source='_address')
+
+    class Meta:
+        model = User
+        fields = ('username', 'name', 'email', 'picture', 'first_name',
+                  'last_name', 'gender', 'address', 'phone1_prefix', 'phone1',
+                  'succeeded_swaps_count', 'failed_swaps_count',
+                  'expired_swaps_count', 'negative_feedback_count', 'stars',
+                  'positive_feedback_count', 'neutral_feedback_count',
+                  'social_links', 'id')
+        read_only_fields = fields
 
 
 class UserSerializer(serializers.ModelSerializer):

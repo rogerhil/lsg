@@ -161,6 +161,11 @@ class Status(Choices):
                 cls.expired]
 
     @classmethod
+    def accepted_statuses(cls):
+        return [cls.succeeded, cls.failed, cls.expired, cls.ongoing,
+                cls.finalizing]
+
+    @classmethod
     def finalized_statuses(cls):
         return [cls.succeeded, cls.failed]
 
@@ -311,6 +316,10 @@ class StatusMethodsMixin(object):
     @property
     def is_finalized(self):
         return self.status in Status.finalized_statuses()
+
+    @property
+    def is_or_was_accepted(self):
+        return self.status in Status.accepted_statuses()
 
 
 class StatusException(Exception, StatusMethodsMixin):

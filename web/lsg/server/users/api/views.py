@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 from utils import short_timesince
 from users.api.serializers import CollectionItemSerializer, UserSerializer, \
-    WishlistItemSerializer, UserPictureImageSerializer
+    WishlistItemSerializer, UserPictureImageSerializer, SmallUserSerializer
 from users.api.permissions import IsSuperUserOrOwner
 from users.models import User, CollectionItem, WishlistItem
 from users.exceptions import CollectionGameDeleteException
@@ -36,7 +36,7 @@ class AuthenticatedUserView(views.APIView):
 
 
 class UsersViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.filter()
+    queryset = User.objects.filter().select_related('address').prefetch_related('social_auth').prefetch_related('platforms')
     serializer_class = UserSerializer
     permission_classes = [IsSuperUserOrOwner]
 
@@ -83,9 +83,8 @@ class UsersViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'], url_path='latest-feedbacks')
     def latest_feedbacks(self, request, pk, permission_classes=[]):
         serialized = []
-        serializer = UserSerializer()
-        user = User.objects.get(pk=pk)
-        for feedback in user.last_feedbacks():
+        serializer = SmallUserSerializer()
+        for feedback in User.user_last_feedbacks(pk):
             feedback['user'] = serializer.to_representation(feedback['user'])
             feedback['closed_at'] = formats.date_format(feedback['closed_at'],
                                                        "SHORT_DATETIME_FORMAT")
@@ -95,7 +94,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'], url_path='latest-activities')
     def latest_activities(self, request, pk):
-        items = actor_stream(request.user)
+        items = actor_stream(request.user) #.select_related('platform')
         serialized = []
         for item in items[:8]:
             verb = Verbs.get(item)

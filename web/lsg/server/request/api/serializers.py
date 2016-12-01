@@ -4,7 +4,7 @@ from rest_framework.fields import ValidationError
 #from rest_framework_cache.serializers import CachedSerializerMixin
 
 from games.api.serializers import GameSerializer
-from users.api.serializers import UserSerializer, SmallUserSerializer
+from users.api.serializers import SmallUserSerializer, RequestUserSerializer
 from users.activities import Verbs
 from request.flow import RequestFlow, StatusException, Status
 from request.models import SwapRequest, Feedback
@@ -25,8 +25,8 @@ class SwapRequestSerializer(serializers.ModelSerializer):
     closed_at_since = serializers.CharField(read_only=True)
     #distance = serializers.DecimalField(decimal_places=1, max_digits=10)
 
-    requester = UserSerializer(read_only=True)
-    requested = UserSerializer(read_only=True)
+    requester = RequestUserSerializer(read_only=True)
+    requested = RequestUserSerializer(read_only=True)
 
     class Meta:
         model = SwapRequest
@@ -42,6 +42,10 @@ class SwapRequestSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         serial = super(SwapRequestSerializer, self).to_representation(instance)
+        if not instance.is_or_was_accepted:
+            ser = SmallUserSerializer()
+            serial['requester'] = ser.to_representation(instance.requester)
+            serial['requested'] = ser.to_representation(instance.requested)
         request = self.context.get('request')
         if request:
             unit = request.user.distance_unit
