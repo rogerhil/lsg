@@ -31,6 +31,12 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                             //tr(ng-if="ctrl.swapUser.gender")
                             //    td: strong Gender
                             //    td {{ ctrl.swapUser.gender }}
+                            tr(ng-if="ctrl.swapUser.email")
+                                td(style="width: 20px;")
+                                    em.icon-envelope-letter
+                                    md-tooltip(md-direction="top") Email
+                                td
+                                    span {{ ctrl.swapUser.email }}
                             tr(ng-if="ctrl.swapUser.phone1")
                                 td(style="width: 20px;")
                                     em.fa.fa-phone

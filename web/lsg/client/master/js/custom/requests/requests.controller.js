@@ -332,8 +332,8 @@
                 var index = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
                 requestsCtrl.incomingRequests.splice(index, 1, request);
                 var msg = 'Congratulations! You have accepted to swap your game "' +
-                    request.requested_game.name + '" with ' + request.requester.name + '\'s game "' +
-                    request.requester_game.name + '". Contact ' + request.requester.name + ' so you can arrange ways of ' +
+                    request.requested_game.full_name + '" with ' + request.requester.name + '\'s game "' +
+                    request.requester_game.full_name + '". Contact ' + request.requester.name + ' so you can arrange ways of ' +
                     'concluding the swap.';
                 requestsCtrl.showContactDetails(request, 'incomingRequests', msg);
             });

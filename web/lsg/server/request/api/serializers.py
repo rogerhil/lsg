@@ -4,7 +4,7 @@ from rest_framework.fields import ValidationError
 #from rest_framework_cache.serializers import CachedSerializerMixin
 
 from games.api.serializers import GameSerializer
-from users.api.serializers import UserSerializer
+from users.api.serializers import UserSerializer, SmallUserSerializer
 from users.activities import Verbs
 from request.flow import RequestFlow, StatusException, Status
 from request.models import SwapRequest, Feedback
@@ -55,6 +55,25 @@ class SwapRequestSerializer(serializers.ModelSerializer):
         return instance
 
 #cache_registry.register(SwapRequestSerializer)
+
+
+class ArchivedSwapRequestSerializer(serializers.ModelSerializer):
+    requester_game = GameSerializer(read_only=True)
+    requested_game = GameSerializer(read_only=True)
+    status_display = serializers.CharField(read_only=True)
+    status_history_display = serializers.CharField(read_only=True)
+    # previous_status = serializers.IntegerField(read_only=True)
+    # previous_status_display = serializers.CharField(read_only=True)
+    # closed_at_since = serializers.CharField(read_only=True)
+    requester = SmallUserSerializer(read_only=True)
+    requested = SmallUserSerializer(read_only=True)
+
+    class Meta:
+        model = SwapRequest
+        fields = ('requester_game', 'requested_game', 'status_display',
+                  'status_history_display', 'requester', 'requested', 'status')
+        read_only_fields = fields
+        depth = 0
 
 
 class ChangeRequestStatusSerializerMixin(object):

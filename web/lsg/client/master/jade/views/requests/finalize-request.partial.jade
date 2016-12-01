@@ -10,14 +10,14 @@ md-dialog(aria-label="Finalize this request", ng-cloak)
             .md-dialog-content(style="min-width: 320px; max-width: 550px;")
                 div(layout="row" style="width: 250px; margin: 0 auto;")
                     flex(style="position: relative;")
-                        img.img-responsive(ng-src='{{ctrl.iwish.images.front_thumb_medium}}', alt='{{ctrl.iwish.name}}', style="max-height: 170px;")
-                        md-tooltip(md-direction="top") {{ctrl.iwish.name}} ({{ctrl.iwish.platform.name}})
+                        img.img-responsive(ng-src='{{ctrl.iwish.images.front_thumb_medium}}', alt='{{ctrl.iwish.full_name}}', style="max-height: 170px;")
+                        md-tooltip(md-direction="top") {{ctrl.iwish.full_name}}
                     flex(style="z-index: 1;")
                         button.btn.btn-default.btn-circle.btn-lg(type="button", ng-click="", style="margin: 0 -20px 0 -20px; font-size: 24px; margin-top: 45px;")
                             em.fa.fa-exchange
                     flex(style="position: relative;")
-                        img.img-responsive(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.name}}', style="max-height: 170px;")
-                        md-tooltip(md-direction="top") {{ctrl.game.name}} ({{ctrl.game.platform.name}})
+                        img.img-responsive(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}', style="max-height: 170px;")
+                        md-tooltip(md-direction="top") {{ctrl.game.full_name}}
                 br
                 div(layout='', layout-sm='column')
                     md-input-container(flex='' md-is-error="finalizeForm.swapped.$invalid && (finalizeForm.$submitted || finalizeForm.swapped.$dirty)")

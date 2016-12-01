@@ -24,8 +24,8 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
             .label.label-primary.swap-indicator(ng-if="match.no_games_left" ng-style="match.iwish.swap_pending && {right: '40px'}")
                 .em.fa.fa-frown-o
                 md-tooltip(md-direction="bottom") All your games that matches this game are ongoing for swap.
-            img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.name}}', style="max-height: 170px;")
-            md-tooltip(md-direction="top") {{match.iwish.name}} ({{match.iwish.platform.name}})
+            img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
+            md-tooltip(md-direction="top") {{match.iwish.full_name}}
         .card-offset.pull-right
             button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="ctrl.openMatch(match)")
                 em.icon-grid

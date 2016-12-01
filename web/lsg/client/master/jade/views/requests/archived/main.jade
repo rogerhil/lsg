@@ -14,12 +14,13 @@ h3 Archived Requests
                         div
                         div
             tr(ng-repeat=" request in ctrl.archivedRequests")
-                td(data-title="'Game1'") {{ request.requester_game.name }}
-                td(data-title="'Game2'") {{ request.requested_game.name }}
+                td(data-title="'Game1'") {{ request.requester_game.full_name }}
+                td(data-title="'Game2'") {{ request.requested_game.full_name }}
                 td(data-title="'Requester'") {{ request.requester.name }}
                 td(data-title="'Requested'") {{ request.requested.name }}
                 td(data-title="'Status'")
                     status-display(request="request")
+                    md-tooltip(md-direction="top") {{ request.status_history_display }}
                 //td(data-title="'Delete'")
                 //    .mb
                 //        label.mda-checkbox

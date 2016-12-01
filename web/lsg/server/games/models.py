@@ -91,4 +91,8 @@ class Game(models.Model):
         self.images = LocalGameImages(self)
 
     def __str__(self):
+        return self.full_name
+
+    @property
+    def full_name(self):
         return "%s (%s)" % (self.name, self.platform.short_name)

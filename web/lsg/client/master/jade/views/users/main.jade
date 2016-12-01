@@ -102,7 +102,7 @@ h3 My profile
                             md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.platforms}")
                                 label Platforms you have
                                 md-select(ng-model="ctrl.user.platforms", multiple, required, md-on-close="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()")
-                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms") {{platform.name}}
+                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms") {{platform.short_name}}
                                 .md-errors-spacer(ng-repeat="error in ctrl.errors.platforms")
                                     .md-char-counter {{error}}
                         div#address-form

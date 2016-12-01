@@ -22,6 +22,15 @@ class UserPictureImageSerializer(serializers.ModelSerializer):
         fields = ('picture_image',)
 
 
+class SmallUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'name', 'email', 'id')
+        read_only_fields = fields
+
+
+
 class UserSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(source='_address')

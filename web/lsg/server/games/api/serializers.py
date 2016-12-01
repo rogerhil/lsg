@@ -6,26 +6,28 @@ from rest_framework import serializers
 
 class LocalGameImagesSerializer(serializers.Serializer):
     front_thumb_medium = serializers.URLField()
-    front_thumb_small = serializers.URLField()
-    front_thumb = serializers.URLField()
+    #front_thumb_small = serializers.URLField()
+    #front_thumb = serializers.URLField()
 
 
 class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Platform
-        fields = ('id', 'name', )
+        fields = ('id', 'name', 'short_name')
 
 #cache_registry.register(PlatformSerializer)
 
 
 class GameSerializer(serializers.ModelSerializer):
     images = LocalGameImagesSerializer()
+    platform = PlatformSerializer()
 
     class Meta:
         model = Game
-        exclude = ('api_rating', 'similar', 'similar_count',
-                   'youtube', 'genres')
+        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name')
+        #exclude = ('api_rating', 'similar', 'similar_count',
+        #           'youtube', 'genres')
         depth = 1
 
 #cache_registry.register(GameSerializer)

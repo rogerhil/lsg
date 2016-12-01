@@ -21,7 +21,8 @@ from request.models import SwapRequest
 from request.api.serializers import SwapRequestSerializer, \
     AcceptRequestSerializer, RefuseRequestSerializer, \
     CancelRequestSerializer, FinalizeFirstRequestSerializer, \
-    FinalizeSecondRequestSerializer, ArchiveRequestSerializer
+    FinalizeSecondRequestSerializer, ArchiveRequestSerializer, \
+    ArchivedSwapRequestSerializer
 from cache import CachedViewSetMixin, get_cache_key_for_viewset
 
 
@@ -205,7 +206,8 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         serialized = serializer.to_representation(swap_request)
         return views.Response(serialized)
 
-    @list_route(methods=['get'], serializer_class=SwapRequestSerializer)
+    @list_route(methods=['get'],
+                serializer_class=ArchivedSwapRequestSerializer)
     def archived(self, request, user_pk):
         #queryset = self.filter_queryset(self.get_queryset())
         user_id = int(user_pk)
@@ -215,7 +217,8 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                                      requested_id=user_id)) \
             .select_related('requester').select_related('requested') \
             .select_related('requester__address').select_related('requested__address') \
-            .select_related('requester_game').select_related('requested_game')
+            .select_related('requester_game').select_related('requested_game')\
+            .select_related('requester_game__platform').select_related('requested_game__platform')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

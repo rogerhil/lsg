@@ -38,7 +38,7 @@
                 results = results.map(function (item) {
                     return {
                         value: item.id,
-                        display: item.name + ' (' + item.platform.name + ')'
+                        display: item.full_name
                     }
                 });
                 q.resolve(results);
