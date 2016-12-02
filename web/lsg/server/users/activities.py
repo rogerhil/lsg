@@ -14,18 +14,22 @@ class Verb(object):
             raise Exception('name must be defined!')
         return self.name
 
-    def parse(self, stream_item, user):
+    def parse(self, stream_item, user, use_cache=False):
+        if use_cache:
+            target, actor = Verbs.fetch_cached_data(stream_item)
+        else:
+            target, actor = stream_item.target, stream_item.actor
         context = {
-            'actor': stream_item.actor,
+            'actor': actor,
             'verb': stream_item.verb.capitalize(),
             'action_object': stream_item.action_object,
-            'target': stream_item.target,
+            'target': target,
             'timesince': stream_item.timesince()
         }
-        context.update(self.extra_context(stream_item, user))
+        context.update(self.extra_context(stream_item, user, use_cache))
         return self.sentence % context
 
-    def extra_context(self, stream_item, user):
+    def extra_context(self, stream_item, user, use_cache=False):
         return dict()
 
     def send(self, actor, target=None, action_object=None):
@@ -36,19 +40,24 @@ class Verb(object):
 
 class SRVerb(Verb):
 
-    def extra_context(self, stream_item, user):
-        if stream_item.target.requester == user:
-            other_user = stream_item.target.requested
-            iwish = stream_item.target.requested_game
-            my_game = stream_item.target.requester_game
-            swapped = 'swapped' if stream_item.target.requester_swapped \
-                                else 'not swapped'
+    def extra_context(self, stream_item, user, use_cache=False):
+        target, actor = Verbs.fetch_cached_data(stream_item)
+        requester = Verbs.fetch_cached_extra(target, 'requester', 'user')
+        requested = Verbs.fetch_cached_extra(target, 'requested', 'user')
+        requester_game = Verbs.fetch_cached_extra(target, 'requester_game', 'game')
+        requested_game = Verbs.fetch_cached_extra(target, 'requested_game', 'game')
+        requester_game.platform = Verbs.fetch_cached_extra(requester_game, 'platform')
+        requested_game.platform = Verbs.fetch_cached_extra(requested_game, 'platform')
+        if requester == user:
+            other_user = requested
+            iwish = requested_game
+            my_game = requester_game
+            swapped = 'swapped' if target.requester_swapped else 'not swapped'
         else:
-            other_user = stream_item.target.requester
-            iwish = stream_item.target.requester_game
-            my_game = stream_item.target.requested_game
-            swapped = 'swapped' if stream_item.target.requested_swapped \
-                                else 'not swapped'
+            other_user = requester
+            iwish = requester_game
+            my_game = requested_game
+            swapped = 'swapped' if target.requested_swapped else 'not swapped'
         context = dict(
             user=other_user,
             iwish=iwish,
@@ -71,6 +80,10 @@ class MetaVerbs(type):
 
 
 class Verbs(metaclass=MetaVerbs):
+
+    target_cache = {}
+    actor_cache = {}
+    extra_cache = {}
 
     cancelled = SRVerb('Cancelled request: %(iwish)s X %(my_game)s',
                        'fa fa-close', 'text-purple')
@@ -101,6 +114,33 @@ class Verbs(metaclass=MetaVerbs):
     target_default = Verb('%(verb)s %(target)s')
     action_default = Verb('%(verb)s %(action_object)s')
     default = Verb('%(verb)s')
+
+    @classmethod
+    def clear_cache(cls):
+        cls.target_cache = {}
+        cls.actor_cache = {}
+        cls.extra_cache = {}
+
+    @classmethod
+    def fetch_cached_data(cls, stream_item):
+        target_key = "%s_%s" % (stream_item.target_content_type_id, stream_item.target_object_id)
+        if target_key not in Verbs.target_cache:
+            cls.target_cache[target_key] = stream_item.target
+        actor_key = "%s_%s" % (stream_item.actor_content_type_id, stream_item.actor_object_id)
+        if actor_key not in Verbs.actor_cache:
+            cls.actor_cache[actor_key] = stream_item.actor
+        return cls.target_cache[target_key], cls.actor_cache[actor_key]
+
+    @classmethod
+    def fetch_cached_extra(cls, obj, attr, key=None):
+        obj_id = getattr(obj, "%s_id" % attr)
+        if key:
+            extra_key = "%s_%s" % (key, obj_id)
+        else:
+            extra_key = "%s_%s_%s" % (obj.__class__.__name__, attr, obj_id)
+        if extra_key not in Verbs.extra_cache:
+            cls.extra_cache[extra_key] = getattr(obj, attr)
+        return cls.extra_cache[extra_key]
 
     @classmethod
     def get(cls, item):

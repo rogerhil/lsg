@@ -15,8 +15,9 @@ class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
         model = Platform
         fields = ('id', 'name', 'short_name')
+        read_only_fields = fields
 
-#cache_registry.register(PlatformSerializer)
+    #cache_registry.register(PlatformSerializer)
 
 
 class GameSerializer(serializers.ModelSerializer):
@@ -26,6 +27,7 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name')
+        read_only_fields = fields
         #exclude = ('api_rating', 'similar', 'similar_count',
         #           'youtube', 'genres')
         depth = 1

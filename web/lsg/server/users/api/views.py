@@ -3,6 +3,7 @@ from datetime import datetime
 import geocoder
 from actstream.models import actor_stream
 
+from django.db.models import Prefetch
 from django.conf import settings
 from django.utils import formats
 from django.core.urlresolvers import resolve
@@ -36,7 +37,8 @@ class AuthenticatedUserView(views.APIView):
 
 
 class UsersViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.filter().select_related('address').prefetch_related('social_auth').prefetch_related('platforms')
+    queryset = User.objects.filter().select_related('address')\
+        .prefetch_related('social_auth').prefetch_related('platforms')
     serializer_class = UserSerializer
     permission_classes = [IsSuperUserOrOwner]
 
@@ -94,17 +96,19 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'], url_path='latest-activities')
     def latest_activities(self, request, pk):
-        items = actor_stream(request.user) #.select_related('platform')
+        items = actor_stream(request.user)
         serialized = []
+        user = request.user
         for item in items[:8]:
             verb = Verbs.get(item)
             serialized.append(dict(
-                description=verb.parse(item, request.user),
+                description=verb.parse(item, user, True),
                 since=short_timesince(item.timestamp),
                 verb=item.verb,
                 css_class=verb.css_class,
                 color=verb.color
             ))
+        Verbs.clear_cache()
         return views.Response(serialized)
 
     @detail_route(methods=['put'], serializer_class=UserPictureImageSerializer)

@@ -166,7 +166,6 @@ class User(AbstractUser):
                  for i in self.social_auth.all()]
         return links
 
-
     @staticmethod
     def user_last_feedbacks(user_id, last=8):
         statuses = Status.closed_statuses()

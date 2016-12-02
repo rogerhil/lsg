@@ -3,10 +3,11 @@ from django.conf import settings
 from django_filters.filters import CharFilter, BaseInFilter
 from django_filters import FilterSet
 
-from rest_framework import response, viewsets
+from rest_framework import response, viewsets, mixins
 from rest_framework.filters import SearchFilter, OrderingFilter, \
                                    DjangoFilterBackend
 from rest_framework.decorators import list_route
+from rest_framework.permissions import IsAuthenticated
 
 from filters import BaseNotInFilter
 from games.models import Game, Platform
@@ -17,11 +18,12 @@ from games.api.serializers import PlatformSerializer, GameSerializer, \
 #platforms_names = [i.name.lower() for i in all_platforms]
 
 
-class PlatformViewSet(viewsets.ModelViewSet):
+class PlatformViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = PlatformSerializer
     queryset = Platform.objects.filter(name__in=settings.SUPPORTED_PLATFORMS)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('name',)
+    permission_classes = [IsAuthenticated]
 
 
 class GameFilter(FilterSet):
@@ -34,12 +36,13 @@ class GameFilter(FilterSet):
         fields = ['platform', 'platform_id', 'exclude_games']
 
 
-class GameViewSet(viewsets.ModelViewSet):
+class GameViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Game.objects.all().select_related('platform')
     serializer_class = GameSerializer
     filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
     search_fields = ('@fts', 'name', 'platform__name')
     filter_class = GameFilter
+    permission_classes = [IsAuthenticated]
 
     @list_route(methods=['get'])
     def categorized(self, request):

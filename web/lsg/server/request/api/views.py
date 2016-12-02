@@ -167,7 +167,16 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         user_id = self.kwargs.get('user_pk')
         return self.queryset.filter(Q(requested_id=user_id) |
                                     Q(requester_id=user_id)) \
-                .select_related('requester').select_related('requested')
+                .select_related('requester')\
+                .select_related('requested') \
+                .select_related('requester_game') \
+                .select_related('requested_game') \
+                .select_related('requester_game__platform') \
+                .select_related('requested_game__platform') \
+                .select_related('requester__address') \
+                .select_related('requested__address') \
+                .prefetch_related('requester__social_auth') \
+                .prefetch_related('requested__social_auth')
 
     @detail_route(methods=['post'],
                   serializer_class=FinalizeFirstRequestSerializer)

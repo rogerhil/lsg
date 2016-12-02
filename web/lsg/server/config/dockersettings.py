@@ -173,8 +173,8 @@ if os.getenv('LSG_DB_NAME'):
             "SHOW_TOOLBAR_CALLBACK": lambda r: True,
             "INTERNAL_IPS": ['192.168.99.100', '127.0.0.1']
         }
-        # CACHES = {
-        #     'default': {
-        #         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        #     }
-        # }
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            }
+        }
