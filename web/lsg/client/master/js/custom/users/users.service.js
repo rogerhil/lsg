@@ -37,10 +37,71 @@
         return User;
     }
 
-    UsersService.$inject = ['$q', '$http', '$rootScope', 'User'];
-    function UsersService($q, $http, $rootScope, User) {
-        var userId = $rootScope.user.id;
-        var baseUserUrl = '/api/users/' + userId + '/';
+    UsersService.$inject = ['$q', '$http', '$rootScope', 'User', 'Notify', '$timeout'];
+    function UsersService($q, $http, $rootScope, User, Notify, $timeout) {
+        var userId;
+        var baseUserUrl;
+
+        this.loadAuthenticatedUser = function (event) {
+            var q = $q.defer();
+            if (event && event.targetScope && event.targetScope.user != undefined && event.targetScope.user != null) {
+                q.resolve(event.targetScope.user);
+                return q;
+            }
+            $http.get('/api/users/authenticated/').success(function (response) {
+                var user;
+                if (response) {
+                    user = new User(response);
+                    $timeout(function () {
+                        if (!user.enabled) {
+                            if ($state.current.name != 'pages.500' && $state.current.name != 'pages.403' && $state.current.name != 'pages.400') {
+                                window.location = '/';
+                            }
+                        }
+                    }, 500);
+
+                    $rootScope.user = user;
+
+                    userId = $rootScope.user.id;
+                    baseUserUrl = '/api/users/' + userId + '/';
+
+                    q.resolve(user);
+                } else {
+                    if (event) {
+                        event.preventDefault();
+                    }
+                    q.reject();
+                    return;
+                }
+                var initialAlert = function () {
+                    if (!$rootScope.user.isProfileComplete()) {
+                        Notify.closeAll(false, true);
+                        Notify.alert("You need to complete your profile details in " +
+                            "order to continue using the application. <a style='color: yellow;' href='#/app/profile'>" +
+                            "Click here to access the profile form.</a>", {status: 'danger', timeout: 7000});
+                    }
+                };
+
+                $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                    if (toState.name == 'app.welcome' || toState.name == 'app.users') {
+                        return;
+                    }
+                    if (!user.hasBasicProfile()) {
+                        initialAlert();
+                    }
+                });
+
+            }).error(function (response, status) {
+                if (status == 400) {
+                    q.reject();
+                    return;
+                }
+                //q.resolve();
+                $state.transitionTo("pages.500");
+            });
+            return q;
+        };
+
 
         this.queryAddress = function (query) {
             var q = $q.defer();
