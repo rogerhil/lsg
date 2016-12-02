@@ -16,7 +16,8 @@ from rest_framework.response import Response
 
 from utils import short_timesince
 from users.api.serializers import CollectionItemSerializer, UserSerializer, \
-    WishlistItemSerializer, UserPictureImageSerializer, SmallUserSerializer
+    WishlistItemSerializer, UserPictureImageSerializer, SmallUserSerializer, \
+    UserCountsStarsSerializer
 from users.api.permissions import IsSuperUserOrOwner
 from users.models import User, CollectionItem, WishlistItem
 from users.exceptions import CollectionGameDeleteException
@@ -69,6 +70,12 @@ class UsersViewSet(viewsets.ModelViewSet):
         user.deleted_date = datetime.now()
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @detail_route(methods=['get'], serializer_class=UserCountsStarsSerializer,
+                  url_path='counts-stars')
+    def counts_stars(self, request, pk):
+        serializer = UserCountsStarsSerializer()
+        return views.Response(serializer.to_representation(request.user))
 
     @detail_route(methods=['get'], url_path='query-address')
     def query_address(self, request, pk):

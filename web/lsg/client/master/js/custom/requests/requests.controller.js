@@ -13,8 +13,8 @@
     /*
      RequestsCtrl
      */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$interval', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams'];
-    function RequestsCtrl($scope, $q, $timeout, $interval, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams) {
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$interval', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams', 'UsersService'];
+    function RequestsCtrl($scope, $q, $timeout, $interval, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams, UsersService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
@@ -30,9 +30,23 @@
         self.requestsPromise = undefined;
         self.tour = undefined;
 
+        function checkToUpdateCountsStars(currentRequests, newRequests) {
+            var reqsDict = {};
+            for (var k = 0; k < currentRequests.length; k++) {
+                var o = currentRequests[k];
+                reqsDict[o.id] = o;
+            }
+            for (var k = 0; k < newRequests.length; k++) {
+                var req = newRequests[k];
+                if (req.isFinalized() && !reqsDict[req.id].isFinalized()) {
+                    UsersService.updateUserCountsStarsDetails();
+                }
+            }
+        }
 
         self.loadMyRequests = function () {
             RequestsService.getMyRequests().then(function (requests) {
+                checkToUpdateCountsStars(self.myRequests, requests);
                 self.myRequests = requests;
                 self.myRequestsLoaded = true;
                 $timeout(function () {
@@ -43,6 +57,7 @@
 
         self.loadIncomingRequests = function () {
             RequestsService.getIncomingRequests().then(function (requests) {
+                checkToUpdateCountsStars(self.incomingRequests, requests);
                 self.incomingRequests = requests;
                 self.incomingRequestsLoaded = true;
                 $timeout(function () {
@@ -436,8 +451,8 @@
     /*
      FinalizeRequestCtrl
      */
-    FinalizeRequestCtrl.$inject = ['$scope', '$mdDialog', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
-    function FinalizeRequestCtrl($scope, $mdDialog, request, requestsCtrl, RequestsService, globalFunctions) {
+    FinalizeRequestCtrl.$inject = ['$scope', '$mdDialog', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService']
+    function FinalizeRequestCtrl($scope, $mdDialog, request, requestsCtrl, RequestsService, globalFunctions, UsersService) {
         var self = this;
         self.request = request;
         self.user = requestsCtrl.user;
@@ -468,6 +483,8 @@
                 if (indexMy !== undefined) {
                     requestsCtrl.myRequests.splice(indexMy, 1, request);
                 }
+                // to update stars :)
+                UsersService.updateUserCountsStarsDetails();
             });
         };
     }

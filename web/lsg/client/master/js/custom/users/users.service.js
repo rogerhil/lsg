@@ -113,6 +113,23 @@
             return q.promise;
         };
 
+        this.updateUserCountsStarsDetails = function () {
+            var q = $q.defer();
+            console.log('...');
+            console.log('called!!!');
+            $http
+                .get(baseUserUrl + 'counts-stars/')
+                .success(function (response) {
+                    var updatedUser = $rootScope.user;
+                    for (var key in response) {
+                        updatedUser[key] = response[key];
+                    }
+                    $rootScope.user = updatedUser;
+                    q.resolve(new User(updatedUser));
+                });
+            return q.promise;
+        };
+
         this.getUserDetails = function () {
             var q = $q.defer();
             $http

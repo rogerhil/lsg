@@ -42,7 +42,8 @@
                 return;
             }
             if (currentSplitted[1] != nextSplitted) {
-                UsersService.loadAuthenticatedUser();
+                // to update counts and stars in frontend..
+                UsersService.updateUserCountsStarsDetails();
             }
             if (event && event.targetScope) {
                 if (event.targetScope.user === undefined || event.targetScope.user == null) {

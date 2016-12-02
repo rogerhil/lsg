@@ -28,6 +28,19 @@ class SmallUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'name', 'email', 'id', 'picture')
         read_only_fields = fields
+        depth = 0
+
+
+class UserCountsStarsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('succeeded_swaps_count', 'failed_swaps_count',
+                  'expired_swaps_count', 'negative_feedback_count', 'stars',
+                  'positive_feedback_count', 'neutral_feedback_count',
+                  'enabled', 'deleted')
+        read_only_fields = fields
+        depth = 0
 
 
 class RequestUserSerializer(serializers.ModelSerializer):
