@@ -28,14 +28,19 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                         img.img-responsive(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}', style="max-height: 170px;")
                         md-tooltip(md-direction="top") {{ctrl.game.full_name}}
                 br
-                p(ng-if="!ctrl.latestFeedbacks.length" style="text-align: center;")
+                p(ng-if="!ctrl.loadedLatestFeedbacks" style="text-align: center;")
+                    em.fa.fa-comments-o
+                    span loading...
+                p(ng-if="ctrl.loadedLatestFeedbacks && !ctrl.latestFeedbacks.length" style="text-align: center;")
                     em.fa.fa-comments-o
                     span This user has no feedback yet.
-                a(ng-if="ctrl.latestFeedbacks.length" href="javascript:;" ng-click="ctrl.toggleFeedbacks()")
+                a(ng-if="ctrl.loadedLatestFeedbacks && ctrl.latestFeedbacks.length" href="javascript:;" ng-click="ctrl.toggleFeedbacks()")
                     p(style="text-align: center;")
                         em.fa.fa-comments-o
-                        span Show/hide latest {{ ctrl.user.name }}'s feedback
-                div#feedbacks(style="display:none;")
+                        span(ng-if="!feedbackShowHide") Show
+                        span(ng-if="feedbackShowHide") Hide
+                        span {{ ctrl.swapUser.name }}'s latest feedback
+                div#feedbacks(style="display: none;")
                     user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
                 br
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
@@ -71,8 +76,8 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 div(layout='', layout-sm='column')
                     md-input-container(flex='', layout-sm='column')
                         label My game condition
-                        input(ng-model='ctrl.data.requester_game_condition_notes', ng-if="ctrl.data.requester_game_condition_notes !== undefined")
-                        input(ng-model='ctrl.data.requested_game_condition_notes', ng-if="ctrl.data.requested_game_condition_notes !== undefined")
+                        input(ng-model='ctrl.data.requester_game_condition_notes', ng-if="ctrl.data.requester_game_condition_notes !== undefined" required)
+                        input(ng-model='ctrl.data.requested_game_condition_notes', ng-if="ctrl.data.requested_game_condition_notes !== undefined" required)
 
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")

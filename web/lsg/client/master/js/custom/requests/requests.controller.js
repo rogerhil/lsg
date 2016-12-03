@@ -38,7 +38,7 @@
             }
             for (var k = 0; k < newRequests.length; k++) {
                 var req = newRequests[k];
-                if (req.isFinalized() && !reqsDict[req.id].isFinalized()) {
+                if (req && req.isFinalized() && reqsDict.length && reqsDict[req.id] && !reqsDict[req.id].isFinalized()) {
                     UsersService.updateUserCountsStarsDetails();
                 }
             }

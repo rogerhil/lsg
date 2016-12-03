@@ -115,8 +115,6 @@
 
         this.updateUserCountsStarsDetails = function () {
             var q = $q.defer();
-            console.log('...');
-            console.log('called!!!');
             $http
                 .get(baseUserUrl + 'counts-stars/')
                 .success(function (response) {

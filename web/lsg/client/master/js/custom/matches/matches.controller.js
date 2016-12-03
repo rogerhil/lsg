@@ -113,6 +113,7 @@
         self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
         self.latestFeedbacks = [];
+        self.loadedLatestFeedbacks = false;
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
         };
@@ -125,6 +126,9 @@
 
         var submitRequestSwap = function (e) {
             e.preventDefault();
+            //if (!self.data.requester_game_condition_notes.length && ) {
+            //
+            //}
             if (self.iwish.swap_pending || self.game.swap_pending) {
                 self.warnUserAboutPendingRequest();
             } else {
@@ -134,10 +138,12 @@
 
         UsersService.latestFeedbacks(swapUser).then(function (latestFeedbacks) {
             self.latestFeedbacks = latestFeedbacks;
+            self.loadedLatestFeedbacks = true;
         });
 
         self.toggleFeedbacks = function () {
-            if ($('#feedbacks').is(':hidden')) {
+            $scope.feedbackShowHide = !$scope.feedbackShowHide;
+            if ($scope.feedbackShowHide) {
                 $('#feedbacks').slideDown();
             } else {
                 $('#feedbacks').slideUp();
