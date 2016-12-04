@@ -114,6 +114,7 @@
         self.swapUser = swapUser;
         self.latestFeedbacks = [];
         self.loadedLatestFeedbacks = false;
+        self.isRequester = true;
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
         };
