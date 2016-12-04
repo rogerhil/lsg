@@ -76,8 +76,8 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 div(layout='', layout-sm='column')
                     md-input-container(flex='', layout-sm='column')
                         label My game condition
-                        input(ng-model='ctrl.data.requester_game_condition_notes', ng-if="ctrl.data.requester_game_condition_notes !== undefined" required)
-                        input(ng-model='ctrl.data.requested_game_condition_notes', ng-if="ctrl.data.requested_game_condition_notes !== undefined" required)
+                        input(ng-model='ctrl.data.requester_game_condition_notes' id="requester_game_condition_notes" ng-if="ctrl.data.requester_game_condition_notes !== undefined" required)
+                        input(ng-model='ctrl.data.requested_game_condition_notes' id="requested_game_condition_notes" ng-if="ctrl.data.requested_game_condition_notes !== undefined" required)
 
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")

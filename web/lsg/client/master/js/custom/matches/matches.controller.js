@@ -167,6 +167,10 @@
         };
 
         self.createSwapRequest = function () {
+            if (!self.data.requester_game_condition_notes) {
+                $('#requester_game_condition_notes').focus();
+                return;
+            }
             RequestsService.createSwapRequest(self.swapUser.id,
                 self.iwish.id, self.authenticatedUser.id, self.game.id,
                 self.data.requester_game_condition_notes,

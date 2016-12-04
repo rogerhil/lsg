@@ -293,8 +293,8 @@
     /*
      AcceptRequestDialogCtrl
      */
-    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions']
-    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions) {
+    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService']
+    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions, UsersService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.request = request;
@@ -303,15 +303,33 @@
         self.game = request.requested_game;
         self.user = request.requester;
         self.swapUser = request.requester;
+        self.loadedLatestFeedbacks = false;
+        self.latestFeedbacks = [];
         self.requesterGameConditionNotes = request.requester_game_condition_notes;
         self.data = {
             requested_game_condition_notes: null  // IMPORTANT: now is the REQUESTED field!
         };
         self.errors = {};
+
+        UsersService.latestFeedbacks(self.swapUser).then(function (latestFeedbacks) {
+            self.latestFeedbacks = latestFeedbacks;
+            self.loadedLatestFeedbacks = true;
+        });
+
+        self.toggleFeedbacks = function () {
+            $scope.feedbackShowHide = !$scope.feedbackShowHide;
+            if ($scope.feedbackShowHide) {
+                $('#feedbacks').slideDown();
+            } else {
+                $('#feedbacks').slideUp();
+            }
+        };
+
         self.close = function (e) {
             e.preventDefault();
             $mdDialog.hide();
-        }
+        };
+
         var accept = function (e) {
             e.preventDefault();
             var pendingMyRequests = requestsCtrl.getPendingMyRequestsRelated(request, request.requester_game, request.requested_game);
@@ -343,6 +361,10 @@
         ];
 
         self.acceptRequest = function () {
+            if (!self.data.requested_game_condition_notes) {
+                $('#requested_game_condition_notes').focus();
+                return;
+            }
             RequestsService.acceptRequest(self.request.id, self.data.requested_game_condition_notes).then(function (request) {
                 var index = globalFunctions.getIndexByObjectAttribute(requestsCtrl.incomingRequests, 'id', request.id);
                 requestsCtrl.incomingRequests.splice(index, 1, request);
@@ -367,10 +389,12 @@
         self.swapUser = context == 'incomingRequests' ? request.requester : request.requested;
         self.request = request;
         self.context = context;
+        self.loadedLatestFeedbacks = false;
         self.latestFeedbacks = [];
 
         UsersService.latestFeedbacks(self.swapUser).then(function (latestFeedbacks) {
             self.latestFeedbacks = latestFeedbacks;
+            self.loadedLatestFeedbacks = true;
         });
 
         self.toggleFeedbacks = function () {
