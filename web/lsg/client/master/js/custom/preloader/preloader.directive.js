@@ -14,7 +14,7 @@
             var nextSplitted = next.split('#');
             var el = angular.element(".preloader-progress").parent();
             if (nextSplitted.length > 1) {
-                switch (nextSplitted[1]) {
+                switch (nextSplitted[1].replace(/\/$/g, '')) {
                     case '/500':
                         $state.transitionTo("pages.500");
                         endCounter($rootScope, el);

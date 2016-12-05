@@ -45,12 +45,12 @@ elif [ "$1" = 'pull' ]; then
 
 elif [ "$1" = 'update' ]; then
     cd /app/lsg-docker/web/lsg/server
-    sudo -u lsg -E HOME=/home/lsg/ git pull origin master
+    sudo -u lsg -E HOME=/home/lsg/ git pull origin master || echo 'ERROR! Failed to pull down'
     sudo -u lsg -E HOME=/home/lsg/ python manage.py migrate
     cd /app/lsg-docker/web/lsg/client/master
-    sudo -u lsg -E HOME=/home/lsg/ npm install
-    sudo -u lsg -E HOME=/home/lsg/ bower install
-    sudo -u lsg -E HOME=/home/lsg/ gulp build --usesass
+    sudo -u lsg -E HOME=/home/lsg/ npm install || echo 'ERROR! npm failed to install'
+    sudo -u lsg -E HOME=/home/lsg/ bower install || echo 'ERROR! bower failed to install'
+    sudo -u lsg -E HOME=/home/lsg/ gulp build --usesass || echo 'ERROR! gulp failed to build'
     cd /app/lsg-docker/web/lsg/server
     sudo -u lsg -E HOME=/home/lsg/ python manage.py collectstatic --no-input
 

@@ -42,6 +42,8 @@ from sitemaps import HomeSitemap
 is_superuser = user_passes_test(lambda u: u.is_superuser, 'landing-page')
 s = lambda v: csrf_exempt(is_superuser(v))
 
+#print(aaa)
+
 cache_registry.autodiscover()
 
 sitemaps = dict(

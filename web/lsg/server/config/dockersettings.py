@@ -180,3 +180,4 @@ if os.getenv('LSG_DB_NAME'):
                 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
             }
         }
+    DEBUG = False

@@ -1,6 +1,6 @@
 psycopg2
 Pillow
-git+git://github.com/omab/python-social-auth.git
+git+git://github.com/omab/python-social-auth.git@781173719e5e669e1306b8686941964c3ed92a5a
 django>=1.10
 xmltodict
 djangorestframework
