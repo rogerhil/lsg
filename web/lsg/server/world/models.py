@@ -47,6 +47,7 @@ class Address(models.Model):
     postal_code = models.CharField(max_length=32, null=True, blank=True)
     geocoder_address = models.CharField(max_length=255, null=True, blank=True)
     point = models.PointField(blank=True, null=True)
+    city_point = models.PointField(blank=True, null=True)
 
     objects = models.GeoManager()
 
@@ -72,6 +73,14 @@ class Address(models.Model):
     def latitude(self):
         return self.point.coords[1] if self.point else None
 
+    @property
+    def city_longitude(self):
+        return self.city_point.coords[0] if self.city_point else None
+
+    @property
+    def city_latitude(self):
+        return self.city_point.coords[1] if self.city_point else None
+
     @staticmethod
     def get_geocode_obj_from_address(location, country=None):
         kwargs = {}
@@ -89,12 +98,18 @@ class Address(models.Model):
         def join(*args):
             return ' '.join(set([i for i in args if i and i.strip()]))
 
+        city = geo.city_long or ""
+        state = join(geo.state_long, geo.province_long)
+        city_location = "%s, %s, %s" % (city, state, geo.country)
+        geo_city = cls.get_geocode_obj_from_address(city_location, country)
+
         data = dict(
             point=str(geo.wkt),
+            city_point=str(geo_city.wkt) if geo_city else None,
             address1=join(geo.housenumber, geo.street_long, geo.road_long),
             address2=join(geo.neighborhood, geo.sublocality),
-            city=geo.city_long or "",
-            state=join(geo.state_long, geo.province_long),
+            city=city,
+            state=state,
             country=geo.country,
             postal_code=geo.postal,
             geocoder_address=geo.address

@@ -4,7 +4,8 @@ from rest_framework.fields import ValidationError
 #from rest_framework_cache.serializers import CachedSerializerMixin
 
 from games.api.serializers import GameSerializer
-from users.api.serializers import SmallUserSerializer, RequestUserSerializer
+from users.api.serializers import SmallUserSerializer, RequestUserSerializer, \
+                                  RequestUserNoFullAddressSerializer
 from users.activities import Verbs
 from request.flow import RequestFlow, StatusException, Status
 from request.models import SwapRequest, Feedback
@@ -41,12 +42,28 @@ class SwapRequestSerializer(serializers.ModelSerializer):
         depth = 2
 
     def to_representation(self, instance):
+        request = self.context.get('request')
         serial = super(SwapRequestSerializer, self).to_representation(instance)
         if not instance.is_or_was_accepted:
             ser = SmallUserSerializer()
             serial['requester'] = ser.to_representation(instance.requester)
             serial['requested'] = ser.to_representation(instance.requested)
-        request = self.context.get('request')
+        else:
+            ser = RequestUserNoFullAddressSerializer()
+            user = None
+            if request:
+                user = request.user
+
+            if user == instance.requester:
+                pass
+            elif not instance.requester.show_full_address_allowed:
+                serial['requester'] = ser.to_representation(instance.requester)
+
+            if user == instance.requested:
+                pass
+            elif not instance.requested.show_full_address_allowed:
+                serial['requested'] = ser.to_representation(instance.requested)
+
         if request:
             unit = request.user.distance_unit
             serial['distance_display'] = distance_format(instance.distance,

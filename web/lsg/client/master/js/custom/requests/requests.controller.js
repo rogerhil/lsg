@@ -417,23 +417,63 @@
             var bounds = new google.maps.LatLngBounds();
             var userPosition = new google.maps.LatLng(user.address.latitude,
                                                       user.address.longitude);
-            var otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
+            var radius = 5;  // km
+            var earthRadius = 6371;
+            var otherUserPosition;
+            if (otherUser.show_full_address_allowed) {
+                otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
                                                            otherUser.address.longitude);
-            var userMarker, otherUserMarker;
+            } else {
+                otherUserPosition = new google.maps.LatLng(otherUser.address.city_latitude,
+                                                           otherUser.address.city_longitude);
+            }
+
+            var userMarker, otherUserMarker, circle;
 
             $timeout(function () {
                 userMarker = new google.maps.Marker({map: self.contactDetailsMap, position: userPosition, title: user.name, visible:true});
-                otherUserMarker = new google.maps.Marker({map: self.contactDetailsMap, position: otherUserPosition, title: otherUser.name, visible:true});
+                if (otherUser.show_full_address_allowed) {
+                    otherUserMarker = new google.maps.Marker({
+                        map: self.contactDetailsMap,
+                        position: otherUserPosition,
+                        title: otherUser.name,
+                        visible: true
+                    });
+                } else {
+                    circle = new google.maps.Circle({
+                        map: self.contactDetailsMap,
+                        radius: 5 * 1000,
+                        fillColor: '#000',
+                        strokeWeight: 0,
+                        center: otherUserPosition
+                    });
+                }
+
                 bounds.extend(userMarker.position);
-                bounds.extend(otherUserMarker.position);
+                if (circle) {
+                    bounds.extend(circle.center);
+                } else {
+                    bounds.extend(otherUserMarker.position);
+                }
+
                 var userInfoWindow = new google.maps.InfoWindow({
                     content: 'My location'
                 });
-                var otherUserInfoWindow = new google.maps.InfoWindow({
-                    content: otherUser.name + " location"
-                });
                 userInfoWindow.open(self.contactDetailsMap, userMarker);
-                otherUserInfoWindow.open(self.contactDetailsMap, otherUserMarker);
+                if (otherUserMarker) {
+                    var otherUserInfoWindow = new google.maps.InfoWindow({
+                        content: otherUser.name + " location"
+                    });
+                    otherUserInfoWindow.open(self.contactDetailsMap, otherUserMarker);
+                } else {
+                    var pos = new google.maps.LatLng(otherUser.address.city_latitude + ((radius / earthRadius) * (180 / Math.PI)),
+                                                     otherUser.address.city_longitude);
+                    var otherUserInfoWindow = new google.maps.InfoWindow({
+                        content: otherUser.name + " location",
+                        position: pos
+                    });
+                    otherUserInfoWindow.open(self.contactDetailsMap);
+                }
                 $timeout(function () {
                     google.maps.event.trigger(self.contactDetailsMap, 'resize');
                     $timeout(function () {

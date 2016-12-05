@@ -288,11 +288,16 @@
             self.allPlatforms = platforms;
         });
 
-        self.updateUser = function (updateMap) {
-            $('.profile-loading').fadeIn();
+        self.updateUser = function (updateMap, settingsSection) {
+            if (settingsSection) {
+                $('.profile-settings-loading').fadeIn();
+            } else {
+                $('.profile-loading').fadeIn();
+            }
             UsersService.updateUser(self.user).then(function (user) {
                 //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
                 $('.profile-loading').fadeOut();
+                $('.profile-settings-loading').fadeOut();
                 $('#change-country-form').slideUp();
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};

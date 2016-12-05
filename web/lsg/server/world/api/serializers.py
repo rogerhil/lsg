@@ -18,15 +18,29 @@ class CustomCountryField(CountryField):
         return serialize_country(obj)
 
 
+class BasicAddressSerializer(serializers.ModelSerializer):
+    country = CustomCountryField()
+
+    class Meta:
+        model = Address
+        fields = ('city', 'state', 'country', 'city_latitude',
+                  'city_longitude')
+        read_only_fields = ('city', 'state', 'country', 'city_latitude',
+                            'city_longitude')
+        depth = 2
+
+
 class AddressSerializer(serializers.ModelSerializer):
     country = CustomCountryField()
 
     class Meta:
         model = Address
-        fields = ('geocoder_address', 'address1', 'address2', 'city', 'state', 'country',
-                  'latitude', 'longitude')
-        read_only_fields = ('address1', 'address2', 'postal_code', 'city', 'state', 'latitude',
-                            'longitude')
+        fields = ('geocoder_address', 'address1', 'address2', 'city', 'state',
+                  'country', 'latitude', 'longitude', 'city_latitude',
+                  'city_longitude')
+        read_only_fields = ('address1', 'address2', 'postal_code', 'city',
+                            'state', 'latitude', 'longitude', 'city_latitude',
+                            'city_longitude')
         depth = 2
 
     def __init__(self, *args, **kwargs):

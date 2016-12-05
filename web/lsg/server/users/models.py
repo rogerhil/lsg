@@ -102,6 +102,7 @@ class User(AbstractUser):
     neutral_feedback_count = models.PositiveIntegerField(default=0)
     distance_unit = models.CharField(max_length=10, default=DistanceUnit.miles,
                                      choices=DistanceUnit.choices())
+    show_full_address_allowed = models.BooleanField(default=True)
     deleted = models.BooleanField(default=False)
     deleted_date = models.DateTimeField(null=True, blank=True)
     enabled = models.BooleanField(default=False)

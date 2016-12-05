@@ -10,7 +10,7 @@ from users.activities import Verbs
 from games.models import Game
 from games.api.serializers import GameSerializer
 from games.api.views import PlatformViewSet
-from world.api.serializers import AddressSerializer
+from world.api.serializers import AddressSerializer, BasicAddressSerializer
 
 
 class UserPictureImageSerializer(serializers.ModelSerializer):
@@ -43,9 +43,9 @@ class UserCountsStarsSerializer(serializers.ModelSerializer):
         depth = 0
 
 
-class RequestUserSerializer(serializers.ModelSerializer):
+class RequestUserNoFullAddressSerializer(serializers.ModelSerializer):
 
-    address = AddressSerializer(source='_address')
+    address = BasicAddressSerializer(source='_address')
 
     class Meta:
         model = User
@@ -54,8 +54,13 @@ class RequestUserSerializer(serializers.ModelSerializer):
                   'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
-                  'social_links', 'id')
+                  'social_links', 'id', 'show_full_address_allowed')
         read_only_fields = fields
+
+
+class RequestUserSerializer(RequestUserNoFullAddressSerializer):
+
+    address = AddressSerializer(source='_address')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -72,7 +77,8 @@ class UserSerializer(serializers.ModelSerializer):
                   'platforms', 'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
-                  'social_links', 'enabled', 'id', 'distance_unit', 'deleted')
+                  'social_links', 'enabled', 'id', 'distance_unit', 'deleted',
+                  'show_full_address_allowed')
         read_only_fields = ('username', 'name', 'picture', 'enabled',
                             'succeeded_swaps_count',
                             'failed_swaps_count', 'expired_swaps_count',
