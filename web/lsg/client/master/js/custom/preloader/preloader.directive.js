@@ -114,7 +114,7 @@
                             $state.transitionTo(matchedState.name, toParams);
                         }
                     } else {
-                        window.location = '/';
+                        $state.transitionTo("app.welcome");
                     }
                     endCounter(scope, el);
                 } else {
