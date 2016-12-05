@@ -71,7 +71,7 @@
                 self.wishlistLength = wishlist.length || 1;
                 reloadPerc();
             });
-            self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 20000);
+            self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 30000);
         };
 
         updateLatestFeedbacks();

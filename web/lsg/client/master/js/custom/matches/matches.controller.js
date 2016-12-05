@@ -22,7 +22,7 @@
         self.loaded = false;
         self.showOngoingSwaps = false;
         self.showPendingSwaps = true;
-        self.matchesPollingInterval = 3000;
+        self.matchesPollingInterval = 10000;
         self.matchesPromise = undefined;
 
         self.loadMatches = function () {

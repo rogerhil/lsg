@@ -51,8 +51,8 @@
         });
 
 
-    var mainHttpInterceptor = function($q) {
-
+    var mainHttpInterceptor = function($q, Notify) {
+        var connectionIssue = false;
         return {
             'request': function(config) {
                 if (config.url.slice(0,5) == '/api/' && config.method != 'GET') {
@@ -70,12 +70,24 @@
             },
             'response': function(response) {
                 $('#spinner').hide();
+                if (connectionIssue) {
+                    Notify.closeAll('connectionIssue', true);
+                    Notify.alert("Connection re-established!", {status: 'success', timeout: 2000});
+                    connectionIssue = false;
+                }
                 return response;
             },
             'responseError': function(rejection) {
                 console.log("Response rejection!");
                 console.log(rejection);
-                $('#spinner').hide();
+                if (rejection.status == -1) {
+                    $('#spinner').fadeIn();
+                    connectionIssue = true;
+                    Notify.closeAll('connectionIssue', true);
+                    Notify.alert("Connection refused, please verify your internet connection...", {status: 'danger', timeout: 99999, group: 'connectionIssue'});
+                } else {
+                    $('#spinner').hide();
+                }
                 return $q.reject(rejection);
             }
         };
