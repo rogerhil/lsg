@@ -100,16 +100,14 @@ if os.getenv('LSG_DB_NAME'):
             }
         },
         'loggers': {
-            'coffeehouse': {
-                'handlers': ['console', 'development_logfile',
-                             'production_logfile'],
+            'lsg': {
+                'handlers': ['console', 'development_logfile', 'production_logfile'],
             },
             'dba': {
                 'handlers': ['console', 'dba_logfile'],
             },
             'django': {
-                'handlers': ['console', 'development_logfile',
-                             'production_logfile'],
+                'handlers': ['console', 'development_logfile', 'production_logfile'],
             },
             'django.request': {
                 'handlers': ['console'],
@@ -180,4 +178,3 @@ if os.getenv('LSG_DB_NAME'):
                 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
             }
         }
-    DEBUG = False

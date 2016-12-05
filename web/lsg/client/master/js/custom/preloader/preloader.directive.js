@@ -14,7 +14,8 @@
             var nextSplitted = next.split('#');
             var el = angular.element(".preloader-progress").parent();
             if (nextSplitted.length > 1) {
-                switch (nextSplitted[1].replace(/\/$/g, '')) {
+                var u = nextSplitted[1].replace(/^\s+|[\/\s]+$/g, '');
+                switch (u) {
                     case '/500':
                         $state.transitionTo("pages.500");
                         endCounter($rootScope, el);
@@ -77,16 +78,22 @@
                     var state;
                     var matchedState;
                     var toParams = {};
-                    for (var k = 0; k < states.length; k++) {
-                        state = states[k];
-                        if (!state.$$state) continue;
-                        var privatePortion = state.$$state();
-                        var urlHashSplit = sref.split('#');
-                        if (urlHashSplit.length > 1) {
-                            var split = urlHashSplit[1].split('?');
-                            var u = split[0];
+                    var urlHashSplit = sref.split('#');
+                    var u, split;
+                    if (urlHashSplit.length > 1) {
+                        split = urlHashSplit[1].split('?');
+                        u = split[0];
+                    }
+                    if (u) {
+                        for (var k = 0; k < states.length; k++) {
+                            state = states[k];
+                            if (!state.$$state) continue;
+                            var privatePortion = state.$$state();
                             toParams = {};
                             var match = privatePortion.url.exec(u);
+                            if (!match) {
+                                match = privatePortion.url.exec(u.replace(/^\s+|[\/\s]+$/g, ''));
+                            }
                             if (match) {
                                 matchedState = state;
                                 if (split.length > 1) {
@@ -107,7 +114,7 @@
                             $state.transitionTo(matchedState.name, toParams);
                         }
                     } else {
-                        $state.transitionTo("app.welcome");
+                        window.location = '/';
                     }
                     endCounter(scope, el);
                 } else {

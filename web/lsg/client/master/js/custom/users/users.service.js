@@ -37,8 +37,8 @@
         return User;
     }
 
-    UsersService.$inject = ['$q', '$http', '$rootScope', 'User', 'Notify', '$timeout'];
-    function UsersService($q, $http, $rootScope, User, Notify, $timeout) {
+    UsersService.$inject = ['$q', '$http', '$rootScope', 'User', 'Notify', '$timeout', '$state'];
+    function UsersService($q, $http, $rootScope, User, Notify, $timeout, $state) {
         var userId;
         var baseUserUrl;
 
@@ -115,6 +115,9 @@
 
         this.updateUserCountsStarsDetails = function () {
             var q = $q.defer();
+            if (!baseUserUrl) {
+                return;
+            }
             $http
                 .get(baseUserUrl + 'counts-stars/')
                 .success(function (response) {
