@@ -20,10 +20,15 @@ from games.api.serializers import PlatformSerializer, GameSerializer, \
 
 class PlatformViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = PlatformSerializer
-    queryset = Platform.objects.filter(name__in=settings.SUPPORTED_PLATFORMS)
+    queryset = Platform.objects.filter(name__in=settings.SUPPORTED_PLATFORMS).order_by('name')
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('name',)
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = super(PlatformViewSet, self).get_queryset()
+        platforms = sorted(queryset, key=lambda x: x.short_name)
+        return platforms
 
 
 class GameFilter(FilterSet):
