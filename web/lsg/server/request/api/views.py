@@ -263,8 +263,8 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                                        requester_archived=False)
         requested_qs = queryset.filter(requested=user,
                                        requested_archived=False)
-        my = requester_qs.values_list('id', flat=True)
-        incoming = requested_qs.values_list('id', flat=True)
+        my = [i for i in requester_qs.values_list('id', flat=True)]
+        incoming = [i for i in requested_qs.values_list('id', flat=True)]
         count_requester = requester_qs.update(requester_archived=True)
         count_requested = requested_qs.update(requested_archived=True)
         cache_keys = [

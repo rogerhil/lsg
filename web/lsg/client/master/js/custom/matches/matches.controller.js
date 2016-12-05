@@ -177,7 +177,7 @@
                 self.data.requester_game_condition_notes,
                 self.swapUser.address.distance).then(function (request) {
                     $mdDialog.hide();
-                    window.location = "#/app/requests?id=" + request.id + '&msg=Your request is pending until ' + self.swapUser.name + ' accepts it.';
+                    window.location = "#/app/requests?id=" + request.id + '&msg=Your request is pending until ' + self.swapUser.name + ' accepts it.&my=1';
                     Notify.alert("Your request has been successfully created.", {status: 'success'});
                 }).catch(function (a) {
                     console.log(a);

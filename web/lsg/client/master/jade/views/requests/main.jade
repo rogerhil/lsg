@@ -1,9 +1,8 @@
 div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
+    button.btn.btn-default.btn-circle.btn-lg.bg-gray(type="button" ng-click="ctrl.confirmArchiveAllRequests()" nng-if="ctrl.hasClosedRequests()" style="float: right; margin-top: 3px;")
+        em.fa.fa-archive
+        md-tooltip(md-direction="top") Archive all finished requests
     h3 Incoming Requests
-        small &nbsp;
-        button.btn.btn-default.btn-circle.btn-lg.bg-gray(type="button" ng-click="ctrl.confirmArchiveAllRequests()" ng-if="ctrl.hasClosedRequests()" style="position: absolute; right: 15px; top: 10px;")
-            em.fa.fa-archive
-            md-tooltip(md-direction="top") Archive all finished requests
 
     .card(style="margin-right: 20px; float: left; height: 250px;" ng-repeat='request in ctrl.incomingRequests' request-id="{{ request.id }}")
         ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requester; context='incomingRequests'")

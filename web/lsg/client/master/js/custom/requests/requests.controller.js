@@ -49,9 +49,11 @@
                 checkToUpdateCountsStars(self.myRequests, requests);
                 self.myRequests = requests;
                 self.myRequestsLoaded = true;
-                $timeout(function () {
-                    self.highlightRequest();
-                }, 2500);
+                if ($stateParams.my) {
+                    $timeout(function () {
+                        self.highlightRequest();
+                    }, 100);
+                }
             });
         };
 
@@ -60,21 +62,23 @@
                 checkToUpdateCountsStars(self.incomingRequests, requests);
                 self.incomingRequests = requests;
                 self.incomingRequestsLoaded = true;
-                $timeout(function () {
-                    self.highlightRequest();
-                }, 2000);
+                if ($stateParams.inc) {
+                    $timeout(function () {
+                        self.highlightRequest();
+                    }, 100);
+                }
             });
         };
 
-        self.loadAllRequests = function () {
-            if (!$('md-dialog').length) {
+        self.loadAllRequests = function (force) {
+            if (!$('md-dialog').length || force) {
                 self.loadMyRequests();
                 self.loadIncomingRequests();
             }
         };
 
         self.pollRequests = function () {
-            self.loadAllRequests();
+            self.loadAllRequests(true);
             self.requestsPromise = $interval(self.loadAllRequests, self.requestsPollingInterval);
         };
 
@@ -112,7 +116,7 @@
                     "  <div class='arrow'></div>" +
                     "  <div class='popover-content'></div>" +
                     "  <div class='popover-navigation'>" +
-                    "    <a href='javascript:;' data-role='end'>OK!</a>" +
+                    "    <a href='javascript:;' data-role='end'>OK</a>" +
                     "  </div>" +
                     "</div>",
                 onEnd: function (t) {

@@ -104,7 +104,7 @@
                 resolve: helper.resolveFor('loaders.css', 'spinkit')
             })
             .state('app.requests', {
-                url: '/requests?id&msg',
+                url: '/requests?id&msg&my&inc',
                 title: 'Requests',
                 templateUrl: helper.basepath('requests/main.html'),
                 resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
