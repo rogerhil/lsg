@@ -5,17 +5,22 @@ from pg_fts.fields import TSVectorField
 from games.images import LocalGameImages
 
 PLATFORM_SHORT_NAMES = {
-    'Sony Playstation': 'PS',
+    'Sony Playstation': 'Playstation',
     'Sony Playstation 2': 'PS2',
     'Sony Playstation 3': 'PS3',
     'Sony Playstation 4': 'PS4',
     'Sony Playstation 5': 'PS5',
+    'Microsoft Xbox': 'Xbox',
     'Microsoft Xbox 360': 'Xbox 360',
     'Microsoft Xbox One': 'Xbox One',
     'Nintendo 3DS': '3DS',
     'Nintendo DS': 'DS',
     'Nintendo Wii U': 'Wii U',
     'Nintendo Wii': 'Wii',
+    'Nintendo Game Boy': 'Game Boy',
+    'Nintendo Game Boy Advance': 'Game Boy Advance',
+    'Nintendo Game Boy Color': 'Game Boy Color',
+    'Nintendo GameCube': 'GameCube',
     'Sony Playstation Vita': 'PS Vita',
     'Sony PSP': 'PSP',
     'Nintendo Entertainment System (NES)': 'NES',

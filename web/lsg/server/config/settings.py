@@ -353,21 +353,61 @@ SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
 EXPIRE_OLD_ONGOING_REQUESTS_IN_DAYS = 30
 NOTIFICATION_DAYS_BEFORE_EXPIRE = [7, 3, 2, 1]
 
+RETRO_PLATFORMS = [
+    # less popular below
+    '3DO',
+    'Atari 2600',
+    'Atari 5200',
+    'Atari 7800',
+    'Atari 800',
+    'Atari Jaguar',
+    'Atari Jaguar CD',
+    'Atari Lynx',
+    'Atari ST',
+    'Atari XE',
+    'Neo Geo',
+    'Neo Geo CD',
+    'Neo Geo Pocket',
+    'Neo Geo Pocket Color',
+    'Microsoft Xbox',
+    'Nintendo Entertainment System (NES)',
+    'Nintendo Pokémon Mini',
+    'Nintendo Virtual Boy',
+    'Nintendo Game Boy',
+    'Nintendo Game Boy Advance',
+    'Nintendo Game Boy Color',
+    'Nintendo GameCube',
+    'Super Nintendo (SNES)'
+    'Sega 32X',
+    'Sega CD',
+    'Sega Dreamcast',
+    'Sega Game Gear',
+    'Sega Genesis',
+    'Sega Master System',
+    'Sega Mega Drive',
+    'Sega Pico',
+    'Sega Saturn',
+    'Sony Playstation',
+    'Sony Playstation 2',
+    'TurboGrafx 16',
+    'TurboGrafx CD',
+]
+
 SUPPORTED_PLATFORMS = [
     'Microsoft Xbox 360',
     'Microsoft Xbox One',
+    'Mac OS',
     'Nintendo 3DS',
     'Nintendo DS',
-    'Nintendo Entertainment System (NES)',
     'Nintendo Wii',
     'Nintendo Wii U',
-    'Sony Playstation 2',
+    'PC',
     'Sony Playstation 3',
     'Sony Playstation 4',
     'Sony Playstation Vita',
     'Sony PSP',
-    'Super Nintendo (SNES)'
-]
+] + RETRO_PLATFORMS
+
 
 from config.dockersettings import *
 
