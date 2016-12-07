@@ -27,8 +27,8 @@ class PlatformViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
     def get_queryset(self):
         queryset = super(PlatformViewSet, self).get_queryset()
-        platforms = sorted(queryset, key=lambda x: x.short_name)
-        return platforms
+        #platforms = sorted(queryset, key=lambda x: x.short_name)
+        return queryset
 
 
 class GameFilter(FilterSet):

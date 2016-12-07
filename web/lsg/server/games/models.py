@@ -61,6 +61,10 @@ class Platform(models.Model):
     def logo_image(self):
         return '/app/app/img/logos/%s_200.png' % self.api_id
 
+    @property
+    def logo_image_horizontal(self):
+        return '/app/app/img/logos/horizontal/%s_300x50.png' % self.api_id
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=64)
