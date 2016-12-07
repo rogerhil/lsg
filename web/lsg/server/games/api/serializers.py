@@ -14,7 +14,7 @@ class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Platform
-        fields = ('id', 'name', 'short_name')
+        fields = ('id', 'name', 'short_name', 'logo_image')
         read_only_fields = fields
 
     #cache_registry.register(PlatformSerializer)

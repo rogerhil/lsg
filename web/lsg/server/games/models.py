@@ -57,6 +57,10 @@ class Platform(models.Model):
     def short_name(self):
         return PLATFORM_SHORT_NAMES.get(self.name, self.name)
 
+    @property
+    def logo_image(self):
+        return '/app/app/img/logos/%s_200.png' % self.api_id
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=64)

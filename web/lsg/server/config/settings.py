@@ -377,7 +377,8 @@ RETRO_PLATFORMS = [
     'Nintendo Game Boy Advance',
     'Nintendo Game Boy Color',
     'Nintendo GameCube',
-    'Super Nintendo (SNES)'
+    'Nintendo 64',
+    'Super Nintendo (SNES)',
     'Sega 32X',
     'Sega CD',
     'Sega Dreamcast',
