@@ -14,6 +14,17 @@
     function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout, GlobalFixes, $rootScope) {
         var self = this;
 
+        $(document).on("mousewheel",function(e){
+            var scroll = $('.platform-games').scrollLeft();
+            // if(scroll <= 0) {
+            //   if(scroll <= 0 && e.originalEvent.wheelDeltaX >= 0) {
+            //     e.preventDefault();
+            //   }
+            // }
+        });
+
+        self.scrollable = false;
+
         self.selectedItem = null;
         self.searchText = null;
         self.isDisabled = false;

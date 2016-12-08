@@ -3,18 +3,34 @@ h3 Games
 
 .row
     .col-lg-6
-        .card.collection-card
+        .card.collection-card(ng-controller='GamesCtrl as ctrl')
             .card-heading.bg-primary
+                div(style="float: right; margin-top: 3px;")
+                    span(ng-click="ctrl.scrollable = false")
+                        .em.fa.fa-th
+                        md-tooltip(md-direction="top") Default display
+                    span &nbsp;&nbsp;&nbsp;&nbsp;
+                    span(ng-click="ctrl.scrollable = true")
+                        .em.fa.fa-ellipsis-h
+                        md-tooltip(md-direction="top") Horizontal scrollable display
                 .card-title
                     .em.icon-layers(style="display: inline;") &nbsp;
                     span My Collection
             .card-body
-                ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='collection'; ctrl.gameTour()")
+                ng-include(src="'app/views/games/items.partial.html'", onload="context='collection'; ctrl.gameTour()")
     .col-lg-6
-        .card.wishlist-card
+        .card.wishlist-card(ng-controller='GamesCtrl as ctrl')
             .card-heading.bg-primary
+                div(style="float: right; margin-top: 3px;")
+                    span(ng-click="ctrl.scrollable = false")
+                        .em.fa.fa-th
+                        md-tooltip(md-direction="top") Default display
+                    span &nbsp;&nbsp;&nbsp;&nbsp;
+                    span(ng-click="ctrl.scrollable = true")
+                        .em.fa.fa-ellipsis-h
+                        md-tooltip(md-direction="top") Horizontal scrollable display
                 .card-title
                     .em.icon-heart(style="display: inline;") &nbsp;
                     span Wish list
             .card-body
-                ng-include(src="'app/views/games/items.partial.html'", ng-controller='GamesCtrl as ctrl', onload="context='wishlist'")
+                ng-include(src="'app/views/games/items.partial.html'", onload="context='wishlist'")

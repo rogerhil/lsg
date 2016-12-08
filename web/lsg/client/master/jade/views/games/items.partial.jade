@@ -8,11 +8,12 @@ div
         div(layout="row" class="platform-games-holder")
             div(class="platform-vertical-logo")
                 img(ng-src="{{ platform_items[1][0].game.platform.logo_image_vertical }}" style="height: 100px; position: relative; top: 50%; transform: translateY(-50%);")
-            div(style="float: left;")
-                .game-img-holder.animate(ng-repeat='item in platform_items[1]')
-                    img(ng-src='{{item.game.images.front_thumb_medium}}', alt='{{item.game.full_name}}')
-                    md-tooltip(md-direction="top") {{item.game.full_name}}
-                    em.icon-close.remove-game(ng-click="ctrl.removeGameFrom(item.id, platform_items[0], context)")
+            div(class="platform-games" ng-class="{'scrollable': ctrl.scrollable}")
+                div(ng-class="{'scrollable-block': ctrl.scrollable}")
+                    .game-img-holder.animate(ng-repeat='item in platform_items[1]')
+                        img(ng-src='{{item.game.images.front_thumb_medium}}', alt='{{item.game.full_name}}')
+                        md-tooltip(md-direction="top") {{item.game.full_name}}
+                        em.icon-close.remove-game(ng-click="ctrl.removeGameFrom(item.id, platform_items[0], context)")
             div(style="clear: both;")
         div(style="clear: both;")
     div(style="clear: both;")
