@@ -115,8 +115,16 @@
             return self[context];  // self.collection OR self.wishlist
         };
 
+        function getGamesIds(games) {
+            var gameIds = games.reduce(function (reduced, platform_items) {
+                var items = platform_items && platform_items[1] ? platform_items[1].map(function (o) {return o.game.id}) : [];
+                return reduced.concat(items);
+            }, []);
+            return gameIds;
+        }
+
         self.querySearch = function (query, context) {
-            var gameIds = self[context].map(function (o) {return o.game.id});
+            var gameIds = getGamesIds(self[context]);
             return GamesService.query(query, gameIds);
         };
 
@@ -132,16 +140,32 @@
 
         self.addGameTo = function (context) {
             if (!self.selectedItem) return;
-            var ids = self[context].map(function (o) {return o.game.id});
+            var ids = getGamesIds(self[context]);
             if (self.selectedItem.value in ids) return;
             UsersService.addGameTo(self.selectedItem.value, context).then(function (game) {
-                self[context].push(game);
-                self[context].sort(function (a, b) {
+                var platform_items;
+                for (var k = 0; k < self[context].length; k++) {
+                    platform_items = self[context][k];
+                    var found = false;
+                    if (game.game.platform.short_name == platform_items[0]) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    platform_items = [game.game.platform.short_name, []];
+                    self[context].push(platform_items);
+                    self[context].sort();
+
+                }
+                platform_items[1].push(game);
+                platform_items[1].sort(function (a, b) {
                     return a.game.name > b.game.name;
                 });
                 self.selectedItem = null;
                 self.searchText = null;
                 updatePopever(context);
+
 
             }, function (errors) {
                 var reasons = [];
@@ -158,10 +182,21 @@
                 );
             });
         };
-        self.removeGameFrom = function (itemId, context) {
+        self.removeGameFrom = function (itemId, platformShortname, context) {
             UsersService.removeGameFrom(itemId,  context).then(function (response) {
-                self[context] = self[context].filter(function (o) {return o.id != itemId});
-                updatePopever(context);
+                for (var k = 0; k < self[context].length; k++) {
+                    var platform_items = self[context][k];
+                    if (platform_items[0] == platformShortname) {
+                        var items = platform_items[1].filter(function (o) {return o.id != itemId});
+                        if (items.length) {
+                            self[context][k][1] = items;
+                        } else {
+                            self[context].splice(k, 1);
+                        }
+                        updatePopever(context);
+                        break;
+                    }
+                }
             }, function (errors) {
                 var reasons = [];
                 for (var k in errors) {

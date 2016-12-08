@@ -171,6 +171,18 @@ class UserGameMixin(object):
         return is_valid
 
 
+class CollectionSerializer(serializers.ListSerializer):
+
+    def to_representation(self, data):
+        result = super(CollectionSerializer, self).to_representation(data)
+        categorized = {}
+        for item in result:
+            key = item['game']['platform']['short_name']
+            categorized.setdefault(key, [])
+            categorized[key].append(item)
+        return sorted(categorized.items())
+
+
 class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):
     game_id = serializers.IntegerField(write_only=True)
     user_id = serializers.IntegerField(read_only=True)
@@ -178,8 +190,9 @@ class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):
 
     class Meta:
         model = CollectionItem
-        fields = ('id', 'weight', 'game', 'game_id', 'user_id')
+        fields = ('id', 'game', 'game_id', 'user_id')
         depth = 2
+        list_serializer_class = CollectionSerializer
 
     def create(self, *args, **kwargs):
         instance = super(CollectionItemSerializer, self).create(*args,
@@ -199,6 +212,7 @@ class WishlistItemSerializer(UserGameMixin, serializers.ModelSerializer):
         model = WishlistItem
         fields = ('id', 'game', 'game_id', 'user_id')
         depth = 2
+        list_serializer_class = CollectionSerializer
 
     def create(self, *args, **kwargs):
         instance = super(WishlistItemSerializer, self).create(*args, **kwargs)
