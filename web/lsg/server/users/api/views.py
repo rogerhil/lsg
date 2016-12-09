@@ -141,9 +141,11 @@ class CollectionItemViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
-        return self.queryset.filter(user_id=user_id)\
-                            .select_related('game')\
-                            .select_related('game__platform')
+        queryset = self.queryset.filter(user_id=user_id)
+        platform_id = self.request.GET.get('p')
+        if platform_id:
+            queryset = queryset.filter(game__platform_id=platform_id)
+        return queryset.select_related('game').select_related('game__platform')
 
     def perform_destroy(self, instance):
         super(CollectionItemViewSet, self).perform_destroy(instance)
@@ -167,9 +169,11 @@ class WishlistViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
-        return self.queryset.filter(user_id=user_id)\
-                            .select_related('game')\
-                            .select_related('game__platform')
+        queryset = self.queryset.filter(user_id=user_id)
+        platform_id = self.request.GET.get('p')
+        if platform_id:
+            queryset = queryset.filter(game__platform_id=platform_id)
+        return queryset.select_related('game').select_related('game__platform')
 
     def perform_destroy(self, instance):
         super(WishlistViewSet, self).perform_destroy(instance)
