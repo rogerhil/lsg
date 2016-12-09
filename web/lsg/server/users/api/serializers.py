@@ -181,7 +181,8 @@ class CollectionSerializer(serializers.ListSerializer):
             key = platform['id']
             categorized.setdefault(key, [])
             categorized[key].append(item)
-        items = [dict(platform=v[0]['game']['platform'], items=v)
+        items = [dict(platform=v[0]['game']['platform'],
+                      items=sorted(v, key=lambda x: x['game']['name']))
                  for v in categorized.values()]
         return sorted(items, key=lambda x: x['platform']['short_name'])
 

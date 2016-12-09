@@ -165,19 +165,39 @@
                     }
                 }
                 if (!found) {
-                    platform_items = [game.game.platform.short_name, []];
+                    platform_items = {platform: game.game.platform, items: []};
                     self[context].push(platform_items);
-                    self[context].sort();
-
+                    self[context].sort(function (a, b) {
+                    return a.platform.short_name.localeCompare(b.platform.short_name);
+                });
                 }
                 platform_items.items.push(game);
                 platform_items.items.sort(function (a, b) {
-                    return a.game.name > b.game.name;
+                    return a.game.name.localeCompare(b.game.name);
                 });
                 self.selectedItem = null;
                 self.searchText = null;
                 updatePopever(context);
 
+                var scrollIn = $('#platform-games-' + context + '-' + game.game.platform.id);
+                var scrollOut = scrollIn.parent();
+                var outWidth = scrollOut.outerWidth();
+                var el = scrollIn.clone();
+                el.css('position', 'absolute');
+                el.css('left', '-999999999px');
+                $('body').append(el);
+                var inWidth = el.outerWidth();
+                el.remove();
+                var num = platform_items.items.length;
+                var p = inWidth / num;
+                var index = platform_items.items.map(function (o) {return o.id}).indexOf(game.id);
+                if (((num - index) * p) <= outWidth) {
+                    $timeout(function () {
+                        scrollOut.scrollLeft(inWidth + p);
+                    }, 100);
+                } else {
+                    scrollOut.scrollLeft(p * (index + 1) - (outWidth / 2));
+                }
 
             }, function (errors) {
                 var reasons = [];

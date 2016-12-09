@@ -30,7 +30,7 @@ if os.getenv('LSG_DB_NAME'):
         ],
         'DEFAULT_PAGINATION_CLASS':
             'rest_framework.pagination.LimitOffsetPagination',
-        'PAGE_SIZE': 20,
+        'PAGE_SIZE': 200,
     }
 
     if not DEBUG:

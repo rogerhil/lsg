@@ -200,6 +200,25 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   background-color: $mdc-blue-grey-900 !important;
 }
 
+@media only screen and (max-width: $mq-up-to-tablet) {
+  .col-lg-6,
+  .col-md-4,
+  .col-md-8 {
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: -20px;
+  }
+  .user-games .card-body {
+    padding: 0px 0px 20px 0px !important;
+  }
+  .card-body {
+    padding: 20px 10px 20px 10px !important;
+  }
+  .fade-holder .fade {
+    right: 0px !important;
+  }
+}
+
 .swap-indicator {
   position: absolute;
   right: 10px;
@@ -260,6 +279,20 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   overflow-y: hidden;
 }
 
+.fade-holder {
+
+}
+
+.fade-holder .fade {
+  position: absolute;
+  right: 20px;
+  height: 120px;
+  width: 50px;
+  background: linear-gradient(to right, transparent, white);
+  opacity: 1;
+  z-index: 2;
+}
+
 .scrollable-block {
   width: auto !important;
 }
@@ -273,9 +306,9 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .platform-games-holder .platform-vertical-logo {
   float: left;
-  width: 37px;
-  padding: 0 10px;
-  margin-right: 10px;
+  //width: 37px;
+  padding: 0 25px 0 10px;
+  margin-right: 0px;
   //border-top-left-radius: 10px;
   //border-bottom-left-radius: 30px;
   -webkit-transition: all 0.8s;
