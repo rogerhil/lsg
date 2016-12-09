@@ -5,13 +5,13 @@ h3 Games
     .col-lg-6
         .card.collection-card(ng-controller='GamesCtrl as ctrl')
             .card-heading.bg-primary
-                div(style="float: right; margin-top: 3px;")
+                div(class="games-display")
                     span(ng-click="ctrl.scrollable = false")
-                        .em.fa.fa-th
+                        .em.fa.fa-th(ng-class="{'selected': !ctrl.scrollable}")
                         md-tooltip(md-direction="top") Default display
                     span &nbsp;&nbsp;&nbsp;&nbsp;
                     span(ng-click="ctrl.scrollable = true")
-                        .em.fa.fa-ellipsis-h
+                        .em.fa.fa-ellipsis-h(ng-class="{'selected': ctrl.scrollable}")
                         md-tooltip(md-direction="top") Horizontal scrollable display
                 .card-title
                     .em.icon-layers(style="display: inline;") &nbsp;
@@ -21,13 +21,13 @@ h3 Games
     .col-lg-6
         .card.wishlist-card(ng-controller='GamesCtrl as ctrl')
             .card-heading.bg-primary
-                div(style="float: right; margin-top: 3px;")
+                div(class="games-display")
                     span(ng-click="ctrl.scrollable = false")
-                        .em.fa.fa-th
+                        .em.fa.fa-th(ng-class="{'selected': !ctrl.scrollable}")
                         md-tooltip(md-direction="top") Default display
                     span &nbsp;&nbsp;&nbsp;&nbsp;
                     span(ng-click="ctrl.scrollable = true")
-                        .em.fa.fa-ellipsis-h
+                        .em.fa.fa-ellipsis-h(ng-class="{'selected': ctrl.scrollable}")
                         md-tooltip(md-direction="top") Horizontal scrollable display
                 .card-title
                     .em.icon-heart(style="display: inline;") &nbsp;

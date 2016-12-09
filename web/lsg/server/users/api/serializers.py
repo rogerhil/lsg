@@ -177,10 +177,13 @@ class CollectionSerializer(serializers.ListSerializer):
         result = super(CollectionSerializer, self).to_representation(data)
         categorized = {}
         for item in result:
-            key = item['game']['platform']['short_name']
+            platform = item['game']['platform']
+            key = platform['id']
             categorized.setdefault(key, [])
             categorized[key].append(item)
-        return sorted(categorized.items())
+        items = [dict(platform=v[0]['game']['platform'], items=v)
+                 for v in categorized.values()]
+        return sorted(items, key=lambda x: x['platform']['short_name'])
 
 
 class CollectionItemSerializer(UserGameMixin, serializers.ModelSerializer):

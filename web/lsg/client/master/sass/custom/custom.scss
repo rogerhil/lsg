@@ -215,6 +215,15 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   font-size: 14px;
 }
 
+.games-display {
+  float: right;
+  margin-top: 3px;
+}
+
+.games-display .em.fa.selected {
+  color: $mdc-yellow-700;
+}
+
 .platform-games-holder {
   //background: linear-gradient(to right, #eee, #fff);
   //border-left: 1px solid #eee;
@@ -264,6 +273,7 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .platform-games-holder .platform-vertical-logo {
   float: left;
+  width: 37px;
   padding: 0 10px;
   margin-right: 10px;
   //border-top-left-radius: 10px;
@@ -281,7 +291,7 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   @include box-shadow(0px 1px 3px 0px rgba(0, 0, 0, 0.2));
 }
 
-.platform-vertical-logo > em.fa {
+.platform-vertical-logo > em {
   -webkit-transition: all 0.8s;
   -o-transition: all 0.8s;
   transition: all 0.8s;
@@ -302,15 +312,16 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   margin: 0;
 }
 
-.platform-games-holder:hover em.fa {
+.platform-games-holder:hover em.icon-pin {
   opacity: 1;
   -webkit-transition: all 0.8s;
   -o-transition: all 0.8s;
   transition: all 0.8s;
 }
 
-.platform-vertical-logo > em.fa.fa-bookmark {
-  color: $mdc-yellow-800;
+.platform-vertical-logo > em.fa.fa-thumb-tack {
+  //color: $mdc-yellow-800;
+  color: $mdc-light-blue-500;
   opacity: 1 !important;
 }
 

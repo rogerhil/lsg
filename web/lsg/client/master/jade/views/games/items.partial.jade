@@ -5,17 +5,17 @@
 
 div
     div(ng-repeat='platform_items in ctrl.getItems(context)')
-        div(layout="row" class="platform-games-holder" ng-class="{'platform-games-holder-hidden': ctrl.pinned != platform_items[0] && ctrl.pinned}")
+        div(layout="row" class="platform-games-holder" ng-class="{'platform-games-holder-hidden': ctrl.pinned != platform_items.platform.id && ctrl.pinned}")
             div(class="platform-vertical-logo" style="position: relative;")
-                em.fa(ng-click="ctrl.pinned == platform_items[0] ? ctrl.pinned = '' : ctrl.pinned = platform_items[0]" ng-class="{'fa-bookmark': ctrl.pinned == platform_items[0], 'fa-bookmark-o': ctrl.pinned != platform_items[0]}")
-                //md-tooltip(md-direction="top") Only show {{ platform_items[0] }}
-                img(ng-src="{{ platform_items[1][0].game.platform.logo_image_vertical }}" style="height: 90px; position: relative; top: 50%; transform: translateY(-50%);")
+                em(ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = platform_items.platform.id" ng-class="{'fa fa-thumb-tack': ctrl.pinned == platform_items.platform.id, 'icon-pin': ctrl.pinned != platform_items.platform.id}")
+                //md-tooltip(md-direction="top") Only show {{ platform_items.platform.short_name }}
+                img(ng-src="{{ platform_items.platform.logo_image_vertical }}" style="height: 90px; position: absolute; top: 50%; transform: translateY(-50%);")
             div(class="platform-games" ng-class="{'scrollable': ctrl.scrollable}")
                 div(ng-class="{'scrollable-block': ctrl.scrollable}")
-                    .game-img-holder.animate(ng-repeat='item in platform_items[1]')
+                    .game-img-holder.animate(ng-repeat='item in platform_items.items')
                         img(ng-src='{{item.game.images.front_thumb_medium}}', alt='{{item.game.full_name}}')
                         md-tooltip(md-direction="top") {{item.game.full_name}}
-                        em.icon-close.remove-game(ng-click="ctrl.removeGameFrom(item.id, platform_items[0], context)")
+                        em.icon-close.remove-game(ng-click="ctrl.removeGameFrom(item.id, platform_items.platform.id, context)")
             div(style="clear: both;")
         div(style="clear: both;")
     div(style="clear: both;")

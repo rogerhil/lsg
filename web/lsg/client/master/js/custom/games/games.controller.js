@@ -128,7 +128,7 @@
 
         function getGamesIds(games) {
             var gameIds = games.reduce(function (reduced, platform_items) {
-                var items = platform_items && platform_items[1] ? platform_items[1].map(function (o) {return o.game.id}) : [];
+                var items = platform_items && platform_items.items ? platform_items.items.map(function (o) {return o.game.id}) : [];
                 return reduced.concat(items);
             }, []);
             return gameIds;
@@ -158,7 +158,7 @@
                 for (var k = 0; k < self[context].length; k++) {
                     platform_items = self[context][k];
                     var found = false;
-                    if (game.game.platform.short_name == platform_items[0]) {
+                    if (game.game.platform.id == platform_items.platform.id) {
                         found = true;
                         break;
                     }
@@ -169,8 +169,8 @@
                     self[context].sort();
 
                 }
-                platform_items[1].push(game);
-                platform_items[1].sort(function (a, b) {
+                platform_items.items.push(game);
+                platform_items.items.sort(function (a, b) {
                     return a.game.name > b.game.name;
                 });
                 self.selectedItem = null;
@@ -193,14 +193,14 @@
                 );
             });
         };
-        self.removeGameFrom = function (itemId, platformShortname, context) {
+        self.removeGameFrom = function (itemId, platformId, context) {
             UsersService.removeGameFrom(itemId,  context).then(function (response) {
                 for (var k = 0; k < self[context].length; k++) {
                     var platform_items = self[context][k];
-                    if (platform_items[0] == platformShortname) {
-                        var items = platform_items[1].filter(function (o) {return o.id != itemId});
+                    if (platform_items.platform.id == platformId) {
+                        var items = platform_items.items.filter(function (o) {return o.id != itemId});
                         if (items.length) {
-                            self[context][k][1] = items;
+                            self[context][k].items = items;
                         } else {
                             self[context].splice(k, 1);
                         }
