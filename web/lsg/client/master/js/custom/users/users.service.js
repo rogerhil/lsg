@@ -202,9 +202,12 @@
                 });
             return q.promise;
         };
-        this.getCollection = function () {
+        this.getCollection = function (platformId) {
             var q = $q.defer();
             var url = baseUserUrl + 'collection/';
+            if (platformId) {
+                url += '?p=' + platformId;
+            }
             $http
                 .get(url)
                 .success(function (response) {
@@ -212,9 +215,12 @@
                 });
             return q.promise;
         };
-        this.getWishlist = function () {
+        this.getWishlist = function (platformId) {
             var q = $q.defer();
             var url = baseUserUrl + 'wishlist/';
+            if (platformId) {
+                url += '?p=' + platformId;
+            }
             $http
                 .get(url)
                 .success(function (response) {

@@ -22,6 +22,7 @@
         self.wishlist = [];
         self.loaded = {collection: false, wishlist: false};
         self.tour = null;
+        self.pinned = undefined;
 
         $(document).unbind('on');
         $(document).on("mousewheel",function(e){
@@ -136,7 +137,7 @@
 
         self.querySearch = function (query, context) {
             var gameIds = getGamesIds(self[context]);
-            return GamesService.query(query, gameIds);
+            return GamesService.query(query, gameIds, self.pinned);
         };
 
         function updatePopever(context) {

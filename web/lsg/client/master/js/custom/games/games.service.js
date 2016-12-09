@@ -7,7 +7,7 @@
 
     GamesService.$inject = ['$q', '$http', '$rootScope', 'Notify'];
     function GamesService($q, $http, $rootScope, Notify) {
-        this.query = function (query, excludeGames) {
+        this.query = function (query, excludeGames, platform) {
             var url = '/api/games/?search=' + query;
             var q = $q.defer();
             if ($rootScope.user.havePlatforms()) {
@@ -32,6 +32,9 @@
             }
             if (excludeGames.length) {
                 url += '&exclude_games=' + excludeGames.join(',');
+            }
+            if (platform) {
+                url += '&platform_id=' + platform;
             }
             $http.get(url).success(function (response) {
                 var results = response.results;
