@@ -11,19 +11,20 @@ div
                 //md-tooltip(md-direction="top") Only show {{ platform_items.platform.short_name }}
                 img(ng-src="{{ platform_items.platform.logo_image_vertical }}" style="height: 90px; position: absolute; top: 50%; transform: translateY(-50%);")
             div(ng-class="{'fade-holder': ctrl.scrollable}")
-                .fade
+                .fade-left.fade-out(ng-mouseover="ctrl.scroll(context, platform_items.platform.id, '-')" ng-mouseleave="ctrl.scrollStop()")
+                .fade-right(ng-mouseover="ctrl.scroll(context, platform_items.platform.id, '+')" ng-mouseleave="ctrl.scrollStop()")
             div(class="platform-games" ng-class="{'scrollable': ctrl.scrollable}")
-                div(ng-class="{'scrollable-block': ctrl.scrollable}" id="platform-games-{{ context }}-{{ platform_items.platform.id }}")
+                div(class="sss" ng-class="{'scrollable-block': ctrl.scrollable}" id="platform-games-{{ context }}-{{ platform_items.platform.id }}")
                     .game-img-holder.animate(ng-repeat='item in platform_items.items')
                         img(ng-src='{{item.game.images.front_thumb_medium}}', alt='{{item.game.full_name}}')
                         md-tooltip(md-direction="top") {{item.game.full_name}}
                         em.icon-close.remove-game(ng-click="ctrl.removeGameFrom(item.id, platform_items.platform.id, context)")
-                    .game-img-holder(style="visibility: hidden;" ng-if="ctrl.scrollable")
-                        span &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    //.game-img-holder(style="visibility: hidden;" ng-if="ctrl.scrollable")
+                    //    span &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             div(style="clear: both;")
         div(style="clear: both;")
     div(style="clear: both;")
 
 form(ng-submit="ctrl.addGameTo(context)")
-    md-autocomplete(ng-disabled='ctrl.isDisabled', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache', md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText', md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display', placeholder='Add more games...', md-min-length="3", md-delay="500", md-autoselect="true")
+    md-autocomplete(ng-disabled='ctrl.isDisabled', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache', md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText', md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display', placeholder='Add games to {{ context }}...', md-min-length="3", md-delay="500", md-autoselect="true")
         span(md-highlight-text='ctrl.searchText') {{item.display}}

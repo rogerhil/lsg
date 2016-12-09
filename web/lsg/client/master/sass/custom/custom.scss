@@ -209,14 +209,31 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
     margin-top: -20px;
   }
   .user-games .card-body {
-    padding: 0px 0px 20px 0px !important;
+    padding: 10px 0px 10px 0px !important;
+  }
+  .user-games .card {
+    margin-bottom: 40px;
   }
   .card-body {
     padding: 20px 10px 20px 10px !important;
   }
-  .fade-holder .fade {
+  .fade-holder .fade-right {
     right: 0px !important;
   }
+  .fade-holder .fade-left {
+    left: 35px !important;
+  }
+  .fade-holder .fade-right,
+  .fade-holder .fade-left {
+    width: 20px !important;
+  }
+  .game-img-holder {
+    margin: 0 10px 10px 0 !important;
+  }
+  .platform-games {
+    margin-top: 10px !important;
+  }
+
 }
 
 .swap-indicator {
@@ -280,17 +297,39 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 }
 
 .fade-holder {
-
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
-.fade-holder .fade {
+.fade-holder .fade-right,
+.fade-holder .fade-left {
   position: absolute;
-  right: 20px;
   height: 120px;
   width: 50px;
-  background: linear-gradient(to right, transparent, white);
   opacity: 1;
-  z-index: 2;
+  z-index: 1;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.fade-holder .fade-right {
+  background: linear-gradient(to right, transparent, white);
+  right: 22px;
+}
+
+.fade-holder .fade-out {
+  //background: none !important;
+  width: 0px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.fade-holder .fade-left {
+  left: 57px;
+  background: linear-gradient(to right, white, transparent);
 }
 
 .scrollable-block {
@@ -306,6 +345,7 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .platform-games-holder .platform-vertical-logo {
   float: left;
+  z-index: 2;
   //width: 37px;
   padding: 0 25px 0 10px;
   margin-right: 0px;

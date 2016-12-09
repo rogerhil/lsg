@@ -10,8 +10,8 @@
     /*
       GamesCtrl
      */
-    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout', 'GlobalFixes', '$rootScope'];
-    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout, GlobalFixes, $rootScope) {
+    GamesCtrl.$inject = ['$scope', '$mdDialog', 'GamesService', 'UsersService', '$stateParams', '$timeout', 'GlobalFixes', '$rootScope', 'Utils'];
+    function GamesCtrl($scope, $mdDialog, GamesService, UsersService, $stateParams, $timeout, GlobalFixes, $rootScope, Utils) {
         var self = this;
 
         self.scrollable = false;
@@ -23,6 +23,7 @@
         self.loaded = {collection: false, wishlist: false};
         self.tour = null;
         self.pinned = undefined;
+        self.isMobile = Utils.isMobile();
 
         $(document).unbind('on');
         $(document).on("mousewheel",function(e){
@@ -49,10 +50,20 @@
         UsersService.getCollection().then(function (collection) {
             self.loaded.collection = true;
             self.collection = collection;
+            $timeout(function () {
+                if (self.wishlist) {
+                    $('.platform-games').unbind('scroll').scroll(updateScrollFades);
+                }
+            }, 500);
         });
         UsersService.getWishlist().then(function (wishlist) {
             self.loaded.wishlist = true;
             self.wishlist = wishlist;
+            $timeout(function () {
+                if (self.collection) {
+                    $('.platform-games').unbind('scroll').scroll(updateScrollFades);
+                }
+            }, 500);
         });
 
         self.gameTour = function () {
@@ -150,6 +161,90 @@
             }
         }
 
+        self.scrolling = false;
+
+        self.scrollableWidth;
+        self.scrollableWidthClearPromise;
+
+        self.scroll = function (context, platformId, direction) {
+            if (self.isMobile) {
+                // disable this feature in mobile devices
+                return;
+            }
+            self.scrolling = true;
+            var scrollIn = $('#platform-games-' + context + '-' + platformId);
+            var scrollOut = scrollIn.parent();
+            scrollOut.animate({
+                scrollLeft: direction + "=3px"
+            }, 1, function() {
+                if (self.scrolling) {
+                    // If we want to keep scrolling, call the scrollContent function again:
+                    self.scroll(context, platformId, direction);
+                }
+            });
+        };
+
+        function getScrollableWidth(sb) {
+            var nsb = sb.clone();
+            nsb.css('position', 'absolute');
+            nsb.css('left', '-999999999px');
+            $('body').append(nsb);
+            var width = nsb.outerWidth();
+            nsb.remove();
+            return width;
+        }
+
+        function updateScrollFades() {
+            var left = $(this).parent().find('.fade-left');
+            var right = $(this).parent().find('.fade-right');
+            if (!self.scrollableWidth) {
+                self.scrollableWidth = getScrollableWidth($(this).find('.scrollable-block'));
+            }
+            var maxScroll = self.scrollableWidth - $(this).outerWidth() - 42;
+            if ($(this).scrollLeft() < 2) {
+                left.addClass('fade-out');
+            } else {
+                left.removeClass('fade-out');
+            }
+            if ($(this).scrollLeft() >= maxScroll) {
+                right.addClass('fade-out');
+            } else {
+                right.removeClass('fade-out');
+            }
+            $timeout.cancel(self.scrollableWidthClearPromise);
+            self.scrollableWidthClearPromise = $timeout(function () {
+                self.scrollableWidth = undefined;
+            }, 2000);
+        }
+
+        self.scrollStop = function () {
+            self.scrolling = false;
+        };
+
+        function scrollToGame(context, game, platform_items) {
+            var scrollIn = $('#platform-games-' + context + '-' + game.game.platform.id);
+            var scrollOut = scrollIn.parent();
+            var outWidth = scrollOut.outerWidth();
+            var inWidth = getScrollableWidth(scrollIn);
+            var num = platform_items.items.length;
+            var p = inWidth / num;
+            var index = platform_items.items.map(function (o) {return o.id}).indexOf(game.id);
+            var v;
+            if (((num - index) * p) <= outWidth) {
+                v = inWidth + p;
+                scrollOut.scrollLeft(0);
+                scrollOut.animate({
+                    scrollLeft: "+=" + v + "px"
+                }, 150);
+            } else {
+                v = p * (index + 1) - (outWidth / 2);
+                scrollOut.scrollLeft(0);
+                scrollOut.animate({
+                    scrollLeft: "+=" + v + "px"
+                }, 150);
+            }
+        }
+
         self.addGameTo = function (context) {
             if (!self.selectedItem) return;
             var ids = getGamesIds(self[context]);
@@ -178,26 +273,7 @@
                 self.selectedItem = null;
                 self.searchText = null;
                 updatePopever(context);
-
-                var scrollIn = $('#platform-games-' + context + '-' + game.game.platform.id);
-                var scrollOut = scrollIn.parent();
-                var outWidth = scrollOut.outerWidth();
-                var el = scrollIn.clone();
-                el.css('position', 'absolute');
-                el.css('left', '-999999999px');
-                $('body').append(el);
-                var inWidth = el.outerWidth();
-                el.remove();
-                var num = platform_items.items.length;
-                var p = inWidth / num;
-                var index = platform_items.items.map(function (o) {return o.id}).indexOf(game.id);
-                if (((num - index) * p) <= outWidth) {
-                    $timeout(function () {
-                        scrollOut.scrollLeft(inWidth + p);
-                    }, 100);
-                } else {
-                    scrollOut.scrollLeft(p * (index + 1) - (outWidth / 2));
-                }
+                scrollToGame(context, game, platform_items);
 
             }, function (errors) {
                 var reasons = [];
