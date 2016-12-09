@@ -121,7 +121,6 @@ if os.getenv('LSG_DB_NAME'):
     }
 
     if not DEBUG:
-        LOGGING['loggers']['coffeehouse']['handlers'].append('mail_admins')
         LOGGING['loggers']['dba']['handlers'].append('mail_admins')
         LOGGING['loggers']['django']['handlers'].append('mail_admins')
         LOGGING['loggers']['django.request']['handlers'].append('mail_admins')
