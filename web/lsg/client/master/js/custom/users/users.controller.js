@@ -17,6 +17,7 @@
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
         Tour.prototype._reposition = GlobalFixes._Tour_reposition;
+        Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
 
         self.tour = undefined;
         self.countryTour = undefined;
@@ -150,11 +151,6 @@
             }
         }
 
-        self.focused = undefined;
-        $('body').click(function () {
-            self.focused = $('input:focus');
-        });
-
         function tourActivate() {
             if (self.user.isProfileComplete()) {
                 return;
@@ -204,20 +200,7 @@
                         "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
                         "  </div>" +
                         "</div>",
-                    steps: steps,
-                    onShown: function () {
-                        // fix issue in mobile devices, the hides the keyboard, force set the focus imediatelly
-                        for (var k = 1; k < 21; k++) {
-                            $timeout(function () {
-                                if (self.focused) {
-                                    self.focused.focus();
-                                    if (k == 20) {
-                                        self.focused = undefined;
-                                    }
-                                }
-                            }, 100 * k);
-                        }
-                    }
+                    steps: steps
                 });
             }
             self.tour.init();

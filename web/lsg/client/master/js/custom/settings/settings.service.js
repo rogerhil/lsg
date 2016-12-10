@@ -91,6 +91,57 @@
                 });
             }, 900);
         };
-    }
 
+        this.hackTour_showPopover = function (step, i) {
+            if (this._current == i && $(".tour-" + this._options.name).length) {
+                //self.called = false;
+                return;
+            }
+            var $element, $tip, isOrphan, options, shouldAddSmart;
+            $(".tour-" + this._options.name).remove();
+            options = $.extend({}, this._options);
+            isOrphan = this._isOrphan(step);
+            step.template = this._template(step, i);
+            if (isOrphan) {
+                step.element = 'body';
+                step.placement = 'top';
+            }
+            $element = $(step.element);
+            $element.addClass("tour-" + this._options.name + "-element tour-" + this._options.name + "-" + i + "-element");
+            if (step.options) {
+                $.extend(options, step.options);
+            }
+            if (step.reflex && !isOrphan) {
+                $(step.reflexElement).addClass('tour-step-element-reflex').off("" + (this._reflexEvent(step.reflex)) + ".tour-" + this._options.name).on("" + (this._reflexEvent(step.reflex)) + ".tour-" + this._options.name, (function (_this) {
+                    return function () {
+                        if (_this._isLast()) {
+                            return _this.next();
+                        } else {
+                            return _this.end();
+                        }
+                    };
+                })(this));
+            }
+            shouldAddSmart = step.smartPlacement === true && step.placement.search(/auto/i) === -1;
+            $element.popover({
+                placement: shouldAddSmart ? "auto " + step.placement : step.placement,
+                trigger: 'manual',
+                title: step.title,
+                content: step.content,
+                html: true,
+                animation: step.animation,
+                container: step.container,
+                template: step.template,
+                selector: step.element
+            }).popover('show');
+            $tip = $element.data('bs.popover') ? $element.data('bs.popover').tip() : $element.data('popover').tip();
+            $tip.attr('id', step.id);
+            this._focus($tip, $element, step.next < 0);
+            this._reposition($tip, step);
+            self.called = true;
+            if (isOrphan) {
+                return this._center($tip);
+            }
+        };
+    }
 })();
