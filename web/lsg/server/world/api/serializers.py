@@ -52,7 +52,9 @@ class AddressSerializer(serializers.ModelSerializer):
         country = self._validated_data.get('country')
         if country == 'IE':
             # GOOGLE BUG!!!
-            self._validated_data['geocoder_address'] = self._validated_data.get('geocoder_address').replace(', Co. ', ', ')
+            geo_address = self._validated_data.get('geocoder_address')
+            self._validated_data['geocoder_address'] = geo_address.replace(', Co. ', ', ') \
+                                                       if geo_address else None
         location = self._validated_data.get('geocoder_address')
         if is_valid and country in settings.SUPPORTED_COUNTRIES and not location:
             return True

@@ -84,7 +84,7 @@ class UsersViewSet(viewsets.ModelViewSet):
                               components="country:%s" % code,
                               timeout=30, key=settings.GOOGLE_GEOCODING_KEY, language='en')
         address = geo.address
-        if code == 'IE':
+        if code == 'IE' and address:
             # GOOGLE BUG!!!
             address = address.replace(', Co. ', ', ')
         return views.Response([dict(display=address)])
