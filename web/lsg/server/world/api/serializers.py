@@ -50,6 +50,9 @@ class AddressSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         is_valid = super(AddressSerializer, self).is_valid(raise_exception)
         country = self._validated_data.get('country')
+        if country == 'IE':
+            # GOOGLE BUG!!!
+            self._validated_data['geocoder_address'] = self._validated_data.get('geocoder_address').replace(', Co. ', ', ')
         location = self._validated_data.get('geocoder_address')
         if is_valid and country in settings.SUPPORTED_COUNTRIES and not location:
             return True
@@ -65,10 +68,10 @@ class AddressSerializer(serializers.ModelSerializer):
             if not geo.city_long:
                 self._errors.setdefault('address', [])
                 self._errors['address'].append("City must be specified.")
-            if not geo.housenumber and not geo.street_long and not geo.road_long:
-                self._errors.setdefault('address', [])
-                self._errors['address'].append("Minimum location required, e.g.: street, road, "
-                                               "number, etc.")
+            #if not geo.housenumber and not geo.street_long and not geo.road_long:
+            #    self._errors.setdefault('address', [])
+            #    self._errors['address'].append("Minimum location required, e.g.: street, road, "
+            #                                   "number, etc.")
 
         if self.errors:
             if raise_exception:

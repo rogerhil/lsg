@@ -233,7 +233,12 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   .platform-games {
     margin-top: 10px !important;
   }
+}
 
+@media only screen and (max-width: $mq-up-to-mobile) {
+  .md-dialog-content {
+    padding: 10px !important;
+  }
 }
 
 .swap-indicator {

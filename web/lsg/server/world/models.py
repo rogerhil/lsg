@@ -86,7 +86,8 @@ class Address(models.Model):
         kwargs = {}
         if country:
             kwargs['components'] = "country:%s" % country
-        geo = geocoder.google(location, timeout=30, key=settings.GOOGLE_GEOCODING_KEY, **kwargs)
+        geo = geocoder.google(location, timeout=30, key=settings.GOOGLE_GEOCODING_KEY, **kwargs,
+                              language='en')
         return geo
 
     @classmethod

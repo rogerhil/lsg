@@ -68,7 +68,10 @@
                 reloadPerc();
             });
             UsersService.getWishlist().then(function (wishlist) {
-                self.wishlistLength = wishlist.length || 1;
+                var length = wishlist.reduce(function (a, b) {
+                    return a + b.items.length;
+                }, 0);
+                self.wishlistLength = length || 1;
                 reloadPerc();
             });
             self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 30000);

@@ -82,8 +82,12 @@ class UsersViewSet(viewsets.ModelViewSet):
         code = request.user.address.country.code
         geo = geocoder.google(request.GET.get('search', ''),
                               components="country:%s" % code,
-                              timeout=30, key=settings.GOOGLE_GEOCODING_KEY)
-        return views.Response([dict(display=geo.address)])
+                              timeout=30, key=settings.GOOGLE_GEOCODING_KEY, language='en')
+        address = geo.address
+        if code == 'IE':
+            # GOOGLE BUG!!!
+            address = address.replace(', Co. ', ', ')
+        return views.Response([dict(display=address)])
 
     @detail_route(methods=['get'])
     def matches(self, request, pk):

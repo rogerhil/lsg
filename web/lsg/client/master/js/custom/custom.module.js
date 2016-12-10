@@ -84,7 +84,7 @@
                     $('#spinner').fadeIn();
                     connectionIssue = true;
                     Notify.closeAll('connectionIssue', true);
-                    Notify.alert("Connection refused, please verify your internet connection...", {status: 'danger', timeout: 99999, group: 'connectionIssue'});
+                    Notify.alert("Connection refused, please verify your internet connection...", {status: 'danger', timeout: 60000, group: 'connectionIssue'});
                 } else {
                     $('#spinner').hide();
                 }
