@@ -150,6 +150,11 @@
             }
         }
 
+        self.focused = undefined;
+        $('body').click(function () {
+            self.focused = $('input:focus');
+        });
+
         function tourActivate() {
             if (self.user.isProfileComplete()) {
                 return;
@@ -199,7 +204,17 @@
                         "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
                         "  </div>" +
                         "</div>",
-                    steps: steps});
+                    steps: steps,
+                    onShown: function () {
+                        // fix issue in mobile devices, the hides the keyboard, force set the focus imediatelly
+                        $timeout(function () {
+                            if (self.focused) {
+                                self.focused.focus();
+                                self.focused = undefined;
+                            }
+                        }, 500);
+                    }
+                });
             }
             self.tour.init();
             self.tour.start();

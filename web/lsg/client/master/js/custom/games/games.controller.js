@@ -70,6 +70,11 @@
             $timeout(self.runGameTour, 1000);
         };
 
+        self.focused = undefined;
+        $('body').click(function () {
+            self.focused = $('input:focus');
+        });
+
         self.runGameTour = function () {
             if (!$stateParams.tour) {
                 return;
@@ -87,6 +92,7 @@
                 backdrop: true,
                 //backdropContainer: 'header.topnavbar-wrapper',
                 //container: 'header.topnavbar-wrapper',
+                autoscroll: false,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -123,6 +129,15 @@
                             $('nav.sidebar');
                         }, 100);
                     },
+                    onShown: function () {
+                        // fix issue in mobile devices, the hides the keyboard, force set the focus imediatelly
+                        $timeout(function () {
+                            if (self.focused) {
+                                self.focused.focus();
+                                self.focused = undefined;
+                            }
+                        }, 500);
+                    },
                     onHide: function (tour) {
                         $rootScope.app.asideToggled = false;
                         $rootScope.$apply();
@@ -132,6 +147,7 @@
             self.tour.init();
             self.tour.start();
             self.tour.restart(true);
+
         };
 
         self.getItems = function (context) {
