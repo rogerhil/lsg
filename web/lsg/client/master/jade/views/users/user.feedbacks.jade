@@ -2,16 +2,23 @@ md-dialog(aria-label="{{ ctrl.user.name }} latest feedbacks", ng-cloak, style="m
     form
         md-toolbar
             .md-toolbar-tools
-                h2 {{ ctrl.user.name }} latest feedbacks
+                h2 {{ ctrl.user.name }} latest feedback
                 span(flex)
                 md-button.md-icon-button(ng-click="ctrl.close()")
                     md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
         md-dialog-content
-            .md-dialog-content(style="min-width: 370px;")
-                user-photo-ratings-distance(user="ctrl.user" distance="ctrl.distance" hidefeedbacks="true")
+            .md-dialog-content(style="min-width: 320px;")
+                div
+                    .col-lg-6(style="margin-top: 5px")
+                        user-photo-ratings-distance(user="ctrl.user" distance="ctrl.distance" hidefeedbacks="true")
+                    .col-lg-6(style="margin-top: 5px")
+                        p
+                            strong Member since:
+                            span {{ ctrl.user.joined }}
+                div(style='clear: both;')
                 br
-                p(ng-if="!ctrl.latestFeedbacks.length") This user has no feedbacks yet.
-                h4(ng-if="ctrl.latestFeedbacks.length") Latest feedbacks
+                p(ng-if="!ctrl.latestFeedbacks.length") This user has no feedback yet.
+                h4(ng-if="ctrl.latestFeedbacks.length") Latest feedback
                 user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
 
                 div(style="clear: both;")

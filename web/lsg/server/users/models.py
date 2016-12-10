@@ -122,6 +122,11 @@ class User(AbstractUser):
         return self.first_name or self.username
 
     @property
+    def joined(self):
+        from django.utils import formats
+        return formats.date_format(self.date_joined, "DATE_FORMAT")
+
+    @property
     def rating(self):
         negative = Decimal(self.negative_feedback_count)
         positive = Decimal(self.positive_feedback_count)

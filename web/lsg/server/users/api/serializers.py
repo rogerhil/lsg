@@ -26,7 +26,9 @@ class SmallUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'name', 'email', 'id', 'picture', 'stars')
+        fields = ('username', 'name', 'email', 'id', 'picture', 'stars', 'joined',
+                  'succeeded_swaps_count', 'failed_swaps_count', 'expired_swaps_count',
+                  'negative_feedback_count', 'positive_feedback_count', 'neutral_feedback_count')
         read_only_fields = fields
         depth = 0
 
@@ -35,7 +37,7 @@ class UserCountsStarsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('succeeded_swaps_count', 'failed_swaps_count',
+        fields = ('succeeded_swaps_count', 'failed_swaps_count', 'joined',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'enabled', 'deleted')
@@ -51,7 +53,7 @@ class RequestUserNoFullAddressSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'name', 'email', 'picture', 'first_name',
                   'last_name', 'gender', 'address', 'phone1_prefix', 'phone1',
-                  'succeeded_swaps_count', 'failed_swaps_count',
+                  'succeeded_swaps_count', 'failed_swaps_count', 'joined',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'social_links', 'id', 'show_full_address_allowed')

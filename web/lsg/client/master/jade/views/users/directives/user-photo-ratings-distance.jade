@@ -1,17 +1,23 @@
 .media
     .media-left.media-middle
-        a(href='javascript:;' ng-click="showUserFeedbacks(user, onfeedbacksclose)")
+        a(href='javascript:;' ng-click="showUserFeedbacks(user, onfeedbacksclose)" ng-if="!hidefeedbacks")
             img.media-object.img-circle.img-thumbnail.thumb48(ng-src="{{user.picture}}", alt='{{user.name}}')
-        md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
+        img.media-object.img-circle.img-thumbnail.thumb48(ng-src="{{user.picture}}", alt='{{user.name}}' ng-if="hidefeedbacks")
+        md-tooltip(md-direction="top") Show {{ user.name }}'s latest feedbacks
     .media-body.pt-sm(style="width: auto;")
         .text-bold
             span(style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; display: inline-block;") {{ user.name }}&nbsp;&nbsp;
             span(style="display: inline-block; vertical-align: top;")
-                user-ratings(user="user")
+                a(href='javascript:;' ng-click="showUserFeedbacks(user, onfeedbacksclose)" ng-if="!hidefeedbacks")
+                    user-ratings(user="user")
+                    //md-tooltip(md-direction="top") Positive: {{ user.positive_feedback_count }}  |  Neutral: {{ user.neutral_feedback_count }}  |  Negative: {{ user.negative_feedback_count }}
+                span(ng-if="hidefeedbacks")
+                    user-ratings(user="user")
+                md-tooltip(md-direction="top") Positive: {{ user.positive_feedback_count }}  |  Neutral: {{ user.neutral_feedback_count }}  |  Negative: {{ user.negative_feedback_count }}
             .text-sm.text-muted
-                a(href="javascript:;" ng-click="showUserFeedbacks(user, onfeedbacksclose)" ng-if="!hidefeedbacks")
-                    em.fa.fa-comments-o
-                    md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
-                span(ng-if="!hidefeedbacks") &nbsp;&nbsp;
+                //a(href="javascript:;" ng-click="showUserFeedbacks(user, onfeedbacksclose)" ng-if="!hidefeedbacks")
+                //    em.fa.fa-comments-o
+                //    md-tooltip(md-direction="top") {{ user.name }}'s latest feedbacks
+                //span(ng-if="!hidefeedbacks") &nbsp;&nbsp;
                 span(ng-if="distance") {{ distance }} away
                 span(ng-if="!distance") {{ user.address.distance_display }} away
