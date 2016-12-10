@@ -207,12 +207,16 @@
                     steps: steps,
                     onShown: function () {
                         // fix issue in mobile devices, the hides the keyboard, force set the focus imediatelly
-                        $timeout(function () {
-                            if (self.focused) {
-                                self.focused.focus();
-                                self.focused = undefined;
-                            }
-                        }, 500);
+                        for (var k = 1; k < 21; k++) {
+                            $timeout(function () {
+                                if (self.focused) {
+                                    self.focused.focus();
+                                    if (k == 20) {
+                                        self.focused = undefined;
+                                    }
+                                }
+                            }, 100 * k);
+                        }
                     }
                 });
             }
