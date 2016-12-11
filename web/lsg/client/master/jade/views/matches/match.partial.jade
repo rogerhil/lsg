@@ -19,9 +19,12 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
                         .em.fa.fa-frown-o
                         md-tooltip(md-direction="bottom") All your games that matches this game are ongoing for swap.
                     img(ng-src='{{ctrl.match.iwish.images.front_thumb_medium}}', alt='{{ctrl.match.iwish.full_name}}')
-                h3(style="margin-top: 0;") {{ctrl.match.iwish.name}}
-                p
-                    .label.label-success {{ctrl.match.iwish.platform.short_name}}
+                h3(style="margin-top: 0;")
+                    img(ng-src="{{ ctrl.match.iwish.platform.logo_image }}" alt="{{ctrl.match.iwish.platform.short_name}}" style="height: 40px;")
+                    span &nbsp;
+                    span {{ctrl.match.iwish.name}}
+                //p
+                //    .label.label-success {{ctrl.match.iwish.platform.short_name}}
                 div(ng-if="ctrl.match.iwish.swap_pending")
                     .media.bg-warning(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
                         span You have already a pending Swap Request for this game.
@@ -36,7 +39,8 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
                     ng-pluralize(count="ctrl.match.swaps.length", when="{'one': 'from {{ctrl.match.swaps.length}} user', 'other': 'from {{ctrl.match.swaps.length}} users'}")
                 div(style="clear: both;")
                 br
-                h4 The following users want to swap the game "{{ctrl.match.iwish.full_name}}" with one of your games listed below:
+                h4 Now select below one of the games you own.
+                h5 The following users want to swap the game "{{ctrl.match.iwish.full_name}}" with one of your games listed below:
                 .panel.panel-default(ng-repeat="swap in ctrl.match.swaps")
                     .panel-body
                         div(ng-style="match.ongoing && {opacity: 0.4}")

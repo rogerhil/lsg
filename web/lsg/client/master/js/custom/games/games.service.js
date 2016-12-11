@@ -41,7 +41,8 @@
                 results = results.map(function (item) {
                     return {
                         value: item.id,
-                        display: item.full_name
+                        display: item.full_name,
+                        item: item
                     }
                 });
                 q.resolve(results);
