@@ -23,6 +23,16 @@
 
 /* END some layout customization */
 
+#doorbell-button {
+  z-index: 9999 !important;
+  left: 2% !important;
+}
+
+#doorbell-background {
+  background: rgb(0,0,0) !important;
+}
+
+
 .user-flag {
   position: absolute;
   bottom: 0;
@@ -233,6 +243,12 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   }
   .platform-games {
     margin-top: 10px !important;
+  }
+
+  #doorbell-button {
+      padding: 1px 6px !important;
+      font-size: 10px !important;
+      left: 5% !important;
   }
 }
 
