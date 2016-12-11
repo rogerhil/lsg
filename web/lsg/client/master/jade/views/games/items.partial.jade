@@ -6,9 +6,9 @@
 div
     div(ng-repeat='platform_items in ctrl.getItems(context)')
         div(layout="row" class="platform-games-holder" ng-class="{'platform-games-holder-hidden': ctrl.pinned != platform_items.platform.id && ctrl.pinned}")
-            div(class="platform-vertical-logo" style="position: relative;")
-                em(ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = platform_items.platform.id" ng-class="{'fa fa-thumb-tack': ctrl.pinned == platform_items.platform.id, 'icon-pin': ctrl.pinned != platform_items.platform.id}")
-                //md-tooltip(md-direction="top") Only show {{ platform_items.platform.short_name }}
+            div(class="platform-vertical-logo" style="position: relative;" ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = platform_items.platform.id")
+                em(ng-class="{'fa fa-thumb-tack': ctrl.pinned == platform_items.platform.id, 'icon-pin': ctrl.pinned != platform_items.platform.id}")
+                md-tooltip(md-direction="top") Show only {{ platform_items.platform.short_name }}
                 img(ng-src="{{ platform_items.platform.logo_image_vertical }}" style="height: 90px; position: absolute; top: 50%; transform: translateY(-50%);")
             div(ng-class="{'fade-holder': ctrl.scrollable}")
                 .fade-left.fade-out(ng-mouseover="ctrl.scroll(context, platform_items.platform.id, '-')" ng-mouseleave="ctrl.scrollStop()")

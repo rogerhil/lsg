@@ -363,6 +363,10 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 }
 
+.platform-games-holder .platform-vertical-logo:hover > .icon-pin {
+  color: $mdc-light-blue-500;
+}
+
 .platform-games-holder:hover > .platform-vertical-logo {
   -webkit-transition: all 0.8s;
   -o-transition: all 0.8s;
