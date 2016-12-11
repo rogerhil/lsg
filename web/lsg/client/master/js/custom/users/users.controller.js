@@ -17,13 +17,13 @@
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
         Tour.prototype._reposition = GlobalFixes._Tour_reposition;
-        Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
 
         self.tour = undefined;
         self.countryTour = undefined;
         self.gameTour = undefined;
         self.user = $rootScope.user;
-        self.allPlatforms = [];
+        self.popularPlatforms = [];
+        self.retroPlatforms = [];
         self.countries = ['IE', 'GB', 'IM'];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
@@ -287,7 +287,8 @@
         //$timeout(function () {gameTourActivate()}, 1000);
 
         GamesService.getPlatforms().then(function (platforms) {
-            self.allPlatforms = platforms;
+            self.popularPlatforms = platforms[0];
+            self.retroPlatforms = platforms[1];
         });
 
         self.updateUser = function (updateMap, settingsSection) {

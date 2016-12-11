@@ -102,10 +102,19 @@ h3 My profile
                             md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.platforms}")
                                 label Platforms you have
                                 md-select(ng-model="ctrl.user.platforms", multiple, required, md-on-close="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()")
-                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.allPlatforms" style="margin-top: 5px; margin-bottom: 5px;")
+                                    h4.platform-category-title Popular platforms
+                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.popularPlatforms" style="margin-top: 5px; margin-bottom: 5px;")
+                                        img(ng-src="{{ platform.logo_image_horizontal }}" style="height: 25px;")
+                                    h4.platform-category-title(style="margin-top: 30px;") Retro platforms
+                                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.retroPlatforms" style="margin-top: 5px; margin-bottom: 5px;")
                                         img(ng-src="{{ platform.logo_image_horizontal }}" style="height: 25px;")
                                         //md-tooltip(md-direction="left") {{platform.short_name}}
                                         //span {{platform.short_name}}
+                                span(style="color: gray; font-size: 12px;")
+                                    span (If you have a different console than the ones listed above,
+                                    a(href="#/app/contact") &nbsp; please let us know
+                                    span so we will try make it available.)
+
                                 .md-errors-spacer(ng-repeat="error in ctrl.errors.platforms")
                                     .md-char-counter {{error}}
                         div#address-form
@@ -153,7 +162,7 @@ h3 My profile
                             md-checkbox(ng-model="ctrl.user.show_full_address_allowed" aria-label="Allow my full address to be visible to a user when a swap request is agreed between parties" ng-change="ctrl.updateUser(false, true)")
                                 span Allow my full address to be visible to a user when a swap request is agreed between parties
                                 br
-                                span(style="color: gray; font-size: 12px;") (if you unmarked this checkbox, only your city, state and country will be visible)
+                                span(style="color: gray; font-size: 12px;") (if you unmark this checkbox, only your city, state and country will be visible)
 
                     div(layout='', layout-sm='column')
                         button.btn.mb-sm.btn-labeled.btn-danger(ng-click="ctrl.deleteMyAccount()" style="margin: 0 0 0 auto;")

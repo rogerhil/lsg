@@ -1,3 +1,4 @@
+from django.conf import settings
 from games.models import Game, Platform
 from rest_framework import serializers
 #from rest_framework_cache.registry import cache_registry
@@ -10,6 +11,20 @@ class LocalGameImagesSerializer(serializers.Serializer):
     #front_thumb = serializers.URLField()
 
 
+class CategorizedPlatformSerializer(serializers.ListSerializer):
+
+    def to_representation(self, data):
+        result = super(CategorizedPlatformSerializer, self).to_representation(data)
+        popular = []
+        retro = []
+        for item in result:
+            if item['name'] in settings.RETRO_PLATFORMS:
+                retro.append(item)
+            else:
+                popular.append(item)
+        return [popular, retro]
+
+
 class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -17,6 +32,7 @@ class PlatformSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'short_name', 'logo_image',
                   'logo_image_horizontal', 'logo_image_vertical')
         read_only_fields = fields
+        list_serializer_class = CategorizedPlatformSerializer
 
     #cache_registry.register(PlatformSerializer)
 
