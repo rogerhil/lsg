@@ -175,6 +175,20 @@
                 });
             return q.promise;
         };
+        this.reportUser = function (data) {
+            var q = $q.defer();
+            var url = baseUserUrl + 'report-user/';
+            $http
+                .post(url, data)
+                .success(function (response) {
+                    q.resolve(response);
+                }).error(function(response, status) {
+                    if (status == 400) {
+                        q.reject(response);
+                    }
+                });
+            return q.promise;
+        };
         this.updateUser = function (data) {
             var q = $q.defer();
             $http

@@ -19,9 +19,10 @@ from users.api.serializers import CollectionItemSerializer, UserSerializer, \
     WishlistItemSerializer, UserPictureImageSerializer, SmallUserSerializer, \
     UserCountsStarsSerializer
 from users.api.permissions import IsSuperUserOrOwner
-from users.models import User, CollectionItem, WishlistItem
+from users.models import User, CollectionItem, WishlistItem, UserReport
 from users.exceptions import CollectionGameDeleteException
 from users.activities import Verbs
+from mail.sender import Sender
 from cache import CachedViewSetMixin
 
 
@@ -134,6 +135,22 @@ class UsersViewSet(viewsets.ModelViewSet):
         Verbs.changed_profile_picture.send(user)
         user_serializer = UserSerializer()
         return views.Response(user_serializer.to_representation(user))
+
+    @detail_route(methods=['post'], url_path='report-user')
+    def report_user(self, request, pk):
+        user = self.queryset.get(pk=pk)
+        reported_id = int(request.data['reported_id'])
+        message = request.data['message']
+        user_report = UserReport.objects.create(reporter=user, reported_id=reported_id,
+                                                message=message)
+        user_report.reported.reported = True
+        user_report.reported.save()
+        context = dict(user_report=user_report)
+        emails = [i[-1] for i in settings.ADMINS]
+        sender = Sender("User reported in Let'SwapGames!!!", 'admin_user_reported', context,
+                        emails)
+        sender.send()
+        return views.Response({'message': 'User successfully reported!'})
 
 
 class CollectionItemViewSet(CachedViewSetMixin, viewsets.ModelViewSet):

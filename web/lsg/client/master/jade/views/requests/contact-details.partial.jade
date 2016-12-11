@@ -67,6 +67,9 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                     br
                                     span {{ ctrl.swapUser.address.country.name }}
                     div.col-md-6(style="max-height: 300px; overflow: auto;")
+                        div(style="float: right;")
+                            a(href="javascript:;" ng-click="ctrl.reportUser()" style="text-decoration: none;")
+                                .label.label-danger Report this user!
                         p(ng-if="!ctrl.latestFeedbacks.length")
                             em.fa.fa-comments-o
                             span This user has no feedbacks yet.

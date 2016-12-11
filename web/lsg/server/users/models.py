@@ -7,11 +7,11 @@ from rest_framework_cache.settings import api_settings
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.gis.measure import Distance
+from django.utils import timezone
 
 from games.models import Game, Platform
 from world.models import Address
-from request.models import SwapRequest, Status
+from request.models import Status
 from utils import Choices, distance_format
 
 logger = logging.getLogger('django')
@@ -106,6 +106,7 @@ class User(AbstractUser):
     deleted = models.BooleanField(default=False)
     deleted_date = models.DateTimeField(null=True, blank=True)
     enabled = models.BooleanField(default=False)
+    reported = models.BooleanField(default=False)
 
     wishlist = models.ManyToManyField(Game, related_name="wished",
                                       through=WishlistItem,
@@ -120,6 +121,10 @@ class User(AbstractUser):
     @property
     def name(self):
         return self.first_name or self.username
+
+    @property
+    def full_name(self):
+        return "%s %s" % (self.name, self.last_name)
 
     @property
     def joined(self):
@@ -501,6 +506,13 @@ class User(AbstractUser):
     def create_user_user(cls, sender, instance, created, **kwargs):
         if created:
             cls.objects.create(user=instance)
+
+
+class UserReport(models.Model):
+    reported = models.ForeignKey(User, related_name='reports')
+    reporter = models.ForeignKey(User, related_name='my_reports')
+    message = models.TextField()
+    created = models.DateTimeField(default=timezone.now)
 
 
 from users.signals import *

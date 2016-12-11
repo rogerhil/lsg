@@ -1,0 +1,19 @@
+{% extends "mail/emails/base.html" %}
+
+{% block body %}
+    <h4>Hello Admin,</h4>
+
+    <p>
+        The following user was now reported: {{ user_report.reported.full_name }} (#{{ user_report.reported.id }}). Check the reason below:
+    </p>
+    <p>
+        "{{ user_report.message }}"
+    </p>
+    <p>
+        Reported by {{ user_report.reporter }}.
+    </p>
+    <p>
+        Let'SwapGames automatic email.
+    </p>
+
+{% endblock %}

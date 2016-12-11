@@ -1,0 +1,36 @@
+md-dialog(aria-label="Report user", ng-cloak)
+    form(name='reportUserForm', ng-submit="reportUserForm.$valid && ctrl.reportUser($event)")
+        md-toolbar
+            .md-toolbar-tools
+                h2 Report user
+                span(flex)
+                md-button.md-icon-button(ng-click="ctrl.close($event)")
+                    md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
+        md-dialog-content
+            .md-dialog-content(style="min-width: 320px; max-width: 550px;")
+                div
+                    .col-lg-6(style="margin-top: 5px")
+                        user-photo-ratings-distance(user="ctrl.user" distance="ctrl.distance" hidefeedbacks="true")
+                    .col-lg-6(style="margin-top: 5px")
+                        p
+                            strong Member since:
+                            span {{ ctrl.user.joined }}
+                div(style='clear: both;')
+
+                div(layout='', layout-sm='column')
+                    md-input-container(flex='')
+                        label Why you are reporting this user?
+                        textarea(ng-model="ctrl.data.message" minlength="32" rows="5" md-select-on-focus required)
+                        div(ng-messages="reportUserForm.message.$error" ng-show="reportUserForm.message.$dirty")
+                            div(ng-message="minlength") That's too short!
+                br
+
+        md-dialog-actions(layout="row")
+            button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
+                span.btn-label
+                    em.fa.fa-close
+                span Cancel
+            button.btn.mb-sm.btn-labeled.btn-primary(type="submit" style="margin-left: 10px;")
+                span.btn-label
+                    em.fa.fa-power-off
+                span Send

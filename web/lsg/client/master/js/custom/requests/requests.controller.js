@@ -385,8 +385,8 @@
     /*
      ContactDetailsCtrl
      */
-    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', 'request', 'context', 'msg', 'requestsCtrl', 'UsersService']
-    function ContactDetailsCtrl($scope, $timeout, $mdDialog, request, context, msg, requestsCtrl, UsersService) {
+    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'request', 'context', 'msg', 'requestsCtrl', 'UsersService'];
+    function ContactDetailsCtrl($scope, $timeout, $mdDialog, $mdMedia, request, context, msg, requestsCtrl, UsersService) {
         var self = this;
         self.msg = msg;
         self.user = requestsCtrl.user;
@@ -400,6 +400,22 @@
             self.latestFeedbacks = latestFeedbacks;
             self.loadedLatestFeedbacks = true;
         });
+
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+        var showContact = function () {
+            requestsCtrl.showContactDetails(self.request, self.context);
+        };
+        self.reportUser = function () {
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: 'ReportUserCtrl',
+                locals: {user: self.swapUser, onreportuserclose: showContact},
+                templateUrl: 'app/views/users/report-user-form.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+            });
+        };
 
         self.toggleFeedbacks = function () {
             if ($('#feedbacks').is(':hidden')) {
