@@ -84,7 +84,14 @@
                     $('#spinner').fadeIn();
                     connectionIssue = true;
                     Notify.closeAll('connectionIssue', true);
-                    Notify.alert("Connection refused, please verify your internet connection...", {status: 'danger', timeout: 60000, group: 'connectionIssue'});
+                    Notify.alert("Connection refused, please verify your internet connection...", {
+                        status: 'danger',
+                        timeout: 60000,
+                        group: 'connectionIssue'
+                    });
+                } else if (rejection.status == 403) {
+                    console.log('Probably logged out.');
+                    window.location = '/app/'
                 } else {
                     $('#spinner').hide();
                 }
