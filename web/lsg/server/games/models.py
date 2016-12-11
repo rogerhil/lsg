@@ -59,15 +59,15 @@ class Platform(models.Model):
 
     @property
     def logo_image(self):
-        return '/app/app/img/logos/%s_200.png' % self.api_id
+        return '/app/app/img/logos/square/40x40/%s.png' % self.api_id
 
     @property
     def logo_image_horizontal(self):
-        return '/app/app/img/logos/horizontal/%s_300x50.png' % self.api_id
+        return '/app/app/img/logos/horizontal/150x25/%s.png' % self.api_id
 
     @property
     def logo_image_vertical(self):
-        return '/app/app/img/logos/vertical/%s_50x300.png' % self.api_id
+        return '/app/app/img/logos/vertical/25x150/%s.png' % self.api_id
 
 
 class Genre(models.Model):
