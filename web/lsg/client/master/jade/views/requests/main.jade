@@ -4,7 +4,7 @@ div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
         md-tooltip(md-direction="top") Archive all finished requests
     h3 Incoming Requests
 
-    .card(style="margin-right: 20px; float: left; height: 250px;" ng-repeat='request in ctrl.incomingRequests' request-id="{{ request.id }}")
+    .card.request-item.animate(ng-repeat='request in ctrl.incomingRequests' request-id="{{ request.id }}")
         ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requester; context='incomingRequests'")
 
     p(ng-if="!ctrl.incomingRequests.length && ctrl.incomingRequestsLoaded" style="margin-bottom: 40px;") No incoming requests.
@@ -18,7 +18,7 @@ div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
     h3 My Requests
       small &nbsp;
 
-    .card(style="margin-right: 20px; float: left; height: 250px;" ng-repeat='request in ctrl.myRequests' request-id="{{ request.id }}")
+    .card.request-item.animate(ng-repeat='request in ctrl.myRequests' request-id="{{ request.id }}")
         ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requested; context='myRequests'")
 
     p(ng-if="!ctrl.myRequests.length && ctrl.myRequestsLoaded") No requests.

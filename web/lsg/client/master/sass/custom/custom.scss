@@ -485,12 +485,10 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .game-img-holder.animate.ng-enter {
   top: -50px;
-  max-width: 0px;
 }
 
 .game-img-holder.animate.ng-enter.ng-enter-active {
   top: 0px;
-  max-width: 150px;
 }
 
 @keyframes my_animation {
@@ -516,6 +514,59 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .game-img-holder.animate.ng-leave.ng-leave-active {
   margin-right: 0px !important;
+}
+
+
+.match-set-item {
+  margin-right: 20px;
+  float: left;
+  max-width: 170px;
+  height: 250px;
+  position: relative;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.match-set-item.animate.ng-leave {
+  -webkit-animation:0.4s my_animation;
+  -moz-animation:0.4s my_animation;
+  -o-animation:0.4s my_animation;
+  animation:0.4s my_animation;
+}
+
+.match-set-item.animate.ng-enter {
+  top: -50px;
+}
+
+.match-set-item.animate.ng-enter.ng-enter-active {
+  top: 0px;
+}
+
+
+.request-item {
+  margin-right: 20px;
+  float: left;
+  height: 250px;
+  position: relative;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.request-item.animate.ng-leave {
+  -webkit-animation:0.4s my_animation;
+  -moz-animation:0.4s my_animation;
+  -o-animation:0.4s my_animation;
+  animation:0.4s my_animation;
+}
+
+.request-item.animate.ng-enter {
+  top: -50px;
+}
+
+.request-item.animate.ng-enter.ng-enter-active {
+  top: 0px;
 }
 
 
