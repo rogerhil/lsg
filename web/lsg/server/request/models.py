@@ -73,6 +73,9 @@ class SwapRequest(models.Model, StatusMethodsMixin):
 
     @property
     def distance(self):
+        if not (self.requester.address.point and self.requested.address.point):
+            # FIX SOMEHOW!!!!!
+            return Distance(m=999999999999999)
         coords1 = self.requester.address.point.coords
         coords2 = self.requested.address.point.coords
         # must invert :/

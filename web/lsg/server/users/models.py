@@ -193,6 +193,7 @@ class User(AbstractUser):
         feedbacks = []
         for request in requests1:
             feedbacks.append(dict(
+                id=request.id,
                 user=request.requested,
                 notes=request.requester_feedback_notes,
                 feedback=request.requester_feedback,
@@ -201,6 +202,7 @@ class User(AbstractUser):
             ))
         for request in requests2:
             feedbacks.append(dict(
+                id=request.id,
                 user=request.requester,
                 notes=request.requested_feedback_notes,
                 feedback=request.requested_feedback,

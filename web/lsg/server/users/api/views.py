@@ -114,6 +114,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         for item in items[:8]:
             verb = Verbs.get(item)
             serialized.append(dict(
+                id=item.id,
                 description=verb.parse(item, user, True),
                 since=short_timesince(item.timestamp),
                 verb=item.verb,

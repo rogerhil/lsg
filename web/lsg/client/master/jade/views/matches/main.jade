@@ -13,7 +13,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         div
         div
 
-    .card.match-set-item.animate(ng-repeat='match in ctrl.filteredMatches')
+    .card.match-set-item.animate(ng-repeat='match in ctrl.filteredMatches track by match.iwish.id')
         .card-item
             .label.label-warning.swap-indicator(ng-if="match.iwish.swap_pending")
                 .em(ng-class="StatusIcons[Status.pending]")

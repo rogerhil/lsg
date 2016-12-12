@@ -523,24 +523,26 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   max-width: 170px;
   height: 250px;
   position: relative;
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  transition: all 0.4s;
+  -webkit-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  transition: all 0.8s;
 }
 
 .match-set-item.animate.ng-leave {
-  -webkit-animation:0.4s my_animation;
-  -moz-animation:0.4s my_animation;
-  -o-animation:0.4s my_animation;
-  animation:0.4s my_animation;
+  -webkit-animation:0.8s my_animation;
+  -moz-animation:0.8s my_animation;
+  -o-animation:0.8s my_animation;
+  animation:0.8s my_animation;
 }
 
 .match-set-item.animate.ng-enter {
   top: -50px;
+  opacity: 0;
 }
 
 .match-set-item.animate.ng-enter.ng-enter-active {
   top: 0px;
+  opacity: 1;
 }
 
 
@@ -549,24 +551,26 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   float: left;
   height: 250px;
   position: relative;
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  transition: all 0.4s;
+  -webkit-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  transition: all 0.8s;
 }
 
 .request-item.animate.ng-leave {
-  -webkit-animation:0.4s my_animation;
-  -moz-animation:0.4s my_animation;
-  -o-animation:0.4s my_animation;
-  animation:0.4s my_animation;
+  -webkit-animation:0.8s my_animation;
+  -moz-animation:0.8s my_animation;
+  -o-animation:0.8s my_animation;
+  animation:0.8s my_animation;
 }
 
 .request-item.animate.ng-enter {
   top: -50px;
+  opacity: 0;
 }
 
 .request-item.animate.ng-enter.ng-enter-active {
   top: 0px;
+  opacity: 1;
 }
 
 

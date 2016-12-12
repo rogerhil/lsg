@@ -113,7 +113,7 @@ div(ng-controller="DashboardController as ctrl")
                         .media-box(ng-if="!ctrl.latestActivities.length")
                             p No activities yet.
                     // START list group item
-                    .list-group-item(ng-repeat="activity in ctrl.latestActivities")
+                    .list-group-item(ng-repeat="activity in ctrl.latestActivities track by activity.id")
                         .media-box
                             .pull-left
                                 span.fa-stack
