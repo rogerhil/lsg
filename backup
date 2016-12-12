@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Backup script based on: https://docs.docker.com/engine/tutorials/dockervolumes/#/backup-restore-or-migrate-data-volumes
+# To restore the backup just do the following:
+# 1. CREATE NEW CONTAINER:
+#    $ docker run -v /dbdata --name dbstore2 ubuntu /bin/bash
+# 2. UN-TAR THE BACKUP:
+#    $ docker run --rm --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
+#
+
+PREFIX='dev'
+LOCAL_MOUNT="$(pwd)"
+
+if [ "$DOCKER_MACHINE_NAME" == "lsgdigitalocean" ]; then
+    PREFIX='prod'
+    LOCAL_MOUNT='/root/lsg-backup/'
+fi
+
+echo
+echo "** Running backup for $PREFIX"
+echo
+
+TIMESTAMP_DIR="$(date +'%Y-%m-%dT%H:%M')"
+BACKUP_DIR="backup-files/$PREFIX/$TIMESTAMP_DIR"
+mkdir -p $BACKUP_DIR
+
+echo Saving postgres data
+docker run --rm --volumes-from lsgdocker_postgres_1 -v $LOCAL_MOUNT:/data-backup alpine tar cfz /data-backup/data-backup.tar.gz /var/lib/postgresql/data
+
+echo
+echo Saving media data
+docker run --rm --volumes-from lsgdocker_media_1 -v $LOCAL_MOUNT:/media-backup alpine tar cfz /media-backup/media-backup.tar.gz /app/media
+
+echo
+echo Saving logs
+docker run --rm --volumes-from lsgdocker_web_1 -v $LOCAL_MOUNT:/logs-backup alpine tar cfz /logs-backup/logs-backup.tar.gz /app/logs
+
+if [ "$PREFIX" == "prod" ]; then
+    scp root@letswapgames.com:$LOCAL_MOUNT/* .
+fi
+mv data-backup.tar.gz $BACKUP_DIR
+mv media-backup.tar.gz $BACKUP_DIR
+mv logs-backup.tar.gz $BACKUP_DIR
+
+echo
+echo Copying to S3
+aws s3 cp --region=eu-west-1 --recursive $BACKUP_DIR s3://letswapgames-backup-$PREFIX/$TIMESTAMP_DIR
+
+echo
+echo '========================================================================'
+ls -lh $BACKUP_DIR
+
+echo
+echo ............. AWS S3 letswapgames-backup-$PREFIX/$TIMESTAMP_DIR
+aws s3 ls --region=eu-west-1 s3://letswapgames-backup-dev/$TIMESTAMP_DIR/
+
+echo
+echo Backup files saved at $BACKUP_DIR and S3 bucket letswapgames-backup-$PREFIX/$TIMESTAMP_DIR/
+echo
