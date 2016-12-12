@@ -3,7 +3,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         small
             //md-switch(ng-model='ctrl.showOngoingSwaps', aria-label='Show Ongoing Swaps', style="position: absolute; right: 3px; top: -5px;")
             //    | Show Ongoing Swaps
-            md-switch(ng-model='ctrl.showPendingSwaps', ng-chang="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
+            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
                 | Show Pending Swaps
             span &nbsp;
 
@@ -31,7 +31,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 em.icon-grid
                 md-tooltip(md-direction="top") See all matches
         .card-body
-            h4.m0
+            h4.m0(style="white-space: nowrap;")
                 ng-pluralize(count="match.count", when="{'one': '{{match.count}} match', 'other': '{{match.count}} matches'}")
-            p.m0(style="padding-top: 5px;")
+            p.m0(style="padding-top: 5px; white-space: nowrap;")
                 ng-pluralize(count="match.swaps.length", when="{'one': 'from {{match.swaps.length}} user', 'other': 'from {{match.swaps.length}} users'}")

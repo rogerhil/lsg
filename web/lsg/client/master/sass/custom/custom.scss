@@ -195,7 +195,7 @@ md-backdrop.md-select-backdrop {
 }
 
 .user-img.clickable:hover {
-  opacity: 0.8;
+  opacity: 0.4;
 }
 
 .md-input-message-animation {
@@ -380,9 +380,9 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   margin-right: 0px;
   //border-top-left-radius: 10px;
   //border-bottom-left-radius: 30px;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 
 }
 
@@ -391,16 +391,16 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 }
 
 .platform-games-holder:hover > .platform-vertical-logo {
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
   @include box-shadow(0px 1px 3px 0px rgba(0, 0, 0, 0.2));
 }
 
 .platform-vertical-logo > em {
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
   opacity: 0;
   position: absolute;
   top: 3px;
@@ -420,9 +420,9 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 .platform-games-holder:hover em.icon-pin {
   opacity: 1;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
 .platform-vertical-logo > em.fa.fa-thumb-tack {
@@ -447,7 +447,7 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   @include box-shadow(0 4px 4px 0 rgba(0,0,0,0.4));
 
   //@include translate3d(0, -1px, 0);
-  //$game-t-function: cubic-bezier(0.25,0.8,0.25,1);
+  //$game-t-function: cubic-bezier(0.25,0.4,0.25,1);
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -501,7 +501,14 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
     max-width: 0;
     opacity: 0;
     top: -50px;
+    padding: 0;
+    margin: 0;
+    font-size: 1px !important;
   }
+}
+
+.game-img-holder.animate.ng-leave.ng-leave-active {
+  margin-right: 0px !important;
 }
 
 .game-img-holder.animate.ng-leave {
@@ -512,37 +519,44 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   margin-right: 22px !important;
 }
 
-.game-img-holder.animate.ng-leave.ng-leave-active {
-  margin-right: 0px !important;
-}
-
 
 .match-set-item {
   margin-right: 20px;
   float: left;
   max-width: 170px;
   height: 250px;
-  position: relative;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  //position: relative;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
-.match-set-item.animate.ng-leave {
-  -webkit-animation:0.8s my_animation;
-  -moz-animation:0.8s my_animation;
-  -o-animation:0.8s my_animation;
-  animation:0.8s my_animation;
+.match-set-item * {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
-.match-set-item.animate.ng-enter {
+.match-set-item.animate.ng-leave,
+.match-set-item.animate.ng-leave * {
+  -webkit-animation:0.4s my_animation;
+  -moz-animation:0.4s my_animation;
+  -o-animation:0.4s my_animation;
+  animation:0.4s my_animation;
+}
+
+.match-set-item.animate.ng-enter,
+.match-set-item.animate.ng-enter * {
   top: -50px;
   opacity: 0;
+  max-width: 0;
 }
 
-.match-set-item.animate.ng-enter.ng-enter-active {
+.match-set-item.animate.ng-enter.ng-enter-active,
+.match-set-item.animate.ng-enter.ng-enter-active * {
   top: 0px;
   opacity: 1;
+  max-width: 170px;
 }
 
 
@@ -551,24 +565,34 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   float: left;
   height: 250px;
   position: relative;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
-.request-item.animate.ng-leave {
-  -webkit-animation:0.8s my_animation;
-  -moz-animation:0.8s my_animation;
-  -o-animation:0.8s my_animation;
-  animation:0.8s my_animation;
+.request-item * {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
-.request-item.animate.ng-enter {
+.request-item.animate.ng-leave,
+.request-item.animate.ng-leave * {
+  -webkit-animation:0.4s my_animation;
+  -moz-animation:0.4s my_animation;
+  -o-animation:0.4s my_animation;
+  animation:0.4s my_animation;
+}
+
+.request-item.animate.ng-enter,
+.request-item.animate.ng-enter * {
   top: -50px;
   opacity: 0;
+  //max-width: 0;
 }
 
-.request-item.animate.ng-enter.ng-enter-active {
+.request-item.animate.ng-enter.ng-enter-active,
+.request-item.animate.ng-enter.ng-enter-active * {
   top: 0px;
   opacity: 1;
 }
@@ -587,9 +611,9 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   color: #fff;
   font-weight: bold;
   border-radius: 10px;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
   opacity: 0;
   font-size: 18px;
 }
@@ -610,9 +634,9 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   color: #fff;
   font-weight: bold;
   border-radius: 30px;
-  -webkit-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  transition: all 0.8s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
   font-size: 14px;
   padding: 2px 7px 0 7px;
   font-style: normal;
