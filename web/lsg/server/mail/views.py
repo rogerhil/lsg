@@ -13,8 +13,8 @@ class SwapRequestEmailPreview(TemplateView):
     template_name = 'mail/swap-request.preview.html'
 
     def get_context_data(self, **kwargs):
-        template = get_template("mail/emails/%s.html" %
-                                kwargs['template_name'])
+        template_name = kwargs['template_name']
+        template = get_template("mail/emails/%s.html" % template_name)
         rid = self.request.GET.get('id')
         if rid:
             swap_request = SwapRequest.objects.get(pk=rid)
@@ -25,7 +25,14 @@ class SwapRequestEmailPreview(TemplateView):
             site = Site.objects.get(domain='lsg.com')
         else:
             site = Site.objects.get(domain='www.letswapgames.com')
-        context = Context(dict(swap_request=swap_request, site=site))
+        user = swap_request.requester
+        user_who_finalized = other_user = swap_request.requested
+        if template_name.endswith('requested'):
+            user = swap_request.requested
+            user_who_finalized = other_user = swap_request.requester
+        context = Context(dict(swap_request=swap_request, site=site, user=user,
+                               user_who_finalized=user_who_finalized, days=3,
+                               other_user=other_user))
         kwargs['email_rendered'] = template.render(context)
         return super(SwapRequestEmailPreview, self).get_context_data(**kwargs)
 

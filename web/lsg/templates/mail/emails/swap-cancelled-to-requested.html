@@ -1,19 +1,14 @@
 {% extends "mail/emails/base.html" %}
 
 {% block body %}
-    <h4>Hello {{ swap_request.requested }},</h4>
+    <h4>Hello {{ user }},</h4>
 
     <p>
-        {{ swap_request.requester }} has offered his game
-        "{{ swap_request.requester_game }}" to
-        be swapped with your game "{{ swap_request.requested_game }}", but
-        he unfortunately cancelled this swap request now.
+        The user {{ swap_request.requester }} has just gave up requesting your game for swapping.
+        {{ swap_request.requester }} offered previously the game "{{ swap_request.requester_game }}"
+        to be swapped with your game "{{ swap_request.requested_game }}", but it is now cancelled.
     </p>
 
-    <div style="text-align: center;">
-        <img src="https://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
-        &nbsp;&nbsp;&nbsp;
-        <img src="https://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
-    </div>
+    {% include "mail/emails/request-games-images.html" %}
 
 {% endblock %}

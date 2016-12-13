@@ -1,22 +1,13 @@
 {% extends "mail/emails/base.html" %}
 
 {% block body %}
-    <h4>Hello {{ swap_request.requester }},</h4>
+    <h4>Hello {{ user }},</h4>
 
     <p>
-        The swap requested at {{ swap_request.created }} was refused by the user
-        {{ swap_request.requested }} at Let'Swap Games.
+        The game swap you requested on {{ swap_request.created }} was refused by the user
+        {{ swap_request.requested }} at Let'SwapGames.
     </p>
 
-    <p>
-        You have offered your game "{{ swap_request.requester_game }}" to
-        be swapped with the game "{{ swap_request.requested_game }}".
-    </p>
-
-    <div style="text-align: center;">
-        <img src="https://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
-        &nbsp;&nbsp;&nbsp;
-        <img src="https://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
-    </div>
+    {% include "mail/emails/request-games-images.html" %}
 
 {% endblock %}

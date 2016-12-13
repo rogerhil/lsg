@@ -90,9 +90,12 @@ class Sender(object):
         template = get_template('mail/emails/%s.html' % self.template_name)
         if settings.DEBUG:
             site = Site.objects.get(domain='lsg.com')
+            protocol = 'http'
         else:
             site = Site.objects.get(domain='www.letswapgames.com')
-        base_context = {'site': site}
+            protocol = 'https'
+        website = "%s://%s" % (protocol, site.domain)
+        base_context = {'site': site, 'website': website}
         base_context.update(self.context)
         context = Context(base_context)
         return subject, template.render(context)

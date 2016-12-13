@@ -1,27 +1,18 @@
 {% extends "mail/emails/base.html" %}
 
 {% block body %}
-    <h4>Hello {{ swap_request.requested }},</h4>
+    <h4>Hello {{ user }},</h4>
 
     <p>
-        You have accepted the game swap requested at {{ swap_request.created }} by
-        the user {{ swap_request.requester }} at Let'Swap Games.
+        You have accepted the game swap requested on {{ swap_request.created }} by
+        {{ swap_request.requester }} at Let'SwapGames and you can now
+        contact the user to arrange the swap
     </p>
 
-    <p>
-        {{ swap_request.requester }} offered his game
-        "{{ swap_request.requester_game }}" to
-        be swapped with your game "{{ swap_request.requested_game }}".
-    </p>
-
-    <div style="text-align: center;">
-        <img src="https://{{ site.domain }}{{ swap_request.requester_game.images.front_thumb_medium }}" style="height: 180px">
-        &nbsp;&nbsp;&nbsp;
-        <img src="https://{{ site.domain }}{{ swap_request.requested_game.images.front_thumb_medium }}" style="height: 180px">
-    </div>
+    {% include "mail/emails/request-games-images.html" %}
 
     <p style="text-align: center;">
-        <a href="https://{{ site.domain }}/app/#/app/requests?id={{ swap_request.id }}&msg=Check-the-user-contact-details.">Click here to contact {{ swap_request.requester }}</a>
+        <a href="{{ website }}/app/#/app/requests?id={{ swap_request.id }}&msg=Check-the-user-contact-details." target="_blank">Click here to contact {{ swap_request.requester }}</a>
     </p>
 
 {% endblock %}

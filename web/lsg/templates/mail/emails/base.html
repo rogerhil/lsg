@@ -1,11 +1,11 @@
 {% load static %}
 
-<div style="max-width: 800px; margin: 0 auto; background: #eee; font-family: 'Roboto', sans-serif;">
+<div style="max-width: 800px; margin: 0 auto; background: #eee; font-family: 'Roboto', sans-serif; font-weight: 100;">
     {% block header %}
-        <div style="background-color: #263238; color: #fff; padding: 10px 20px; margin: 0; text-align: left;">
-            <a href="https://www.letswapgames.com" style="color: #eee;">
-                <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px;">
-                    <img src="https://{{ site.domain }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
+        <div style="background-color: #263238; background-image: url({% static 'img/cs-empty.png' %}); color: #fff; padding: 30px 30px; margin: 0; text-align: left;">
+            <a href="{{ website }}/" style="color: #eee;">
+                <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px; font-weight: 100; font-family: 'Roboto', sans-serif;">
+                    <img src="{{ website }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
                     <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px; font-weight: 100;">Let'SwapGames</span>
                 </h2>
             </a>
@@ -28,9 +28,10 @@
             </p>
             <br>
             <p style="font-size: 11px; color: #999;">
-                You have received this email because you are listed as an Let'SwapGames
+                You have received this email because you are listed as a Let'SwapGames
                 account holder. If you no longer wish to receive automatic emails of
-                this kind you must delete your account from our system at https://www.letswapgames.com/app/.
+                this kind you must delete your account from our system by clicking
+                <a href="{{ website }}/app/#/app/profile." target="_blank">here</a>.
                 This email and any files transmitted with it are confidential and
                 intended solely for the use of the individual or entity to whom they
                 are addressed. If you have received this email in error please notify
@@ -41,8 +42,8 @@
     </div>
     <div style="background: #ddd; padding: 2px 20px; margin: 0;">
         <p style="text-align: center;">
-            <a href="https://www.letswapgames.com">
-                <img src="https://{{ site.domain }}{% static 'img/logo-96x50-dark.png'%}" style="height: 20px;" alt="Let'SwapGames">
+            <a href="{{ website }}/" target="_blank">
+                <img src="{{ website }}{% static 'img/logo-96x50-dark.png'%}" style="height: 20px;" alt="Let'SwapGames">
             </a>
         </p>
         <p style="font-size: 12px; text-align: center;">
