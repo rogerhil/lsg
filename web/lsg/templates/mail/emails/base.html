@@ -2,7 +2,7 @@
 
 <div style="max-width: 800px; margin: 0 auto; background: #fbfbfb; font-family: 'Roboto', sans-serif; font-weight: 100;">
     {% block header %}
-        <div style="background-color: #263238; background-image: url({% static 'img/bar.png' %}); color: #fff; padding: 60px 70px; margin: 0; text-align: center;">
+        <div style="background-color: #263238; background-image: url({{ website }}{% static 'img/bar.png' %}); color: #fff; padding: 60px 70px; margin: 0; text-align: center;">
             <div style="margin-bottom: 10px;">
                 <a href="{{ website }}/" style="color: #eee;">
                     <div style="margin-bottom: 10px;">
@@ -34,7 +34,7 @@
             <br>
         {% endblock %}
     </div>
-    <div style="background: #263238; background-image: url({% static 'img/bar-footer.png' %}); color: #fff; padding: 10px 20px; margin: 0;">
+    <div style="background: #263238; background-image: url({{ website }}{% static 'img/bar-footer.png' %}); color: #fff; padding: 10px 20px; margin: 0;">
         <p style="font-size: 11px; color: #ccc; margin-bottom: 70px; text-align: justify;">
             You have received this email because you are listed as a Let'SwapGames
             account holder. If you no longer wish to receive automatic emails of

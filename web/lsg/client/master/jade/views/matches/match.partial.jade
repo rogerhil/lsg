@@ -54,10 +54,11 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
                                 .label.label-warning.swap-indicator(ng-if="game.swap_pending")
                                     .em.fa.fa-ellipsis-h
                                     md-tooltip(md-direction="bottom") This games is involved in a "pending" Swap Request.
-                                img(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', ng-style="game.cannot_request && {opacity: 0.4}")
-                                md-tooltip(md-direction="top" ng-if="!game.cannot_request") Swap with your game "{{game.full_name}}" now!
+                                img(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', ng-style="(game.cannot_request || game.other_user_ongoing) && {opacity: 0.4}")
+                                md-tooltip(md-direction="top" ng-if="!game.cannot_request && !game.other_user_ongoing") Swap with your game "{{game.full_name}}" now!
                                 md-tooltip(md-direction="top" ng-if="game.cannot_request") You cannot select this game to swap with as you already have a swap ongoing involving this game.
-                                button.btn.btn-info.btn-circle.btn-lg.swap(type="button" ng-click="ctrl.requestSwap(ctrl.match, game, swap.user)" ng-if="!game.cannot_request")
+                                md-tooltip(md-direction="top" ng-if="game.other_user_ongoing") You cannot select this game to swap as {{ swap.user.name }} is currently negotiating this game with some other user.
+                                button.btn.btn-info.btn-circle.btn-lg.swap(type="button" ng-click="ctrl.requestSwap(ctrl.match, game, swap.user)" ng-if="!game.cannot_request && !game.other_user_ongoing")
                                     em.fa.fa-exchange
 
                 div(style="clear: both;")

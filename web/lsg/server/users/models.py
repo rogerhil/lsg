@@ -6,6 +6,7 @@ from rest_framework_cache.cache import cache
 from rest_framework_cache.settings import api_settings
 
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
@@ -325,6 +326,22 @@ class User(AbstractUser):
         iwish_in_requests = set(iwish_my) | set(iwish_inc)
         iswap_in_requests = set(iswap_my) | set(iswap_inc)
 
+        other_users = [i.user.id for i in games_collections]
+        other_games1 = SwapRequest.objects\
+                                  .filter(requested_id__in=other_users,
+                                          status__in=statuses)\
+                                  .exclude(requester=self)\
+                                  .select_related('requester_game')\
+                                  .values_list('requester_game_id', flat=True)
+        other_games2 = SwapRequest.objects\
+                                  .filter(requester_id__in=other_users,
+                                          status__in=statuses)\
+                                  .exclude(requested=self)\
+                                  .select_related('requested_game')\
+                                  .values_list('requested_game_id', flat=True)
+
+        other_games = list(other_games1) + list(other_games2)
+
         qs = Address.objects.distance(self.address.point)
         matches = dict()
 
@@ -376,15 +393,19 @@ class User(AbstractUser):
                         # Finalizing)
                         my_game.cannot_request = False
                         my_game.ongoing = False
+                        my_game.other_user_ongoing = False
                         ongoing = False
 
                         if my_game.id in iswap_in_requests or \
-                           game_collection.game.id in iwish_in_requests:
+                           iwish.id in iwish_in_requests:
                             my_game.cannot_request = True
-                        if game_collection.game.id in iwish_in_requests:
+                        if iwish.id in iwish_in_requests:
                             ongoing = True
                         if my_game.id in iswap_in_requests:
                             my_game.ongoing = True
+
+                        if my_game.id in other_games:
+                            my_game.other_user_ongoing = True
 
                         match = dict(
                             iwish=iwish,
@@ -404,7 +425,9 @@ class User(AbstractUser):
             match['swaps'] = list(match['swaps'].values())
             all_wanted_games = reduce(lambda a, b: a + b,
                                    [s['wanted_games'] for s in match['swaps']])
-            match['no_games_left'] = all([g.ongoing for g in all_wanted_games])
+            match['no_games_left'] = all([(g.ongoing or g.cannot_request or
+                                           g.other_user_ongoing)
+                                          for g in all_wanted_games])
             match['swaps'].sort(key=lambda p: p['user'].rating)
             match['swaps'].sort(key=lambda p: p['user'].succeeded_swaps_count,
                                 reverse=True)
@@ -468,6 +491,7 @@ class User(AbstractUser):
                 for game_obj in swap['wanted_games']:
                     game = gs.to_representation(game_obj)
                     game['cannot_request'] = game_obj.cannot_request
+                    game['other_user_ongoing'] = game_obj.other_user_ongoing
                     game['ongoing'] = game_obj.ongoing
                     game['swap_pending'] = game_obj.swap_pending
                     games.append(game)
