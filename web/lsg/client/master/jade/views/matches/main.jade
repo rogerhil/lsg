@@ -1,9 +1,9 @@
 div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
     h3 Matches
         small
-            //md-switch(ng-model='ctrl.showOngoingSwaps', aria-label='Show Ongoing Swaps', style="position: absolute; right: 3px; top: -5px;")
-            //    | Show Ongoing Swaps
-            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 5px;")
+            md-switch(ng-model='ctrl.showOngoingSwaps', aria-label='Show Ongoing Swaps', style="position: absolute; right: 3px; top: -5px;")
+                | Show Ongoing Swaps
+            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 17px;")
                 | Show Pending Swaps
             span &nbsp;
 

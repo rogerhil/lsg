@@ -251,7 +251,7 @@
                 {
                     element: 'li[sref="app.games"]',
                     title: "Add games",
-                    content: "You need to specify which games you have and specify which games you wish by clicking in the menu on the left.",
+                    content: "You need to specify which games you have and specify which games you wish by clicking on the menu on the left.",
                     placement: 'right',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;
