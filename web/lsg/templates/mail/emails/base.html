@@ -1,19 +1,24 @@
 {% load static %}
 
-<div style="max-width: 800px; margin: 0 auto; background: #eee; font-family: 'Roboto', sans-serif; font-weight: 100;">
+<div style="max-width: 800px; margin: 0 auto; background: #fbfbfb; font-family: 'Roboto', sans-serif; font-weight: 100;">
     {% block header %}
-        <div style="background-color: #263238; background-image: url({% static 'img/cs-empty.png' %}); color: #fff; padding: 30px 30px; margin: 0; text-align: left;">
-            <a href="{{ website }}/" style="color: #eee;">
-                <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px; font-weight: 100; font-family: 'Roboto', sans-serif;">
-                    <img src="{{ website }}{% static 'img/logo-77x40.png'%}" style="height: 35px;" alt="Let'SwapGames">
-                    <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px; font-weight: 100;">Let'SwapGames</span>
-                </h2>
-            </a>
+        <div style="background-color: #263238; background-image: url({% static 'img/bar.png' %}); color: #fff; padding: 60px 70px; margin: 0; text-align: center;">
+            <div style="margin-bottom: 10px;">
+                <a href="{{ website }}/" style="color: #eee;">
+                    <div style="margin-bottom: 10px;">
+                        <img src="{{ website }}{% static 'img/logo-77x40.png'%}" alt="Let'SwapGames">
+                    </div>
+                    <h2 style="vertical-align: top; display: inline-block; margin: 0; padding: 0; line-height: 20px; font-weight: 100; font-family: 'Roboto', sans-serif;">
+                        <span style="vertical-align: top; display: inline-block; margin-top: 10px; margin-left: 10px; font-weight: 100;">Let'SwapGames</span>
+                    </h2>
+                </a>
+            </div>
+            <span style="font-size: 12px;">for gamers, by gamers</span>
         </div>
 
     {% endblock %}
 
-    <div style="margin: 0px; padding: 0px 15px;">
+    <div style="margin: 0px; padding: 0px 20px;">
 
         {% block body %}
         {% endblock %}
@@ -27,23 +32,23 @@
                 Let'SwapGames Automatic Service
             </p>
             <br>
-            <p style="font-size: 11px; color: #999;">
-                You have received this email because you are listed as a Let'SwapGames
-                account holder. If you no longer wish to receive automatic emails of
-                this kind you must delete your account from our system by clicking
-                <a href="{{ website }}/app/#/app/profile." target="_blank">here</a>.
-                This email and any files transmitted with it are confidential and
-                intended solely for the use of the individual or entity to whom they
-                are addressed. If you have received this email in error please notify
-                us immediately.<br>
-                36 The Orchard, Athlone, Westmeath, Ireland
-            </p>
         {% endblock %}
     </div>
-    <div style="background: #ddd; padding: 2px 20px; margin: 0;">
+    <div style="background: #263238; background-image: url({% static 'img/bar-footer.png' %}); color: #fff; padding: 10px 20px; margin: 0;">
+        <p style="font-size: 11px; color: #ccc; margin-bottom: 70px; text-align: justify;">
+            You have received this email because you are listed as a Let'SwapGames
+            account holder. If you no longer wish to receive automatic emails of
+            this kind you must delete your account from our system by clicking
+            <a href="{{ website }}/app/#/app/profile." target="_blank" style="color: #ccc;">here</a>.
+            This email and any files transmitted with it are confidential and
+            intended solely for the use of the individual or entity to whom they
+            are addressed. If you have received this email in error please notify
+            us immediately.<br>
+            Athlone, Westmeath, Ireland
+        </p>
         <p style="text-align: center;">
             <a href="{{ website }}/" target="_blank">
-                <img src="{{ website }}{% static 'img/logo-96x50-dark.png'%}" style="height: 20px;" alt="Let'SwapGames">
+                <img src="{{ website }}{% static 'img/logo-96x50.png'%}" style="height: 20px;" alt="Let'SwapGames">
             </a>
         </p>
         <p style="font-size: 12px; text-align: center;">

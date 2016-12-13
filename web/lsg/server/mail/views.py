@@ -49,9 +49,19 @@ class SwapRequestEmailSendTest(RedirectView):
             requests = SwapRequest.objects.all()
             swap_request = requests[0] if requests.count() else None
         sender = None
-        if tname == 'swap-accepted-to-requested':
+        if tname == 'swap-accepted-to-requested' or tname == 'swap-accepted-to-requester':
             sender = MailBuilder.swap_accepted(swap_request)
+        elif tname == 'swap-cancelled-to-requested':
+            sender = MailBuilder.swap_cancelled(swap_request)
+        elif tname == 'swap-expired-notification':
+            sender = MailBuilder.swap_expire_notification(swap_request)
+        elif tname == 'swap-finalized-first':
+            sender = MailBuilder.swap_finalized_first(swap_request)
+        elif tname == 'swap-refused-to-requester':
+            sender = MailBuilder.swap_refused(swap_request)
+        elif tname == 'swap-requested-to-requested':
+            sender = MailBuilder.swap_refused(swap_request)
 
         if sender:
-            sender.send('rogerhil@gmail.com')
+            sender.send('rogerhil@gmail.com', True)
         return super(SwapRequestEmailSendTest, self).get_redirect_url(*args, **kwargs)

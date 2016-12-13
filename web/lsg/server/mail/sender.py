@@ -85,10 +85,10 @@ class Sender(object):
         self.from_email = from_email
         self.html = html
 
-    def _render(self):
+    def _render(self, prod=False):
         subject = self.subject % self.context
         template = get_template('mail/emails/%s.html' % self.template_name)
-        if settings.DEBUG:
+        if settings.DEBUG and not prod:
             site = Site.objects.get(domain='lsg.com')
             protocol = 'http'
         else:
@@ -100,8 +100,8 @@ class Sender(object):
         context = Context(base_context)
         return subject, template.render(context)
 
-    def send(self, force_to=None):
-        subject, body = self._render()
+    def send(self, force_to=None, prod=False):
+        subject, body = self._render(prod)
         from_email = self.from_email
         if settings.MOCK_SEND_EMAIL and not force_to:
             print
