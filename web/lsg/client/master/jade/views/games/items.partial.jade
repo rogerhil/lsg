@@ -29,26 +29,28 @@ form(ng-submit="ctrl.addGameTo(context)" class="{{ context }}")
 
     style.
         .md-select-menu-container {
-            max-width: 342px;
+            max-width: 300px;
         }
         .md-select-menu-container ._md {
-            min-height: 300px;
+            min-height: 220px;
         }
         .fleft {
             float: left;
+            height: 50px;
+            padding: 0 10px;
         }
 
     div(layout="row")
         div(style="width: 75px; margin: 0 5px 0 0;")
-            md-select(ng-model="ctrl.currentPlatform" style="margin:0; height: 41px; text-align: center;" required md-on-close="ctrl.selectPlatform(context)")
-                div(style="height: 300px; overflow: hidden;")
+            md-select(ng-model="ctrl.currentPlatform" style="margin:0; height: 41px; text-align: center;" required md-on-close="ctrl.selectPlatform(context)" md-on-open="ctrl.selectPlatformOpen(context)")
+                div(style="height: 220px; overflow: auto;")
                     p.platform-category-title Popular
                     md-option(ng-value="platform.id", ng-repeat="platform in ctrl.popularPlatforms" class="fleft")
-                        img(ng-src="{{ platform.logo_image }}" style="height: 25px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+                        img(ng-src="{{ platform.logo_image }}" style="height: 30px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
                     div(style="clear: both")
-                    p.platform-category-title(style="margin-top: 30px;") Retro
+                    p.platform-category-title(style="margin-top: 0;") Retro
                     md-option(ng-value="platform.id", ng-repeat="platform in ctrl.retroPlatforms" class="fleft")
-                        img(ng-src="{{ platform.logo_image }}" style="height: 25px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+                        img(ng-src="{{ platform.logo_image }}" style="height: 30px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
                     div(style="clear: both")
         div(flex)
             md-autocomplete(ng-disabled='ctrl.isDisabled || !ctrl.currentPlatform', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache',

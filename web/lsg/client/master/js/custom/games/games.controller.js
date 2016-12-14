@@ -59,7 +59,18 @@
             $timeout(function () {
                 $('form.' + context).find('md-autocomplete input').focus();
             }, 100);
+        };
 
+        self.selectPlatformOpen = function (context) {
+            var card = $("." + context + "-card");
+            var select = $("md-select");
+            var h = $(window).height() - $('.md-select-menu-container').height() - 10;
+            for (var k = 1; k < 6; k++) {
+                $timeout(function () {
+                    $('.md-select-menu-container').css('left', card.offset().left + 'px');
+                    $('.md-select-menu-container').css('top', h + 'px');
+                }, 50 * k);
+            }
         };
 
         GamesService.getPlatforms().then(function (platforms) {
