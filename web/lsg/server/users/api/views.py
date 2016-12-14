@@ -40,7 +40,7 @@ class AuthenticatedUserView(views.APIView):
 
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.filter().select_related('address')\
-        .prefetch_related('social_auth').prefetch_related('platforms')
+        .prefetch_related('social_auth')
     serializer_class = UserSerializer
     permission_classes = [IsSuperUserOrOwner]
 

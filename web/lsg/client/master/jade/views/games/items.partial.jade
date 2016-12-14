@@ -6,7 +6,7 @@
 div
     div(ng-repeat='platform_items in ctrl.getItems(context)')
         div(layout="row" class="platform-games-holder" ng-class="{'platform-games-holder-hidden': ctrl.pinned != platform_items.platform.id && ctrl.pinned}")
-            div(class="platform-vertical-logo" style="position: relative;" ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = platform_items.platform.id")
+            div(class="platform-vertical-logo" style="position: relative;" ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = ctrl.currentPlatform = platform_items.platform.id")
                 em(ng-class="{'fa fa-thumb-tack': ctrl.pinned == platform_items.platform.id, 'icon-pin': ctrl.pinned != platform_items.platform.id}")
                 md-tooltip(md-direction="top") Show only {{ platform_items.platform.short_name }}
                 img(ng-src="{{ platform_items.platform.logo_image_vertical }}" style="height: 90px; position: absolute; top: 50%; transform: translateY(-50%);")
@@ -25,9 +25,37 @@ div
         div(style="clear: both;")
     div(style="clear: both;")
 
-form(ng-submit="ctrl.addGameTo(context)")
-    md-autocomplete(ng-disabled='ctrl.isDisabled', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache', md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText', md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display', placeholder='Add games to {{ context }}...', md-min-length="3", md-delay="500", md-autoselect="true")
-        md-item-template
-            img(ng-src="{{ item.item.platform.logo_image }} " alt="{{ item.item.platform.name }}" style="height: 30px;")
-            span(md-highlight-text="ctrl.searchText") {{item.item.name}}
-        md-not-found No matches found.
+form(ng-submit="ctrl.addGameTo(context)" class="{{ context }}")
+
+    style.
+        .md-select-menu-container {
+            max-width: 342px;
+        }
+        .md-select-menu-container ._md {
+            min-height: 300px;
+        }
+        .fleft {
+            float: left;
+        }
+
+    div(layout="row")
+        div(style="width: 75px; margin: 0 5px 0 0;")
+            md-select(ng-model="ctrl.currentPlatform" style="margin:0; height: 41px; text-align: center;" required md-on-close="ctrl.selectPlatform(context)")
+                div(style="height: 300px; overflow: hidden;")
+                    p.platform-category-title Popular
+                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.popularPlatforms" class="fleft")
+                        img(ng-src="{{ platform.logo_image }}" style="height: 25px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+                    div(style="clear: both")
+                    p.platform-category-title(style="margin-top: 30px;") Retro
+                    md-option(ng-value="platform.id", ng-repeat="platform in ctrl.retroPlatforms" class="fleft")
+                        img(ng-src="{{ platform.logo_image }}" style="height: 25px;" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+                    div(style="clear: both")
+        div(flex)
+            md-autocomplete(ng-disabled='ctrl.isDisabled || !ctrl.currentPlatform', md-selected-item-change="ctrl.addGameTo(context)", md-no-cache='ctrl.noCache',
+                            md-selected-item='ctrl.selectedItem', md-search-text='ctrl.searchText',
+                            md-items='item in ctrl.querySearch(ctrl.searchText, context)', md-item-text='item.display',
+                            placeholder='Add games to {{ context }}...', md-min-length="3", md-delay="500", md-autoselect="true")
+                md-item-template
+                    img(ng-src="{{ item.item.platform.logo_image }} " alt="{{ item.item.platform.name }}" style="height: 30px;")
+                    span(md-highlight-text="ctrl.searchText") {{item.item.name}}
+                md-not-found No matches found.

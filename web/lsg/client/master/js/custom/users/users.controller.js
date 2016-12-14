@@ -22,14 +22,12 @@
         self.countryTour = undefined;
         self.gameTour = undefined;
         self.user = $rootScope.user;
-        self.popularPlatforms = [];
-        self.retroPlatforms = [];
         self.countries = ['IE', 'GB', 'IM'];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
                               {id: 'female', label: 'Female'}];
         self.mapMarkers = [];
-        self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude || !self.user.platforms.length;
+        self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude
         self.searchText = self.user.address.geocoder_address;
 
         $('body').on('click', function (e) {
@@ -136,11 +134,8 @@
                 var goStep = 0;
                 if (self.user.hasBasicProfile()) {
                     goStep = 1;
-                    if (self.user.havePlatforms()) {
-                        goStep = 2;
-                        if (self.user.hasAddress()) {
-                            goStep = -1;
-                        }
+                    if (self.user.hasAddress()) {
+                        goStep = -1;
                     }
                 }
                 if (goStep == -1) {
@@ -170,12 +165,6 @@
                     element: "#profile-form",
                     title: "Complete the form",
                     content: "Please provide missing information below.",
-                    placement: 'top'
-                },
-                {
-                    element: "#platforms-field",
-                    title: "Platforms",
-                    content: "Please don't forget to specify your own game consoles.",
                     placement: 'top'
                 },
                 {
@@ -285,11 +274,6 @@
 
 
         //$timeout(function () {gameTourActivate()}, 1000);
-
-        GamesService.getPlatforms().then(function (platforms) {
-            self.popularPlatforms = platforms[0];
-            self.retroPlatforms = platforms[1];
-        });
 
         self.updateUser = function (updateMap, settingsSection) {
             if (settingsSection) {

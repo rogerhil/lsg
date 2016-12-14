@@ -94,7 +94,6 @@ class User(AbstractUser):
     address = models.ForeignKey(Address, null=True, blank=True, on_delete=models.SET_NULL)
     phone1_prefix = models.CharField(max_length=3, blank=True)
     phone1 = models.CharField(max_length=16, blank=True)
-    platforms = models.ManyToManyField(Platform)
     succeeded_swaps_count = models.PositiveIntegerField(default=0)
     failed_swaps_count = models.PositiveIntegerField(default=0)
     expired_swaps_count = models.PositiveIntegerField(default=0)
@@ -232,7 +231,7 @@ class User(AbstractUser):
         return sorted(categorized.items(), key=lambda x: x[0])
 
     def is_complete(self):
-        return self.address and len(self.platforms.all()) > 0
+        return self.address
 
     @property
     def phone1_display(self):

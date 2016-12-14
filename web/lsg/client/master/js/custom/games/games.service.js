@@ -10,14 +10,6 @@
         this.query = function (query, excludeGames, platform) {
             var url = '/api/games/?search=' + query;
             var q = $q.defer();
-            if ($rootScope.user.havePlatforms()) {
-                url += '&platform_id=' + $rootScope.user.platforms.join(',');
-            } else {
-                Notify.closeAll(false, true);
-                Notify.alert("Select your platforms in the profile page first!", {group: true});
-                q.resolve([]);
-                return q.promise;
-            }
             if (!$rootScope.user.hasAddress()) {
                 Notify.closeAll(false, true);
                 Notify.alert("You need to provide your address in the profile form in order to use the application.", {group: true});

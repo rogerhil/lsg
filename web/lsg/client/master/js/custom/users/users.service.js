@@ -16,14 +16,11 @@
         User.prototype.hasBasicProfile = function () {
             return this.first_name && this.last_name && this.email && this.phone1;
         };
-        User.prototype.havePlatforms = function () {
-            return this.platforms && this.platforms.length;
-        };
         User.prototype.hasAddress = function () {
             return this.address.latitude && this.address.longitude;
         };
         User.prototype.isProfileComplete = function () {
-            return this.hasBasicProfile() && this.havePlatforms() && this.hasAddress();
+            return this.hasBasicProfile() && this.hasAddress();
         };
         User.prototype.isCountrySupported = function () {
             var supported = $rootScope.constants.countries.map(function(o) {

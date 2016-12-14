@@ -20,10 +20,13 @@
         self.isDisabled = false;
         self.collection = [];
         self.wishlist = [];
+        self.popularPlatforms = [];
+        self.retroPlatforms = [];
         self.loaded = {collection: false, wishlist: false};
         self.tour = null;
         self.pinned = undefined;
         self.isMobile = Utils.isMobile();
+        self.currentPlatform = $rootScope.lastSelectedPlatform;
 
         $(document).unbind('on');
         $(document).on("mousewheel",function(e){
@@ -45,6 +48,23 @@
             if (evt.keyCode == 27) {
                 if (self.tour) self.tour.end();
             }
+        });
+
+        self.selectPlatform = function (context) {
+            if (self.currentPlatform != self.pinned) {
+                self.pinned = '';
+            }
+            $rootScope.lastSelectedPlatform = self.currentPlatform;
+            $('form.' + context).find('md-autocomplete input').focus();
+            $timeout(function () {
+                $('form.' + context).find('md-autocomplete input').focus();
+            }, 100);
+
+        };
+
+        GamesService.getPlatforms().then(function (platforms) {
+            self.popularPlatforms = platforms[0];
+            self.retroPlatforms = platforms[1];
         });
 
         UsersService.getCollection().then(function (collection) {
@@ -156,7 +176,7 @@
 
         self.querySearch = function (query, context) {
             var gameIds = getGamesIds(self[context]);
-            return GamesService.query(query, gameIds, self.pinned);
+            return GamesService.query(query, gameIds, self.currentPlatform);
         };
 
         function updatePopever(context) {

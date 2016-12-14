@@ -208,7 +208,16 @@ md-backdrop.md-select-backdrop {
   padding: 10px 13px;
   background-color: $mdc-blue-grey-900;
   color: #fff;
+  font-weight: 400;
 }
+
+//.platform-select,
+//.platform-select ._md {
+//    max-width: 342px !important;
+//}
+//.platform-select .md-option {
+//    float: left !important;
+//}
 
 button.md-primary {
   background-color: $mdc-blue-grey-900 !important;

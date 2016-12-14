@@ -68,15 +68,12 @@ class RequestUserSerializer(RequestUserNoFullAddressSerializer):
 class UserSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(source='_address')
-    platforms = serializers.PrimaryKeyRelatedField(many=True, read_only=False,
-                                                   required=False,
-                                                   queryset=PlatformViewSet.queryset)
 
     class Meta:
         model = User
         fields = ('username', 'name', 'email', 'picture', 'first_name',
                   'last_name', 'gender', 'address', 'phone1_prefix', 'phone1',
-                  'platforms', 'succeeded_swaps_count', 'failed_swaps_count',
+                  'succeeded_swaps_count', 'failed_swaps_count',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'social_links', 'enabled', 'id', 'distance_unit', 'deleted',
@@ -93,7 +90,7 @@ class UserSerializer(serializers.ModelSerializer):
         #                'phone1': {'required': True, 'allow_blank': False},
         #                'platforms': {'required': True, 'allow_blank': False}}
 
-        extra_kwargs = {'platforms': {'required': False, 'allow_blank': True}}
+        #extra_kwargs = {'platforms': {'required': False, 'allow_blank': True}}
 
         depth = 2
 
