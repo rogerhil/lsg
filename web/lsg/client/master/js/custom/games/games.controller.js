@@ -63,15 +63,33 @@
 
         self.selectPlatformOpen = function (context) {
             var card = $("." + context + "-card");
-            var select = $("md-select");
-            var h = $(window).height() - $('.md-select-menu-container').height() - 10;
-            for (var k = 1; k < 6; k++) {
+            var select = card.find("md-select");
+            var top = select.offset().top + 45 - $(window).scrollTop();
+            var left = card.offset().left;
+            var max = $(window).height() - $('.md-select-menu-container').height() - 5;
+            var moved = false;
+            if (top >= max) {
+                top = max;
+            }
+            if ($(window).width() >= 768) {
+                left += 22;
+            }
+            for (var k = 0; k < 30; k++) {
                 $timeout(function () {
-                    $('.md-select-menu-container').css('left', card.offset().left + 'px');
-                    $('.md-select-menu-container').css('top', h + 'px');
-                }, 50 * k);
+                    // if (!$('.md-select-menu-container').length || moved) {
+                    //     return
+                    // }
+                    $('.md-select-menu-container.md-active').css('left', left + 'px');
+                    $('.md-select-menu-container.md-active').css('top', top + 'px');
+                    moved = true;
+                }, 10 * k + 1);
             }
         };
+
+        // $(window).resize(function () {
+        //     //self.selectPlatformOpen('collection');
+        //     self.selectPlatformOpen('wishlist');
+        // });
 
         GamesService.getPlatforms().then(function (platforms) {
             self.popularPlatforms = platforms[0];

@@ -23,6 +23,10 @@
 
 /* END some layout customization */
 
+.md-select-menu-container {
+  @include box-shadow(0px 5px 20px 5px rgba(0, 0, 0, 0.2));
+}
+
 #doorbell-button {
   z-index: 9999 !important;
   left: 2% !important;
