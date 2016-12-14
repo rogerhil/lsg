@@ -395,8 +395,11 @@ class User(AbstractUser):
                         my_game.other_user_ongoing = False
                         ongoing = False
 
-                        if my_game.id in iswap_in_requests or \
-                           iwish.id in iwish_in_requests:
+                        if my_game.id in iswap_in_requests:
+                            print(my_game)
+                            print(iwish)
+                            print('-----')
+                            print()
                             my_game.cannot_request = True
                         if iwish.id in iwish_in_requests:
                             ongoing = True
