@@ -25,10 +25,6 @@ from request.api.serializers import SwapRequestSerializer, \
     ArchiveRequestSerializer
 from cache import CachedViewSetMixin, get_cache_key_for_viewset
 
-import logging
-
-log = logging.getLogger('lsg')
-
 
 class MyRequestsViewSet(CachedViewSetMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
                         mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -39,11 +35,6 @@ class MyRequestsViewSet(CachedViewSetMixin, mixins.CreateModelMixin, mixins.List
     cache_obj_keys = ['requester_id', 'requested_id']
 
     def get_queryset(self):
-        log.warning('')
-        log.warning('@' * 99)
-        log.warning('hash: %s' % hash(SwapRequest))
-        log.warning('-' * 99)
-        log.warning('')
         user_id = self.kwargs.get('user_pk')
         return self.queryset.filter(requester_id=user_id)\
             .select_related('requester').select_related('requested') \
@@ -93,11 +84,6 @@ class IncomingRequestsViewSet(CachedViewSetMixin, mixins.ListModelMixin, mixins.
     cache_obj_keys = ['requester_id', 'requested_id']
 
     def get_queryset(self):
-        log.warning('')
-        log.warning('*' * 55)
-        log.warning('hash: %s' % hash(SwapRequest))
-        log.warning('-' * 55)
-        log.warning('')
         user_id = self.kwargs.get('user_pk')
         return self.queryset.filter(requested_id=user_id)\
             .select_related('requester').select_related('requested') \

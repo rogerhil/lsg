@@ -80,6 +80,12 @@ if os.getenv('LSG_DB_NAME'):
                 'filename': os.path.join(LOGS_BASE, 'web/dev.log'),
                 'formatter': 'verbose'
             },
+            'debug_logfile': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE, 'web/debug.log'),
+                'formatter': 'verbose'
+            },
             'production_logfile': {
                 'level': 'ERROR',
                 'filters': ['require_debug_false'],
@@ -100,6 +106,9 @@ if os.getenv('LSG_DB_NAME'):
             }
         },
         'loggers': {
+            'lsg.debug': {
+                'handlers': ['debug_logfile', 'console', 'development_logfile'],
+            },
             'lsg': {
                 'handlers': ['console', 'development_logfile', 'production_logfile'],
             },

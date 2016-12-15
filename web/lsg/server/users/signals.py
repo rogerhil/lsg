@@ -68,12 +68,6 @@ def clear_matches_cache_request_changed(sender, instance=None, **kwargs):
 @receiver(post_save, sender=User)
 def clear_matches_and_requests_cache_user_changed(sender, instance=None,
                                                   **kwargs):
-    print('')
-    print('--------' * 20)
-    print('CLEARING CACHE USER CHANGED!!!')
-    print('--------' * 20)
-    print('')
-
     keys = [
         User.get_matches_cache_key_for(instance.id),
         get_cache_key_for_viewset(MyRequestsViewSet, instance.id),
