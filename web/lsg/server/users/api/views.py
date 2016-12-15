@@ -113,7 +113,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         items = actor_stream(request.user)
         serialized = []
         user = request.user
-        for item in items[:8]:
+        for item in items[:10]:
             verb = Verbs.get(item)
             serialized.append(dict(
                 id=item.id,

@@ -178,7 +178,7 @@ class User(AbstractUser):
         return links
 
     @staticmethod
-    def user_recent_feedback(user_id, last=15):
+    def user_recent_feedback(user_id, last=10):
         statuses = Status.finalized_statuses()
         requests1 = SwapRequest.objects.filter(requester_id=user_id,
                                                status__in=statuses)\
@@ -215,7 +215,7 @@ class User(AbstractUser):
                 user.neutral_feedback_count
         return dict(total=total, items=feedback[:last])
 
-    def recent_feedbacks(self, last=15):
+    def recent_feedbacks(self, last=10):
         return self.user_recent_feedback(self.id, last)
 
     def _categorized_games(self, games):

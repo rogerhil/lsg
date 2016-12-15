@@ -91,8 +91,9 @@ div(ng-controller="DashboardController as ctrl")
                         .panel-footer.clearfix
                             .input-group
                                 span.pull-left
-                                    small(ng-if="ctrl.recentFeedback.items.length") Recent feedback (showing {{ ctrl.recentFeedback.items.length }} of {{ ctrl.recentFeedback.total }})
-                                    small(ng-if="!ctrl.recentFeedback.items.length") No feedback yet
+                                    small(ng-if="ctrl.recentFeedback.items.length && ctrl.recentFeedbackLoaded") Recent feedback (showing {{ ctrl.recentFeedback.items.length }} of {{ ctrl.recentFeedback.total }})
+                                    small(ng-if="!ctrl.recentFeedback.items.length && ctrl.recentFeedbackLoaded") No feedback yet
+                                    small(ng-if="!ctrl.recentFeedbackLoaded") Loading...
                                 //input.form-control.input-sm(type='text', placeholder='Search message ..')
                                 //span.input-group-btn
                                 //    button.btn.btn-default.btn-sm(type='submit')
@@ -110,8 +111,10 @@ div(ng-controller="DashboardController as ctrl")
                 // START list group
                 .list-group
                     span.list-group-item
-                        .media-box(ng-if="!ctrl.recentActivities.length")
+                        .media-box(ng-if="!ctrl.recentActivities.length && ctrl.recentActivitiesLoaded")
                             p No activities yet.
+                        .media-box(ng-if="!ctrl.recentActivitiesLoaded")
+                            p Loading...
                     // START list group item
                     .list-group-item(ng-repeat="activity in ctrl.recentActivities track by activity.id")
                         .media-box
@@ -122,7 +125,7 @@ div(ng-controller="DashboardController as ctrl")
                             .media-box-body.clearfix
                                 small.text-muted.pull-right.ml {{ activity.since }}
                                 .media-box-heading
-                                    a.m0(href="#" ng-class="activity.color") {{ activity.description }}
+                                    span.m0(ng-class="activity.color") {{ activity.description }}
                                 //p.m0: small
                                 //    a(href="#") Bootstrap.xls
                                 //.media-box-heading
@@ -133,7 +136,7 @@ div(ng-controller="DashboardController as ctrl")
                 // START panel footer
                 .panel-footer.clearfix
                     span.pull-left
-                        small Showing the last {{ ctrl.recentActivities.length }} activities
+                        small Recent activities (showing {{ ctrl.recentActivities.length }})
                     //a(href='#').pull-left
                     //    small Load more
                 // END panel-footer

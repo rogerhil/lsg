@@ -9,7 +9,9 @@
     function DashboardController($scope, $timeout, UsersService, MatchesService) {
         var self = this;
         self.recentFeedback = [];
+        self.recentFeedbackLoaded = false;
         self.recentActivities = [];
+        self.recentActivitiesLoaded = false;
         self.matchesLength = undefined;
         self.wishlistLength = undefined;
         self.matchesPercentage = 0;
@@ -39,12 +41,14 @@
         var updateRecentFeedback = function () {
             UsersService.recentFeedback().then(function (recentFeedback) {
                 self.recentFeedback = recentFeedback;
+                self.recentFeedbackLoaded = true;
             });
             self.updateRecentFeedbackPromise = $timeout(updateRecentFeedback, 30000);
         };
         var updateRecentActivities = function () {
             UsersService.recentActivities().then(function (recentActivities) {
                 self.recentActivities = recentActivities;
+                self.recentActivitiesLoaded = true;
             });
             self.updateRecentActivitiesPromise = $timeout(updateRecentActivities, 60000);
         };

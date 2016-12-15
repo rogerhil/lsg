@@ -99,8 +99,8 @@ class Verbs(metaclass=MetaVerbs):
                       'fa fa-archive', 'text-gray-dark')
     archived_all = Verb('Archived all swap requests',
                         'fa fa-archive', 'text-gray-dark')
-    changed_profile_picture = Verb('Change profile picture', 'fa fa-user', 'text-warning')
-    changed_profile_details = Verb('Change profile details', 'fa fa-user', 'text-primary')
+    changed_profile_picture = Verb('Changed profile picture', 'fa fa-user', 'text-warning')
+    changed_profile_details = Verb('Changed profile details', 'fa fa-user', 'text-primary')
     added_to_collection = Verb('Added game "%(target)s" to collection',
                                'fa fa-gamepad', 'text-success')
     removed_from_collection = Verb('Removed game "%(target)s" from collection',
