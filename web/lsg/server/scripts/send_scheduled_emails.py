@@ -17,7 +17,7 @@ class SendScheduledEmails(BaseScript):
         yesterday = now - one_day  # to send emails in the same day only
 
         deleted = [u.email for u in User.objects.filter(deleted=True)]
-        schedules = EmailSchedule.objects.filter(send_at__lte=now, send_at_gte=yesterday,
+        schedules = EmailSchedule.objects.filter(send_at__lte=now, send_at__gte=yesterday,
                                                  sent=False, cancelled=False)\
                                          .exclude(email__in=deleted)
         self.logger.info('Sending %s emails.' % schedules.count())
