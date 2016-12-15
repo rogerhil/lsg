@@ -9,7 +9,7 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
         md-dialog-content
             .md-dialog-content(style="min-width: 320px; max-width: 550px;")
                 div(style="margin: 0 auto; max-width: 260px;")
-                    user-photo-ratings-distance(user="ctrl.swapUser" onfeedbacksclose="ctrl.openRequestSwapCallback" hidefeedbacks="true" distance="ctrl.request.distance_display")
+                    user-photo-ratings-distance(user="ctrl.swapUser" onfeedbackclose="ctrl.openRequestSwapCallback" hidefeedback="true" distance="ctrl.request.distance_display")
                 br
                 div(layout="row" style="width: 250px; margin: 0 auto;")
                     flex(style="position: relative;")
@@ -28,20 +28,20 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                         img.img-responsive(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}', style="max-height: 170px;")
                         md-tooltip(md-direction="top") {{ctrl.game.full_name}}
                 br
-                p(ng-if="!ctrl.loadedLatestFeedbacks" style="text-align: center;")
+                p(ng-if="!ctrl.loadedRecentFeedback" style="text-align: center;")
                     em.fa.fa-comments-o
                     span loading...
-                p(ng-if="ctrl.loadedLatestFeedbacks && !ctrl.latestFeedbacks.length" style="text-align: center;")
+                p(ng-if="ctrl.loadedRecentFeedback && !ctrl.recentFeedback.items.length" style="text-align: center;")
                     em.fa.fa-comments-o
                     span This user has no feedback yet.
-                a(ng-if="ctrl.loadedLatestFeedbacks && ctrl.latestFeedbacks.length" href="javascript:;" ng-click="ctrl.toggleFeedbacks()")
+                a(ng-if="ctrl.loadedRecentFeedback && ctrl.recentFeedback.items.length" href="javascript:;" ng-click="ctrl.toggleFeedback()")
                     p(style="text-align: center;")
                         em.fa.fa-comments-o
                         span(ng-if="!feedbackShowHide") Show
                         span(ng-if="feedbackShowHide") Hide
-                        span {{ ctrl.swapUser.name }}'s latest feedback
-                div#feedbacks(style="display: none;")
-                    user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
+                        span {{ ctrl.swapUser.name }}'s recent feedback
+                div#feedback(style="display: none;")
+                    user-recent-feedback(user="ctrl.user" recentfeedback="ctrl.recentFeedback")
                 br
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
                     p
@@ -82,8 +82,8 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
                 span.btn-label
-                    em.fa.fa-close
-                span Cancel
+                    em.fa.fa-arrow-left
+                span Back
             button.btn.mb-sm.btn-labeled(ng-repeat="action in ctrl.actionButtons" ng-click="action.action($event)" ng-class="action.class" style="margin-left: 10px;")
                 span.btn-label
                     em(ng-class="action.icon")

@@ -112,8 +112,8 @@
         self.game = game;
         self.authenticatedUser = $rootScope.user;
         self.swapUser = swapUser;
-        self.latestFeedbacks = [];
-        self.loadedLatestFeedbacks = false;
+        self.recentFeedback = [];
+        self.loadedRecentFeedback = false;
         self.isRequester = true;
         self.data = {
             requester_game_condition_notes: null  // IMPORTANT: now is the REQUESTER field!
@@ -137,17 +137,17 @@
             }
         };
 
-        UsersService.latestFeedbacks(swapUser).then(function (latestFeedbacks) {
-            self.latestFeedbacks = latestFeedbacks;
-            self.loadedLatestFeedbacks = true;
+        UsersService.recentFeedback(swapUser).then(function (recentFeedback) {
+            self.recentFeedback = recentFeedback;
+            self.loadedRecentFeedback = true;
         });
 
-        self.toggleFeedbacks = function () {
+        self.toggleFeedback = function () {
             $scope.feedbackShowHide = !$scope.feedbackShowHide;
             if ($scope.feedbackShowHide) {
-                $('#feedbacks').slideDown();
+                $('#feedback').slideDown();
             } else {
-                $('#feedbacks').slideUp();
+                $('#feedback').slideUp();
             }
         };
 

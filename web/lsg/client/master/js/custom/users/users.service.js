@@ -150,23 +150,23 @@
                 });
             return q.promise;
         };
-        this.latestFeedbacks = function (user) {
+        this.recentFeedback = function (user) {
             var q = $q.defer();
             var baseUrl = baseUserUrl;
             if (user) {
                 baseUrl = '/api/users/' + user.id + '/';
             }
             $http
-                .get(baseUrl + 'latest-feedbacks/')
+                .get(baseUrl + 'recent-feedback/')
                 .success(function (response) {
                     q.resolve(response);
                 });
             return q.promise;
         };
-        this.latestActivities = function () {
+        this.recentActivities = function () {
             var q = $q.defer();
             $http
-                .get(baseUserUrl + 'latest-activities')
+                .get(baseUserUrl + 'recent-activities')
                 .success(function (response) {
                     q.resolve(response);
                 });

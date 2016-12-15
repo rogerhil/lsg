@@ -8,13 +8,13 @@
     DashboardController.$inject = ['$scope', '$timeout', 'UsersService', 'MatchesService'];
     function DashboardController($scope, $timeout, UsersService, MatchesService) {
         var self = this;
-        self.latestFeedbacks = [];
-        self.latestActivities = [];
+        self.recentFeedback = [];
+        self.recentActivities = [];
         self.matchesLength = undefined;
         self.wishlistLength = undefined;
         self.matchesPercentage = 0;
-        self.updateLatestFeedbacksPromise = undefined;
-        self.updateLatestActivitiesPromise = undefined;
+        self.updateRecentFeedbackPromise = undefined;
+        self.updateRecentActivitiesPromise = undefined;
         self.updateMatchesPercentagePromise = undefined;
         self.classyOptions = {
             speed: 5,
@@ -31,22 +31,22 @@
         }, 10);
 
         $scope.$on('$destroy', function() {
-            $timeout.cancel(self.updateLatestFeedbacksPromise);
-            $timeout.cancel(self.updateLatestActivitiesPromise);
+            $timeout.cancel(self.updateRecentFeedbackPromise);
+            $timeout.cancel(self.updateRecentActivitiesPromise);
             $timeout.cancel(self.updateMatchesPercentagePromise);
         });
 
-        var updateLatestFeedbacks = function () {
-            UsersService.latestFeedbacks().then(function (latestFeedbacks) {
-                self.latestFeedbacks = latestFeedbacks;
+        var updateRecentFeedback = function () {
+            UsersService.recentFeedback().then(function (recentFeedback) {
+                self.recentFeedback = recentFeedback;
             });
-            self.updateLatestFeedbacksPromise = $timeout(updateLatestFeedbacks, 30000);
+            self.updateRecentFeedbackPromise = $timeout(updateRecentFeedback, 30000);
         };
-        var updateLatestActivities = function () {
-            UsersService.latestActivities().then(function (latestActivities) {
-                self.latestActivities = latestActivities;
+        var updateRecentActivities = function () {
+            UsersService.recentActivities().then(function (recentActivities) {
+                self.recentActivities = recentActivities;
             });
-            self.updateLatestActivitiesPromise = $timeout(updateLatestActivities, 60000);
+            self.updateRecentActivitiesPromise = $timeout(updateRecentActivities, 60000);
         };
         var reloadPerc = function () {
             if (self.matchesLength === undefined || self.wishlistLength === undefined) {
@@ -77,8 +77,8 @@
             self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 30000);
         };
 
-        updateLatestFeedbacks();
-        updateLatestActivities();
+        updateRecentFeedback();
+        updateRecentActivities();
         updateMatchesPercentage();
 
     }

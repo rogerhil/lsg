@@ -11,7 +11,7 @@ from jsonfield import JSONField
 
 from games.models import Game
 from utils import short_timesince
-from .flow import StatusMethodsMixin, Status
+from request.flow import StatusMethodsMixin, Status
 
 
 from utils import Choices
@@ -191,12 +191,16 @@ class SwapRequest(models.Model, StatusMethodsMixin):
     def expire_old_ongoing_requests(cls):
         old_requests = cls.get_old_ongoing_requests()
         count = old_requests.update(status=Status.expired)
+        for swap_request in old_requests:
+            swap_request.update_involved_users_counters()
         return count
 
     @classmethod
     def expire_old_finalizing_requests(cls):
         old_requests = cls.get_old_finalizing_requests()
         count = old_requests.update(status=Status.expired)
+        for swap_request in old_requests:
+            swap_request.update_involved_users_counters()
         # TODO: ?? should we actually expire old finalizing requests? Or
         # TODO: maybe fail or succeed, depending on the first user feedback
         # TODO: and "swapped" attributes.
@@ -221,6 +225,56 @@ class SwapRequest(models.Model, StatusMethodsMixin):
         old_requests = cls.objects.filter(status=Status.finalizing,
                                           accepted_at__lte=days_ago)
         return old_requests
+
+    def update_involved_users_counters(self):
+
+        requester = self.requester
+        requested = self.requested
+
+        # 1. update swap counts
+        if self.is_succeeded:
+            requester.succeeded_swaps_count += 1
+            requested.succeeded_swaps_count += 1
+        elif self.is_failed:
+            requester.failed_swaps_count += 1
+            requested.failed_swaps_count += 1
+        elif self.is_expired:
+            requester.expired_swaps_count += 1
+            requested.expired_swaps_count += 1
+
+        # 2. update feedback counts
+        if self.requester_feedback == Feedback.good:
+            requester.positive_feedback_count += 1
+        elif self.requester_feedback == Feedback.bad:
+            requester.negative_feedback_count += 1
+        elif self.requester_feedback == Feedback.neutral:
+            requester.neutral_feedback_count += 1
+
+        if self.requested_feedback == Feedback.good:
+            requested.positive_feedback_count += 1
+        elif self.requested_feedback == Feedback.bad:
+            requested.negative_feedback_count += 1
+        elif self.requested_feedback == Feedback.neutral:
+            requested.neutral_feedback_count += 1
+
+        requester.save()
+        requested.save()
+
+    def remove_games_from_collection_wishlist(self):
+        from users.models import CollectionItem, WishlistItem
+
+        requester = self.requester
+        requested = self.requested
+
+        if self.is_succeeded:
+            CollectionItem.objects.filter(game=self.requester_game,
+                                          user=requester).delete()
+            WishlistItem.objects.filter(game=self.requested_game,
+                                        user=requester).delete()
+            CollectionItem.objects.filter(game=self.requested_game,
+                                          user=requested).delete()
+            WishlistItem.objects.filter(game=self.requester_game,
+                                        user=requested).delete()
 
 
 from request. signals import *  # important!!

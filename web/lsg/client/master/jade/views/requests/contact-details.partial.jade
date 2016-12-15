@@ -71,16 +71,30 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                     span {{ ctrl.swapUser.address.state }}
                                     br
                                     span {{ ctrl.swapUser.address.country.name }}
-                    div.col-md-6(style="max-height: 300px; overflow: auto;")
-                        div(style="float: right;")
+
+                        div(style="float: right; margin-right: 14px;")
                             a(href="javascript:;" ng-click="ctrl.reportUser()" style="text-decoration: none;")
                                 .label.label-danger Report this user!
-                        p(ng-if="!ctrl.latestFeedbacks.length")
+                        div(style="clear: both; margin-bottom: 20px;")
+
+                    div.col-md-6
+                        .pull-right.label.label-danger
+                            span {{ ctrl.user.negative_feedback_count }}
+                            md-tooltip(md-direction="top") Negative feedback
+                        .pull-right.label.label-default(style="color: #333; margin-right: 10px;")
+                            span {{ ctrl.user.neutral_feedback_count }}
+                            md-tooltip(md-direction="top") Neutral feedback
+                        .pull-right.label.label-success(style="margin-right: 10px;")
+                            span {{ ctrl.user.positive_feedback_count }}
+                            md-tooltip(md-direction="top") Success feedback
+
+                        p(ng-if="!ctrl.recentFeedback.items.length")
                             em.fa.fa-comments-o
-                            span This user has no feedbacks yet.
-                        h4(ng-if="ctrl.latestFeedbacks.length")
-                            span {{ ctrl.swapUser.name }}'s latest feedbacks
-                        user-latest-feedbacks(user="ctrl.swapUser" latestfeedbacks="ctrl.latestFeedbacks")
+                            span No feedback yet.
+                        h4(ng-if="ctrl.recentFeedback.items.length" style="margin-top: 0px;")
+                            span {{ ctrl.swapUser.name }}'s recent feedback (showing {{ ctrl.recentFeedback.items.length }} of {{ ctrl.recentFeedback.total }})
+                        .contact-user-feedback
+                            user-recent-feedback(user="ctrl.swapUser" recentfeedback="ctrl.recentFeedback")
                 br
                 .gmap(ui-map='ctrl.contactDetailsMap', ui-options='ctrl.contactDetailsMapOptions', class="map-canvas")
 

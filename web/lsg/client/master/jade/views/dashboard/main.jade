@@ -73,26 +73,26 @@ div(ng-controller="DashboardController as ctrl")
                 .col-lg-8
                     .panel.panel-default
                         .panel-heading
-                            .pull-right.label.label-danger {{ user.negative_feedback_count }}
-                            .pull-right.label.label-default(style="color: #333") {{ user.neutral_feedback_count }}
-                            .pull-right.label.label-success {{ user.positive_feedback_count }}
-                            .panel-title Latest feedbacks
+                            .pull-right.label.label-danger
+                                span {{ user.negative_feedback_count }}
+                                md-tooltip(md-direction="top") Negative feedback
+                            .pull-right.label.label-default(style="color: #333")
+                                span {{ user.neutral_feedback_count }}
+                                md-tooltip(md-direction="top") Neutral feedback
+                            .pull-right.label.label-success
+                                span {{ user.positive_feedback_count }}
+                                md-tooltip(md-direction="top") Success feedback
+                            .panel-title Recent feedback
 
                         // START list group
                         scrollable.list-group(height="180")
-                            span.list-group-item
-                                .media-box(ng-if="!ctrl.latestFeedbacks.length")
-                                    p No swaps yet.
-                            // START list group item
-                            user-latest-feedbacks(user="ctrl.user" latestfeedbacks="ctrl.latestFeedbacks")
+                            user-recent-feedback(user="user" recentfeedback="ctrl.recentFeedback")
 
-                            // END list group item
-                        // END list group
-                        // START panel footer
                         .panel-footer.clearfix
                             .input-group
                                 span.pull-left
-                                    small Showing the last {{ ctrl.latestFeedbacks.length }} feedbacks
+                                    small(ng-if="ctrl.recentFeedback.items.length") Recent feedback (showing {{ ctrl.recentFeedback.items.length }} of {{ ctrl.recentFeedback.total }})
+                                    small(ng-if="!ctrl.recentFeedback.items.length") No feedback yet
                                 //input.form-control.input-sm(type='text', placeholder='Search message ..')
                                 //span.input-group-btn
                                 //    button.btn.btn-default.btn-sm(type='submit')
@@ -106,14 +106,14 @@ div(ng-controller="DashboardController as ctrl")
             // START messages and activity
             .panel.panel-default
                 .panel-heading
-                    .panel-title Latest activities
+                    .panel-title Recent activities
                 // START list group
                 .list-group
                     span.list-group-item
-                        .media-box(ng-if="!ctrl.latestActivities.length")
+                        .media-box(ng-if="!ctrl.recentActivities.length")
                             p No activities yet.
                     // START list group item
-                    .list-group-item(ng-repeat="activity in ctrl.latestActivities track by activity.id")
+                    .list-group-item(ng-repeat="activity in ctrl.recentActivities track by activity.id")
                         .media-box
                             .pull-left
                                 span.fa-stack
@@ -133,7 +133,7 @@ div(ng-controller="DashboardController as ctrl")
                 // START panel footer
                 .panel-footer.clearfix
                     span.pull-left
-                        small Showing the last {{ ctrl.latestActivities.length }} activities
+                        small Showing the last {{ ctrl.recentActivities.length }} activities
                     //a(href='#').pull-left
                     //    small Load more
                 // END panel-footer

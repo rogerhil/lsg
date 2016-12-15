@@ -307,25 +307,25 @@
         self.game = request.requested_game;
         self.user = request.requester;
         self.swapUser = request.requester;
-        self.loadedLatestFeedbacks = false;
-        self.latestFeedbacks = [];
+        self.loadedRecentFeedback = false;
+        self.recentFeedback = [];
         self.requesterGameConditionNotes = request.requester_game_condition_notes;
         self.data = {
             requested_game_condition_notes: null  // IMPORTANT: now is the REQUESTED field!
         };
         self.errors = {};
 
-        UsersService.latestFeedbacks(self.swapUser).then(function (latestFeedbacks) {
-            self.latestFeedbacks = latestFeedbacks;
-            self.loadedLatestFeedbacks = true;
+        UsersService.recentFeedback(self.swapUser).then(function (recentFeedback) {
+            self.recentFeedback = recentFeedback;
+            self.loadedRecentFeedback = true;
         });
 
-        self.toggleFeedbacks = function () {
+        self.toggleFeedback = function () {
             $scope.feedbackShowHide = !$scope.feedbackShowHide;
             if ($scope.feedbackShowHide) {
-                $('#feedbacks').slideDown();
+                $('#feedback').slideDown();
             } else {
-                $('#feedbacks').slideUp();
+                $('#feedback').slideUp();
             }
         };
 
@@ -393,12 +393,12 @@
         self.swapUser = context == 'incomingRequests' ? request.requester : request.requested;
         self.request = request;
         self.context = context;
-        self.loadedLatestFeedbacks = false;
-        self.latestFeedbacks = [];
+        self.loadedRecentFeedback = false;
+        self.recentFeedback = [];
 
-        UsersService.latestFeedbacks(self.swapUser).then(function (latestFeedbacks) {
-            self.latestFeedbacks = latestFeedbacks;
-            self.loadedLatestFeedbacks = true;
+        UsersService.recentFeedback(self.swapUser).then(function (recentFeedback) {
+            self.recentFeedback = recentFeedback;
+            self.loadedRecentFeedback = true;
         });
 
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
@@ -417,11 +417,11 @@
             });
         };
 
-        self.toggleFeedbacks = function () {
-            if ($('#feedbacks').is(':hidden')) {
-                $('#feedbacks').slideDown();
+        self.toggleFeedback = function () {
+            if ($('#feedback').is(':hidden')) {
+                $('#feedback').slideDown();
             } else {
-                $('#feedbacks').slideUp();
+                $('#feedback').slideUp();
             }
         };
 
@@ -488,7 +488,7 @@
                                                      otherUser.address.city_longitude);
                     var content = otherUser.name + " location";
                     if (!otherUser.show_full_address_allowed) {
-                        content = otherUser.name + " location is somewhere in the circle"
+                        content = otherUser.name + "'s location is somewhere inside the circle"
                     }
                     var otherUserInfoWindow = new google.maps.InfoWindow({
                         content: content,

@@ -178,21 +178,21 @@ class User(AbstractUser):
         return links
 
     @staticmethod
-    def user_last_feedbacks(user_id, last=8):
-        statuses = Status.closed_statuses()
+    def user_recent_feedback(user_id, last=8):
+        statuses = Status.finalized_statuses()
         requests1 = SwapRequest.objects.filter(requester_id=user_id,
                                                status__in=statuses)\
-                               .exclude(requester_feedback_notes=None)\
+                               .exclude(requested_feedback=None)\
                                .select_related('requested') \
-                               .order_by('-closed_at')[:last]
+                               .order_by('-closed_at')
         requests2 = SwapRequest.objects.filter(requested_id=user_id,
                                                status__in=statuses)\
-                               .exclude(requested_feedback_notes=None) \
+                               .exclude(requested_feedback=None) \
                                .select_related('requester') \
                                .order_by('-closed_at')[:last]
-        feedbacks = []
-        for request in requests1:
-            feedbacks.append(dict(
+        feedback = []
+        for request in requests1[:last]:
+            feedback.append(dict(
                 id=request.id,
                 user=request.requested,
                 notes=request.requester_feedback_notes,
@@ -200,8 +200,8 @@ class User(AbstractUser):
                 closed_at=request.closed_at,
                 closed_at_since=request.closed_at_since
             ))
-        for request in requests2:
-            feedbacks.append(dict(
+        for request in requests2[:last]:
+            feedback.append(dict(
                 id=request.id,
                 user=request.requester,
                 notes=request.requested_feedback_notes,
@@ -209,11 +209,14 @@ class User(AbstractUser):
                 closed_at=request.closed_at,
                 closed_at_since=request.closed_at_since
             ))
-        feedbacks.sort(key=lambda x: x['closed_at'], reverse=True)
-        return feedbacks[:last]
+        feedback.sort(key=lambda x: x['closed_at'], reverse=True)
+        user = User.objects.get(pk=user_id)
+        total = user.positive_feedback_count + user.negative_feedback_count + \
+                user.neutral_feedback_count
+        return dict(total=total, items=feedback[:last])
 
-    def last_feedbacks(self, last=8):
-        return self.user_last_feedbacks(self.id, last)
+    def recent_feedbacks(self, last=8):
+        return self.user_recent_feedback(self.id, last)
 
     def _categorized_games(self, games):
         categorized = {}

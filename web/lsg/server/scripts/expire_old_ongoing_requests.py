@@ -9,6 +9,7 @@ class ExpireOldOngoingRequests(BaseScript):
 
     def expire(self):
         count = SwapRequest.expire_old_ongoing_requests()
+        count += SwapRequest.expire_old_finalizing_requests()
         if count:
             msg = '%s ongoing requests older than %s days has been expired.'\
                   % (count, settings.EXPIRE_OLD_ONGOING_REQUESTS_IN_DAYS)

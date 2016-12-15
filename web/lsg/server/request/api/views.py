@@ -210,6 +210,10 @@ class AllRequestsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
             EmailSchedule.cancel('swap-expire-notification', swap_request)
 
         swap_request.save()
+        if not first:
+            swap_request.update_involved_users_counters()
+            swap_request.remove_games_from_collection_wishlist()
+
         serializer = SwapRequestSerializer()
         serialized = serializer.to_representation(swap_request)
         return views.Response(serialized)

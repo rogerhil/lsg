@@ -94,20 +94,22 @@ class UsersViewSet(viewsets.ModelViewSet):
     def matches(self, request, pk):
         return views.Response(request.user.serialized_matches)
 
-    @detail_route(methods=['get'], url_path='latest-feedbacks')
-    def latest_feedbacks(self, request, pk, permission_classes=[]):
+    @detail_route(methods=['get'], url_path='recent-feedback')
+    def recent_feedback(self, request, pk, permission_classes=[]):
         serialized = []
         serializer = SmallUserSerializer()
-        for feedback in User.user_last_feedbacks(pk):
+        recent = User.user_recent_feedback(pk)
+        for feedback in recent['items']:
             feedback['user'] = serializer.to_representation(feedback['user'])
             feedback['closed_at'] = formats.date_format(feedback['closed_at'],
                                                         "SHORT_DATETIME_FORMAT")
             feedback['closed_at_since'] = feedback['closed_at_since']
             serialized.append(feedback)
-        return views.Response(serialized)
+        recent['items'] = serialized
+        return views.Response(recent)
 
-    @detail_route(methods=['get'], url_path='latest-activities')
-    def latest_activities(self, request, pk):
+    @detail_route(methods=['get'], url_path='recent-activities')
+    def recent_activities(self, request, pk):
         items = actor_stream(request.user)
         serialized = []
         user = request.user

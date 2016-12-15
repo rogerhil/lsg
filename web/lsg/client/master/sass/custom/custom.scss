@@ -23,6 +23,11 @@
 
 /* END some layout customization */
 
+.contact-user-feedback {
+  max-height: 200px;
+  overflow: auto;
+}
+
 .ng-table-rowselected th {
    text-align: left !important;
 }
@@ -236,6 +241,11 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 }
 
 @media only screen and (max-width: $mq-up-to-tablet) {
+
+  .contact-user-feedback {
+    max-height: none;
+  }
+
   .col-lg-6,
   .col-md-4,
   .col-md-8 {
