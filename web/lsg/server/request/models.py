@@ -259,6 +259,8 @@ class SwapRequest(models.Model, StatusMethodsMixin):
 
         requester.save()
         requested.save()
+        self.requester = requester
+        self.requested = requested
 
     def remove_games_from_collection_wishlist(self):
         from users.models import CollectionItem, WishlistItem
