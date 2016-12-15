@@ -54,33 +54,45 @@ elif [ "$1" = 'update' ]; then
     cd /app/lsg-docker/web/lsg/server
     sudo -u lsg -E HOME=/home/lsg/ python manage.py collectstatic --no-input
 
+    if [ "$2" = 'appupdate' ]; then
+        sudo -u lsg -E HOME=/home/lsg/ python manage.py appupdate
+    fi
+
+elif [ "$1" = 'appupdate' ]; then
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py appupdate $2
+
 elif [ "$1" = 'createtestusers' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python create-test-users.py $2
+    sudo -u lsg -E HOME=/home/lsg/ python create-test-users.py $2
 
 elif [ "$1" = 'createsuperuser' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py createsuperuser
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py createsuperuser
 
 elif [ "$1" = 'devrun' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py runserver 0.0.0.0:80
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py runserver 0.0.0.0:80
 
 elif [ "$1" = 'shell' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py shell
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py shell
 
 elif [ "$1" = 'dbshell' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py dbshell
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py dbshell
 
 elif [ "$1" = 'migrate' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py migrate
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py migrate
 
 elif [ "$1" = 'makemigrations' ]; then
     cd /app/lsg-docker/web/lsg/server
-    python manage.py makemigrations
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py makemigrations
+
+elif [ "$1" = 'makemigrationsmigrate' ]; then
+    cd /app/lsg-docker/web/lsg/server
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py makemigrations
+    sudo -u lsg -E HOME=/home/lsg/ python manage.py migrate
 
 elif [ "$1" = 'bash' ]; then
     bash

@@ -32,7 +32,14 @@ class AuthenticatedUserView(views.APIView):
     def get(self, request, format=None):
         serializer = self.serializer_class()
         if request.user.is_authenticated():
-            serialized = serializer.to_representation(request.user)
+            if request.user.app_updates:
+                # browser refreshed!
+                request.user.app_updates = False
+                request.user.save()
+                serialized = serializer.to_representation(request.user)
+                serialized['app_updated'] = True
+            else:
+                serialized = serializer.to_representation(request.user)
             return views.Response(serialized)
         else:
             return views.Response("User not authenticated.", status=HTTP_400_BAD_REQUEST)

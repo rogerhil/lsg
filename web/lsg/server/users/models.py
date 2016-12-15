@@ -107,6 +107,7 @@ class User(AbstractUser):
     deleted_date = models.DateTimeField(null=True, blank=True)
     enabled = models.BooleanField(default=False)
     reported = models.BooleanField(default=False)
+    app_updates = models.BooleanField(default=False)
 
     wishlist = models.ManyToManyField(Game, related_name="wished",
                                       through=WishlistItem,

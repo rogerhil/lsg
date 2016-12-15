@@ -40,7 +40,7 @@ class UserCountsStarsSerializer(serializers.ModelSerializer):
         fields = ('succeeded_swaps_count', 'failed_swaps_count', 'joined',
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
-                  'enabled', 'deleted')
+                  'enabled', 'deleted', 'app_updates')
         read_only_fields = fields
         depth = 0
 
@@ -77,14 +77,14 @@ class UserSerializer(serializers.ModelSerializer):
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'social_links', 'enabled', 'id', 'distance_unit', 'deleted',
-                  'show_full_address_allowed')
+                  'show_full_address_allowed', 'app_updates')
         read_only_fields = ('username', 'name', 'picture', 'enabled',
                             'succeeded_swaps_count',
                             'failed_swaps_count', 'expired_swaps_count',
                             'negative_feedback_count',
                             'positive_feedback_count',
                             'neutral_feedback_count', 'stars', 'social_links',
-                            'id', 'deleted')
+                            'id', 'deleted', 'app_updates')
         #extra_kwargs = {'first_name': {'required': True, 'allow_blank': False},
         #                'last_name': {'required': True, 'allow_blank': False},
         #                'phone1': {'required': True, 'allow_blank': False},

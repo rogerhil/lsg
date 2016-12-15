@@ -12,6 +12,7 @@
             for (var key in data) {
                 this[key] = data[key];
             }
+            this.no_reload_app = false;
         };
         User.prototype.hasBasicProfile = function () {
             return this.first_name && this.last_name && this.email && this.phone1;
@@ -61,7 +62,13 @@
 
                     userId = $rootScope.user.id;
                     baseUserUrl = '/api/users/' + userId + '/';
-
+                    if (user.app_updated) {
+                        delete user.app_updated;
+                        if (user.isProfileComplete()) {
+                            Notify.closeAll(false, true);
+                            Notify.alert("Successfully updated!", {status: 'success', timeout: 3000});
+                        }
+                    }
                     q.resolve(user);
                 } else {
                     if (event) {
@@ -123,7 +130,7 @@
                         updatedUser[key] = response[key];
                     }
                     $rootScope.user = updatedUser;
-                    q.resolve(new User(updatedUser));
+                    q.resolve(updatedUser);
                 });
             return q.promise;
         };

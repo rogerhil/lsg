@@ -5,8 +5,8 @@
         .module('app.preloader')
         .directive('preloader', preloader);
 
-    preloader.$inject = ['$animate', '$timeout', '$q', '$http', '$rootScope', 'Notify', '$state', '$stateParams', 'User', 'UsersService'];
-    function preloader($animate, $timeout, $q, $http, $rootScope, Notify, $state, $stateParams, User, UsersService) {
+    preloader.$inject = ['$animate', '$timeout', '$rootScope', '$state', 'UsersService', '$mdDialog'];
+    function preloader($animate, $timeout, $rootScope, $state, UsersService, $mdDialog) {
         var counter = 0;
 
         var locationChange = function (event, next, current) {
@@ -44,7 +44,25 @@
             }
             if (currentSplitted[1] != nextSplitted) {
                 // to update counts and stars in frontend..
-                UsersService.updateUserCountsStarsDetails();
+                var prom = UsersService.updateUserCountsStarsDetails();
+                if (prom) {
+                    prom.then(function (user) {
+                        if (user.app_updates && !user.no_reload_page) {
+                            var confirm = $mdDialog.confirm()
+                                .title('Updates Available!')
+                                .textContent("It is highly recommended to reload the app. Do you want to do it now?")
+                                .ariaLabel('Updates Available!')
+                                .ok("Yes")
+                                .cancel('No');
+                            $mdDialog.show(confirm).then(function () {
+                                $rootScope.user.no_reload_page = false;
+                                window.location.reload();
+                            }).catch(function () {
+                                $rootScope.user.no_reload_page = true;
+                            });
+                        }
+                    });
+                }
             }
             if (event && event.targetScope) {
                 if (event.targetScope.user === undefined || event.targetScope.user == null) {

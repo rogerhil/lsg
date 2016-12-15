@@ -6,9 +6,9 @@ from users.models import User, UserReport, CollectionItem, WishlistItem
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name',
-                    'address', 'date_joined', 'social_links', 'enabled')
+                    'address', 'date_joined', 'social_links', 'enabled', 'app_updates')
     search_fields = ('username', 'email', 'first_name', 'last_name')
-    list_filter = ('deleted', 'enabled', 'reported')
+    list_filter = ('deleted', 'enabled', 'reported', 'app_updates')
 
     def social_links(self, instance):
         return ', '.join(['<a href="%s" target="_blank">%s</a>' % (l, n)
