@@ -59,6 +59,7 @@ elif [ "$1" = 'update' ]; then
     fi
 
 elif [ "$1" = 'appupdate' ]; then
+    cd /app/lsg-docker/web/lsg/server
     sudo -u lsg -E HOME=/home/lsg/ python manage.py appupdate $2
 
 elif [ "$1" = 'createtestusers' ]; then
@@ -71,15 +72,15 @@ elif [ "$1" = 'createsuperuser' ]; then
 
 elif [ "$1" = 'devrun' ]; then
     cd /app/lsg-docker/web/lsg/server
-    sudo -u lsg -E HOME=/home/lsg/ python manage.py runserver 0.0.0.0:80
+    python manage.py runserver 0.0.0.0:80
 
 elif [ "$1" = 'shell' ]; then
     cd /app/lsg-docker/web/lsg/server
-    sudo -u lsg -E HOME=/home/lsg/ python manage.py shell
+    python manage.py shell
 
 elif [ "$1" = 'dbshell' ]; then
     cd /app/lsg-docker/web/lsg/server
-    sudo -u lsg -E HOME=/home/lsg/ python manage.py dbshell
+    python manage.py dbshell
 
 elif [ "$1" = 'migrate' ]; then
     cd /app/lsg-docker/web/lsg/server
