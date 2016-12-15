@@ -22,18 +22,12 @@ elif [ "$1" = 'pull' ]; then
 
 elif [ "$1" = 'update' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
-
-elif [ "$1" = 'appupdate' ]; then
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update appupdate
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update $2
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV up -d --no-recreate
 
 elif [ "$1" = 'markappupdate' ]; then
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update appupdate $2
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web appupdate $2
 
 elif [ "$1" = 'makemigrations' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web makemigrations
@@ -43,7 +37,7 @@ elif [ "$1" = 'makemigrationsmigrate' ]; then
 
 elif [ "$1" = 'deployweb' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update $2
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm web
     ./cleandocker all
@@ -51,7 +45,7 @@ elif [ "$1" = 'deployweb' ]; then
 
 elif [ "$1" = 'deploycelery' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update $2
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm celery
     ./cleandocker all
@@ -59,7 +53,7 @@ elif [ "$1" = 'deploycelery' ]; then
 
 elif [ "$1" = 'deployall' ]; then
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV build
-    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update
+    docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV run --rm web update $2
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop web
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV stop celery
     docker-compose -f docker-compose.base.yml -f $DOCKER_COMPOSE_ENV rm web
@@ -119,7 +113,7 @@ elif [ "$1" = 'setupelx' ]; then
     
 else
     echo
-    echo "Usage: ./lsg (init | update | appupdate | rundev | runnginx | runnginxinit | deployweb | deploycelery | deployall | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | migrate | makemigrations | makemigrationsmigrate | createtestusers | createsuperuser | setupelx)"
+    echo "Usage: ./lsg (init | update (appupdate) | markappupdate (--revert) | rundev | runnginx | runnginxinit | deployweb (appupdate) | deploycelery (appupdate) | deployall (appupdate) | shell | dbshell | webbash | webbashrun | celerybash | celeryrestart | migrate | makemigrations | makemigrationsmigrate | createtestusers | createsuperuser | setupelx)"
     echo
 fi
 
