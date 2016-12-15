@@ -27,8 +27,20 @@ class PlatformViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
     def get_queryset(self):
         queryset = super(PlatformViewSet, self).get_queryset()
-        #platforms = sorted(queryset, key=lambda x: x.short_name)
-        return queryset
+        # change order only for: Super Nintendo
+        platforms = []
+        snes = None
+        last_nintendo = 0
+        for i, p in enumerate(queryset):
+            name = p.short_name .lower().strip()
+            if name.startswith('nintendo'):
+                last_nintendo = i
+            if name == 'snes':
+                snes = p
+                continue
+            platforms.append(p)
+        platforms.insert(last_nintendo + 1, snes)
+        return platforms
 
 
 class GameFilter(FilterSet):

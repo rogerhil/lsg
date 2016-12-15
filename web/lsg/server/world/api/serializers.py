@@ -23,10 +23,8 @@ class BasicAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Address
-        fields = ('city', 'state', 'country', 'city_latitude',
-                  'city_longitude')
-        read_only_fields = ('city', 'state', 'country', 'city_latitude',
-                            'city_longitude')
+        fields = ('state', 'country', 'city_latitude', 'city_longitude')
+        read_only_fields = ('state', 'country', 'city_latitude', 'city_longitude')
         depth = 2
 
 

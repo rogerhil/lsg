@@ -84,7 +84,7 @@
                     $('#spinner').fadeIn();
                     connectionIssue = true;
                     Notify.closeAll('connectionIssue', true);
-                    Notify.alert("Connection refused, please verify your internet connection...", {
+                    Notify.alert("Connection issue, attempting to re-establish it.", {
                         status: 'danger',
                         timeout: 60000,
                         group: 'connectionIssue'

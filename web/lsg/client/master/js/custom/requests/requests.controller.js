@@ -433,15 +433,17 @@
             var bounds = new google.maps.LatLngBounds();
             var userPosition = new google.maps.LatLng(user.address.latitude,
                                                       user.address.longitude);
-            var radius = 5;  // km
+            var radius = 30;  // km
             var earthRadius = 6371;
             var otherUserPosition;
+            var zoom = 14;
             if (otherUser.show_full_address_allowed) {
                 otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
                                                            otherUser.address.longitude);
             } else {
                 otherUserPosition = new google.maps.LatLng(otherUser.address.city_latitude,
                                                            otherUser.address.city_longitude);
+                zoom = 8;
             }
 
             var userMarker, otherUserMarker, circle;
@@ -458,7 +460,7 @@
                 } else {
                     circle = new google.maps.Circle({
                         map: self.contactDetailsMap,
-                        radius: 5 * 1000,
+                        radius: radius * 1000,
                         fillColor: '#000',
                         strokeWeight: 0,
                         center: otherUserPosition
@@ -484,8 +486,12 @@
                 } else {
                     var pos = new google.maps.LatLng(otherUser.address.city_latitude + ((radius / earthRadius) * (180 / Math.PI)),
                                                      otherUser.address.city_longitude);
+                    var content = otherUser.name + " location";
+                    if (!otherUser.show_full_address_allowed) {
+                        content = otherUser.name + " location is somewhere in the circle"
+                    }
                     var otherUserInfoWindow = new google.maps.InfoWindow({
-                        content: otherUser.name + " location",
+                        content: content,
                         position: pos
                     });
                     otherUserInfoWindow.open(self.contactDetailsMap);
@@ -494,12 +500,18 @@
                     google.maps.event.trigger(self.contactDetailsMap, 'resize');
                     $timeout(function () {
                         self.contactDetailsMap.fitBounds(bounds);
+                        self.contactDetailsMapOptions.zoom = zoom;
+                        self.contactDetailsMap.setZoom(zoom);
+                        // var listener = google.maps.event.addListener(map, "idle", function() {
+                        //   if (map.getZoom() > 16) map.setZoom(16);
+                        //   google.maps.event.removeListener(listener);
+                        // });
                     });
                 });
             });
 
             self.contactDetailsMapOptions = {
-                zoom: 14,
+                zoom: zoom,
                 center: userPosition,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scrollwheel: false

@@ -101,7 +101,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         for feedback in User.user_last_feedbacks(pk):
             feedback['user'] = serializer.to_representation(feedback['user'])
             feedback['closed_at'] = formats.date_format(feedback['closed_at'],
-                                                       "SHORT_DATETIME_FORMAT")
+                                                        "SHORT_DATETIME_FORMAT")
             feedback['closed_at_since'] = feedback['closed_at_since']
             serialized.append(feedback)
         return views.Response(serialized)

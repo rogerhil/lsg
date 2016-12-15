@@ -60,9 +60,14 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                     span(ng-if="!ctrl.swapUser.show_full_address_allowed" style="-webkit-filter: blur(5px); -moz-filter: blur(5px);  -o-filter: blur(5px);  -ms-filter: blur(5px); filter: blur(5px)")
                                         span ?? ????? ????????
                                         br
-                                        md-tooltip(md-direction="top") Contact {{ ctrl.swapUser.name }} to get his full address
-                                    span {{ ctrl.swapUser.address.city }}
-                                    br
+                                        md-tooltip(md-direction="top") Contact {{ ctrl.swapUser.name }} to get his/her full address
+                                    span(ng-if="ctrl.swapUser.show_full_address_allowed")
+                                        span {{ ctrl.swapUser.address.city }}
+                                        br
+                                    span(ng-if="!ctrl.swapUser.show_full_address_allowed" style="-webkit-filter: blur(5px); -moz-filter: blur(5px);  -o-filter: blur(5px);  -ms-filter: blur(5px); filter: blur(5px)")
+                                        span ???? ????????
+                                        br
+                                        md-tooltip(md-direction="top") Contact {{ ctrl.swapUser.name }} to get his/her full address
                                     span {{ ctrl.swapUser.address.state }}
                                     br
                                     span {{ ctrl.swapUser.address.country.name }}
