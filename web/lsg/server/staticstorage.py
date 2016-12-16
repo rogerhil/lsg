@@ -11,8 +11,15 @@ class LsgManifestStaticFilesStorage(ManifestStaticFilesStorage):
 
     patterns = tuple(list(ManifestStaticFilesStorage.patterns) + [
         ("index.html", (
-            (r"""(src=['"]{1}(.*?)['"]{1})""", 'src="%s"'),
-            (r"""(href=['"]{1}(.*?)['"]{1})""", 'href="%s"'),
+            (r"""<script\s+(src=['"]{1}(.*?)['"]{1})""", '<script src="%s"'),
+            (r"""<link\s+rel="stylesheet"\s+(href=['"]{1}(.*?\.css)['"]{1})""",
+             '<link rel="stylesheet" href="%s"'),
+            (r"""<link\s+rel="shortcut icon"\s+(href=['"]{1}(.*?"""
+             """\.(?:ico|png|jpg|jpeg|gif))['"]{1})""",
+             '<link rel="shortcut icon" href="%s"'),
+            (r"""<meta\s+property="og:image"\s+(content=['"]{1}(.*?"""
+             """\.(?:ico|png|jpg|jpeg|gif))['"]{1})""",
+             '<meta property="og:image" content="%s"'),
         )),
     ])
 
