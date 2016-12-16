@@ -19,7 +19,7 @@ if os.getenv('LSG_DB_NAME'):
     
     POSTGIS_TEMPLATE = 'letswapgames'
     
-    DEBUG = bool_env('LSG_DJANGO_DEBUG') and False
+    DEBUG = bool_env('LSG_DJANGO_DEBUG')
 
     # Rest Framework
     REST_FRAMEWORK = {
