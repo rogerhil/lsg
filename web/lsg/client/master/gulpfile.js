@@ -147,7 +147,6 @@ var cssnanoOpts = {
 // TASKS
 //---------------
 
-
 // JS APP
 gulp.task('scripts:app', function() {
     log('Building scripts..');
@@ -430,7 +429,6 @@ gulp.task('assets', [
     'templates:index',
     'templates:views'
 ]);
-
 
 /////////////////////
 

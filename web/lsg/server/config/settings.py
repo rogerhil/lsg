@@ -176,6 +176,10 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# for caching purposes: appends a hash to a file, e.g.: file.1231231.css
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'staticstorage.LsgManifestStaticFilesStorage'
+
 # Media files
 
 MEDIA_ROOT = '/app/media'
