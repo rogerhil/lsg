@@ -433,7 +433,7 @@
             var bounds = new google.maps.LatLngBounds();
             var userPosition = new google.maps.LatLng(user.address.latitude,
                                                       user.address.longitude);
-            var radius = 30;  // km
+            var radius = 10;  // km
             var earthRadius = 6371;
             var otherUserPosition;
             var zoom = 14;
@@ -443,7 +443,7 @@
             } else {
                 otherUserPosition = new google.maps.LatLng(otherUser.address.city_latitude,
                                                            otherUser.address.city_longitude);
-                zoom = 8;
+                zoom = 9;
             }
 
             var userMarker, otherUserMarker, circle;
@@ -500,8 +500,10 @@
                     google.maps.event.trigger(self.contactDetailsMap, 'resize');
                     $timeout(function () {
                         self.contactDetailsMap.fitBounds(bounds);
-                        self.contactDetailsMapOptions.zoom = zoom;
-                        self.contactDetailsMap.setZoom(zoom);
+                        if (!otherUser.show_full_address_allowed) {
+                            self.contactDetailsMapOptions.zoom = zoom;
+                            self.contactDetailsMap.setZoom(zoom);
+                        }
                         // var listener = google.maps.event.addListener(map, "idle", function() {
                         //   if (map.getZoom() > 16) map.setZoom(16);
                         //   google.maps.event.removeListener(listener);

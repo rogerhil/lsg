@@ -12,6 +12,7 @@ from rest_framework import viewsets, views, status
 from rest_framework.decorators import detail_route
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from utils import short_timesince
@@ -102,8 +103,9 @@ class UsersViewSet(viewsets.ModelViewSet):
     def matches(self, request, pk):
         return views.Response(request.user.serialized_matches)
 
-    @detail_route(methods=['get'], url_path='recent-feedback')
-    def recent_feedback(self, request, pk, permission_classes=[]):
+    @detail_route(methods=['get'], url_path='recent-feedback',
+                  permission_classes=[IsAuthenticated])
+    def recent_feedback(self, request, pk):
         serialized = []
         serializer = SmallUserSerializer()
         recent = User.user_recent_feedback(pk)

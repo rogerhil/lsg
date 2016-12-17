@@ -181,8 +181,8 @@ if os.getenv('LSG_DB_NAME'):
         }
 
         # comment the lines below to enable Memcache!!
-        # CACHES = {
-        #     'default': {
-        #         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        #     }
-        # }
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            }
+        }

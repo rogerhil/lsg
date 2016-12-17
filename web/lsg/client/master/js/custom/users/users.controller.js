@@ -208,12 +208,12 @@
         }
 
         if (self.user.isCountrySupported()) {
-            $timeout(function () {tourActivate()}, 1000);
+            $timeout(function () {tourActivate()}, 1500);
         }
 
         if (!self.user.isCountrySupported()) {
             self.changeCountry();
-            $timeout(function () {countryTourActivate()}, 1000);
+            $timeout(function () {countryTourActivate()}, 1500);
         }
 
         function gameTourActivate() {

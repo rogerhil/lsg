@@ -35,7 +35,7 @@
 
         self.filterMatches = function () {
             self.filteredMatches = self.matches.filter(function (match) {
-                if ((self.showOngoingSwaps || !match.ongoing) &&
+                if ((self.showOngoingSwaps || !match.no_games_left) &&
                     (self.showPendingSwaps || !match.iwish.swap_pending)) {
                     return match;
                 }

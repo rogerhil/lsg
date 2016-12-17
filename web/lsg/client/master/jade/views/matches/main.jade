@@ -1,10 +1,10 @@
 div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
     h3 Matches
         small
-            md-switch(ng-model='ctrl.showOngoingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show Ongoing Swaps', style="position: absolute; right: 3px; top: -5px;")
-                | Show Ongoing Swaps
-            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show Pending Swaps', style="position: absolute; right: 20px; top: 17px;")
-                | Show Pending Swaps
+            md-switch(ng-model='ctrl.showOngoingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in ongoing swaps', style="position: absolute; right: 3px; top: -5px;")
+                | Show games in ongoing swaps
+            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in pending swaps', style="position: absolute; right: 20px; top: 17px;")
+                | Show games in pending swaps
             span &nbsp;
 
     p(ng-if="!ctrl.filteredMatches.length && ctrl.loaded") No matches.
@@ -12,12 +12,6 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         span Want to see matches? Help our community to grow,
         a(href="/app/#/app/invite") &nbsp;invite friends or people
         span you know that might enjoy swapping games here!
-
-    div(ng-if="ctrl.filteredMatches.length" style="clear: both; margin-top: 30px;")
-        h4
-            span Want to see more matches? Help our community to grow,
-            a(href="/app/#/app/invite") &nbsp; invite friends or people
-            span you know that might enjoy swapping games here!
 
     .ball-pulse(ng-if="!ctrl.loaded")
         div
@@ -34,7 +28,8 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 md-tooltip(md-direction="bottom") There is already a swap ongoing with this game.
             .label.label-primary.swap-indicator(ng-if="match.no_games_left" ng-style="match.iwish.swap_pending && {right: '40px'}")
                 .em.fa.fa-frown-o
-                md-tooltip(md-direction="bottom") All your games that matches this game are ongoing for swap.
+                md-tooltip(md-direction="bottom") No matches available.
+
             img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
             md-tooltip(md-direction="top") {{match.iwish.full_name}}
         .card-offset.pull-right
@@ -46,3 +41,10 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 ng-pluralize(count="match.count", when="{'one': '{{match.count}} match', 'other': '{{match.count}} matches'}")
             p.m0(style="padding-top: 5px; white-space: nowrap;")
                 ng-pluralize(count="match.swaps.length", when="{'one': 'from {{match.swaps.length}} user', 'other': 'from {{match.swaps.length}} users'}")
+
+    div(style="clear: both;")
+    div(ng-if="ctrl.filteredMatches.length" style="clear: both; margin-top: 60px;")
+        h5(style="text-align: center;")
+            span Want to see more matches? Help our community to grow, &nbsp;
+            a(href="/app/#/app/invite") invite friends or people
+            span you know that might enjoy swapping games here!

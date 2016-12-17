@@ -287,7 +287,7 @@ class User(AbstractUser):
                          (self, self.address))
             return []
         games_collections = CollectionItem.objects \
-            .filter(game_id__in=self.wishlist.all().values_list('id'),
+            .filter(game_id__in=self.wishlist.all().values_list('id', flat=True),
                     user__deleted=False) \
             .exclude(user=self)\
             .select_related('user')\
@@ -345,6 +345,21 @@ class User(AbstractUser):
 
         other_games = list(other_games1) + list(other_games2)
 
+
+        users_games1 = SwapRequest.objects\
+                                  .filter(requested_id__in=other_users,
+                                          status__in=statuses)\
+                                  .exclude(requester=self)\
+                                  .select_related('requested_game')\
+                                  .values_list('requested_game_id', flat=True)
+        users_games2 = SwapRequest.objects\
+                                  .filter(requester_id__in=other_users,
+                                          status__in=statuses)\
+                                  .exclude(requested=self)\
+                                  .select_related('requester_game')\
+                                  .values_list('requester_game_id', flat=True)
+        users_games = list(users_games1) + list(users_games2)
+
         qs = Address.objects.distance(self.address.point)
         matches = dict()
 
@@ -370,12 +385,16 @@ class User(AbstractUser):
             if user.id not in users_wishlist_cache:
                 users_wishlist_cache[user.id] = user.wishlist.all()\
                                                     .select_related('platform')
+
+            this_user_ongoing = game_collection.game.id in users_games
+
             for my_game in my_collection:
                 for game_he_wishes in users_wishlist_cache[user.id]:
                     if my_game.id == game_he_wishes.id:
                         # matched!!!
                         iwish = deepcopy(game_collection.game)  # important
                         iwish.swap_pending = False
+                        my_game = deepcopy(my_game)
                         my_game.swap_pending = False
 
                         tup = (user.id, iwish.id, my_game.id)
@@ -409,6 +428,9 @@ class User(AbstractUser):
                         if my_game.id in other_games:
                             my_game.other_user_ongoing = True
 
+                        my_game.this_user_ongoing = this_user_ongoing
+
+
                         match = dict(
                             iwish=iwish,
                             count=0,
@@ -418,17 +440,15 @@ class User(AbstractUser):
                         )
                         matches.setdefault(iwish.id, match)
                         matches[iwish.id]['count'] += 1
-                        matches[iwish.id]['swaps'].setdefault(user.id,
-                            dict(user=user, wanted_games=[]))
-                        matches[iwish.id]['swaps'][user.id]['wanted_games']\
-                            .append(my_game)
+                        matches[iwish.id]['swaps'].setdefault(user.id, dict(user=user, wanted_games=[]))
+                        matches[iwish.id]['swaps'][user.id]['wanted_games'].append(my_game)
 
         for match in matches.values():
             match['swaps'] = list(match['swaps'].values())
             all_wanted_games = reduce(lambda a, b: a + b,
                                    [s['wanted_games'] for s in match['swaps']])
             match['no_games_left'] = all([(g.ongoing or g.cannot_request or
-                                           g.other_user_ongoing)
+                                           g.other_user_ongoing or g.this_user_ongoing)
                                           for g in all_wanted_games])
             match['swaps'].sort(key=lambda p: p['user'].rating)
             match['swaps'].sort(key=lambda p: p['user'].succeeded_swaps_count,
@@ -495,6 +515,7 @@ class User(AbstractUser):
                     game['cannot_request'] = game_obj.cannot_request
                     game['other_user_ongoing'] = game_obj.other_user_ongoing
                     game['ongoing'] = game_obj.ongoing
+                    game['this_user_ongoing'] = game_obj.this_user_ongoing
                     game['swap_pending'] = game_obj.swap_pending
                     games.append(game)
                 serialized_match['swaps'].append(dict(user=user,
