@@ -10,7 +10,7 @@
     </p>
 
     <p>
-        Please <a href="{{ website }}/app/#/app/requests?id={{ swap_request.id }}&msg=Please+finalize+this+request+and+give+{{ other_user }}+a+feedback+note.">click here</a> to
+        Please <a href="{{ website }}/app/#/app/requests?{% if user == swap_request.requester %}my{% else %}inc{% endif %}=true&id={{ swap_request.id }}&msg=Please+finalize+this+request+and+give+{{ other_user }}+a+feedback+note.">click here</a> to
         finalize this request and give {{ other_user }} feedback.
     </p>
 

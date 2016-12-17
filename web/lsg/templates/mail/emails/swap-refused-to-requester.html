@@ -8,6 +8,10 @@
         {{ swap_request.requested }} at Let'SwapGames.
     </p>
 
+    <p style="text-align: center;">
+        <a href="{{ website }}/app/#/app/requests?inc=trueid={{ swap_request.id }}&msg=Your+request+was+refused,+but+you+can+try+other+matches.">Click here to check the request.</a>
+    </p>
+
     {% include "mail/emails/request-games-images.html" %}
 
 {% endblock %}

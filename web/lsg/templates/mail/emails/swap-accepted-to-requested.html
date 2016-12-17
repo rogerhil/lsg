@@ -12,7 +12,7 @@
     {% include "mail/emails/request-games-images.html" %}
 
     <p style="text-align: center;">
-        <a href="{{ website }}/app/#/app/requests?id={{ swap_request.id }}&msg=Check-the-user-contact-details." target="_blank">Click here to contact {{ swap_request.requester }}</a>
+        <a href="{{ website }}/app/#/app/requests?inc=true&id={{ swap_request.id }}&msg=Check-the-user-contact-details." target="_blank">Click here to contact {{ swap_request.requester }}</a>
     </p>
 
 {% endblock %}

@@ -4,13 +4,12 @@
     <h4>Hello {{ user }},</h4>
 
     <p>
-        The user {{ user_who_finalized }} marked a request as
-        {% if swapped %}swapped{% else %}not swapped{% endif %} at
-        Let'SwapGames and gave you feedback.
+        {{ user_who_finalized }} confirmed you have
+        {% if swapped %}swapped{% else %}not swapped{% endif %} the games below and gave you feedback.
     </p>
 
     <p>
-        Please <a href="{{ website }}/app/#/app/requests?id={{ swap_request.id }}&msg=Please+finalize+this+request+and+leave+feedback+to+{{ user_who_finalized }}.">click here</a> to
+        Please <a href="{{ website }}/app/#/app/requests?{% if user == swap_request.requester %}my{% else %}inc{% endif %}=true&id={{ swap_request.id }}&msg=Please+finalize+this+request+and+leave+feedback+to+{{ user_who_finalized }}.">click here</a> to
         finalize this request and leave feedback to {{ user_who_finalized }}.
     </p>
 

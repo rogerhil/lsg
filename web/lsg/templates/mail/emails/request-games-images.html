@@ -1,16 +1,18 @@
-{% if user == swap_request.requester_game %}
-    {% with swap_request.requester_game as iwish and swap_request.requested_game as mygame %}
+{% if user == swap_request.requester %}
+    {% with swap_request.requested_game as iwish and swap_request.requester_game as mygame %}
         {% include "mail/emails/games-images.html" %}
     {% endwith %}
 {% else %}
-    {% with swap_request.requested_game as iwish and swap_request.requester_game as mygame %}
+    {% with swap_request.requester_game as iwish and swap_request.requested_game as mygame %}
         {% include "mail/emails/games-images.html" %}
     {% endwith %}
 {% endif %}
 
-<div style="text-align: center; font-size: 12px;">
-    game you wish
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    game you own
+<div style="text-align: center; font-size: 12px; margin: 0 auto 50px auto; width: 320px;">
+    <table style="text-align: center; font-size: 12px; width: 320px;">
+        <tr>
+            <td style="text-align: center;">The game you want</td>
+            <td style="text-align: center;">The game you own</td>
+        </tr>
+    </table>
 </div>
