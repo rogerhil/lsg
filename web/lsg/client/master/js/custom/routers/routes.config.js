@@ -92,7 +92,7 @@
                 resolve: helper.resolveFor('loaders.css', 'spinkit', 'bm.bsTour')
             })
             .state('app.users', {
-                url: '/profile',
+                url: '/profile?chpic',
                 title: 'Profile',
                 templateUrl: helper.basepath('users/main.html'),
                 resolve: helper.resolveFor('loaders.css', 'spinkit', 'ngImgCrop', 'bm.bsTour', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')

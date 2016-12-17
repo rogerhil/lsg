@@ -1,12 +1,12 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.sidebar')
         .controller('UserBlockController', UserBlockController);
 
-    UserBlockController.$inject = ['$scope'];
-    function UserBlockController($scope) {
+    UserBlockController.$inject = ['$scope', '$rootScope'];
+    function UserBlockController($scope, $rootScope) {
 
         activate();
 
@@ -14,15 +14,13 @@
 
         function activate() {
 
-          $scope.userBlockVisible = true;
+            $rootScope.userBlockVisible = true;
 
-          var detach = $scope.$on('toggleUserBlock', function(/*event, args*/) {
+            var detach = $scope.$on('toggleUserBlock', function (/*event, args*/) {
+                $rootScope.userBlockVisible = !$rootScope.userBlockVisible;
+            });
 
-            $scope.userBlockVisible = ! $scope.userBlockVisible;
-
-          });
-
-          $scope.$on('$destroy', detach);
+            $scope.$on('$destroy', detach);
         }
     }
 })();

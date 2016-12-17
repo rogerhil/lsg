@@ -8,6 +8,17 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
             span &nbsp;
 
     p(ng-if="!ctrl.filteredMatches.length && ctrl.loaded") No matches.
+    h4(ng-if="!ctrl.filteredMatches.length && ctrl.loaded" style="text-align: center;")
+        span Want to see matches? Help our community to grow,
+        a(href="/app/#/app/invite") &nbsp;invite friends or people
+        span you know that might enjoy swapping games here!
+
+    div(ng-if="ctrl.filteredMatches.length" style="clear: both; margin-top: 30px;")
+        h4
+            span Want to see more matches? Help our community to grow,
+            a(href="/app/#/app/invite") &nbsp; invite friends or people
+            span you know that might enjoy swapping games here!
+
     .ball-pulse(ng-if="!ctrl.loaded")
         div
         div

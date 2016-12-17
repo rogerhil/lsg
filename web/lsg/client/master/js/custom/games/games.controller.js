@@ -142,6 +142,7 @@
             self.restartTourButton = false;
             self.tour = new Tour({
                 backdrop: true,
+                keyboard: false,
                 onHide: function () {
                     //console.log(222);
                     //self.called = false;

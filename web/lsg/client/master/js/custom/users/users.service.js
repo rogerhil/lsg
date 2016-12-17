@@ -15,7 +15,7 @@
             this.no_reload_app = false;
         };
         User.prototype.hasBasicProfile = function () {
-            return this.first_name && this.last_name && this.email && this.phone1;
+            return this.first_name && this.last_name && this.email && this.phone1 && this.gender;
         };
         User.prototype.hasAddress = function () {
             return this.address.latitude && this.address.longitude;

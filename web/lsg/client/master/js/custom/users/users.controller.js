@@ -11,8 +11,8 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', '$state', '$rootScope', 'GlobalFixes'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, $state, $rootScope, GlobalFixes) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', '$state', '$stateParams', '$rootScope', 'GlobalFixes'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, $state, $stateParams, $rootScope, GlobalFixes) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
@@ -89,7 +89,7 @@
 
         function countryTourActivate() {
 
-            if (self.countryTour) {
+            if (self.countryTour && !$stateParams.chpic) {
                 return;
             }
 
@@ -119,6 +119,7 @@
             self.countryTour = new Tour({
                 backdrop: true,
                 backdropPadding: 0,
+                keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -132,7 +133,7 @@
         }
 
         function tourMoveSteps() {
-            if (self.tour && !self.tour.ended()) {
+            if (self.tour && !self.tour.ended() && !$stateParams.chpic) {
                 var currentStep = self.tour.getCurrentStep();
                 var goStep = 0;
                 if (self.user.hasBasicProfile()) {
@@ -143,14 +144,14 @@
                 }
                 if (goStep == -1) {
                     self.tour.end();
-                } else if (currentStep < goStep) {
+                } else if (currentStep != goStep) {
                     self.tour.goTo(goStep);
                 }
             }
         }
 
         function tourActivate() {
-            if (self.user.isProfileComplete() || self.tourAlreadyDone) {
+            if (self.user.isProfileComplete() || self.tourAlreadyDone || (self.tour && !self.tour.ended()) || $stateParams.chpic) {
                 return;
             }
 
@@ -181,6 +182,7 @@
                 self.tour = new Tour({
                     backdrop: true,
                     backdropPadding: 20,
+                    keyboard: false,
                     template: "" +
                         "<div class='popover tour'>" +
                         "  <div class='arrow'></div>" +
@@ -199,6 +201,10 @@
             self.tour.start();
             self.tour.restart(true);
             tourMoveSteps();
+
+            if (self.user.first_name && self.user.last_name && self.user.email && self.user.phone1 && !self.user.gender) {
+                $scope.profileForm.$setSubmitted();
+            }
         }
 
         if (self.user.isCountrySupported()) {
@@ -228,6 +234,7 @@
                 backdrop: true,
                 //backdropContainer: 'header.topnavbar-wrapper',
                 //container: 'header.topnavbar-wrapper',
+                keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -244,7 +251,7 @@
                 {
                     element: 'li[sref="app.games"]',
                     title: "Add games",
-                    content: "You need to specify which games you have and specify which games you wish by clicking on the menu on the left.",
+                    content: "Now you specify which games you have and which games you wish here.",
                     placement: 'right',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;
@@ -279,6 +286,10 @@
             });
         };
 
+        if ($stateParams.chpic) {
+            $timeout(function () {self.changePicture()}, 1000);
+        }
+
 
         //$timeout(function () {gameTourActivate()}, 1000);
 
@@ -292,6 +303,9 @@
             UsersService.updateUser(self.user).then(function (user) {
                 self.saving = false;
                 $rootScope.user = user;
+                self.user.address.geocoder_address = user.address.geocoder_address;
+                self.user.address.latitude = user.address.latitude;
+                self.user.address.longitude = user.address.longitude;
                 $('.profile-loading').fadeOut();
                 $('.profile-settings-loading').fadeOut();
                 $('#change-country-form').slideUp();
@@ -299,9 +313,14 @@
                 self.errors = {};
                 self.tourAlreadyDone = user.isProfileComplete();
 
+
+                if (self.user.first_name && self.user.last_name && self.user.email && self.user.phone1 && !self.user.gender) {
+                    $scope.profileForm.$setSubmitted();
+                }
+
                 if (self.countryTour) {
                     self.countryTour.end();
-                    self.countryTour = null;
+                    self.countryTour = undefined;
                 }
                 // if (!self.tour) {
                 //     tourActivate();

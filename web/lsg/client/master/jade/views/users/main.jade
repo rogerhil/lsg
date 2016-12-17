@@ -70,32 +70,34 @@ h3 My profile
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
                                     label First Name
-                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="1")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
                                     label Last Name
-                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="2")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
                                         .md-char-counter {{error}}
+                                md-input-container(flex='0')
+                                    input(ng-model="ctrl.user.gender" required)
                                 md-input-container(flex='15', ng-class="{'md-input-invalid': ctrl.errors.gender}")
                                     label Gender
-                                    md-select(ng-model="ctrl.user.gender", ng-change="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    md-select.gender(ng-model="ctrl.user.gender", ng-change="ctrl.updateUser()" ng-disabled="!ctrl.user.isCountrySupported()" required tabindex="3" md-select-on-focus)
                                         md-option(ng-value="gender.id", ng-repeat="gender in ctrl.genderOptions") {{gender.label}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.gender")
                                         .md-char-counter {{error}}
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.email}")
                                     label Email
-                                    input(ng-model='ctrl.user.email', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    input(ng-model='ctrl.user.email', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="4")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.email")
                                         .md-char-counter {{error}}
                                 div(style="height: 24px; margin: 24px 10px 14px 0;")
-                                    img(ng-src="{{ ctrl.user.address.country.flag }}" alt="{{ ctrl.user.address.country.name }}" style="height: 24px")
+                                    img(ng-src="{{ user.address.country.flag }}" alt="{{ user.address.country.name }}" style="height: 24px")
                                     span +{{ ctrl.user.address.country.phone_code }}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.phone1}")
                                     label Phone 1
-                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()")
+                                    input(ng-model='ctrl.user.phone1', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="5")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.phone1")
                                         .md-char-counter {{error}}
                         div#address-form
@@ -104,6 +106,7 @@ h3 My profile
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
                                     md-autocomplete(md-no-cache='ctrl.noCache',
+                                                    tabindex="6"
                                                     md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);"
                                                     md-require-match=true,
                                                     md-items='item in ctrl.queryAddress(ctrl.searchText)',

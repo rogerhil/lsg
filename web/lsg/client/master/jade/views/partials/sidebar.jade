@@ -22,8 +22,9 @@ script(type='text/ng-template', id="sidebar-renderer.html")
                         .user-block-picture
                             .user-block-status
                                 div.user-img.left-menu
-                                    a(href="/app/#/app/profile")
+                                    a(href="/app/#/app/profile?chpic")
                                         img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
+                                        md-tooltip(md-direction="top") Change Picture
                                 //.circle.circle-success.circle-lg
                                 .user-flag
                                     img(ng-src="{{user.address.country.flag}}", alt="{{user.address.country.name}}")

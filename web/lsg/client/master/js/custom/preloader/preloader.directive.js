@@ -13,6 +13,13 @@
             var currentSplitted = current.split('#');
             var nextSplitted = next.split('#');
             var el = angular.element(".preloader-progress").parent();
+
+            // if (nextSplitted[1].slice(0, 12) == '/app/profile') {
+            //     $rootScope.userBlockVisible = false;
+            // } else {
+            //     $rootScope.userBlockVisible = true;
+            // }
+
             if (nextSplitted.length > 1) {
                 var u = nextSplitted[1].replace(/^\s+|[\/\s]+$/g, '');
                 switch (u) {
@@ -30,6 +37,7 @@
                         return;
                 }
             }
+
             if ($rootScope.user && $rootScope.user.deleted) {
                 window.location = '/logout/';
                 return;
