@@ -22,15 +22,17 @@ script(type='text/ng-template', id="sidebar-renderer.html")
                         .user-block-picture
                             .user-block-status
                                 div.user-img.left-menu
-                                    img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
+                                    a(href="/app/#/app/profile")
+                                        img.img-thumbnail(ng-src="{{user.picture}}", alt="{{user.name}}")
                                 //.circle.circle-success.circle-lg
                                 .user-flag
                                     img(ng-src="{{user.address.country.flag}}", alt="{{user.address.country.name}}")
                         // Name and Job
                         .user-block-info
-                            span.user-block-name {{ 'sidebar.WELCOME' | translate }} {{user.name}}
-                            span.user-block-role
-                                user-ratings(user="user")
+                            a(href="/app/#/app/profile" style="text-decoration: none;")
+                                span.user-block-name {{ 'sidebar.WELCOME' | translate }} {{user.name}}
+                                span.user-block-role
+                                    user-ratings(user="user")
             // END user info
 
             // Iterates over all sidebar items

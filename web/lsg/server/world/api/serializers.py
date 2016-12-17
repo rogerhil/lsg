@@ -72,6 +72,10 @@ class AddressSerializer(serializers.ModelSerializer):
             #    self._errors.setdefault('address', [])
             #    self._errors['address'].append("Minimum location required, e.g.: street, road, "
             #                                   "number, etc.")
+        else:
+            self._errors.setdefault('address', [])
+            self._errors['address'].append("Address not found.")
+
 
         if self.errors:
             if raise_exception:

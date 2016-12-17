@@ -95,7 +95,8 @@ class UsersViewSet(viewsets.ModelViewSet):
         if code == 'IE' and address:
             # GOOGLE BUG!!!
             address = address.replace(', Co. ', ', ')
-        return views.Response([dict(display=address)])
+        result = [dict(display=address)] if address else []
+        return views.Response(result)
 
     @detail_route(methods=['get'])
     def matches(self, request, pk):

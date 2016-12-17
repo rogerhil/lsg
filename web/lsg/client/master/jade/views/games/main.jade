@@ -18,6 +18,11 @@ h3 Games
                     span My Collection
             .card-body
                 ng-include(src="'app/views/games/items.partial.html'", onload="context='collection'; ctrl.gameTour()")
+                div(ng-if="ctrl.restartTourButton" style="margin: 30px auto 10px auto; text-align: center;")
+                    button.btn.mb-sm.btn-default.btn-labeled(ng-click="ctrl.runGameTour()")
+                        span.btn-label
+                            em.icon-reload
+                        span Restart tour
     .col-lg-6
         .card.wishlist-card(ng-controller='GamesCtrl as ctrl')
             .card-heading.bg-primary

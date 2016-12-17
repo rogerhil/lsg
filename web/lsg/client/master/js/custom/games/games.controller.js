@@ -27,6 +27,7 @@
         self.pinned = undefined;
         self.isMobile = Utils.isMobile();
         self.currentPlatform = $rootScope.lastSelectedPlatform;
+        self.restartTourButton = false;
 
         $(document).unbind('on');
         $(document).on("mousewheel",function(e){
@@ -38,11 +39,15 @@
             }
         });
 
-
         $('body').on('click', function (e) {
-            //if ($(e.target).hasClass('tour-backdrop')) {
-            //    if (self.tour) self.tour.end();
-            //}
+            if ($(e.target).hasClass('tour-backdrop')) {
+                if (self.tour) {
+                    self.restartTourButton = true;
+                    self.tour.end();
+                    self.tour = undefined;
+                    $scope.$apply();
+                }
+            }
         });
         $(document).on('keyup',function(evt) {
             if (evt.keyCode == 27) {
@@ -122,7 +127,7 @@
         Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
 
         self.runGameTour = function () {
-            if (!$stateParams.tour) {
+            if (!$stateParams.tour || self.tour) {
                 return;
             }
             // BootstrapTour is not compatible with z-index based layout
@@ -134,6 +139,7 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
+            self.restartTourButton = false;
             self.tour = new Tour({
                 backdrop: true,
                 onHide: function () {

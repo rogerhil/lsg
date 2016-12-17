@@ -83,7 +83,9 @@
 
         this.fixTourLeftMenu = function (tour) {
             $timeout(function () {
-                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px; overflow: hidden;"><ul class="nav ng-scope">' + $('.tour-tour-element')[0].outerHTML + '</ul></nav>'));
+                var el = $('.tour-tour-element');
+                if (!el.length) return;
+                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px; overflow: hidden;"><ul class="nav ng-scope">' + el[0].outerHTML + '</ul></nav>'));
                 $('.tour-step-background').css('background', '#fff');
                 $('.tour-step-background').click(function (e) {
                     tour.end();

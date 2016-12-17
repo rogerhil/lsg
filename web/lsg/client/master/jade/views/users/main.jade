@@ -61,7 +61,7 @@ h3 My profile
                         div(style="background-color: #fff;")
                     .card-title Profile form
                 .card-body
-                    div.alert.alert-warning(ng-if="ctrl.user.isCountrySupported() && !ctrl.user.isProfileComplete()")
+                    div.alert.alert-warning(ng-if="ctrl.user.isCountrySupported() && !ctrl.user.isProfileComplete() || (ctrl.user.isProfileComplete() && ctrl.tour && ctrl.saving)")
                         span Please complete the form below
                     div.alert.alert-warning(ng-if="!ctrl.user.isCountrySupported()")
                         span You must provide your country on the left before completing your profile data.
@@ -103,8 +103,20 @@ h3 My profile
                                 input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required, ng-disabled="!ctrl.user.isCountrySupported()")
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
-                                    md-autocomplete(md-no-cache='ctrl.noCache', md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);" md-items='item in ctrl.queryAddress(ctrl.searchText)', md-search-text='ctrl.searchText', md-item-text='item.display', placeholder='Place your address here...', md-min-length="5", md-delay="500", md-autoselect="true", ng-disabled="!ctrl.user.isCountrySupported()")
+                                    md-autocomplete(md-no-cache='ctrl.noCache',
+                                                    md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);"
+                                                    md-require-match=true,
+                                                    md-items='item in ctrl.queryAddress(ctrl.searchText)',
+                                                    md-search-text='ctrl.searchText',
+                                                    md-item-text='item.display',
+                                                    placeholder='Place your address here...',
+                                                    md-min-length="3",
+                                                    md-delay="200",
+                                                    md-autoselect="true",
+                                                    ng-disabled="!ctrl.user.isCountrySupported()",
+                                                    required)
                                         span(md-highlight-text='ctrl.searchText') {{item.display}}
+
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.address.geocoder_address")
                                         .md-char-counter {{error}}
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.addressGlobal")

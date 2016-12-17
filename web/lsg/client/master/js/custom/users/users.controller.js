@@ -11,8 +11,8 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', 'GamesService', 'Notify', '$rootScope', 'GlobalFixes'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, GamesService, Notify, $rootScope, GlobalFixes) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', '$state', '$rootScope', 'GlobalFixes'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, $state, $rootScope, GlobalFixes) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
@@ -22,19 +22,22 @@
         self.countryTour = undefined;
         self.gameTour = undefined;
         self.user = $rootScope.user;
+        self.tourAlreadyDone = self.user.isProfileComplete();
         self.countries = ['IE', 'GB', 'IM'];
         self.errors = {};
         self.genderOptions = [{id: 'male', label: 'Male'},
                               {id: 'female', label: 'Female'}];
         self.mapMarkers = [];
-        self.makeGameTour = !self.user.address.latitude || !self.user.address.longitude
+        self.makeGameTour = !self.user.isProfileComplete();
         self.searchText = self.user.address.geocoder_address;
+        self.saving = false;
 
         $('body').on('click', function (e) {
             if ($(e.target).hasClass('tour-backdrop')) {
                 if (self.tour) self.tour.end();
                 if (self.countryTour) self.countryTour.end();
                 if (self.gameTour) self.gameTour.end();
+                self.tour = undefined;
             }
         });
         $(document).on('keyup',function(evt) {
@@ -147,7 +150,7 @@
         }
 
         function tourActivate() {
-            if (self.user.isProfileComplete()) {
+            if (self.user.isProfileComplete() || self.tourAlreadyDone) {
                 return;
             }
 
@@ -211,9 +214,10 @@
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
-            if (self.gameTour) {
+            if (self.gameTour || $state.current.name == 'app.games') {
                 return;
             }
+
             var section = angular.element('.wrapper > section');
             section.css({'position': 'static'});
             // finally restore on destroy and reuse the value declared in stylesheet
@@ -276,20 +280,20 @@
         //$timeout(function () {gameTourActivate()}, 1000);
 
         self.updateUser = function (updateMap, settingsSection) {
+            self.saving = true;
             if (settingsSection) {
                 $('.profile-settings-loading').fadeIn();
             } else {
                 $('.profile-loading').fadeIn();
             }
             UsersService.updateUser(self.user).then(function (user) {
-                //Notify.alert("Your profile data has been successfully saved.", {status: 'success'});
+                self.saving = false;
                 $('.profile-loading').fadeOut();
                 $('.profile-settings-loading').fadeOut();
                 $('#change-country-form').slideUp();
                 self.searchText = user.address.geocoder_address;
                 self.errors = {};
-                self.user = user;
-                $rootScope.user = user;
+                self.tourAlreadyDone = user.isProfileComplete();
 
                 if (self.countryTour) {
                     self.countryTour.end();
@@ -309,14 +313,14 @@
 
                 tourActivate();
 
-                $($('input, md-select')[$('input, md-select').index($(':focus')) + 1]).focus();
-
+                if (self.tour && self.user.isProfileComplete()) {
+                    self.tour.end();
+                    self.tour = undefined;
+                }
                 if (updateMap) {
                     setupUserMap(user);
                 }
-                if (self.tour && self.user.isProfileComplete()) {
-                    self.tour.end();
-                }
+
                 if (self.makeGameTour && self.user.isProfileComplete()) {
                     $timeout(function () {
                         gameTourActivate();
