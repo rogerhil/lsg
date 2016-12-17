@@ -24,6 +24,8 @@ class BaseScript(object):
     images_path = settings.GAMES_IMAGES_DIR
     parent_path = settings.GAMES_IMAGES_PARENT_DIR
 
+    offline = False
+
     logger = None
 
     def __init__(self, sufix=None):
@@ -37,8 +39,14 @@ class BaseScript(object):
         self.skip_existent_platforms = False
         self.parser = argparse.ArgumentParser()
         self.setup_cli()
-        self.api = TheGamesDb(20, 10)
+        self._api = TheGamesDb(20, 10)
         self.mocked_api = TheGamesDbMock(self.xml_path)
+
+    @property
+    def api(self):
+        if self.offline:
+            return self.mocked_api
+        return self._api
 
     @classmethod
     def build_log_filename(cls, sufix):

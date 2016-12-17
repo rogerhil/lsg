@@ -35,17 +35,19 @@ def get_service_path_by_path_params(path, **params):
     return service
 
 
-class PopulateGamesDb(BaseScript):
+class PopulateGamesDbBase(BaseScript):
     name = "populate_games_db"
 
-    def save_xml(self, data, path, **params):
+    def save_xml(self, path, **params):
+        if self.offline:
+            return
         service = get_service_path_by_path_params(path, **params)
         with open(os.path.join(self.xml_path, "%s.xml" % service), 'w') as xml:
-            xml.write(data.decode('utf-8'))
+            xml.write(self.api.last_response.decode('utf-8'))
 
     def main(self):
         platforms = self.api.platform.list()
-        self.save_xml(self.api.last_response, self.api.platform.list_path)
+        self.save_xml(self.api.platform.list_path)
 
         existent_platforms = Platform.objects.all() \
             .extra(select={'lower_name': 'lower(name)'}).order_by(
@@ -81,7 +83,7 @@ class PopulateGamesDb(BaseScript):
             self.logger.info("%s  -  %s games" % (p, total))
 
             platform_name_plus = p.name.lower()
-            self.save_xml(self.api.last_response, self.api.platform.games_path,
+            self.save_xml(self.api.platform.games_path,
                           platform=platform_name_plus)
 
             for i, g in enumerate(games):
@@ -140,8 +142,7 @@ class PopulateGamesDb(BaseScript):
                                                    'NO SUCH rating ATTRIBUTE'),
                                                     err))
         platform.save()
-        self.save_xml(self.api.last_response, self.api.platform.get_path,
-                      id=p.id)
+        self.save_xml(self.api.platform.get_path, id=p.id)
         return platform
 
     def save_game(self, g, i, total, platform):
@@ -210,7 +211,7 @@ class PopulateGamesDb(BaseScript):
                                   (g.name, getattr(g, 'rating',
                                    'NO SUCH rating ATTRIBUTE'), err))
 
-        self.save_xml(self.api.last_response, self.api.game.get_path, id=g.id)
+        self.save_xml(self.api.game.get_path, id=g.id)
         try:
             game.save()
         except IntegrityError as err:
@@ -218,7 +219,7 @@ class PopulateGamesDb(BaseScript):
                               (g, g.id, g.releasedate, err))
             return
 
-        self.save_xml(self.api.last_response, self.api.game.get_path, id=g.id)
+        self.save_xml(self.api.game.get_path, id=g.id)
 
         genres = g.genres or {}
 
@@ -267,6 +268,14 @@ class PopulateGamesDb(BaseScript):
                 game.similar.add(db_similar)
             game.similar_count = game.similar.all().count()
             game.save()
+
+
+class PopulateGamesDb(PopulateGamesDbBase):
+    pass
+
+
+class PopulateGamesDbOffline(PopulateGamesDbBase):
+    offline = True
 
 
 if __name__ == '__main__':

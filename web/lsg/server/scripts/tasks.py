@@ -3,7 +3,7 @@ from celery import shared_task, task
 from celery.signals import after_task_publish
 
 from scripts.models import Scripting, CeleryTask
-from scripts.populate_games_db import PopulateGamesDb
+from scripts.populate_games_db import PopulateGamesDb, PopulateGamesDbOffline
 from scripts.download_boxart_images import BoxartDownloader
 from scripts.make_thumbnails import ThumbnailsMaker
 from scripts.expire_old_ongoing_requests import ExpireOldOngoingRequests
@@ -18,6 +18,13 @@ def populate_games_db(self):
     scripting = Scripting.instance()
     scripting.games_last_updated = timezone.now()
     scripting.save()
+    return True
+
+
+@shared_task(bind=True, script_class=PopulateGamesDbOffline)
+def populate_games_db_offline(self):
+    script = self.script_class(self.request.id)
+    script.run()
     return True
 
 

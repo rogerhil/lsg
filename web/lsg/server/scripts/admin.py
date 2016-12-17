@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from admin_extra_urls.extras import ExtraUrlMixin, link
 
 from scripts.models import Scripting, CeleryTask
-from scripts.tasks import populate_games_db, download_boxart_images, \
+from scripts.tasks import populate_games_db, populate_games_db_offline, download_boxart_images, \
     make_thumbnails, expire_old_ongoing_requests, send_scheduled_emails
 
 
@@ -21,6 +21,12 @@ class ScriptingAdmin(ExtraUrlMixin, admin.ModelAdmin):
     @link(label="Update games")
     def update_games(self, request):
         async_result = populate_games_db.delay()
+        path = reverse('watch_log', args=(async_result.task_id,))
+        return HttpResponseRedirect(path)
+
+    @link(label="Update games OFFLINE")
+    def update_games(self, request):
+        async_result = populate_games_db_offline.delay()
         path = reverse('watch_log', args=(async_result.task_id,))
         return HttpResponseRedirect(path)
 

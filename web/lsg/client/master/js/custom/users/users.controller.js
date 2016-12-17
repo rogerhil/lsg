@@ -265,6 +265,9 @@
         }
 
         self.changePicture = function () {
+            if (self.tour && !self.tour.ended() || self.countryTour && !self.countryTour.ended()) {
+                return;
+            }
             $mdDialog.show({
                 controllerAs: 'ctrl',
                 controller: ChangePictureDialogCtrl,
@@ -288,6 +291,7 @@
             }
             UsersService.updateUser(self.user).then(function (user) {
                 self.saving = false;
+                $rootScope.user = user;
                 $('.profile-loading').fadeOut();
                 $('.profile-settings-loading').fadeOut();
                 $('#change-country-form').slideUp();
