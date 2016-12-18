@@ -105,7 +105,7 @@ class User(AbstractUser):
     show_full_address_allowed = models.BooleanField(default=True)
     deleted = models.BooleanField(default=False)
     deleted_date = models.DateTimeField(null=True, blank=True)
-    enabled = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
     reported = models.BooleanField(default=False)
     app_updates = models.BooleanField(default=False)
     accepted_terms = models.BooleanField(default=False)

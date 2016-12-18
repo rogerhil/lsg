@@ -25,5 +25,5 @@ class Done(RedirectView):
         #print(resp.json()['items'])
         #import pdb; pdb.set_trace()
 
-        return "/congratulations/"
-        #return "/app/#/app/welcome"
+        #return "/congratulations/"
+        return "/app/#/app/welcome"

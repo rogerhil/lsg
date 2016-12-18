@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView, RedirectView
 
 from request.models import SwapRequest
-from mail.sender import MailBuilder
+from mail.sender import MailBuilder, Sender
 
 
 def get_sender(tname, swap_request, user_who_finalized, swapped=True, days=3):
@@ -27,6 +27,8 @@ def get_sender(tname, swap_request, user_who_finalized, swapped=True, days=3):
         sender = MailBuilder.swap_refused(swap_request)
     elif tname == 'swap-requested-to-requested':
         sender = MailBuilder.swap_refused(swap_request)
+    elif tname == 'welcome-users':
+        sender = Sender("Let's Swap Games? The site is finally launched!", 'welcome-users', {}, [])
     return sender
 
 

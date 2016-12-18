@@ -1,0 +1,26 @@
+{% extends "mail/emails/base.html" %}
+
+{% block body %}
+    <h4>Hi {{ user }},</h4>
+
+    <div>
+        <p>
+            Let'SwapGames is fully working and waiting for you to start using it.
+        </p>
+        <p>
+            Thanks for being on board! We are really happy to have you in our community.
+        </p>
+        <p style="text-align: center">
+            <strong><a href="{{ website }}/app/#/app/welcome">Click here to get started</a><br></strong>
+            and please remember to share with your friends.
+        </p>
+        <p>
+            Let'SwapGame is a growing community of gamers. The more people in, the better chances
+            of matches for swapping.
+        </p>
+        <p>
+            We hope you enjoy it and please send us any feedback you have. We'd love to hear from you.
+        </p>
+    </div>
+
+{% endblock %}

@@ -66,26 +66,6 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <p>
-                            you can sign up below the countdown in advance
-                        </p>
-                        <h2>
-                            coming soon
-                        </h2>
-                        <div class="timer">
-                            <div class="days-wrapper" title="days">
-                                <span class="days">8987</span> <br>days{# <br><i class="fa fa-group"></i> #}
-                            </div>
-                            <div class="hours-wrapper" title="hours">
-                                <span class="hours">1298</span> <br>hours{# <br><i class="fa fa-gamepad"></i> #}
-                            </div>
-                            <div class="minutes-wrapper" title="minutes">
-                                <span class="minutes">451</span> <br>minutes{# <br><i class="fa fa-exchange"></i> #}
-                            </div>
-                            <div class="seconds-wrapper" title="seconds">
-                                <span class="seconds">231</span> <br>seconds{# <br><i class="fa fa-thumbs-up"></i> #}
-                            </div>
-                        </div>
                         <p class="top-arrow">
                             <i class="fa fa-chevron-down"></i>
                         </p>
@@ -102,9 +82,13 @@
                 <div class="col-sm-12 subscribe" id="sign-up">
 
                     {% if user.is_authenticated %}
-                        <h3>You have already signed up</h3>
+                        <h3>You are already logged in.</h3>
                         <br>
-                        <h4>You will know soon when it's launched.</h4>
+                        <h4>
+                            <a href="/app/#/app/welcome">
+                                Click here to access your account.
+                            </a>
+                        </h4>
                     {% else %}
                         <h3>
                             Sign up below
