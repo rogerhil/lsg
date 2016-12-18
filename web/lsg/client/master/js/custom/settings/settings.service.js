@@ -85,13 +85,15 @@
             $timeout(function () {
                 var el = $('.tour-tour-element');
                 if (!el.length) return;
-                $('.tour-step-background').append($('<nav class="sidebar" style="width: 150px; overflow: hidden;"><ul class="nav ng-scope">' + el[0].outerHTML + '</ul></nav>'));
+                if ($('.tour-step-background nav.sidebar').length) return;
+                $('.tour-step-background').css('width', '225px');
+                $('.tour-step-background').append($('<nav class="sidebar" style="width: 225px; overflow: hidden; border-radius: 5px;"><ul class="nav ng-scope">' + el[0].outerHTML + '</ul></nav>'));
                 $('.tour-step-background').css('background', '#fff');
                 $('.tour-step-background').click(function (e) {
+                    $('.tour-step-background').html('');
                     tour.end();
-
                 });
-            }, 900);
+            }, 700);
         };
 
         this.hackTour_showPopover = function (step, i) {

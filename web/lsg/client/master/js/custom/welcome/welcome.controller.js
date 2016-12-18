@@ -70,7 +70,7 @@
             self.openTermsAndConditions();
         }
 
-        if (!self.user.hasAddress() && user.acceptedTerms()) {
+        if (!self.user.hasAddress() && self.user.acceptedTerms()) {
             $timeout(self.tourActivate, 3000);
         }
 

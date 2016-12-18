@@ -233,8 +233,8 @@
             });
             self.gameTour = new Tour({
                 backdrop: true,
-                //backdropContainer: 'header.topnavbar-wrapper',
-                //container: 'header.topnavbar-wrapper',
+                backdropContainer: 'header.topnavbar-wrapper',
+                container: 'header.topnavbar-wrapper',
                 keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +

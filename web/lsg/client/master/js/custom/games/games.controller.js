@@ -139,6 +139,13 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
+            var backdropContainer;
+            var container;
+            if (!self.isMobile) {
+                backdropContainer = 'header.topnavbar-wrapper';
+                container = 'header.topnavbar-wrapper';
+            }
+
             self.restartTourButton = false;
             self.tour = new Tour({
                 backdrop: true,
@@ -148,8 +155,8 @@
                     //self.called = false;
                     //console.log(self.called);
                 },
-                //backdropContainer: 'header.topnavbar-wrapper',
-                //container: 'header.topnavbar-wrapper',
+                backdropContainer: backdropContainer,
+                container: container,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
