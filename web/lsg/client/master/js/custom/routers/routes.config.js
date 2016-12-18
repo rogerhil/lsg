@@ -120,6 +120,11 @@
                 title: 'Contact',
                 templateUrl: helper.basepath('contact/main.html')
             })
+            .state('app.help', {
+                url: '/help',
+                title: 'Help',
+                templateUrl: helper.basepath('help/main.html')
+            })
             .state('app.invite', {
                 url: '/invite',
                 title: 'Invite',

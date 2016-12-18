@@ -51,6 +51,12 @@
     "label": "label label-primary"
   },
   {
+    "text": "Help",
+    "sref": "app.help",
+    "icon": "icon-question",
+    "label": "label label-primary"
+  },
+  {
     "text": "Contact",
     "sref": "app.contact",
     "icon": "fa fa-envelope-o",

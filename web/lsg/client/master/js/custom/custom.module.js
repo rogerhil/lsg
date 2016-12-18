@@ -29,7 +29,8 @@
             'app.archived',
             'app.welcome',
             'app.dashboard',
-            'app.pages'
+            'app.pages',
+            'app.help'
         ])
         .config(function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';

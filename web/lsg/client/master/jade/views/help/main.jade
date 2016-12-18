@@ -1,0 +1,168 @@
+h3 Help
+  //small Some description about help...
+
+style.
+    strong.title {
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+.row(ng-controller="HelpController as ctrl")
+    .col-lg-2
+        span
+    .col-lg-8()
+        h2 What is Let'SwapGames?
+
+        p
+            | Let'SwapGames is a platform to swap games with other players. Watch the brief
+            | video below to see an overview about how it works:
+
+        //(style="margin: 0 auto; width: 560px; height: 315px;")
+        div
+            iframe(width="560" height="315" src="https://www.youtube.com/embed/lkPL73cNsfM" frameborder="0" allowfullscreen)
+
+        h4 How does it work?
+
+        p
+            | You just say which games you want and which games you have available for swapping.
+            | Then we automatically give you the best matches and the nearest user to swap with.
+
+        ol
+            li
+                | You just specify which games you have available for swapping and which games you want in your wish list.
+            li
+                | Click on&nbsp;
+                a(href="/app/#/app/matches") Matches
+                | &nbsp;section to see the best matches and the nearest user to swap with. The games displayed in the&nbsp;
+                a(href="/app/#/app/matches") Matches
+                | &nbsp;are from your own wish list.
+            li
+                | Select the match you want to request, pick the user you’d like to swap with by checking his/her ratings, feedback and distance. Select your own game you have available for swapping.
+            li
+                | You should see your request details in&nbsp;
+                a(href="/app/#/app/requests") My Requests
+                | &nbsp;section. The user you have requested will be notified via email about your request. You should receive an email notification in case the user accepts or refuses your request.
+            li
+                | If a user accepts your request, you will both be able to see each others contact information in&nbsp;
+                a(href="/app/#/app/requests") My Requests
+                | &nbsp;section, so you can arrange the swap.
+            li You can also receive requests from other users, which you can accept or refuse.
+            li Both users involved in the request must finalize it to determine whether the games were properly swapped or not and give each other feedback.
+
+        h2 Profile
+
+        strong.title Is my whole profile information public to everyone in the Let'SwapGames community?
+        p No. Part of your profile information is public to users who are in a match with you. Only the following will available:
+        ul
+            li your first name,
+            li your reputation ratings (number of positive, neutral and negative feedback from other users),
+            li any feedback you’ve received,
+            li county and country,
+            li approximate distance between users in a match.
+
+        p When a match is accepted, both users will be able to see each other’s contact information, such as:
+        ul
+            li phone number,
+            li email,
+            li social account public link,
+            li full address **(only if you mark the check box in your profile page that says: "Allow my full address to be visible to a user when a swap request is agreed between parties", otherwise only your county and country will be displayed).
+
+
+        h2 Games
+
+        strong.title I have a game but I haven’t been able to add it to my collection. What can I do?
+        p
+            | Please&nbsp;
+            a(href="/app/#/app/contact") let us know
+            | &nbsp;so we will try to make this game available in our database.
+
+        h2 Matches
+        strong.title How can I see more matches?
+        p
+            | To increase your chances of finding a match you should specify your
+            | games collection and wish list as much as you can. Also, the more users using Let'SwapGames the better
+            | the chances of matches. Try inviting more people to join our community. You can also try playing with the
+            | filter switches on the top right of the&nbsp;
+            a(href="/app/#/app/matches") Matches
+            | &nbsp;page.
+
+        strong.title What are those 2 switches on the top right of the Matches page for?
+        ol
+            li
+                strong Show games in ongoing requests:
+                span
+                    | you might find matches that can’t be requested, as one of the games in the match might be
+                    | involved in an ongoing request. This switch is by default off, as those matches are impossible
+                    | to be requested. But the user can switch it on, just for checking purposes.
+            li
+                strong Show games in pending requests:
+                span
+                    | If you have requests pending and you have other matches with one of the games that is also involved
+                    | in a pending request, the matches are displayed by default. You might want to not see them as you are
+                    | already waiting for the pending request to be accepted.
+
+        h2 Requests
+
+        strong.title How to know if a user accepted my request to swap games?
+        p You will be notified via email immediately after the other user accepts or refuses your request.
+
+        strong.title What does the “Pending" status mean?
+        //.label(ng-class="StatusLabelClasses[Status.pending]")
+        //    em(ng-class="StatusIcons[Status.pending]")
+        //    span &nbsp; Pending
+        P
+            | is the first status of a request, after a user requested a game for swapping. It means
+            | that the user who requested the swap is waiting for another user to accept or refuse it.
+
+        strong.title What does the ”Cancelled" status mean?
+        p
+            | It means that a user has cancelled his own request to swap games. When a user requests a
+            | swap, he/she can cancel it if the request is still pending.
+
+        strong.title What does the “Ongoing" status mean?
+        p An "Ongoing" request is a request that was previously "Pending" and has been accepted by you or another user.
+
+        strong.title What does the “Refused" status mean?
+        p A "Refused" request is a request that was previously "Pending" and has been refused by you or another user.
+
+        strong.title What does the “Finalizing" status mean?
+        p
+            | After the swap is arranged between parties, both users must finalize the "Ongoning" request. The request status changes to
+            | "Finalizing" when the first user involved in the swapping finalized it.
+
+        strong.title What does "Succeeded" status mean?
+        p
+            | The request changes to "Succeeded" when both users involved in the request finalize it and determined
+            | that the games were swapped.
+
+        strong.title  What does the "Failed" status mean?
+        p
+            | The request changes to "Failed" when both users involved in the request finalize it and at least user
+            | determines that the games were not swapped.
+
+        strong.title What does the “Expired" status mean?
+        p
+            | The request changes to "Expired" when it is not finalized within 30 days.
+
+        strong.title What does the "Archived" status mean?
+        p
+            | A user can archive any request in the following statuses:  Succeeded, Failed, Refused, Cancelled or Expired. "Archived"
+            | requests will be displayed in the "Archived Requests” section instead of the "Requests" section.
+
+        strong.title What to do after a swapping is arranged?
+        p
+            | Both users involved in the request must finalize it to determine whether the games were
+            | properly swapped or not and give each other feedback. You can do this in the "requests" page
+            | by clicking in the icon
+            button.btn.btn-primary.btn-circle.btn-sm
+                em.fa.fa-power-off
+            | .
+
+        strong.title What happens if I don't finalize a request?
+        p
+            | A request has a time limit of 30 days. Both users involved
+            | in the request must finalize it, otherwise the request will expire and the users involved in the swap won't get
+            | reputation information updated to their profile.
+
+    .col-lg-2
+        span
