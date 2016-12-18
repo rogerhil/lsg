@@ -17,6 +17,7 @@
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
         Tour.prototype._reposition = GlobalFixes._Tour_reposition;
+        Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
 
         self.tour = undefined;
         self.countryTour = undefined;
