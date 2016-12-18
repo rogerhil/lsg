@@ -22,6 +22,9 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                                 p
                                     user-ratings(user="ctrl.swapUser")
                                 p {{ctrl.request.distance_display}} away
+                                p(style="font-size: 11px;")
+                                    strong(style="white-space: nowrap;") Member since<br>
+                                    span(style="white-space: nowrap;") {{ ctrl.swapUser.joined }}
 
                     div.col-md-4(style="white-space: nowrap; padding-left: 15px;")
                         table.table.bb: tbody
@@ -86,13 +89,13 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
 
                     div.col-md-6
                         .pull-right.label.label-danger
-                            span {{ ctrl.user.negative_feedback_count }}
+                            span {{ ctrl.swapUser.negative_feedback_count }}
                             md-tooltip(md-direction="top") Negative feedback
                         .pull-right.label.label-default(style="color: #333; margin-right: 10px;")
-                            span {{ ctrl.user.neutral_feedback_count }}
+                            span {{ ctrl.swapUser.neutral_feedback_count }}
                             md-tooltip(md-direction="top") Neutral feedback
                         .pull-right.label.label-success(style="margin-right: 10px;")
-                            span {{ ctrl.user.positive_feedback_count }}
+                            span {{ ctrl.swapUser.positive_feedback_count }}
                             md-tooltip(md-direction="top") Success feedback
 
                         p(ng-if="!ctrl.recentFeedback.items.length")

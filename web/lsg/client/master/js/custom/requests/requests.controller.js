@@ -259,7 +259,7 @@
         self.confirmArchiveAllRequests = function () {
             var confirm = $mdDialog.confirm()
                 .title('Are you sure you want to archive all finished requests?')
-                .textContent('Finished requests are those in one of the following statuses: Succeeded, Failed, Refused, Cancelled, Failed or Expired.')
+                .textContent('Finished requests are those in one of the following statuses: Succeeded, Failed, Refused, Cancelled or Expired.')
                 .ariaLabel('Archive all finished requests!')
                 .ok("Yes, I'm sure")
                 .cancel('No');
@@ -297,7 +297,7 @@
     /*
      AcceptRequestDialogCtrl
      */
-    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService']
+    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService'];
     function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions, UsersService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));

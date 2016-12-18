@@ -45,7 +45,8 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                 br
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
                     p
-                        span {{ ctrl.user.name }} provided information about the "{{ ctrl.iwish.full_name }}" game condition:
+                        span(ng-if="ctrl.user.gender == 'male'") {{ ctrl.user.name }} provided information about his game condition:
+                        span(ng-if="ctrl.user.gender == 'female'") {{ ctrl.user.name }} provided information about her game condition:
                 div(layout="row" ng-if="ctrl.requesterGameConditionNotes")
                     p
                         .media.shadow-z1(style="font-style: italic; padding: 0 10px;")

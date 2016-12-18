@@ -13,7 +13,7 @@ div(ng-controller="DashboardController as ctrl")
                         em.fa.fa-thumbs-up.fa-3x
                     .col-xs-8.pv-lg
                         .h2.mt0 +{{ user.succeeded_swaps_count }}
-                        .text-uppercase Succeeded swaps
+                        .text-uppercase(style="white-space: nowrap;") Successful swaps
         .col-lg-3.col-sm-6
             // START widget
             .panel.widget.bg-danger-light
@@ -22,7 +22,7 @@ div(ng-controller="DashboardController as ctrl")
                         em.fa.fa-thumbs-down.fa-3x
                     .col-xs-8.pv-lg
                         .h2.mt0 +{{ user.failed_swaps_count }}
-                        .text-uppercase Failed swaps
+                        .text-uppercase(style="white-space: nowrap;") Failed swaps
         .col-lg-3.col-md-6.col-sm-12
             // START widget
             .panel.widget.bg-warning-light
@@ -31,7 +31,7 @@ div(ng-controller="DashboardController as ctrl")
                         em.fa.fa-clock-o.fa-3x
                     .col-xs-8.pv-lg
                         .h2.mt0 +{{ user.expired_swaps_count }}
-                        .text-uppercase Expired swaps
+                        .text-uppercase(style="white-space: nowrap;") Expired swaps
         .col-lg-3.col-md-6.col-sm-12
             // START date widget
             .panel.widget
@@ -67,8 +67,9 @@ div(ng-controller="DashboardController as ctrl")
                                 em.fa.fa-line-chart &nbsp;
                                 span.text-dark {{ ctrl.matchesPercentage }}%
                                 span of games from your wish list are matching for swap.
-                                span Try increase this number by adding more games to your collection or &nbsp;
-                                a(href="/app/#/app/invite") inviting more people to use Let'SwapGames.
+                                span(ng-if="ctrl.matchesPercentage < 100")
+                                    | Try increasing this number by adding more games to your collection or&nbsp;
+                                    a(href="/app/#/app/invite") inviting more people to Let'SwapGames.
                     // END loader widget
                 .col-lg-8
                     .panel.panel-default

@@ -32,6 +32,18 @@
             }
             return false;
         };
+        User.prototype.isMale = function () {
+            return this.gender == 'male';
+        };
+        User.prototype.isFemale = function () {
+            return this.gender == 'female';
+        };
+        User.prototype.pronoun = function () {
+            return this.isMale() ? 'he' : 'she';
+        };
+        User.prototype.possessivePronoun = function () {
+            return this.isMale() ? 'his' : 'her';
+        };
         return User;
     }
 

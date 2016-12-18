@@ -9,6 +9,10 @@
         to be swapped with your game "{{ swap_request.requested_game }}", but it is now cancelled.
     </p>
 
+    <p style="text-align: center;">
+        <a href="{{ website }}/app/#/app/requests?inc=true&id={{ swap_request.id }}&msg=This+request+is+now+cancelled.+Check+for+more+incoming+requests+or+look+for+new+matches.">Click here to check the request.</a>
+    </p>
+
     {% include "mail/emails/request-games-images.html" %}
 
 {% endblock %}

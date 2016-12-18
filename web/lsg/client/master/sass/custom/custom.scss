@@ -23,6 +23,28 @@
 
 /* END some layout customization */
 
+#spinner {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: none;
+  overflow-y: scroll;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+#spinner .spinner-balls {
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  top: 50%;
+  width: 70px;
+}
+
 .contact-user-feedback {
   max-height: 200px;
   overflow: auto;

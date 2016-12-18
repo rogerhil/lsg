@@ -9,9 +9,10 @@
         {{ swap_request.requester }} at Let'SwapGames.
     </p>
 
-    {% include "mail/emails/request-games-images.html" %}
-
     <p style="text-align: center;">
         <a href="{{ website }}/app/#/app/requests?inc=true&id={{ swap_request.id }}&msg=You+can+accept+or+refuse+this+swap+request.">Click here to check the request.</a>
     </p>
+
+    {% include "mail/emails/request-games-images.html" %}
+
 {% endblock %}

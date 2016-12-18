@@ -11,48 +11,54 @@ class MailBuilder(object):
 
     @staticmethod
     def swap_requested(swap_request):
-        subject = 'Game swap requested'
+        subject = 'Game swap requested: "%(game1)s" X "%(game2)s"'
         emails = [swap_request.requested.email]
-        context = dict(swap_request=swap_request)
+        context = dict(swap_request=swap_request, game1=swap_request.requester_game,
+                       game2=swap_request.requested_game, user=swap_request.requested)
         return Sender(subject, 'swap-requested-to-requested', context, emails)
 
     @staticmethod
     def swap_accepted(swap_request):
-        subject = 'Game swap accepted'
+        subject = 'Game swap accepted: "%(game1)s" X "%(game2)s"'
         emails = [swap_request.requested.email]
-        context = dict(swap_request=swap_request)
+        context = dict(swap_request=swap_request, game1=swap_request.requester_game,
+                       game2=swap_request.requested_game, user=swap_request.requested)
         email1 = Sender(subject, 'swap-accepted-to-requested', context, emails)
         emails = [swap_request.requester.email]
+        context = dict(swap_request=swap_request, game1=swap_request.requested_game,
+                       game2=swap_request.requester_game, user=swap_request.requester)
         email2 = Sender(subject, 'swap-accepted-to-requester', context, emails)
         return SenderGroup(email1, email2)
 
     @staticmethod
     def swap_refused(swap_request):
-        subject = 'Game swap refused'
+        subject = 'Game swap refused: "%(game1)s" X "%(game2)s"'
         emails = [swap_request.requester.email]
-        context = dict(swap_request=swap_request)
+        context = dict(swap_request=swap_request, game1=swap_request.requested_game,
+                       game2=swap_request.requester_game, user=swap_request.requester)
         return Sender(subject, 'swap-refused-to-requester', context, emails)
 
     @staticmethod
     def swap_cancelled(swap_request):
-        subject = 'Game swap cancelled'
+        subject = 'Game swap cancelled: "%(game1)s" X "%(game2)s"'
         emails = [swap_request.requested.email]
-        context = dict(swap_request=swap_request)
+        context = dict(swap_request=swap_request, game1=swap_request.requester_game,
+                       game2=swap_request.requested_game, user=swap_request.requested)
         return Sender(subject, 'swap-cancelled-to-requested', context, emails)
 
     @staticmethod
     def swap_finalized_first(swap_request, user_who_finalized, swapped):
-        subject = 'Game swap finalized'
+        subject = 'Game swap finalized: "%(game1)s" X "%(game2)s'
         if user_who_finalized == swap_request.requester:
             user = swap_request.requested
-            user_game = swap_request.requested_game
-            user_who_finalized_game = swap_request.requester_game
+            user_game = game2 = swap_request.requested_game
+            user_who_finalized_game = game1 = swap_request.requester_game
         else:
             user = swap_request.requester
-            user_game = swap_request.requester_game
-            user_who_finalized_game = swap_request.requested_game
+            user_game = game2 = swap_request.requester_game
+            user_who_finalized_game = game1 = swap_request.requested_game
         emails = [user.email]
-        context = dict(swap_request=swap_request, user=user,
+        context = dict(swap_request=swap_request, user=user, game1=game1, game2=game2,
                        user_game=user_game, swapped=swapped,
                        user_who_finalized=user_who_finalized,
                        user_who_finalized_game=user_who_finalized_game)
@@ -60,16 +66,22 @@ class MailBuilder(object):
 
     @staticmethod
     def swap_expire_notification(swap_request, days):
-        subject = 'Game request swap expiring in %(days)s days'
+        subject = 'Request expiring in %(days)s days: "%(game1)s" X "%(game2)s'
         user = swap_request.requester
         other_user = swap_request.requested
         emails = [user.email]
-        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days)
+        game1 = swap_request.requested_game
+        game2 = swap_request.requester_game
+        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days,
+                       game1=game1, game2=game2)
         sender1 = Sender(subject, 'swap-expire-notification', context, emails)
         user = swap_request.requested
         other_user = swap_request.requester
         emails = [user.email]
-        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days)
+        game1 = swap_request.requester_game
+        game2 = swap_request.requested_game
+        context = dict(swap_request=swap_request, user=user, other_user=other_user, days=days,
+                       game1=game1, game2=game2)
         sender2 = Sender(subject, 'swap-expire-notification', context, emails)
         return SenderGroup(sender1, sender2)
 

@@ -38,6 +38,7 @@ script(type='text/ng-template', id="sidebar-renderer.html")
 
             // Iterates over all sidebar items
             li(ng-class="getMenuItemPropClasses(item)", ng-repeat='item in menuItems', sref="{{ item.sref }}", ng-init="pInde = $index", ng-include="'sidebar-renderer.html'", ng-click="toggleCollapse(pIndex, true)")
+            li(style="margin-top: 40px;")
         // END sidebar nav
 
 // END Sidebar (left)

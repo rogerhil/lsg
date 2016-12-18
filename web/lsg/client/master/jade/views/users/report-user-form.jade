@@ -12,9 +12,9 @@ md-dialog(aria-label="Report user", ng-cloak)
                     .col-lg-6(style="margin-top: 5px")
                         user-photo-ratings-distance(user="ctrl.user" distance="ctrl.distance" hidefeedback="true")
                     .col-lg-6(style="margin-top: 5px")
-                        p
-                            strong Member since:
-                            span {{ ctrl.user.joined }}
+                        p(style="white-space: nowrap;")
+                            strong(style="white-space: nowrap;") Member since:
+                            span(style="white-space: nowrap;") {{ ctrl.user.joined }}
                 div(style='clear: both;')
 
                 div(layout='', layout-sm='column')
