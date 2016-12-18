@@ -33,7 +33,7 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
                         span You cannot request this game for swapping as you already have a swap ongoing involving this game.
                 div(ng-if="ctrl.match.no_games_left")
                     .media.bg-primary-dark(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
-                        span No matches available.
+                        span No valid matches available.
                 p.m0
                     ng-pluralize(count="ctrl.match.count", when="{'one': '{{ctrl.match.count}} match', 'other': '{{ctrl.match.count}} matches'}")
                     ng-pluralize(count="ctrl.match.swaps.length", when="{'one': 'from {{ctrl.match.swaps.length}} user', 'other': 'from {{ctrl.match.swaps.length}} users'}")
@@ -66,7 +66,7 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
 
                 div(style="clear: both;")
 
-            div(style="height: 50px;")
+            div(style="height: 20px;")
 
         .dialog-bottom-fade
 

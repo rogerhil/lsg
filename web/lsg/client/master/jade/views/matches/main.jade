@@ -28,10 +28,11 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 md-tooltip(md-direction="bottom") There is already a swap ongoing with this game.
             .label.label-primary.swap-indicator(ng-if="match.no_games_left" ng-style="match.iwish.swap_pending && {right: '40px'}")
                 .em.fa.fa-frown-o
-                md-tooltip(md-direction="bottom") No matches available.
+                md-tooltip(md-direction="bottom") No valid matches available.
 
-            img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
-            md-tooltip(md-direction="top") {{match.iwish.full_name}}
+            div(style="height: 170px; background-color: #eee;")
+                img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
+                md-tooltip(md-direction="top") {{match.iwish.full_name}}
         .card-offset.pull-right
             button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="ctrl.openMatch(match)")
                 em.icon-grid
