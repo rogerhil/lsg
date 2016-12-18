@@ -25,6 +25,11 @@ md-dialog(aria-label="Report user", ng-cloak)
                             div(ng-message="minlength") That's too short!
                 br
 
+            div(style="clear: both;")
+            div(style="height: 50px;")
+
+        .dialog-bottom-fade
+
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
                 span.btn-label

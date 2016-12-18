@@ -51,6 +51,11 @@ md-dialog(aria-label="Finalize this request", ng-cloak)
                         textarea(ng-model="ctrl.data.other_feedback_notes" md-maxlength="1024" rows="5" md-select-on-focus required)
                 br
 
+            div(style="clear: both;")
+            div(style="height: 50px;")
+
+        .dialog-bottom-fade
+
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
                 span.btn-label

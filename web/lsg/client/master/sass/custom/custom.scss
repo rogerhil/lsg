@@ -23,6 +23,14 @@
 
 /* END some layout customization */
 
+.dialog-bottom-fade {
+  background: linear-gradient(to bottom, transparent, white);
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  bottom: 52px;
+}
+
 #spinner {
   position: fixed;
   width: 100%;

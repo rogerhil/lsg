@@ -80,6 +80,11 @@ md-dialog(aria-label="{{ ctrl.title }}", ng-cloak)
                         textarea(ng-model='ctrl.data.requester_game_condition_notes' id="requester_game_condition_notes" ng-if="ctrl.isRequester" required)
                         textarea(ng-model='ctrl.data.requested_game_condition_notes' id="requested_game_condition_notes" ng-if="!ctrl.isRequester" required)
 
+            div(style="clear: both;")
+            div(style="height: 50px;")
+
+        .dialog-bottom-fade
+
         md-dialog-actions(layout="row")
             button.btn.mb-sm.btn-labeled.btn-default(ng-click="ctrl.close($event)")
                 span.btn-label

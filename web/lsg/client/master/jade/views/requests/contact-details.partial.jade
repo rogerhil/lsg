@@ -109,9 +109,13 @@ md-dialog(aria-label="Contact Details", ng-cloak, flex="60")
                 .gmap(ui-map='ctrl.contactDetailsMap', ui-options='ctrl.contactDetailsMapOptions', class="map-canvas")
 
 
-        div(style="clear: both;")
+            div(style="clear: both;")
+            div(style="height: 50px;")
+
+        .dialog-bottom-fade
 
         md-dialog-actions(layout="row")
-            md-button(ng-click="ctrl.close()")
-                span close
-
+            button.btn.mb-sm.btn-default.btn-labeled(ng-click="ctrl.close()")
+                span.btn-label
+                    em.fa.fa-close
+                span Close
