@@ -77,9 +77,9 @@ class UserSerializer(serializers.ModelSerializer):
                   'expired_swaps_count', 'negative_feedback_count', 'stars',
                   'positive_feedback_count', 'neutral_feedback_count',
                   'social_links', 'enabled', 'id', 'distance_unit', 'deleted',
-                  'show_full_address_allowed', 'app_updates')
+                  'show_full_address_allowed', 'app_updates', 'accepted_terms')
         read_only_fields = ('username', 'name', 'picture', 'enabled',
-                            'succeeded_swaps_count',
+                            'succeeded_swaps_count', 'accepted_terms',
                             'failed_swaps_count', 'expired_swaps_count',
                             'negative_feedback_count',
                             'positive_feedback_count',

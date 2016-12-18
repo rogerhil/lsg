@@ -42,6 +42,12 @@
                 window.location = '/logout/';
                 return;
             }
+
+            if ($rootScope.user && !$rootScope.user.acceptedTerms()) {
+                window.location = '/app/#/app/welcome';
+                return;
+            }
+
             if ($rootScope.user && !$rootScope.user.enabled) {
                 window.location = '/';
                 return;

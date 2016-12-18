@@ -149,6 +149,14 @@ class UsersViewSet(viewsets.ModelViewSet):
         user_serializer = UserSerializer()
         return views.Response(user_serializer.to_representation(user))
 
+    @detail_route(methods=['put'], url_path='accept-terms')
+    def accept_terms(self, request, pk):
+        user = self.queryset.get(pk=pk)
+        user.accepted_terms = True
+        user.save()
+        user_serializer = self.serializer_class()
+        return views.Response(user_serializer.to_representation(user))
+
     @detail_route(methods=['post'], url_path='report-user')
     def report_user(self, request, pk):
         user = self.queryset.get(pk=pk)

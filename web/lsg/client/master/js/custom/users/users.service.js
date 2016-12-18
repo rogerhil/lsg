@@ -14,6 +14,9 @@
             }
             this.no_reload_app = false;
         };
+        User.prototype.acceptedTerms = function () {
+            return this.accepted_terms;
+        };
         User.prototype.hasBasicProfile = function () {
             return this.first_name && this.last_name && this.email && this.phone1 && this.gender;
         };
@@ -209,6 +212,20 @@
             var q = $q.defer();
             $http
                 .put(baseUserUrl, data)
+                .success(function (response) {
+                    q.resolve(new User(response));
+                }).error(function(response, status) {
+                    if (status == 400) {
+                        q.reject(response);
+                    }
+                });
+            return q.promise;
+        };
+        this.acceptTerms = function () {
+            var q = $q.defer();
+            var url = baseUserUrl + 'accept-terms/';
+            $http
+                .put(url)
                 .success(function (response) {
                     q.resolve(new User(response));
                 }).error(function(response, status) {

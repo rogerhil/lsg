@@ -5,17 +5,34 @@
     angular
         .module('app.welcome', ['ngAnimate'])
         .controller('WelcomeCtrl', WelcomeCtrl)
+        .controller('TermsAndConditionsDialogCtrl', TermsAndConditionsDialogCtrl)
         ;
 
     /*
       WelcomeCtrl
      */
-    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout'];
-    function WelcomeCtrl($scope, $rootScope, $timeout) {
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout', '$mdMedia', '$mdDialog'];
+    function WelcomeCtrl($scope, $rootScope, $timeout, $mdMedia, $mdDialog) {
         var self = this;
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
-        self.tour;
-        function tourActivate() {
+        self.tour = undefined;
+
+        self.openTermsAndConditions = function () {
+            if (self.user.accepted_terms) {
+                return;
+            }
+            $mdDialog.show({
+                controllerAs: 'ctrl',
+                controller: TermsAndConditionsDialogCtrl,
+                locals: {welcomeCtrl: self},
+                templateUrl: 'app/views/users/terms-and-conditions.html',
+                parent: angular.element(document.body),
+                fullscreen: useFullScreen
+            });
+        };
+
+        self.tourActivate = function() {
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -47,11 +64,36 @@
             tour.start();
             tour.restart(true);
             self.tour = tour;
-        }
-        if (!self.user.address.latitude || !self.user.address.longitude) {
-            $timeout(tourActivate, 3000);
+        };
+
+        if (!self.user.acceptedTerms()) {
+            self.openTermsAndConditions();
         }
 
+        if (!self.user.hasAddress() && user.acceptedTerms()) {
+            $timeout(self.tourActivate, 3000);
+        }
+
+
+    }
+
+    TermsAndConditionsDialogCtrl.$inject = ['$scope', '$mdDialog', 'UsersService', '$rootScope', 'welcomeCtrl'];
+    function TermsAndConditionsDialogCtrl($scope, $mdDialog, UsersService, $rootScope, welcomeCtrl) {
+        var self = this;
+        self.disagreeToTerms = function () {
+            window.location = '/logout/';
+        };
+
+        self.agreeToTerms = function () {
+            UsersService.acceptTerms().then(function (user) {
+                self.user = user;
+                $rootScope.user = user;
+                $mdDialog.hide();
+                welcomeCtrl.tourActivate();
+            }).catch(function () {
+                self.disagreeToTerms();
+            });
+        };
 
     }
 

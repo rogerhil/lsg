@@ -108,6 +108,7 @@ class User(AbstractUser):
     enabled = models.BooleanField(default=False)
     reported = models.BooleanField(default=False)
     app_updates = models.BooleanField(default=False)
+    accepted_terms = models.BooleanField(default=False)
 
     wishlist = models.ManyToManyField(Game, related_name="wished",
                                       through=WishlistItem,
