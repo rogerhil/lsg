@@ -8,7 +8,8 @@ div
         div(layout="row" class="platform-games-holder" ng-class="{'platform-games-holder-hidden': ctrl.pinned != platform_items.platform.id && ctrl.pinned}")
             div(class="platform-vertical-logo" style="position: relative;" ng-click="ctrl.pinned == platform_items.platform.id ? ctrl.pinned = '' : ctrl.pinned = ctrl.currentPlatform = platform_items.platform.id")
                 em(ng-class="{'fa fa-thumb-tack': ctrl.pinned == platform_items.platform.id, 'icon-pin': ctrl.pinned != platform_items.platform.id}")
-                md-tooltip(md-direction="top") Show only {{ platform_items.platform.short_name }}
+                md-tooltip(md-direction="top" ng-if="ctrl.pinned != platform_items.platform.id") Click to display only {{ platform_items.platform.short_name }} games
+                md-tooltip(md-direction="top" ng-if="ctrl.pinned == platform_items.platform.id") Click to display all games from all platforms
                 img(ng-src="{{ platform_items.platform.logo_image_vertical }}" style="height: 90px; position: absolute; top: 50%; transform: translateY(-50%);")
             div(ng-class="{'fade-holder': ctrl.scrollable}")
                 .fade-left.fade-out(ng-mouseover="ctrl.scroll(context, platform_items.platform.id, '-')" ng-mouseleave="ctrl.scrollStop()")
@@ -70,3 +71,4 @@ form(ng-submit="ctrl.addGameTo(context)" class="{{ context }}")
                     //img(ng-src="{{ item.item.platform.logo_image }} " alt="{{ item.item.platform.name }}" style="height: 30px; margin-right: 5px;")
                     span(md-highlight-text="ctrl.searchText") {{item.item.name}}
                 md-not-found No matches found.
+            md-tooltip(md-direction="bottom" ng-if='!ctrl.currentPlatform') Select a platform on the left
