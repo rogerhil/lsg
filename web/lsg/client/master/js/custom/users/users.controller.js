@@ -168,7 +168,7 @@
                 {
                     element: "#profile-form",
                     title: "Complete the form",
-                    content: "Please provide missing information below.",
+                    content: "Please provide the missing information below.",
                     placement: 'top'
                 },
                 {
@@ -251,7 +251,7 @@
                 {
                     element: 'li[sref="app.games"]',
                     title: "Add games",
-                    content: "Now you specify which games you have and which games you wish here.",
+                    content: "Specify which games you have and which games you want.",
                     placement: 'right',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;

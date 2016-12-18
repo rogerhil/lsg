@@ -2,14 +2,14 @@
 
 <style>
     p {
-        margin-bottom: 30px;
-        margin-top: 30px;
+        margin-bottom: 35px;
+        margin-top: 35px;
     }
 </style>
 
 <div style="max-width: 800px; margin: 0 auto; background: #fbfbfb; font-family: 'Roboto', sans-serif; font-weight: 100;">
     {% block header %}
-        <div style="background-color: #263238; background-image: url({{ website }}{% static 'img/bar.png' %}); color: #fff; padding: 60px 70px; margin: 0; text-align: center;">
+        <div style="background-color: #263238; background-image: url({{ website }}{% static 'img/bar.png' %}); color: #fff; padding: 55px 70px; margin: 0; text-align: center;">
             <div style="margin-bottom: 10px;">
                 <a href="{{ website }}/" style="color: #eee;">
                     <div style="margin-bottom: 10px;">
@@ -42,7 +42,7 @@
         {% endblock %}
     </div>
     <div style="background: #263238; background-image: url({{ website }}{% static 'img/bar-footer.png' %}); color: #fff; padding: 10px 20px; margin: 0;">
-        <p style="font-size: 11px; color: #ccc; margin-bottom: 70px; text-align: justify;">
+        <p style="font-size: 11px; color: #ccc; margin-bottom: 60px; margin-top: 5px; text-align: justify;">
             You have received this email because you are listed as a Let'SwapGames
             account holder. If you no longer wish to receive automatic emails of
             this kind you must delete your account from our system by clicking
@@ -53,12 +53,12 @@
             us immediately.<br>
             Athlone, Westmeath, Ireland
         </p>
-        <p style="text-align: center;">
+        <p style="text-align: center;  margin-bottom: 10px;">
             <a href="{{ website }}/" target="_blank">
                 <img src="{{ website }}{% static 'img/logo-96x50.png'%}" style="height: 20px;" alt="Let'SwapGames">
             </a>
         </p>
-        <p style="font-size: 12px; text-align: center;">
+        <p style="font-size: 12px; text-align: center; margin-bottom: 10px; margin-top: 0px;">
             &copy; Let'SwapGames - all rights reserved.
         </p>
     </div>

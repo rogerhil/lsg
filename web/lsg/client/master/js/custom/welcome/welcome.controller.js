@@ -38,9 +38,8 @@
                 steps: [
                 {
                     element: ".row.md-welcome-row .profile-col",
-                    title: "Update your profile now!",
-                    content: "Please update your profile giving your address " +
-                             "and the game platforms you have.",
+                    title: "Welcome to Let'SwapGames!",
+                    content: "Please update your profile to get started.",
                     placement: 'top'
                 }
             ]});

@@ -171,13 +171,13 @@
                 {
                     element: '.card.wishlist-card',
                     title: "My wish list",
-                    content: "Add the games you wish by searching in the field above.",
+                    content: "Add the games you want by searching in the field above.",
                     placement: 'bottom'
                 },
                 {
                     element: 'li[sref="app.matches"]',
                     title: "Matches",
-                    content: "Check if there is any match.",
+                    content: "Check if there are any matches.",
                     placement: 'right',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;

@@ -6,13 +6,14 @@
     <p>
         You have accepted the game swap requested on {{ swap_request.created }} by
         {{ swap_request.requester }} at Let'SwapGames and you can now
-        contact the user to arrange the swap
+        contact the user to arrange the swap.
+    </p>
+
+    <p style="text-align: center;">
+        <a href="{{ website }}/app/#/app/requests?inc=true&id={{ swap_request.id }}&msg=Check+the+user+contact+details." target="_blank">Click here to contact {{ swap_request.requester }}</a>
     </p>
 
     {% include "mail/emails/request-games-images.html" %}
 
-    <p style="text-align: center;">
-        <a href="{{ website }}/app/#/app/requests?inc=true&id={{ swap_request.id }}&msg=Check-the-user-contact-details." target="_blank">Click here to contact {{ swap_request.requester }}</a>
-    </p>
 
 {% endblock %}
