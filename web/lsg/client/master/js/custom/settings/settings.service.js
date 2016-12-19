@@ -96,6 +96,11 @@
             }, 700);
         };
 
+        this.closeAllTours = function () {
+            $('.popover.tour').remove();
+            $('.tour-backdrop').remove();
+        };
+
         this.hackTour_showPopover = function (step, i) {
             if (this._current == i && $(".tour-" + this._options.name).length) {
                 //self.called = false;

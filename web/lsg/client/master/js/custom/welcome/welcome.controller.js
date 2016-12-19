@@ -11,8 +11,8 @@
     /*
       WelcomeCtrl
      */
-    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout', '$mdMedia', '$mdDialog'];
-    function WelcomeCtrl($scope, $rootScope, $timeout, $mdMedia, $mdDialog) {
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout', '$mdMedia', '$mdDialog', 'GlobalFixes'];
+    function WelcomeCtrl($scope, $rootScope, $timeout, $mdMedia, $mdDialog, GlobalFixes) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
@@ -42,6 +42,7 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
+            GlobalFixes.closeAllTours();
             var tour = new Tour({
                 backdrop: true,
                 backdropPadding: 'anything',
@@ -52,6 +53,9 @@
                     "  <h3 class='popover-title'></h3>" +
                     "  <div class='popover-content'></div>" +
                     "</div>",
+                onEnd: function (tour) {
+                    GlobalFixes.closeAllTours();
+                },
                 steps: [
                 {
                     element: ".row.md-welcome-row .profile-col",

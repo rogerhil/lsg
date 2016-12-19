@@ -23,7 +23,7 @@
         self.popularPlatforms = [];
         self.retroPlatforms = [];
         self.loaded = {collection: false, wishlist: false};
-        self.tour = null;
+        self.tour = undefined;
         self.pinned = undefined;
         self.isMobile = Utils.isMobile();
         self.currentPlatform = $rootScope.lastSelectedPlatform;
@@ -44,6 +44,7 @@
                 if (self.tour) {
                     self.restartTourButton = true;
                     self.tour.end();
+                    self.tour.end();  // second call to fix a weird bug :(
                     self.tour = undefined;
                     $scope.$apply();
                 }
@@ -147,6 +148,7 @@
             }
 
             self.restartTourButton = false;
+            GlobalFixes.closeAllTours();
             self.tour = new Tour({
                 backdrop: true,
                 keyboard: false,
@@ -168,6 +170,9 @@
                     "    <button class='btn btn-default' data-role='end'>Close</button>" +
                     "  </div>" +
                     "</div>",
+                onEnd: function (tour) {
+                    GlobalFixes.closeAllTours();
+                },
                 steps: [
                 {
                     element: '.card.collection-card',

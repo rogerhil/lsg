@@ -117,6 +117,7 @@
                     placement: 'right'
                 }
             ];
+            GlobalFixes.closeAllTours();
             self.countryTour = new Tour({
                 backdrop: true,
                 backdropPadding: 0,
@@ -127,6 +128,9 @@
                     "  <h3 class='popover-title'></h3>" +
                     "  <div class='popover-content'></div>" +
                     "</div>",
+                onEnd: function (tour) {
+                    GlobalFixes.closeAllTours();
+                },
                 steps: steps});
             self.countryTour.init();
             self.countryTour.start();
@@ -180,6 +184,7 @@
                 }
             ];
             if (!self.tour) {
+                GlobalFixes.closeAllTours();
                 self.tour = new Tour({
                     backdrop: true,
                     backdropPadding: 20,
@@ -195,6 +200,9 @@
                         "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
                         "  </div>" +
                         "</div>",
+                    onEnd: function (tour) {
+                        GlobalFixes.closeAllTours();
+                    },
                     steps: steps
                 });
             }
@@ -231,6 +239,8 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
+
+            GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
                 backdrop: true,
                 backdropContainer: 'header.topnavbar-wrapper',
@@ -246,7 +256,7 @@
                     "  </div>" +
                     "</div>",
                 onEnd: function (tour) {
-                    $('.popover.tour').remove();
+                    GlobalFixes.closeAllTours();
                 },
                 steps: [
                 {
@@ -348,7 +358,7 @@
                 if (self.makeGameTour && self.user.isProfileComplete()) {
                     $timeout(function () {
                         gameTourActivate();
-                    }, 1000);
+                    }, 2500);
 
                     var el = $('li[sref="app.games"] a');
                     el.attr('href', '#/app/games?tour=true');
