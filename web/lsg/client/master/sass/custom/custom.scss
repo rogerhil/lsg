@@ -23,6 +23,10 @@
 
 /* END some layout customization */
 
+.popover-navigation button.disabled {
+  display: none;
+}
+
 .dialog-bottom-fade {
   background: linear-gradient(to bottom, transparent, white);
   height: 20px;
@@ -270,7 +274,25 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   background-color: $mdc-blue-grey-900 !important;
 }
 
+.welcome-title h2 {
+  font-size: 55px !important;
+}
+
+.welcome-title h2.sub {
+  font-size: 25px !important;
+  margin-top: 8px;
+}
+
 @media only screen and (max-width: $mq-up-to-tablet) {
+
+  .welcome-title h2 {
+     font-size: 35px !important;
+  }
+
+  .welcome-title h2.sub {
+     font-size: 18px !important;
+     margin-top: 5px;
+  }
 
   .contact-user-feedback {
     max-height: none;

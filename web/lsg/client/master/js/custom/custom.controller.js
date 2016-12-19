@@ -16,10 +16,10 @@
 
         self.signOut = function () {
             var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to sign out?')
+                .title('Are you sure you want to log out?')
                 .textContent('')
-                .ariaLabel('Sign out')
-                .ok("Yes, I'm sure")
+                .ariaLabel('Log out')
+                .ok("Yes")
                 .cancel('No');
             $mdDialog.show(confirm).then(function () {
                 window.location = '/logout/';

@@ -11,14 +11,15 @@
     /*
       UsersCtrl
      */
-    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', '$state', '$stateParams', '$rootScope', 'GlobalFixes'];
-    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, $state, $stateParams, $rootScope, GlobalFixes) {
+    UsersCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'UsersService', '$state', '$stateParams', '$rootScope', 'GlobalFixes', 'Utils'];
+    function UsersCtrl($scope, $timeout, $mdDialog, $mdMedia, UsersService, $state, $stateParams, $rootScope, GlobalFixes, Utils) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
         Tour.prototype._reposition = GlobalFixes._Tour_reposition;
         Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
 
+        self.isMobile = Utils.isMobile();
         self.tour = undefined;
         self.countryTour = undefined;
         self.gameTour = undefined;
@@ -48,6 +49,10 @@
                 if (self.gameTour) self.gameTour.end();
             }
         });
+
+        self.isNarrowWidth = function () {
+            return $(window).width() < 400;
+        };
 
         self.queryAddress = function (query) {
             return UsersService.queryAddress(query);
@@ -108,13 +113,13 @@
                 msg = 'The country "' + self.user.address.country.name + '" coming from your social ' +
                       'account is not supported. Please select a valid country on the left.';
             } else {
-                msg = 'Please select your country on the left.';
+                msg = 'Please select your country.';
             }
             var steps = [
                 {
                     element: "#user-profile-change",
                     content: msg,
-                    placement: 'right'
+                    placement: $(window).width() < 992 ? 'bottom' : 'right'
                 }
             ];
             GlobalFixes.closeAllTours();
@@ -240,7 +245,11 @@
                 section.css({'position': ''});
             });
 
+            $rootScope.app.asideToggled = true;
+            $rootScope.$apply();
             GlobalFixes.preFixTourLeftMenu($('li[sref="app.games"]'));
+            $rootScope.app.asideToggled = false;
+            $rootScope.$apply();
             GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
                 backdrop: true,
@@ -262,7 +271,7 @@
                     element: 'li[sref="app.games"]',
                     title: "Add games",
                     content: "Specify which games you have and which games you want.",
-                    placement: 'right',
+                    placement: self.isNarrowWidth() ? 'bottom' : 'right',
                     backdropContainer: 'header.topnavbar-wrapper',
                     container: 'header.topnavbar-wrapper',
                     onShow: function (tour) {

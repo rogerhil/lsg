@@ -82,8 +82,11 @@
         };
 
         this.preFixTourLeftMenu = function (menuElement) {
+            $('nav.sidebar').scrollTop(0);
+            $('.ng-scope').scrollTop(0);
             var windowHeight = $(window).height();
-            var scrollTo = menuElement.offset().top - windowHeight/2;
+            var offset = menuElement.offset().top - $(window).scrollTop();
+            var scrollTo = offset - windowHeight/2;
             $('nav.sidebar').scrollTop(scrollTo);
         };
 

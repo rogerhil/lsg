@@ -283,6 +283,10 @@ class User(AbstractUser):
 
     @property
     def matches(self):
+        if not self.address:
+            logger.debug('User %s has no address "%s"' %
+                         (self, self.address))
+            return []
         if not self.address.point:
             logger.debug('User %s has no point address "%s"' %
                          (self, self.address))

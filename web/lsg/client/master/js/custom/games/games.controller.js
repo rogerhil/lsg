@@ -125,6 +125,10 @@
             }, 500);
         });
 
+        self.isNarrowWidth = function () {
+            return $(window).width() < 400;
+        };
+
         self.gameTour = function () {
             $timeout(self.runGameTour, 1000);
         };
@@ -153,12 +157,13 @@
             // }
 
             self.restartTourButton = false;
+            GlobalFixes.closeAllTours();
+
             $rootScope.app.asideToggled = true;
             $rootScope.$apply();
             GlobalFixes.preFixTourLeftMenu($('li[sref="app.matches"]'));
             $rootScope.app.asideToggled = false;
             $rootScope.$apply();
-            GlobalFixes.closeAllTours();
 
             self.tour = new Tour({
                 backdrop: true,
@@ -169,7 +174,7 @@
                     "  <h3 class='popover-title'></h3>" +
                     "  <div class='popover-content'></div>" +
                     "  <div class='popover-navigation'>" +
-                    "    <button class='btn btn-default' data-role='prev'>« Prev</button>" +
+                    //"    <button class='btn btn-default' data-role=''></button>" +
                     "    <button class='btn btn-default' data-role='next'>Next »</button>" +
                     "    <button class='btn btn-default' data-role='end'>Close</button>" +
                     "  </div>" +
@@ -192,17 +197,26 @@
                     element: '.card.wishlist-card',
                     title: "My wish list",
                     content: "Add the games you want by searching in the field above.",
-                    placement: 'bottom'
+                    placement: 'bottom',
+                    onHide: function (tour) {
+                        $rootScope.app.asideToggled = true;
+                        $rootScope.$apply();
+                        GlobalFixes.preFixTourLeftMenu($('li[sref="app.matches"]'));
+                        $rootScope.app.asideToggled = false;
+                        $rootScope.$apply();
+                    }
                 },
                 {
                     element: 'li[sref="app.matches"]',
                     title: "Matches",
                     content: "Check if there are any matches.",
-                    placement: 'right',
+                    placement: self.isNarrowWidth() ? 'bottom' : 'right',
                     backdropContainer: 'header.topnavbar-wrapper',
                     container: 'header.topnavbar-wrapper',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;
+                        $rootScope.$apply();
+                        //GlobalFixes.preFixTourLeftMenu($('li[sref="app.matches"]'));
                         GlobalFixes.fixTourLeftMenu(self.tour);
                         $timeout(function () {
                             $('nav.sidebar');
