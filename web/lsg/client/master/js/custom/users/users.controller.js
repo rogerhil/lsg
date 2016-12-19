@@ -356,6 +356,9 @@
                 }
 
                 if (self.makeGameTour && self.user.isProfileComplete()) {
+                    $('.hidden-fix-tour-android').show();
+                    $('.hidden-fix-tour-android').focus();
+                    $('.hidden-fix-tour-android').hide();
                     $timeout(function () {
                         gameTourActivate();
                     }, 2500);

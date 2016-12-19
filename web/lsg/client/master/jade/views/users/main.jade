@@ -103,6 +103,7 @@ h3 My profile
                         div#address-form
                             div(layout='', layout-sm='column')
                                 input(ng-model='ctrl.user.address.geocoder_address', type="hidden", required, ng-disabled="!ctrl.user.isCountrySupported()")
+                                input.hidden-fix-tour-android(name="hidden" style="display: none;")
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
                                     md-autocomplete(md-no-cache='ctrl.noCache',
