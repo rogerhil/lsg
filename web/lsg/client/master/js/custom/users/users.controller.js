@@ -303,7 +303,7 @@
         }
 
 
-        $timeout(function () {gameTourActivate()}, 1000);
+        //$timeout(function () {gameTourActivate()}, 1000);
 
         self.updateUser = function (updateMap, settingsSection) {
             self.saving = true;
