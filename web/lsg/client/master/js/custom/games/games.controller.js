@@ -153,8 +153,13 @@
             // }
 
             self.restartTourButton = false;
+            $rootScope.app.asideToggled = true;
+            $rootScope.$apply();
             GlobalFixes.preFixTourLeftMenu($('li[sref="app.matches"]'));
+            $rootScope.app.asideToggled = false;
+            $rootScope.$apply();
             GlobalFixes.closeAllTours();
+
             self.tour = new Tour({
                 backdrop: true,
                 keyboard: false,
