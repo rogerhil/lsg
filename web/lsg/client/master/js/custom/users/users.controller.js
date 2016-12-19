@@ -240,11 +240,10 @@
                 section.css({'position': ''});
             });
 
+            GlobalFixes.preFixTourLeftMenu($('li[sref="app.games"]'));
             GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
                 backdrop: true,
-                backdropContainer: 'header.topnavbar-wrapper',
-                container: 'header.topnavbar-wrapper',
                 keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +
@@ -264,6 +263,8 @@
                     title: "Add games",
                     content: "Specify which games you have and which games you want.",
                     placement: 'right',
+                    backdropContainer: 'header.topnavbar-wrapper',
+                    container: 'header.topnavbar-wrapper',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;
                         GlobalFixes.fixTourLeftMenu(self.gameTour);
@@ -302,7 +303,7 @@
         }
 
 
-        //$timeout(function () {gameTourActivate()}, 1000);
+        $timeout(function () {gameTourActivate()}, 1000);
 
         self.updateUser = function (updateMap, settingsSection) {
             self.saving = true;
@@ -361,7 +362,7 @@
                     $('.hidden-fix-tour-android').hide();
                     $timeout(function () {
                         gameTourActivate();
-                    }, 2500);
+                    }, 1000);
 
                     var el = $('li[sref="app.games"] a');
                     el.attr('href', '#/app/games?tour=true');

@@ -81,6 +81,12 @@
             }
         };
 
+        this.preFixTourLeftMenu = function (menuElement) {
+            var windowHeight = $(window).height();
+            var scrollTo = menuElement.offset().top - windowHeight/2;
+            $('nav.sidebar').scrollTop(scrollTo);
+        };
+
         this.fixTourLeftMenu = function (tour) {
             $timeout(function () {
                 var el = $('.tour-tour-element');
@@ -89,6 +95,7 @@
                 $('.tour-step-background').css('width', '225px');
                 $('.tour-step-background').append($('<nav class="sidebar" style="width: 225px; overflow: hidden; border-radius: 5px;"><ul class="nav ng-scope">' + el[0].outerHTML + '</ul></nav>'));
                 $('.tour-step-background').css('background', '#fff');
+
                 $('.tour-step-background').click(function (e) {
                     $('.tour-step-background').html('');
                     tour.end();

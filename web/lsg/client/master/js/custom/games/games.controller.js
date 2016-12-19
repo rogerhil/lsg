@@ -43,8 +43,12 @@
             if ($(e.target).hasClass('tour-backdrop')) {
                 if (self.tour) {
                     self.restartTourButton = true;
-                    self.tour.end();
-                    self.tour.end();  // second call to fix a weird bug :(
+                    if (self.tour) {
+                        self.tour.end();
+                    }
+                    if (self.tour) {
+                        self.tour.end(); // second call to fix a weird bug :(
+                    }
                     self.tour = undefined;
                     $scope.$apply();
                 }
@@ -126,6 +130,7 @@
         };
 
         Tour.prototype._showPopover = GlobalFixes.hackTour_showPopover;
+        Tour.prototype._reposition = GlobalFixes._Tour_reposition;
 
         self.runGameTour = function () {
             if (!$stateParams.tour || self.tour) {
@@ -140,25 +145,19 @@
             $scope.$on('$destroy', function(){
                 section.css({'position': ''});
             });
-            var backdropContainer;
-            var container;
-            if (!self.isMobile) {
-                backdropContainer = 'header.topnavbar-wrapper';
-                container = 'header.topnavbar-wrapper';
-            }
+            // var backdropContainer;
+            // var container;
+            // if (!self.isMobile) {
+            //     backdropContainer = 'header.topnavbar-wrapper';
+            //     container = 'header.topnavbar-wrapper';
+            // }
 
             self.restartTourButton = false;
+            GlobalFixes.preFixTourLeftMenu($('li[sref="app.matches"]'));
             GlobalFixes.closeAllTours();
             self.tour = new Tour({
                 backdrop: true,
                 keyboard: false,
-                onHide: function () {
-                    //console.log(222);
-                    //self.called = false;
-                    //console.log(self.called);
-                },
-                backdropContainer: backdropContainer,
-                container: container,
                 template: "" +
                     "<div class='popover tour'>" +
                     "  <div class='arrow'></div>" +
@@ -171,7 +170,11 @@
                     "  </div>" +
                     "</div>",
                 onEnd: function (tour) {
+                    if (self.tour) {
+                        self.tour = undefined;
+                    }
                     GlobalFixes.closeAllTours();
+
                 },
                 steps: [
                 {
@@ -191,6 +194,8 @@
                     title: "Matches",
                     content: "Check if there are any matches.",
                     placement: 'right',
+                    backdropContainer: 'header.topnavbar-wrapper',
+                    container: 'header.topnavbar-wrapper',
                     onShow: function (tour) {
                         $rootScope.app.asideToggled = true;
                         GlobalFixes.fixTourLeftMenu(self.tour);
