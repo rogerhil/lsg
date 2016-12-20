@@ -51,7 +51,7 @@
         });
 
         self.isNarrowWidth = function () {
-            return $(window).width() < 400;
+            return $(window).width() < 380;
         };
 
         self.queryAddress = function (query) {
@@ -124,7 +124,7 @@
             ];
             GlobalFixes.closeAllTours();
             self.countryTour = new Tour({
-                backdrop: !self.isMobile,
+                backdrop: true,
                 backdropPadding: 0,
                 keyboard: false,
                 template: "" +
@@ -191,7 +191,7 @@
             if (!self.tour) {
                 GlobalFixes.closeAllTours();
                 self.tour = new Tour({
-                    backdrop: !self.isMobile,
+                    backdrop: true,
                     backdropPadding: 20,
                     keyboard: false,
                     template: "" +
@@ -252,7 +252,7 @@
             $rootScope.$apply();
             GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
-                backdrop: !self.isMobile,
+                backdrop: true,
                 keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +
