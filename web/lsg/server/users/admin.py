@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from users.models import User, UserReport, CollectionItem, WishlistItem
+from users.models import User, UserReport, CollectionItem, WishlistItem, HttpUserAgent
 
 
 @admin.register(User)
@@ -41,3 +41,12 @@ class WishlistItem(admin.ModelAdmin):
                      'game__name', 'game__platform__name')
     list_filter = ('game__platform',)
     raw_id_fields = ('user', 'game')
+
+
+@admin.register(HttpUserAgent)
+class HttpUserAgentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'http_user_agent', 'created')
+    search_fields = ('user__first_name', 'user__last_name', 'user__email',
+                     'http_user_agent')
+    list_filter = ('http_user_agent',)
+

@@ -569,4 +569,13 @@ class UserReport(models.Model):
     created = models.DateTimeField(default=timezone.now)
 
 
+class HttpUserAgent(models.Model):
+    user = models.ForeignKey(User, related_name='http_agents')
+    http_user_agent = models.CharField(max_length=255)
+    created = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = (('user', 'http_user_agent'),)
+
+
 from users.signals import *

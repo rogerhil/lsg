@@ -20,7 +20,7 @@ from users.api.serializers import CollectionItemSerializer, UserSerializer, \
     WishlistItemSerializer, UserPictureImageSerializer, SmallUserSerializer, \
     UserCountsStarsSerializer
 from users.api.permissions import IsSuperUserOrOwner
-from users.models import User, CollectionItem, WishlistItem, UserReport
+from users.models import User, CollectionItem, WishlistItem, UserReport, HttpUserAgent
 from users.exceptions import CollectionGameDeleteException
 from users.activities import Verbs
 from mail.sender import Sender
@@ -33,6 +33,8 @@ class AuthenticatedUserView(views.APIView):
     def get(self, request, format=None):
         serializer = self.serializer_class()
         if request.user.is_authenticated():
+            http_user_agent = request._request.META['HTTP_USER_AGENT']
+            HttpUserAgent.objects.get_or_create(user=request.user, http_user_agent=http_user_agent)
             if request.user.app_updates:
                 # browser refreshed!
                 request.user.app_updates = False
