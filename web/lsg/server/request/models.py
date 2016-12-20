@@ -68,8 +68,8 @@ class SwapRequest(models.Model, StatusMethodsMixin):
     finalized_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "%s (%s) X %s (%s)" % (self.requester, self.requester_game,
-                                      self.requested, self.requested_game)
+        return "%s: %s (%s) X %s (%s)" % (self.status_display, self.requester, self.requester_game,
+                                          self.requested, self.requested_game)
 
     @property
     def distance(self):

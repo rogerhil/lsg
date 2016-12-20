@@ -30,6 +30,8 @@ class CollectionItem(admin.ModelAdmin):
     list_display = ('user', 'game')
     search_fields = ('user__first_name', 'user__last_name', 'user__email',
                      'game__name', 'game__platform__name')
+    list_filter = ('game__platform',)
+    raw_id_fields = ('user', 'game')
 
 
 @admin.register(WishlistItem)
@@ -37,3 +39,5 @@ class WishlistItem(admin.ModelAdmin):
     list_display = ('user', 'game')
     search_fields = ('user__first_name', 'user__last_name', 'user__email',
                      'game__name', 'game__platform__name')
+    list_filter = ('game__platform',)
+    raw_id_fields = ('user', 'game')

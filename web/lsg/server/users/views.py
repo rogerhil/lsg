@@ -1,5 +1,8 @@
 from django.contrib.auth import logout
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
+
+from users.models import User
+from request.models import SwapRequest
 
 
 class Logout(RedirectView):
@@ -27,3 +30,20 @@ class Done(RedirectView):
 
         #return "/congratulations/"
         return "/app/#/app/welcome"
+
+
+class AdminStatisticsView(TemplateView):
+    template_name = 'admin/statistics.html'
+
+    def get_context_data(self, **kwargs):
+        matches = []
+        for user in User.objects.filter(deleted=False, accepted_terms=True, enabled=True):
+            matches.append((user, user.matches))
+        kwargs['matches'] = matches
+        kwargs['requests'] = SwapRequest.objects.all()\
+            .select_related('requester').select_related('requested') \
+            .select_related('requester_game') \
+            .select_related('requested_game') \
+            .select_related('requester_game__platform') \
+            .select_related('requested_game__platform')
+        return super(AdminStatisticsView, self).get_context_data(**kwargs)

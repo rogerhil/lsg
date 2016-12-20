@@ -1,0 +1,64 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static %}
+{% load i18n %}
+
+{% block extrahead %}
+  {{ block.super }}
+{% endblock extrahead %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; Statistics
+    </div>
+{% endblock %}
+
+{% block object-tools %}
+    {{super}}
+    <h1>Statistics</h1>
+    <h2>All matches</h2>
+    <div id="matches">
+        <ul>
+            {% for user, match in matches %}
+                <li>
+                    <h3>{{ user.full_name }} - {{ user.address }}</h3>
+                    {% for item in match %}
+                        <div>
+                            <div>
+                                <strong>Game:</strong> {{ item.iwish }}
+                            </div>
+                            <div>
+                                <ul>
+                                    {% for swap in item.swaps %}
+                                        <li>
+                                            <strong>From {{ swap.user }}:</strong>
+                                            <ol style="list-style-type: decimal;">
+                                                {% for game in swap.wanted_games %}
+                                                    <li style="list-style-type: decimal;">
+                                                        {{ game }},
+                                                    </li>
+                                                {% endfor %}
+                                            </ol>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>Requests from all users</h2>
+    <div id="request">
+        <ul>
+            {% for swap_request in requests %}
+                <li>
+                    {{ swap_request }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
