@@ -10,36 +10,62 @@ nav.navbar.topnavbar(role='navigation')
             .brand-logo-collapsed
                 //img.img-responsive(src="app/img/logo-single.png", alt="App Logo")
                 img.img-responsive(src="app/img/logo-77x40.png", alt="Let'SwapGames" style="margin-top: 10px;")
+
+    div.lsg-nav.hidden-xs(style="float: right;")
+        a(href='javascript:;' ng-click="globalCtrl.signOut()")
+            em.icon-logout
+            md-tooltip(md-direction="bottom") Log out
+
+    //div.lsg-nav.hidden-xs
+    //    // Button used to collapse the left sidebar. Only visible on tablet and desktops
+    //    a(href='', trigger-resize="", ng-click="app.layout.isCollapsed = !app.layout.isCollapsed", ng-if="!app.layout.isCollapsedText", md-ink-ripple)
+    //        em.fa.fa-navicon
+    //        md-tooltip(md-direction="bottom") Menu
+
+// START Nav wrapper
+.nav-wrapper
+    // START Left navbar
+    ul.nav.navbar-nav
+        li
+            // Button to show/hide the sidebar on mobile. Visible on mobile only.
+            a(href='', ng-click="app.asideToggled = !app.asideToggled", md-ink-ripple, style="left: 100px;").visible-xs.sidebar-toggle
+                em.fa.fa-navicon
+                md-tooltip(md-direction="bottom") Menu
+        li
+            a(href='javascript:;' ng-click="globalCtrl.signOut()").visible-xs.sidebar-toggle
+                em.icon-logout
+                md-tooltip(md-direction="bottom") Log out
+
     // END navbar header
 
     // START Nav wrapper
-    .nav-wrapper
-        // START Left navbar
-        ul.nav.navbar-nav
-            li
-                // Button used to collapse the left sidebar. Only visible on tablet and desktops
-                a(href='', trigger-resize="", ng-click="app.layout.isCollapsed = !app.layout.isCollapsed", ng-if="!app.layout.isCollapsedText", md-ink-ripple).hidden-xs
-                    em.fa.fa-navicon
-                // Button to show/hide the sidebar on mobile. Visible on mobile only.
-                a(href='', ng-click="app.asideToggled = !app.asideToggled", md-ink-ripple).visible-xs.sidebar-toggle
-                    em.fa.fa-navicon
-            // START User avatar toggle
-            li
-                // Button used to collapse the left sidebar. Only visible on tablet and desktops
-                a(href='', ng-click="toggleUserBlock()")
-                    em.icon-user
-            // END User avatar toggle
-        // END Left navbar
-
-        // START Right Navbar
-        ul.nav.navbar-nav.navbar-right
-            // START Offsidebar button
-            li
-                a(href='javascript:;' ng-click="globalCtrl.signOut()")
-                    em.icon-logout
-                    md-tooltip(md-direction="bottom") Log out
-            // END Offsidebar menu
-        // END Right Navbar
+    //.nav-wrapper
+    //    // START Left navbar
+    //    ul.nav.navbar-nav
+    //        li
+    //            // Button used to collapse the left sidebar. Only visible on tablet and desktops
+    //            a(href='', trigger-resize="", ng-click="app.layout.isCollapsed = !app.layout.isCollapsed", ng-if="!app.layout.isCollapsedText", md-ink-ripple).hidden-xs
+    //                em.fa.fa-navicon
+    //            // Button to show/hide the sidebar on mobile. Visible on mobile only.
+    //            a(href='', ng-click="app.asideToggled = !app.asideToggled", md-ink-ripple).visible-xs.sidebar-toggle
+    //                em.fa.fa-navicon
+    //        // START User avatar toggle
+    //        li
+    //            // Button used to collapse the left sidebar. Only visible on tablet and desktops
+    //            a(href='', ng-click="toggleUserBlock()")
+    //                em.icon-user
+    //        // END User avatar toggle
+    //    // END Left navbar
+    //
+    //    // START Right Navbar
+    //    ul.nav.navbar-nav.navbar-right
+    //        // START Offsidebar button
+    //        li
+    //            a(href='javascript:;' ng-click="globalCtrl.signOut()")
+    //                em.icon-logout
+    //                md-tooltip(md-direction="bottom") Log out
+    //        // END Offsidebar menu
+    //    // END Right Navbar
     // END Nav wrapper
 
     // START Search form

@@ -208,7 +208,7 @@
                         "</div>",
                     onShown: function (tour) {
                         var step = tour._options.steps[tour._current];
-                        for (var k = 2; k < 6; k++) {
+                        for (var k = 2; k < 7; k++) {
                             $timeout(function () {
                                 document.querySelector(step.element + ' input.md-input').focus();
                             }, 100 * k);

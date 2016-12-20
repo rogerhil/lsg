@@ -70,12 +70,12 @@ h3 My profile
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.first_name}")
                                     label First Name
-                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="1")
+                                    input(ng-model='ctrl.user.first_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="1" autocorrect="off" autocomplete="off")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.first_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.last_name}")
                                     label Last Name
-                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="2")
+                                    input(ng-model='ctrl.user.last_name', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="2" autocorrect="off" autocomplete="off")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.last_name")
                                         .md-char-counter {{error}}
                                 md-input-container(flex='0')
@@ -89,7 +89,7 @@ h3 My profile
                             div(layout='', layout-sm='column')
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.email}")
                                     label Email
-                                    input(ng-model='ctrl.user.email', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="4")
+                                    input(ng-model='ctrl.user.email', required, ng-change="ctrl.updateUser()" ng-model-options="{updateOn: 'blur'}" ng-disabled="!ctrl.user.isCountrySupported()" tabindex="4" autocapitalize="off" autocorrect="off")
                                     .md-errors-spacer(ng-repeat="error in ctrl.errors.email")
                                         .md-char-counter {{error}}
                                 div(style="height: 24px; margin: 24px 10px 14px 0;")
@@ -107,6 +107,7 @@ h3 My profile
                                 md-input-container(flex='', ng-class="{'md-input-invalid': ctrl.errors.address.geocoder_address || ctrl.errors.addressGlobal}")
                                     label Address
                                     md-autocomplete(md-no-cache='ctrl.noCache',
+                                                    autocomplete="off"
                                                     tabindex="6"
                                                     md-selected-item-change="ctrl.user.address.geocoder_address = ctrl.searchText; ctrl.updateUser(true);"
                                                     md-require-match=true,

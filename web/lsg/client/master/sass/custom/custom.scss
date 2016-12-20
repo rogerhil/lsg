@@ -23,6 +23,17 @@
 
 /* END some layout customization */
 
+.lsg-nav a {
+  color: #fff;
+  display: block;
+  padding: 22px 15px;
+  max-width: 250px;
+}
+
+.lsg-nav a:hover {
+  color: $mdc-yellow-600 !important;
+}
+
 .popover-navigation button.disabled {
   display: none;
 }
@@ -285,6 +296,13 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 
 @media only screen and (max-width: $mq-up-to-tablet) {
 
+  .layout-fixed .wrapper > section {
+    margin-top: 65px;
+  }
+  .wrapper > .aside .aside-inner {
+    padding-top: 65px;
+  }
+
   .welcome-title h2 {
      font-size: 35px !important;
   }
@@ -366,7 +384,7 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 }
 
 .games-display .em.fa.selected {
-  color: $mdc-yellow-700;
+  color: $mdc-yellow-600;
 }
 
 .platform-games-holder {
