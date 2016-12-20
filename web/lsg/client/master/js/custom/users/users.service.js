@@ -81,7 +81,8 @@
                         delete user.app_updated;
                         if (user.isProfileComplete()) {
                             Notify.closeAll(false, true);
-                            Notify.alert("Successfully updated!", {status: 'success', timeout: 3000});
+                            // disable this notification for now, user might be confused.
+                            //Notify.alert("Successfully updated!", {status: 'success', timeout: 3000});
                         }
                     }
                     q.resolve(user);

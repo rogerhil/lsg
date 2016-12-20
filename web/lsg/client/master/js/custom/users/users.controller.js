@@ -124,7 +124,7 @@
             ];
             GlobalFixes.closeAllTours();
             self.countryTour = new Tour({
-                backdrop: true,
+                backdrop: !self.isMobile,
                 backdropPadding: 0,
                 keyboard: false,
                 template: "" +
@@ -191,7 +191,7 @@
             if (!self.tour) {
                 GlobalFixes.closeAllTours();
                 self.tour = new Tour({
-                    backdrop: true,
+                    backdrop: !self.isMobile,
                     backdropPadding: 20,
                     keyboard: false,
                     template: "" +
@@ -252,7 +252,7 @@
             $rootScope.$apply();
             GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
-                backdrop: true,
+                backdrop: !self.isMobile,
                 keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +

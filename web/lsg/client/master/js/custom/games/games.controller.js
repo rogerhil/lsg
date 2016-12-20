@@ -166,7 +166,7 @@
             $rootScope.$apply();
 
             self.tour = new Tour({
-                backdrop: true,
+                backdrop: !self.isMobile,
                 keyboard: false,
                 template: "" +
                     "<div class='popover tour'>" +

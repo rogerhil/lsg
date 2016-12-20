@@ -88,6 +88,7 @@
             var offset = menuElement.offset().top - $(window).scrollTop();
             var scrollTo = offset - windowHeight/2;
             $('nav.sidebar').scrollTop(scrollTo);
+            $('nav.sidebar').scrollTop(scrollTo);
         };
 
         this.fixTourLeftMenu = function (tour) {
