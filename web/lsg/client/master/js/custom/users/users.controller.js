@@ -162,7 +162,7 @@
 
         function tourActivate() {
             if (self.user.isProfileComplete() || self.tourAlreadyDone || (self.tour && !self.tour.ended()) || $stateParams.chpic) {
-                return;
+               return;
             }
 
             // BootstrapTour is not compatible with z-index based layout
@@ -171,7 +171,7 @@
             var section = angular.element('.wrapper > section');
             section.css({'position': 'static'});
             // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
+            $scope.$on('$destroy', function() {
                 section.css({'position': ''});
             });
             var steps = [
@@ -190,6 +190,7 @@
             ];
             if (!self.tour) {
                 GlobalFixes.closeAllTours();
+
                 self.tour = new Tour({
                     backdrop: true,
                     backdropPadding: 20,
@@ -205,6 +206,14 @@
                         "    <button class='btn btn-default' data-role='end'>Got it!</button>" +
                         "  </div>" +
                         "</div>",
+                    onShown: function (tour) {
+                        var step = tour._options.steps[tour._current];
+                        for (var k = 2; k < 6; k++) {
+                            $timeout(function () {
+                                document.querySelector(step.element + ' input.md-input').focus();
+                            }, 100 * k);
+                        }
+                    },
                     onEnd: function (tour) {
                         GlobalFixes.closeAllTours();
                     },
@@ -248,8 +257,8 @@
             $rootScope.app.asideToggled = true;
             $rootScope.$apply();
             GlobalFixes.preFixTourLeftMenu($('li[sref="app.games"]'));
-            $rootScope.app.asideToggled = false;
-            $rootScope.$apply();
+            //$rootScope.app.asideToggled = false;
+            //$rootScope.$apply();
             GlobalFixes.closeAllTours();
             self.gameTour = new Tour({
                 backdrop: true,
@@ -275,7 +284,7 @@
                     backdropContainer: 'header.topnavbar-wrapper',
                     container: 'header.topnavbar-wrapper',
                     onShow: function (tour) {
-                        $rootScope.app.asideToggled = true;
+                        //$rootScope.app.asideToggled = true;
                         GlobalFixes.fixTourLeftMenu(self.gameTour);
                         $timeout(function () {
                             $('nav.sidebar');
@@ -311,8 +320,18 @@
             $timeout(function () {self.changePicture()}, 1000);
         }
 
-
         //$timeout(function () {gameTourActivate()}, 1000);
+        //$timeout(function () {tourActivate()}, 1000);
+
+        // $('.ng-scope').scrollTop(800);
+        // $timeout(function () {
+        //     $('.hidden-fix-tour-android').show();
+        //     $('.hidden-fix-tour-android').focus();
+        //     $('.hidden-fix-tour-android').hide();
+        //     $timeout(function () {
+        //         gameTourActivate();
+        //     }, 2000);
+        // }, 2000);
 
         self.updateUser = function (updateMap, settingsSection) {
             self.saving = true;
@@ -321,6 +340,8 @@
             } else {
                 $('.profile-loading').fadeIn();
             }
+            $('input').blur();   // fix iOS header fixed position, force unfocus so the header expands again
+            $('header').focus();  // fix iOS header fixed position, force unfocus so the header expands again
             UsersService.updateUser(self.user).then(function (user) {
                 self.saving = false;
                 $rootScope.user = user;
@@ -351,7 +372,7 @@
                     tourMoveSteps();
                 });
 
-                if (!user.address.geocoder_address && user.address.country) {
+                if (!user.address.geocoder_address && user.address.country && !self.isMobile) {
                     setupMapInCountry(user.address.country.name);
                 }
 
@@ -361,7 +382,7 @@
                     self.tour.end();
                     self.tour = undefined;
                 }
-                if (updateMap) {
+                if (updateMap && !self.isMobile) {
                     setupUserMap(user);
                 }
 
@@ -369,6 +390,7 @@
                     $('.hidden-fix-tour-android').show();
                     $('.hidden-fix-tour-android').focus();
                     $('.hidden-fix-tour-android').hide();
+                    //$rootScope.app.asideToggled = true;
                     $timeout(function () {
                         gameTourActivate();
                     }, 1000);
@@ -443,7 +465,9 @@
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scrollwheel: false
         };
-        setupUserMap(self.user);
+        if (!self.isMobile) {
+            setupUserMap(self.user);
+        }
     }
 
     /*
