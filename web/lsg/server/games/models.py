@@ -97,8 +97,7 @@ class Game(models.Model):
     similar = models.ManyToManyField('Game')
     genres = models.ManyToManyField(Genre)
 
-    fts = TSVectorField(fields=(('name', 'A'),),
-                        dictionary='english')
+    fts = TSVectorField(fields=(('name', 'A'),), dictionary='english')
 
     class Meta:
         index_together = ('name', 'platform')

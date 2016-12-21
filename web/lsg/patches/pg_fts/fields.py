@@ -133,10 +133,10 @@ class TSVectorField(TSVectorBaseField):
         for field in self.fields:
             if isinstance(field, (tuple, list)):
                 print(dir(self.model._meta))
-                yield (self.model._meta.get_field(field[0])[0],
+                yield (self.model._meta.get_field(field[0]),
                        field[1].upper())
             else:
-                yield (self.model._meta.get_field(field)[0],
+                yield (self.model._meta.get_field(field),
                        self.DEFAUL_RANK)
 
     def check(self, **kwargs):

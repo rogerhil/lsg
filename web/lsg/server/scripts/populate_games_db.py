@@ -252,7 +252,7 @@ class PopulateGamesDbBase(BaseScript):
                                   "not exist on DB" % (g, g.id))
                 continue
             sim = g.similar or {}
-            if not 'Game' in sim:
+            if 'Game' not in sim:
                 continue
             if int(sim['SimilarCount']) == 1:
                 sim = [sim['Game']]
