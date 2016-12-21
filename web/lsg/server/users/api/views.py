@@ -33,7 +33,7 @@ class AuthenticatedUserView(views.APIView):
     def get(self, request, format=None):
         serializer = self.serializer_class()
         if request.user.is_authenticated():
-            http_user_agent = request._request.META['HTTP_USER_AGENT']
+            http_user_agent = request._request.META['HTTP_USER_AGENT'][:1024]
             HttpUserAgent.objects.get_or_create(user=request.user, http_user_agent=http_user_agent)
             if request.user.app_updates:
                 # browser refreshed!

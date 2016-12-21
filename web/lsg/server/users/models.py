@@ -571,7 +571,7 @@ class UserReport(models.Model):
 
 class HttpUserAgent(models.Model):
     user = models.ForeignKey(User, related_name='http_agents')
-    http_user_agent = models.CharField(max_length=255)
+    http_user_agent = models.CharField(max_length=1024)
     created = models.DateTimeField(default=timezone.now)
 
     class Meta:
