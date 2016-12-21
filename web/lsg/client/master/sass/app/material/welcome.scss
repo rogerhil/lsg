@@ -70,15 +70,21 @@
     color: #fff;
   }
   .card.archived {
-    background-color: $gray-light;
+    background-color: $mdc-grey-600;
+    color: #fff;
   }
   .card.invite {
     background-color: $mdc-pink-500;
     color: #fff;
   }
   .card.contact {
+    background-color: $mdc-brown-700;
+    color: #fff;
+  }
+  .card.help {
     background-color: #fff;
   }
+
   .card:hover,
   .card:focus {
     @include box-shadow(0 8px 8px 0 rgba(0,0,0,0.4));
