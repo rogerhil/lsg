@@ -80,10 +80,6 @@ urlpatterns = [
         name="landing-page"),
     url(r'^privacy-policy/$', TemplateView.as_view(template_name="privacy-policy.html"),
         name="privacy-policy"),
-    url(r'^congratulations/$', login_required(
-        TemplateView.as_view(template_name="congratulations.html"),
-        redirect_field_name='landing-page'),
-        name="congratualtions"),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^done/$', Done.as_view(), name='done'),
     url(r'^logout/$', Logout.as_view(), name='logout'),

@@ -1,5 +1,6 @@
 from django.contrib.auth import logout
 from django.views.generic import RedirectView, TemplateView
+from django.http import Http404
 
 from users.models import User
 from request.models import SwapRequest
@@ -14,11 +15,11 @@ class Logout(RedirectView):
         return '/'
 
 
-class Done(RedirectView):
+class Done(TemplateView):
 
-    permanent = False
+    template_name = 'registration-done.html'
 
-    def get_redirect_url(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         # FRIENDS LIST
         #import requests
         #social = self.request.user.social_auth.get(provider='google-oauth2')
@@ -29,7 +30,11 @@ class Done(RedirectView):
         #import pdb; pdb.set_trace()
 
         #return "/congratulations/"
-        return "/app/#/app/welcome"
+        #return "/app/#/app/welcome"
+        if self.request.user.is_authenticated():
+            return super(Done, self).get_context_data(**kwargs)
+        else:
+            raise Http404('User not authenticated')
 
 
 class AdminStatisticsView(TemplateView):
