@@ -7,7 +7,7 @@ from admin_extra_urls.extras import ExtraUrlMixin, link
 
 from scripts.models import Scripting, CeleryTask
 from scripts.tasks import populate_games_db, populate_games_db_offline, download_boxart_images, \
-    make_thumbnails, expire_old_ongoing_requests, send_scheduled_emails
+    make_thumbnails, expire_old_ongoing_requests, send_scheduled_emails, update_similar_games
 
 
 @admin.register(Scripting)
@@ -25,7 +25,7 @@ class ScriptingAdmin(ExtraUrlMixin, admin.ModelAdmin):
         return HttpResponseRedirect(path)
 
     @link(label="Update games OFFLINE")
-    def update_games(self, request):
+    def update_games_offline(self, request):
         async_result = populate_games_db_offline.delay()
         path = reverse('watch_log', args=(async_result.task_id,))
         return HttpResponseRedirect(path)
@@ -52,6 +52,12 @@ class ScriptingAdmin(ExtraUrlMixin, admin.ModelAdmin):
     @link(label="Send scheduled emails")
     def send_scheduled_email(self, request):
         async_result = send_scheduled_emails.delay()
+        path = reverse('watch_log', args=(async_result.task_id,))
+        return HttpResponseRedirect(path)
+
+    @link(label="Update similar games")
+    def update_similar_games(self, request):
+        async_result = update_similar_games.delay()
         path = reverse('watch_log', args=(async_result.task_id,))
         return HttpResponseRedirect(path)
 

@@ -8,6 +8,7 @@ from scripts.download_boxart_images import BoxartDownloader
 from scripts.make_thumbnails import ThumbnailsMaker
 from scripts.expire_old_ongoing_requests import ExpireOldOngoingRequests
 from scripts.send_scheduled_emails import SendScheduledEmails
+from scripts.update_similar_games import UpdateSimilarGames
 
 
 @shared_task(bind=True, script_class=PopulateGamesDb)
@@ -59,6 +60,13 @@ def expire_old_ongoing_requests(self):
 
 @shared_task(bind=True, script_class=SendScheduledEmails)
 def send_scheduled_emails(self):
+    script = self.script_class(self.request.id)
+    script.run()
+    return True
+
+
+@shared_task(bind=True, script_class=UpdateSimilarGames)
+def update_similar_games(self):
     script = self.script_class(self.request.id)
     script.run()
     return True

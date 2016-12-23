@@ -291,14 +291,25 @@ class User(AbstractUser):
             logger.debug('User %s has no point address "%s"' %
                          (self, self.address))
             return []
+        wishlist = self.wishlist.all()
+        wishlist_ids = [w.game.id for w in self.wishlist]
         games_collections = CollectionItem.objects \
-            .filter(game_id__in=self.wishlist.all().values_list('id', flat=True),
-                    user__deleted=False) \
+            .filter(game_id__in=wishlist_ids, user__deleted=False) \
             .exclude(user=self)\
             .select_related('user')\
             .select_related('game') \
             .select_related('game__platform') \
             .select_related('user__address')
+
+        similar_ids = reduce(lambda a, b: a + b,
+                             [w.game.similar_same_platform_ids_list for w in wishlist],
+                             [])
+        similar_collections_qs = CollectionItem.objects.filter(game_id__in=similar_ids)
+
+        similar_collections = []
+        for similar_collection in similar_collections_qs:
+            similar_collection.is_similar = True
+            similar_collections.append(similar_collection)
 
         my_pending_tuples = SwapRequest.objects.filter(requester=self,
                           status=Status.pending).values_list('requested_id',
@@ -334,7 +345,8 @@ class User(AbstractUser):
         iwish_in_requests = set(iwish_my) | set(iwish_inc)
         iswap_in_requests = set(iswap_my) | set(iswap_inc)
 
-        other_users = [i.user.id for i in games_collections]
+        other_users = [i.user.id for i in games_collections] + \
+                      [i.user.id for i in similar_collections]
         other_games1 = SwapRequest.objects\
                                   .filter(requested_id__in=other_users,
                                           status__in=statuses)\
@@ -373,7 +385,7 @@ class User(AbstractUser):
 
         my_collection = self.collection.all().select_related('platform')
 
-        for game_collection in games_collections:
+        for game_collection in (games_collections + similar_collections):
             user = game_collection.user
             if user.address.id not in address_cache:
                 address_cache[user.address.id] = qs.get(id=user.address.id)
@@ -435,7 +447,6 @@ class User(AbstractUser):
 
                         my_game.this_user_ongoing = this_user_ongoing
 
-
                         match = dict(
                             iwish=iwish,
                             count=0,
@@ -495,6 +506,7 @@ class User(AbstractUser):
         serialized_matches = []
         for match in self.matches:
             iwish = gs.to_representation(match['iwish'])
+            iwish['is_similar'] = match['iwish'].is_similar
             iwish['swap_pending'] = match['iwish'].swap_pending
             serialized_match = dict(
                 iwish=iwish,

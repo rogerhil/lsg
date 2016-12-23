@@ -94,7 +94,11 @@ class Game(models.Model):
                                      blank=True)
 
     similar_count = models.IntegerField(default=0)
-    similar = models.ManyToManyField('Game')
+    similar = models.ManyToManyField('Game',
+                                     related_name='same_game_other_platform')
+    similar_same_platform = models.ManyToManyField('Game',
+                                                   related_name='similar_game_same_platform')
+    similar_same_platform_ids = models.CharField(max_length=1024, null=True, blank=True)
     genres = models.ManyToManyField(Genre)
 
     fts = TSVectorField(fields=(('name', 'A'),), dictionary='english')
@@ -112,3 +116,8 @@ class Game(models.Model):
     @property
     def full_name(self):
         return "%s (%s)" % (self.name, self.platform.short_name)
+
+    @property
+    def similar_same_platform_ids_list(self):
+        ids = self.similar_same_platform_ids or ''
+        return ids.split(',')
