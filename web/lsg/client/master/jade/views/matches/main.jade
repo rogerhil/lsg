@@ -7,11 +7,18 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 | Show games in pending swaps
             span &nbsp;
 
-    p(ng-if="!ctrl.filteredMatches.length && ctrl.loaded") No matches. Try manipulating the filter switchers on the top right.
+    p(ng-if="!ctrl.filteredMatches.length && ctrl.loaded")
+        span No matches yet. Try adding more games to your&nbsp;
+        a(href="/app/#/app/games") collection and/or wish list.
     h4(ng-if="!ctrl.filteredMatches.length && ctrl.loaded" style="text-align: center; margin-top: 60px;")
-        span Want to see matches? Help our community grow.&nbsp;
+        span Want to see matches? Try adding more games to your&nbsp;
+        a(href="/app/#/app/games") collection and/or wish list.
+        br
+        br
+        span You can also help our community grow, so it will increase the chances of matches.&nbsp;
+        br
         a(href="/app/#/app/invite") Invite people
-        span that might enjoy swapping games here!
+        span that might enjoy swapping games here.
 
     .ball-pulse(ng-if="!ctrl.loaded")
         div
@@ -46,6 +53,11 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
     div(style="clear: both;")
     div(ng-if="ctrl.filteredMatches.length" style="clear: both; margin-top: 60px;")
         h5(style="text-align: center;")
-            span Want to see more matches? Help our community grow.&nbsp;
+            span Want to see more matches? Try adding more games to your&nbsp;
+            a(href="/app/#/app/games") collection and/or wish list.
+            br
+            br
+            span You can also help our community grow, so it will increase the chances of matches.&nbsp;
+            br
             a(href="/app/#/app/invite") Invite people
-            span that might enjoy swapping games here!
+            span that might enjoy swapping games here.

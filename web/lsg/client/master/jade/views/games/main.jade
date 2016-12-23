@@ -40,4 +40,15 @@ h3 Games
             .card-body
                 ng-include(src="'app/views/games/items.partial.html'", onload="context='wishlist'")
 
+.row(style="text-align: center; margin-top: 50px;")
+    a(href="/app/#/app/matches")
+        button.btn.mb-sm.btn-info.btn-labeled(style="margin: 0 auto; font-size: 24px;")
+            span.btn-label
+                em.fa.fa-exchange
+            span Check out matches&nbsp;
+    p(style="text-align: center; font-size: 12px;")
+        i make sure you've added a considerable amount
+        br
+        i of games to your collection and wish list
+
 //div(style="clear: both; width: 100%; height: 115px;")
