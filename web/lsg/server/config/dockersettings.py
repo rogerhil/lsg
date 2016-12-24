@@ -37,7 +37,8 @@ if os.getenv('LSG_DB_NAME'):
         REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)
 
     ALLOWED_HOSTS = ['letswapgames.com', 'letswapgames.ie', 'letswapgames.co.uk',
-                     'www.letswapgames.com', 'www.letswapgames.ie', 'www.letswapgames.co.uk']
+                     'www.letswapgames.com', 'www.letswapgames.ie', 'www.letswapgames.co.uk',
+                     '192.168.0.3']
 
     for host in os.getenv('LSG_ALLOWED_HOSTS', '').split(','):
         if host.strip():

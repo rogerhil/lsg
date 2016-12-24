@@ -435,7 +435,6 @@ class User(AbstractUser):
 
                         my_game.this_user_ongoing = this_user_ongoing
 
-
                         match = dict(
                             iwish=iwish,
                             count=0,

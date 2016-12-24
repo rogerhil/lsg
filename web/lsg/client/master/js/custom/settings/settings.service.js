@@ -81,6 +81,29 @@
             }
         };
 
+        this.fixZindex = function ($scope) {
+            // BootstrapTour is not compatible with z-index based layout
+            // so adding position:static for this case makes the browser
+            // to ignore the property
+            var section = angular.element('.wrapper > section');
+            section.css({'position': 'static'});
+            // finally restore on destroy and reuse the value declared in stylesheet
+            $scope.$on('$destroy', function(){
+                section.css({'position': ''});
+            });
+            for (var k = 1; k < 11; k++) {
+                $timeout(function () {
+                    section.css({'position': 'static'});
+                }, 500 * k);
+
+            }
+        };
+
+        this.fixZindexOnEnd = function (tour) {
+            var section = angular.element('.wrapper > section');
+            section.css({'position': ''});
+        };
+
         this.preFixTourLeftMenu = function (menuElement) {
             $('nav.sidebar').scrollTop(0);
             $('.ng-scope').scrollTop(0);

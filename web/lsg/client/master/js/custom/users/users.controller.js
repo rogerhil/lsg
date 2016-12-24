@@ -98,16 +98,7 @@
             if (self.countryTour && !$stateParams.chpic) {
                 return;
             }
-
-            // BootstrapTour is not compatible with z-index based layout
-            // so adding position:static for this case makes the browser
-            // to ignore the property
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
-                section.css({'position': ''});
-            });
+            GlobalFixes.fixZindex($scope);
             var msg;
             if (self.user.address.country.name) {
                 msg = 'The country "' + self.user.address.country.name + '" coming from your social ' +
@@ -135,11 +126,13 @@
                     "</div>",
                 onEnd: function (tour) {
                     GlobalFixes.closeAllTours();
+                    GlobalFixes.fixZindexOnEnd();
                 },
                 steps: steps});
             self.countryTour.init();
             self.countryTour.start();
             self.countryTour.restart(true);
+            section.css({'position': 'static'});
         }
 
         function tourMoveSteps() {
@@ -165,15 +158,8 @@
                return;
             }
 
-            // BootstrapTour is not compatible with z-index based layout
-            // so adding position:static for this case makes the browser
-            // to ignore the property
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function() {
-                section.css({'position': ''});
-            });
+            GlobalFixes.fixZindex($scope);
+
             var steps = [
                 {
                     element: "#profile-form",
@@ -216,6 +202,7 @@
                     },
                     onEnd: function (tour) {
                         GlobalFixes.closeAllTours();
+                        GlobalFixes.fixZindexOnEnd();
                     },
                     steps: steps
                 });
@@ -247,12 +234,7 @@
                 return;
             }
 
-            var section = angular.element('.wrapper > section');
-            section.css({'position': 'static'});
-            // finally restore on destroy and reuse the value declared in stylesheet
-            $scope.$on('$destroy', function(){
-                section.css({'position': ''});
-            });
+            GlobalFixes.fixZindex($scope);
 
             $rootScope.app.asideToggled = true;
             $rootScope.$apply();
@@ -274,6 +256,7 @@
                     "</div>",
                 onEnd: function (tour) {
                     GlobalFixes.closeAllTours();
+                    GlobalFixes.fixZindexOnEnd();
                 },
                 steps: [
                 {
