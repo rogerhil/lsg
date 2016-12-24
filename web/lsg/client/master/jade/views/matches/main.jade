@@ -15,7 +15,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         a(href="/app/#/app/games") collection and/or wish list.
         br
         br
-        span You can also help our community grow, so it will increase the chances of matches.&nbsp;
+        span You can also help our community grow to increase the chances of matches.&nbsp;
         br
         a(href="/app/#/app/invite") Invite people
         span that might enjoy swapping games here.
@@ -27,6 +27,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
 
     .card.match-set-item.animate(ng-repeat='match in ctrl.filteredMatches track by match.iwish.id')
         .card-item
+            img.similar-ribon.small(nng-if="match.iwish.is_similar" ng-src="/app/app/img/similar-78.png")
             .label.label-warning.swap-indicator(ng-if="match.iwish.swap_pending")
                 .em(ng-class="StatusIcons[Status.pending]")
                 md-tooltip(md-direction="bottom") You have already requested this game for swapping.
@@ -57,7 +58,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
             a(href="/app/#/app/games") collection and/or wish list.
             br
             br
-            span You can also help our community grow, so it will increase the chances of matches.&nbsp;
+            span You can also help our community grow to increase the chances of matches.&nbsp;
             br
             a(href="/app/#/app/invite") Invite people
             span that might enjoy swapping games here.

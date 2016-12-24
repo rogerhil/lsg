@@ -11,6 +11,7 @@ class CeleryTaskLog(View):
         celery_task = CeleryTask.objects.get(pk=pk)
         with open(celery_task.log) as log_file:
             log = log_file.read()
+        log = '\n'.join(l for l in log.splitlines() if ' DEBUG ' not in l)
         data = dict(
             log=log,
             finished=celery_task.has_finished(),
