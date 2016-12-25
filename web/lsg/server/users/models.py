@@ -304,6 +304,7 @@ class User(AbstractUser):
         similar_ids = reduce(lambda a, b: a + b,
                              [w.similar_same_platform_ids_list for w in wishlist],
                              [])
+        similar_ids = set(similar_ids) - set(wishlist_ids)
         similar_collections_qs = CollectionItem.objects.filter(game_id__in=similar_ids)
 
         all_collections = []
@@ -472,7 +473,9 @@ class User(AbstractUser):
             match['swaps'].sort(key=lambda p: p['user'].succeeded_swaps_count,
                                 reverse=True)
             match['swaps'].sort(key=lambda p: p['user'].address.distance)
-        return matches.values()
+        matches_list = list(matches.values())
+        matches_list.sort(key=lambda p: p['iwish'].is_similar)
+        return matches_list
 
     @staticmethod
     def get_collection_cache_key_for(user_id):

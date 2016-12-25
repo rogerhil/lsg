@@ -120,4 +120,4 @@ class Game(models.Model):
     @property
     def similar_same_platform_ids_list(self):
         ids = self.similar_same_platform_ids
-        return ids.split(',') if ids else []
+        return list(map(int, ids.split(',') if ids else []))

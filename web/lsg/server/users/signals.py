@@ -28,7 +28,8 @@ def check_wishlist_item_is_in_open_request(sender, instance=None, **kwargs):
 @receiver(post_save, sender=CollectionItem)
 @receiver(pre_delete, sender=CollectionItem)
 def clear_matches_cache_collection(sender, instance=None, **kwargs):
-    ids = WishlistItem.objects.filter(game=instance.game)\
+    games_ids = [instance.game.id] + instance.game.similar_same_platform_ids_list
+    ids = WishlistItem.objects.filter(game__in=games_ids)\
                               .exclude(user=instance.user)\
                               .values_list('user__id', flat=True)
     keys = [User.get_matches_cache_key_for(i) for i in set(ids)]
@@ -40,7 +41,8 @@ def clear_matches_cache_collection(sender, instance=None, **kwargs):
 @receiver(post_save, sender=WishlistItem)
 @receiver(pre_delete, sender=WishlistItem)
 def clear_matches_cache_wishlist(sender, instance=None, **kwargs):
-    ids = CollectionItem.objects.filter(game=instance.game)\
+    games_ids = [instance.game.id] + instance.game.similar_same_platform_ids_list
+    ids = CollectionItem.objects.filter(game__in=games_ids)\
                               .exclude(user=instance.user)\
                               .values_list('user__id', flat=True)
     keys = [User.get_matches_cache_key_for(i) for i in set(ids)]
@@ -52,7 +54,9 @@ def clear_matches_cache_wishlist(sender, instance=None, **kwargs):
 @receiver(post_save, sender=SwapRequest)
 @receiver(pre_delete, sender=SwapRequest)
 def clear_matches_cache_request_changed(sender, instance=None, **kwargs):
-    games = [instance.requester_game, instance.requested_game]
+    games = [instance.requester_game.id, instance.requested_game.id] + \
+            instance.requester_game.similar_same_platform_ids_list + \
+            instance.requested_game.similar_same_platform_ids_list
     idsc = CollectionItem.objects.filter(game__in=games)\
                                 .values_list('user__id', flat=True)
     idsw = WishlistItem.objects.filter(game__in=games)\

@@ -22,6 +22,7 @@
         self.loaded = false;
         self.showOngoingSwaps = false;
         self.showPendingSwaps = true;
+        self.showSimilarMatches = true;
         self.matchesPollingInterval = 10000;
         self.matchesPromise = undefined;
 
@@ -36,7 +37,8 @@
         self.filterMatches = function () {
             self.filteredMatches = self.matches.filter(function (match) {
                 if ((self.showOngoingSwaps || (!match.no_games_left && !match.ongoing)) &&
-                    (self.showPendingSwaps || !match.iwish.swap_pending)) {
+                    (self.showPendingSwaps || !match.iwish.swap_pending) &&
+                    (self.showSimilarMatches || !match.iwish.is_similar)) {
                     return match;
                 }
             });

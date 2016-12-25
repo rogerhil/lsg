@@ -66,7 +66,7 @@
         var updateMatchesPercentage = function () {
             MatchesService.getMatches().then(function (matches) {
                 var filtered = matches.filter(function (o) {
-                    return !o.ongoing;
+                    return !o.ongoing && !o.iwish.is_similar && !o.no_games_left;
                 });
                 self.matchesLength = filtered.length;
                 reloadPerc();

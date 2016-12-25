@@ -47,7 +47,7 @@
     .pull-right.mt(style="position: absolute; right: 15px; bottom: 25px;")
         status-display(request="request")
 
-        md-tooltip(md-direction="bottom" ng-if="request.isOngoing() && context == 'incomingRequests'") You accepted {{ user.name }}'s request.
+        md-tooltip(md-direction="bottom" ng-if="request.isOngoing() && context == 'incomingRequests'") You have accepted {{ user.name }}'s request.
         md-tooltip(md-direction="bottom" ng-if="request.isOngoing() && context == 'myRequests'") {{ user.name }} accepted your request.
 
         md-tooltip(md-direction="bottom" ng-if="request.isCancelled() && context == 'incomingRequests'")
@@ -55,7 +55,7 @@
             span(ng-if="user.gender == 'female'") {{ user.name }} cancelled her request.
         md-tooltip(md-direction="bottom" ng-if="request.isCancelled() && context == 'myRequests'") You have cancelled this request.
 
-        md-tooltip(md-direction="bottom" ng-if="request.isRefused() && context == 'myRequests'") {{ user.name }} refused your request.
-        md-tooltip(md-direction="bottom" ng-if="request.isRefused() && context == 'incomingRequests'") You have refused this request from {{ user.name }}.
+        md-tooltip(md-direction="bottom" ng-if="request.isRefused() && !request.automatically_refused && context == 'myRequests'") {{ user.name }} refused your request.
+        md-tooltip(md-direction="bottom" ng-if="request.isRefused() && !request.automatically_refused && context == 'incomingRequests'") You have refused this request made by {{ user.name }}.
 
         md-tooltip(md-direction="bottom" ng-if="request.isFinalizing() && ((context == 'myRequests' && request.requested_feedback != null) || (context == 'incomingRequests' && request.requester_feedback != null))") Waiting for {{ user.name }} to close this request.

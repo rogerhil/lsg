@@ -1,13 +1,15 @@
 import re
-from scripts.base import BaseScript
+from django.db import transaction
 
+from scripts.base import BaseScript
 from games.models import Game
 
 
 class UpdateSimilarGames(BaseScript):
     name = "update_similar_games"
 
-    digit_regex = re.compile('^\d+.*')
+    digit_regex = re.compile(r'^\d+.*')
+    roman_regex = re.compile(r'^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$')
 
     def chunks(self):
         size = 1000
@@ -15,61 +17,86 @@ class UpdateSimilarGames(BaseScript):
         self.logger.info('Total of games: %s' % count)
         num_chunks = int(count / size) + 1
         self.logger.info('Processing %s chunks of size %s' % (num_chunks, size))
-        chunks = [Game.objects.all()[i:size * (i + 1)] for i in range(num_chunks)]
+        chunks = ((i, Game.objects.all()[size * i:size * (i + 1)]) for i in range(num_chunks))
         return chunks
 
     def main(self):
         self.logger.info('Looking for similar games for the same platform.')
-        ids_cache = dict()
-        #names_cache = dict()
-        for i, chunk in enumerate(self.chunks()):
+        cache = self.update_similares()
+        self.update_ids(cache)
+
+    @transaction.atomic
+    def update_similares(self):
+        cache = dict()
+        for i, chunk in self.chunks():
             self.logger.info('Processing chunk #%s' % i)
             for game in chunk:
-                prefix = ':'.join(game.name.split(':')[:-1]).lower()
+                gname = game.name
+                prefix = ':'.join(gname.split(':')[:-1] if ':' in gname else [gname])
+                if len(prefix) == 1:
+                    self.logger.warning('Game 1 char name: "%s"' % str(gname))
+                    prefix = gname
+                    if len(prefix) == 1:
+                        self.logger.warning('Continuing: "%s"' % str(gname))
+                        continue
                 similares = Game.objects.filter(name__contains=prefix,
-                                                platform_id=game.platform_id)\
+                                                platform_id=game.platform_id) \
                                         .exclude(id=game.id)
-                ids_cache.setdefault(game.id, [])
-                #names_cache.setdefault(game.id, [])
+                length = similares.count()
+                cache.setdefault(game.id, {'game': game, 'similar': set(), 'similar_names': set(),
+                                           'excluded_names': set()})
+                count = 0
                 for similar in similares:
-                    name = similar.name.lower()
+                    name = similar.name
                     wout_prefix = name
                     startswith_prefix = False
                     if name.startswith(prefix):
                         startswith_prefix = True
                         wout_prefix = name.replace(prefix, '')
-                    if startswith_prefix and (wout_prefix.startswith(':') or
-                       (name.endswith('edition') and not self.digit_regex.match(wout_prefix))):
-                        ids_cache.setdefault(similar.id, [])
-                        ids_cache[game.id].append(similar.id)
-                        ids_cache[similar.id].append(game.id)
-                        game.similar_same_platform.add(similar)
-                        similar.similar_same_platform.add(game)
-                        #names_cache.setdefault(similar.id, [])
-                        #names_cache[game.id].append(similar.name)
-                        #names_cache[similar.id].append(game.name)
-                #if ids_cache[game.id]:
-                #    self.logger.debug(' * %s => %s' % (game.name, ', '.join(names_cache[game.id])))
-        # update ids
-        self.update_similar_same_platform_ids(ids_cache)
+                        first = ''
+                        if wout_prefix:
+                            first = wout_prefix.split()[0]
+                    if startswith_prefix and \
+                       ((wout_prefix.strip().startswith(':') or
+                         wout_prefix.strip().lower().endswith('edition')) or
+                         self.digit_regex.match(wout_prefix.strip()) or
+                         (first and self.roman_regex.match(first.upper())) or
+                         (len(prefix.split()) >= 2 and wout_prefix.strip())):
+                        count += 1
+                        cache.setdefault(similar.id, {'game': similar, 'similar': set(),
+                                                      'similar_names': set(),
+                                                      'excluded_names': set()})
+                        cache[game.id]['similar'].add(similar.id)
+                        cache[game.id]['similar_names'].add(similar.name)
+                        cache[similar.id]['similar'].add(game.id)
+                        cache[similar.id]['similar_names'].add(game.name)
+                    else:
+                        cache[game.id]['excluded_names'].add(similar.name)
+                if length > 10 and count:
+                    self.logger.warning('"%s" has %s similares, %s after filtered.' % (str(game), length, count))
 
-    def update_similar_same_platform_ids(self, ids_cache=None, names_cache=None):
+        self.logger.info('Adding games from cache...')
+        for i, game in enumerate(cache.values()):
+            if game['similar']:
+                game['game'].similar_same_platform.add(*game['similar'])
+                self.logger.debug('%s => %s' % (str(game['game']), ', '.join(game['similar_names'])))
+                self.logger.debug('%s =(EXCLUDED)> %s' % (str(game['game']), ', '.join(game['excluded_names'])))
+            if i % 1000 == 0:
+                self.logger.info('%s games processed' % i)
+        return cache
+
+    @transaction.atomic
+    def update_ids(self, cache):
         self.logger.info('Updating similar_same_platform_ids field.')
-        for i, chunk in enumerate(self.chunks()):
-            self.logger.info('Processing chunk #%s' % i)
-            for game in chunk:
-                if ids_cache:
-                    ids = ids_cache[game.id]
-                else:
-                    ids = game.similar_same_platform.all().values_list('id', flat=True)
-                ids_str = ','.join(map(str, ids))
-                if ids:
-                    #sim = ids_str
-                    #if names_cache:
-                    #    sim = ', '.join(names_cache[game.id])
-                    #self.logger.debug('Ids for "%s" (#%s) => %s' % (str(game), game.id, sim))
-                    game.similar_same_platform_ids = ids_str
-                    game.save()
+        for i, game_similar in enumerate(cache.values()):
+            game = game_similar['game']
+            ids = game_similar['similar']
+            ids_str = ','.join(map(str, ids))
+            if ids:
+                game.similar_same_platform_ids = ids_str
+                game.save()
+            if i % 1000 == 0:
+                self.logger.info('%s games processed' % i)
 
 
 if __name__ == '__main__':

@@ -1,9 +1,11 @@
 div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
     h3 Matches
         small
-            md-switch(ng-model='ctrl.showOngoingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in ongoing requests', style="position: absolute; right: 3px; top: -5px;")
-                | Show games in ongoing swaps
-            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in pending requests', style="position: absolute; right: 20px; top: 17px;")
+            md-switch(ng-model='ctrl.showSimilarMatches', ng-change="ctrl.filterMatches()", aria-label='Show similar matches', style="position: absolute; right: 3px; top: -8px;")
+                | Show similar games matches &nbsp;&nbsp;
+            //md-switch(ng-model='ctrl.showOngoingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in ongoing requests', style="position: absolute; right: 3px; top: -8px;")
+            //    | Show games in ongoing swaps
+            md-switch(ng-model='ctrl.showPendingSwaps', ng-change="ctrl.filterMatches()", aria-label='Show games in pending requests', style="position: absolute; right: 20px; top: 18px;")
                 | Show games in pending swaps
             span &nbsp;
 
@@ -27,13 +29,15 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
 
     .card.match-set-item.animate(ng-repeat='match in ctrl.filteredMatches track by match.iwish.id')
         .card-item
-            img.similar-ribon.small(nng-if="match.iwish.is_similar" ng-src="/app/app/img/similar-78.png")
+            div
+                img.similar-ribon.small(ng-if="match.iwish.is_similar" ng-src="/app/app/img/similar-78.png")
+                md-tooltip(md-direction="top") This is a similar game to the ones you have on your wish list.
             .label.label-warning.swap-indicator(ng-if="match.iwish.swap_pending")
                 .em(ng-class="StatusIcons[Status.pending]")
-                md-tooltip(md-direction="bottom") You have already requested this game for swapping.
+                md-tooltip(md-direction="bottom") You already have requested this game for swapping.
             .label.label-info.swap-indicator(ng-if="match.ongoing")
                 .em(ng-class="StatusIcons[Status.ongoing]")
-                md-tooltip(md-direction="bottom") There is already a swap ongoing with this game.
+                md-tooltip(md-direction="bottom") There is already an ongoing swap with this game.
             .label.label-primary.swap-indicator(ng-if="match.no_games_left" ng-style="match.iwish.swap_pending && {right: '40px'}")
                 .em.fa.fa-frown-o
                 md-tooltip(md-direction="bottom") No valid matches available.

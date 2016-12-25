@@ -42,13 +42,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
         var intervalId;
-        var taskId = '{{ object.task_id }}';
+        //var taskId = '{{ object.task_id }}';
         function pollLog() {
-            window.setTimeout(function () {
-                intervalId = window.setInterval(function () {
-                    readLog();
-                }, 1000);
-            }, 1000);
+
+            var readLogTimeout = function () {
+                window.setTimeout(function () {
+                    readLog(readLogTimeout);
+                }, 5000);
+            };
+            readLog(readLogTimeout);
         }
 
         function setStatus(status) {
@@ -116,7 +118,7 @@
 
         var scroll = true;
 
-        function readLog() {
+        function readLog(callback) {
             $.ajax({
                 url: "{% url 'read_log' object.id %}",
                 dataType: 'json',
@@ -135,6 +137,9 @@
                     }
                     if (scroll) {
                         $('#log').scrollTop(1E10);
+                    }
+                    if (callback) {
+                        callback();
                     }
 
                 }
