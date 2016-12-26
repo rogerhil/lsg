@@ -30,7 +30,8 @@ def get_sender(tname, swap_request, user_who_finalized, swapped=True, days=3):
     elif tname == 'welcome-users':
         sender = Sender("Let's Swap Games? The site is finally launched!", 'welcome-users', {}, [])
     elif tname == 'remind-welcome-users-1':
-        sender = Sender("Let's Swap Games? The site is up running!", 'remind-welcome-users-1', {}, [])
+        sender = Sender("Let's Swap Games? The site is up and running!",
+                        'remind-welcome-users-1', {}, [])
     return sender
 
 
