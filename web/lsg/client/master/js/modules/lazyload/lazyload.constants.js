@@ -21,8 +21,9 @@
                                    'vendor/flot-spline/js/jquery.flot.spline.min.js'],
             'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.js'],
             'sparklines':         ['vendor/sparkline/index.js'],
-            'spinkit':              ['vendor/spinkit/css/spinkit.css'],
-            'loaders.css':          ['vendor/loaders.css/loaders.css']
+            'spinkit':            ['vendor/spinkit/css/spinkit.css'],
+            'loaders.css':        ['vendor/loaders.css/loaders.css'],
+            'vibrant':            ['vendor/vibrant/dist/Vibrant.min.js']
 
           },
           // Angular based script (use the right module name)

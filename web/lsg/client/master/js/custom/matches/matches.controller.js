@@ -31,6 +31,24 @@
                 self.loaded = true;
                 self.matches = matches;
                 self.filterMatches();
+
+                // $timeout(function () {
+                //     $('img.match-game-image').each(function() {
+                //         var vibrant = new Vibrant(this);
+                //         var swatches = vibrant.swatches();
+                //         if ($(this).parent().css('background-color').toString() == 'rgba(0, 0, 0, 0)') {
+                //             $(this).parent().css('background-color', swatches['DarkMuted'].getHex());
+                //         }
+                //         /*
+                //          * Results into:
+                //          * Vibrant #7a4426
+                //          * Muted #7b9eae
+                //          * DarkVibrant #348945
+                //          * DarkMuted #141414
+                //          * LightVibrant #f3ccb4
+                //          */
+                //     });
+                // }, 200);
             });
         };
 

@@ -49,6 +49,7 @@
                 checkToUpdateCountsStars(self.myRequests, requests);
                 self.myRequests = requests;
                 self.myRequestsLoaded = true;
+                updateImagesBackground();
                 if ($stateParams.my) {
                     $timeout(function () {
                         self.highlightRequest();
@@ -62,6 +63,7 @@
                 checkToUpdateCountsStars(self.incomingRequests, requests);
                 self.incomingRequests = requests;
                 self.incomingRequestsLoaded = true;
+                updateImagesBackground();
                 if ($stateParams.inc) {
                     $timeout(function () {
                         self.highlightRequest();
@@ -90,7 +92,28 @@
             $interval.cancel(self.requestsPromise);
         });
 
+        function updateImagesBackground() {
+            // $timeout(function () {
+            //     $('img.request-game-image').each(function() {
+            //         var vibrant = new Vibrant(this);
+            //         var swatches = vibrant.swatches();
+            //         if ($(this).parent().css('background-color').toString() == 'rgba(0, 0, 0, 0)') {
+            //             $(this).parent().css('background-color', swatches['Vibrant'].getHex());
+            //         }
+            //         /*
+            //          * Results into:
+            //          * Vibrant #7a4426
+            //          * Muted #7b9eae
+            //          * DarkVibrant #348945
+            //          * DarkMuted #141414
+            //          * LightVibrant #f3ccb4
+            //          */
+            //     });
+            // }, 400);
+        }
+
         self.highlightRequest = function () {
+
             if (self.tour || $stateParams.id === undefined) {
                 return;
             }

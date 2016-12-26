@@ -42,8 +42,8 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
                 .em.fa.fa-frown-o
                 md-tooltip(md-direction="bottom") No valid matches available.
 
-            div(style="height: 170px; background-color: #eee;")
-                img.img-responsive(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
+            div(style="height: 170px; background-color: #000;")
+                img.img-responsive.match-game-image(ng-src='{{match.iwish.images.front_thumb_medium}}', alt='{{match.iwish.full_name}}', style="max-height: 170px;")
                 md-tooltip(md-direction="top") {{match.iwish.full_name}}
         .card-offset.pull-right
             button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="ctrl.openMatch(match)")

@@ -20,18 +20,20 @@
     <div id="matches">
         <ul>
             {% for user, match in matches %}
-                <li>
-                    <h3>{{ user.full_name }} - {{ user.address }}</h3>
+                <li {% if user.full_name == 'Paul Murphy' %}style="color: #DDD"{% endif %}>
+                    <h3 {% if not match %}style="color: #F08047"{% endif %}>{{ user.full_name }} - {{ user.address }}</h3>
                     {% for item in match %}
                         <div>
                             <div>
-                                <strong>Game:</strong> {{ item.iwish }}
+                                {% if item.iwish.is_similar %}<img src="/app/app/img/similar-78.png" height="30px;">{% endif %}
+                                <strong>Game:</strong>
+                                <span>{{ item.iwish }}</span>
                             </div>
                             <div>
                                 <ul>
                                     {% for swap in item.swaps %}
                                         <li>
-                                            <strong>From {{ swap.user }}:</strong>
+                                            <strong {% if swap.user.full_name == 'Paul Murphy' %}style="color: #DDD"{% endif %}>From {{ swap.user }}:</strong>
                                             <ol style="list-style-type: decimal;">
                                                 {% for game in swap.wanted_games %}
                                                     <li style="list-style-type: decimal;">

@@ -61,7 +61,8 @@
     "sparkline": "http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js",
     "jquery-classyloader": "http://vox.space/files/jquery-classyloader.zip",
     "loaders.css": "0.1.2",
-    "spinkit": "1.2.5"
+    "spinkit": "1.2.5",
+    "vibrant": "*"
   },
   "resolutions": {
     "angular": "1.5.8",

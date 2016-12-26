@@ -55,10 +55,11 @@ class UpdateSimilarGames(BaseScript):
                         wout_prefix = name.replace(prefix, '')
                         first = ''
                         if wout_prefix:
-                            first = wout_prefix.split()[0]
+                            first = wout_prefix.split()[0].strip(':')
                     if startswith_prefix and \
                        ((wout_prefix.strip().startswith(':') or
-                         wout_prefix.strip().lower().endswith('edition')) or
+                        (wout_prefix.strip().lower().endswith('edition') and
+                         ':' not in wout_prefix)) or
                          self.digit_regex.match(wout_prefix.strip()) or
                          (first and self.roman_regex.match(first.upper())) or
                          (len(prefix.split()) >= 2 and wout_prefix.strip())):
@@ -78,6 +79,7 @@ class UpdateSimilarGames(BaseScript):
         self.logger.info('Adding games from cache...')
         for i, game in enumerate(cache.values()):
             if game['similar']:
+                game['game'].similar_same_platform.clear()
                 game['game'].similar_same_platform.add(*game['similar'])
                 self.logger.debug('%s => %s' % (str(game['game']), ', '.join(game['similar_names'])))
                 self.logger.debug('%s =(EXCLUDED)> %s' % (str(game['game']), ', '.join(game['excluded_names'])))
