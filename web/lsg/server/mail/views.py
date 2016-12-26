@@ -29,6 +29,8 @@ def get_sender(tname, swap_request, user_who_finalized, swapped=True, days=3):
         sender = MailBuilder.swap_refused(swap_request)
     elif tname == 'welcome-users':
         sender = Sender("Let's Swap Games? The site is finally launched!", 'welcome-users', {}, [])
+    elif tname == 'remind-welcome-users-1':
+        sender = Sender("Let's Swap Games? The site is up running!", 'remind-welcome-users-1', {}, [])
     return sender
 
 
@@ -75,7 +77,7 @@ class SwapRequestEmailSendTest(RedirectView):
             requests = SwapRequest.objects.all()
             swap_request = requests[0] if requests.count() else None
 
-        sender = get_sender(tname, swap_request)
+        sender = get_sender(tname, swap_request, 'USER')
 
         if sender:
             sender.send('rogerhil@gmail.com', True)
