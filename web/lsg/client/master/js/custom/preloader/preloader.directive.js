@@ -70,7 +70,7 @@
                                 .cancel('No');
                             $mdDialog.show(confirm).then(function () {
                                 $rootScope.user.no_reload_page = false;
-                                window.location.reload();
+                                window.location.reload(true);
                             }).catch(function () {
                                 $rootScope.user.no_reload_page = true;
                             });

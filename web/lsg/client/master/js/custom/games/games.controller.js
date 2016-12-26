@@ -29,14 +29,22 @@
         self.currentPlatform = $rootScope.lastSelectedPlatform;
         self.restartTourButton = false;
 
-        $(document).unbind('on');
+        $(document).unbind('on', 'mousewheel');
         $(document).on("mousewheel",function(e){
-            var scroll = $('.platform-games').scrollLeft();
+            var el = $(event.target).parents(".platform-games");
+            if (!el.length) {
+                return;
+            }
+            var scroll = el.scrollLeft();
             if (scroll <= 0) {
               if (self.scrollable && scroll <= 0 && e.originalEvent.wheelDeltaX >= 3) {
                 e.preventDefault();
               }
             }
+        });
+
+        $scope.$on('$destroy', function() {
+            $(document).unbind('on', 'mousewheel');
         });
 
         $('body').on('click', function (e) {

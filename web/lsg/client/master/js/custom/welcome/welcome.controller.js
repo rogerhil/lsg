@@ -11,8 +11,8 @@
     /*
       WelcomeCtrl
      */
-    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout', '$mdMedia', '$mdDialog', 'GlobalFixes'];
-    function WelcomeCtrl($scope, $rootScope, $timeout, $mdMedia, $mdDialog, GlobalFixes) {
+    WelcomeCtrl.$inject = ['$scope', '$rootScope', '$timeout', '$mdMedia', '$mdDialog', 'GlobalFixes', '$route'];
+    function WelcomeCtrl($scope, $rootScope, $timeout, $mdMedia, $mdDialog, GlobalFixes, $route) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
@@ -70,6 +70,12 @@
         if (!self.user.hasAddress() && self.user.acceptedTerms()) {
             $timeout(self.tourActivate, 3000);
         }
+
+        $timeout(function () {
+            console.log('before reload');
+            $route.reload();
+            console.log('after reload');
+        }, 15000);
 
 
     }
