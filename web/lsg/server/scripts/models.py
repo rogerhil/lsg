@@ -41,6 +41,10 @@ class CeleryTask(models.Model):
     def __str__(self):
         return "%s (%s)" % (self.name, self.task_id)
 
+    @property
+    def script(self):
+        return self.name.split('.')[-1]
+
     @classmethod
     def new(cls, name, task_id, log):
         return cls.objects.create(name=name, task_id=task_id, log=log,

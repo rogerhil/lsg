@@ -7,7 +7,8 @@ from admin_extra_urls.extras import ExtraUrlMixin, link
 
 from scripts.models import Scripting, CeleryTask
 from scripts.tasks import populate_games_db, populate_games_db_offline, download_boxart_images, \
-    make_thumbnails, expire_old_ongoing_requests, send_scheduled_emails, update_similar_games
+    make_thumbnails, expire_old_ongoing_requests, send_scheduled_emails, update_similar_games, \
+    update_game_counts
 
 
 @admin.register(Scripting)
@@ -58,6 +59,12 @@ class ScriptingAdmin(ExtraUrlMixin, admin.ModelAdmin):
     @link(label="Update similar games")
     def update_similar_games(self, request):
         async_result = update_similar_games.delay()
+        path = reverse('watch_log', args=(async_result.task_id,))
+        return HttpResponseRedirect(path)
+
+    @link(label="Update game counts")
+    def update_game_counts(self, request):
+        async_result = update_game_counts.delay()
         path = reverse('watch_log', args=(async_result.task_id,))
         return HttpResponseRedirect(path)
 

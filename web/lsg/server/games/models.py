@@ -90,8 +90,7 @@ class Game(models.Model):
     esrb = models.CharField(max_length=255, null=True, blank=True)
     developer = models.CharField(max_length=128, null=True, blank=True)
     publisher = models.CharField(max_length=128, null=True, blank=True)
-    api_rating = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                     blank=True)
+    api_rating = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     similar_count = models.IntegerField(default=0)
     similar = models.ManyToManyField('Game',
@@ -99,6 +98,10 @@ class Game(models.Model):
     similar_same_platform = models.ManyToManyField('Game',
                                                    related_name='similar_game_same_platform')
     similar_same_platform_ids = models.CharField(max_length=2048, null=True, blank=True)
+
+    wanted_count = models.IntegerField(default=0)
+    owned_count = models.IntegerField(default=0)
+
     genres = models.ManyToManyField(Genre)
 
     fts = TSVectorField(fields=(('name', 'A'),), dictionary='english')

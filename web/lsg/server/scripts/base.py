@@ -2,10 +2,12 @@ import os
 import django
 import argparse
 import logging
+import inspect
 
 from datetime import timedelta
 from time import time
 from django.utils import timezone
+from django.db import models
 from thegamesdb import TheGamesDb
 from thegamesdb.base import GamesDbException
 from thegamesdb.test.mockdb import TheGamesDbMock
@@ -135,3 +137,16 @@ class BaseScript(object):
         minutes, seconds = divmod(remainder, 60)
         t = '%s%s:%s:%s' % (days, hours, minutes, seconds)
         self.logger.info('Script "%s" took %s to run.' % (self.name, t))
+
+    def chunks_of(self, name, collection, size=1000):
+        if inspect.isclass(collection) and issubclass(collection, models.Model):
+            count = collection.objects.count()
+            all_items = collection.objects.all()
+        else:
+            count = len(collection)
+            all_items = collection
+        self.logger.info('Total of %s: %s' % (name, count))
+        num_chunks = int(count / size) + 1
+        self.logger.info('Processing %s chunks of size %s' % (num_chunks, size))
+        chunks = ((i, all_items[size * i:size * (i + 1)]) for i in range(num_chunks))
+        return chunks
