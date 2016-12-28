@@ -20,8 +20,6 @@
         self.isDisabled = false;
         self.collection = [];
         self.wishlist = [];
-        self.popularPlatforms = [];
-        self.retroPlatforms = [];
         self.loaded = {collection: false, wishlist: false};
         self.tour = undefined;
         self.pinned = undefined;
@@ -79,41 +77,10 @@
             }, 100);
         };
 
-        self.selectPlatformOpen = function (context) {
-            var card = $("." + context + "-card");
-            var select = card.find("md-select");
-            var top = select.offset().top + 45 - $(window).scrollTop();
-            var left = card.offset().left;
-            var max = $(window).height() - $('.md-select-menu-container').height() - 5;
-            var moved = false;
-            if (top >= max) {
-                top = max;
-            }
-            if ($(window).width() >= 768) {
-                left += 22;
-            }
-            for (var k = 0; k < 30; k++) {
-                $timeout(function () {
-                    // if (!$('.md-select-menu-container').length || moved) {
-                    //     return
-                    // }
-                    $('.md-select-menu-container.md-active').css('left', left + 'px');
-                    $('.md-select-menu-container.md-active').css('top', top + 'px');
-                    moved = true;
-                }, 10 * k + 1);
-            }
-        };
-
         // $(window).resize(function () {
         //     //self.selectPlatformOpen('collection');
         //     self.selectPlatformOpen('wishlist');
         // });
-
-        GamesService.getPlatforms().then(function (platforms) {
-            self.popularPlatforms = platforms[0];
-            self.retroPlatforms = platforms[1];
-        });
-
         UsersService.getCollection().then(function (collection) {
             self.loaded.collection = true;
             self.collection = collection;

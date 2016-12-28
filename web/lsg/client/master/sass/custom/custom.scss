@@ -669,6 +669,58 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
 }
 
 
+.browse-controls {
+  float: right;
+}
+
+.browse-controls a {
+  margin-left: 10px;
+}
+
+.game-list-item {
+  margin-right: 20px;
+  float: left;
+  max-width: 170px;
+  min-width: 120px;
+  //position: relative;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.game-list-item .card-item:hover {
+  //opacity: 0.8;
+  cursor: pointer;
+  @include box-shadow(0 8px 8px 0 rgba(0,0,0,0.4));
+  @include translate3d(0, -2px, 0);
+}
+
+.game-list-item * {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.game-list-item.animate.ng-leave,
+.game-list-item.animate.ng-leave * {
+  -webkit-animation:0.4s my_animation;
+  -moz-animation:0.4s my_animation;
+  -o-animation:0.4s my_animation;
+  animation:0.4s my_animation;
+}
+
+.game-list-item.animate.ng-enter,
+.game-list-item.animate.ng-enter * {
+  opacity: 0;
+}
+
+.game-list-item.animate.ng-enter.ng-enter-active,
+.game-list-item.animate.ng-enter.ng-enter-active * {
+  opacity: 1;
+}
+
+
+
 .request-item {
   margin-right: 20px;
   float: left;

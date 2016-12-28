@@ -43,7 +43,8 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name')
+        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name', 'owned_count',
+                  'wanted_count')
         read_only_fields = fields
         #exclude = ('api_rating', 'similar', 'similar_count',
         #           'youtube', 'genres')

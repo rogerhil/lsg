@@ -1,0 +1,40 @@
+div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
+    h3 Browse
+        .browse-controls
+            div(style="float: left; font-size: 18px;")
+                platform-select(parentctrl="ctrl" context="'.browse-controls'" placeholder="'ALL'" allowall="true")
+                md-tooltip(md-direction="bottom") Select a platform
+            div(style="float: left;")
+                a(ng-click="ctrl.loadGamesList('-owned_count,name')")
+                    em.text-info.fa.fa-user
+                    md-tooltip(md-direction="bottom") Sort by people who have it
+                a(ng-click="ctrl.loadGamesList('-wanted_count,name')")
+                    em.text-pink.fa.fa-heart
+                    md-tooltip(md-direction="bottom") Sort by people who want it
+                a(ng-click="ctrl.loadGamesList('name')")
+                    em.text-success.fa.fa-sort-alpha-asc
+                    md-tooltip(md-direction="bottom") Sort alphabetically
+
+    .ball-pulse(ng-if="!ctrl.loaded")
+        div
+        div
+        div
+
+    .card.game-list-item.animate(ng-repeat='game in ctrl.games track by game.id')
+        .card-item
+            div(style="height: 170px; background-color: #000; text-align: center;")
+                img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="max-height: 170px; text-align: center; margin: 0 auto;")
+                md-tooltip(md-direction="top") {{game.full_name}}
+        //.card-offset.pull-right
+        //    button.btn.btn-info.btn-circle.btn-lg(type="button" ng-click="")
+        //        em.fa.fa-info-circle
+        //        md-tooltip(md-direction="top") See details
+        .card-body(style="text-align: center;")
+            span(style="margin-right: 20px;")
+                em.text-info.fa.fa-user
+                span {{ game.owned_count }}
+                md-tooltip(md-direction="bottom") People who have it
+            span
+                em.text-pink.fa.fa-heart
+                span {{ game.wanted_count }}
+                md-tooltip(md-direction="bottom") People who want it

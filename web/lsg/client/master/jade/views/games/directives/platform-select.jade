@@ -1,0 +1,41 @@
+style.
+    .md-select-menu-container {
+        max-width: 300px;
+    }
+
+    .md-select-menu-container ._md {
+        min-height: 220px;
+        padding: 0;
+    }
+    .md-select-value {
+        padding-bottom: 10px !important;
+    }
+
+    .fleft {
+        float: left;
+        height: 50px;
+        padding: 0 5px;
+        margin: 0 auto 5px auto;
+    }
+
+div(style="width: 100px; margin: 0 5px 0 0;")
+    md-select(ng-model="parentctrl.currentPlatform" style="margin:0; height: 41px; text-align: center;"
+    placeholder='{{ placeholder }}',
+    ng-required="!allowall" md-on-close="selectPlatform(parentctrl, context)"
+    md-on-open="selectPlatformOpen(context)")
+        div(style="height: 220px; overflow: auto;")
+            p.platform-category-title
+                span Popular
+            md-option(ng-if="allowall" ng-value="" class="fleft")
+                div(style="width: 40px; text-align: center;") ALL
+            md-option(ng-value="platform.id", ng-repeat="platform in popularPlatforms" class="fleft")
+                img(ng-src="{{ platform.logo_image }}" style="" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+            div(style="clear: both")
+            p.platform-category-title(style="margin-top: 0;") Retro
+            md-option(ng-value="platform.id", ng-repeat="platform in retroPlatforms" class="fleft")
+                img(ng-src="{{ platform.logo_image }}" style="" alt="{{platform.short_name}}" title="{{platform.short_name}}")
+            div(style="clear: both")
+            p.platform-category-title(style="margin-top: 0; font-size: 11px;")
+                span If there's a platform missing, please &nbsp;
+                a(href="/app/#/app/contact" style="color: #fff; text-decoration: underline;") contact us
+                span so we'll try make it available.

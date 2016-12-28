@@ -27,6 +27,7 @@
             'app.matches',
             'app.requests',
             'app.archived',
+            'app.browse',
             'app.welcome',
             'app.dashboard',
             'app.pages',
