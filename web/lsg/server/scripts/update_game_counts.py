@@ -16,18 +16,18 @@ class UpdateGameCounts(BaseScript):
     def update_game_counts(self):
         game_counts = dict()
         for i, chunk in self.chunks_of('collection item', CollectionItem):
-            self.logger.info('Processing chunk %s' % i)
+            self.logger.info('Processing chunk %s' % (i + 1))
             for collection_item in chunk:
-                game_counts.setdefault(collection_item.id, dict(owned=0, wanted=0))
-                game_counts[collection_item.id]['owned'] += 1
+                game_counts.setdefault(collection_item.game.id, dict(owned=0, wanted=0))
+                game_counts[collection_item.game.id]['owned'] += 1
         for i, chunk in self.chunks_of('wish list item', WishlistItem):
-            self.logger.info('Processing chunk %s' % i)
+            self.logger.info('Processing chunk %s' % (i + 1))
             for wishlist_item in chunk:
-                game_counts.setdefault(wishlist_item.id, dict(owned=0, wanted=0))
-                game_counts[wishlist_item.id]['wanted'] += 1
+                game_counts.setdefault(wishlist_item.game.id, dict(owned=0, wanted=0))
+                game_counts[wishlist_item.game.id]['wanted'] += 1
 
         for i, chunk in self.chunks_of('games ids', list(game_counts.keys()), 100):
-            self.logger.info('Processing chunk %s' % i)
+            self.logger.info('Processing chunk %s' % (i + 1))
             games = Game.objects.filter(id__in=chunk)
             for game in games:
                 game.owned_count = game_counts[game.id]['owned']
