@@ -701,12 +701,21 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   transition: all 0.4s;
 }
 
+@keyframes browse_animation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .game-list-item.animate.ng-leave,
 .game-list-item.animate.ng-leave * {
-  -webkit-animation:0.4s my_animation;
-  -moz-animation:0.4s my_animation;
-  -o-animation:0.4s my_animation;
-  animation:0.4s my_animation;
+  -webkit-animation:0.4s browse_animation;
+  -moz-animation:0.4s browse_animation;
+  -o-animation:0.4s browse_animation;
+  animation:0.4s browse_animation;
 }
 
 .game-list-item.animate.ng-enter,

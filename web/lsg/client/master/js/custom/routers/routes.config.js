@@ -118,7 +118,8 @@
             .state('app.browse', {
                 url: '/browse',
                 title: 'Browse',
-                templateUrl: helper.basepath('browse/main.html')
+                templateUrl: helper.basepath('browse/main.html'),
+                resolve: helper.resolveFor('ng-infinite-scroll')
             })
             .state('app.contact', {
                 url: '/contact',

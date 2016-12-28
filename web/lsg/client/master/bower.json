@@ -62,7 +62,8 @@
     "jquery-classyloader": "http://vox.space/files/jquery-classyloader.zip",
     "loaders.css": "0.1.2",
     "spinkit": "1.2.5",
-    "vibrant": "*"
+    "vibrant": "*",
+    "ngInfiniteScroll": "1.0.0"
   },
   "resolutions": {
     "angular": "1.5.8",
