@@ -119,7 +119,7 @@
                 url: '/browse',
                 title: 'Browse',
                 templateUrl: helper.basepath('browse/main.html'),
-                resolve: helper.resolveFor('ng-infinite-scroll')
+                resolve: helper.resolveFor('ng-infinite-scroll', 'loadGoogleMapsJS', function() { return loadGoogleMaps('3.2', 'AIzaSyAEwl1BoNGyJdvc80qaBylRntj-3b-dJ6A', 'en'); }, 'ui.map')
             })
             .state('app.contact', {
                 url: '/contact',

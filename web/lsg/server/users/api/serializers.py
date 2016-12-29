@@ -26,7 +26,20 @@ class SmallUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'name', 'email', 'id', 'picture', 'stars', 'joined', 'gender',
+        fields = ('username', 'name', 'id', 'picture', 'stars', 'joined', 'gender',
+                  'succeeded_swaps_count', 'failed_swaps_count', 'expired_swaps_count',
+                  'negative_feedback_count', 'positive_feedback_count', 'neutral_feedback_count')
+        read_only_fields = fields
+        depth = 0
+
+
+class MapUserSerializer(serializers.ModelSerializer):
+
+    address = BasicAddressSerializer(source='_address')
+
+    class Meta:
+        model = User
+        fields = ('username', 'name', 'id', 'picture', 'stars', 'joined', 'gender', 'address',
                   'succeeded_swaps_count', 'failed_swaps_count', 'expired_swaps_count',
                   'negative_feedback_count', 'positive_feedback_count', 'neutral_feedback_count')
         read_only_fields = fields

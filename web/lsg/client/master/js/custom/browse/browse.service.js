@@ -34,5 +34,24 @@
             }
             return q.promise;
         };
+
+        self.gameOwnedBy = function (gameId) {
+            var url = '/api/games/' + gameId + '/owned-by/';
+            var q = $q.defer();
+            $http.get(url).success(function (response) {
+                q.resolve(response);
+            });
+            return q.promise;
+        };
+
+        self.gameWantedBy = function (gameId) {
+            var url = '/api/games/' + gameId + '/wanted-by/';
+            var q = $q.defer();
+            $http.get(url).success(function (response) {
+                q.resolve(response);
+            });
+            return q.promise;
+        };
+
     }
 })();

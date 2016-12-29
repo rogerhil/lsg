@@ -309,8 +309,6 @@
 
         self.addGameTo = function (context) {
             if (!self.selectedItem) return;
-            var ids = getGamesIds(self[context]);
-            if (self.selectedItem.value in ids) return;
             UsersService.addGameTo(self.selectedItem.value, context).then(function (game) {
                 var platform_items;
                 for (var k = 0; k < self[context].length; k++) {

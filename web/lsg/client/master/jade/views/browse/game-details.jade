@@ -69,6 +69,8 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                 //    strong Ratings:
                 //    span {{ ctrl.game.api_rating }}
 
+                .gmap(ui-map='ctrl.usersMap', ui-options='ctrl.usersMapOptions', class="map-canvas")
+
                 div(style="clear: both;")
 
             div(style="height: 20px;")
@@ -76,11 +78,11 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
         .dialog-bottom-fade
 
         md-dialog-actions(layout="row")
-            button.btn.mb-sm.btn-warning.btn-labeled(ng-click="ctrl.close()" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
+            button.btn.mb-sm.btn-warning.btn-labeled(ng-click="ctrl.addGameTo('collection')" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
                 span.btn-label
                     em.fa.fa-star
                 span I have it
-            button.btn.mb-sm.btn-pink.btn-labeled(ng-click="ctrl.close()" style="margin-left: 10px" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
+            button.btn.mb-sm.btn-pink.btn-labeled(ng-click="ctrl.addGameTo('wishlist')" style="margin-left: 10px" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
                 span.btn-label
                     em.fa.fa-heart
                 span I want it

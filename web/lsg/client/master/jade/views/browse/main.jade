@@ -11,6 +11,9 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 a(ng-click="ctrl.loadGamesList('-wanted_count,name,id')")
                     em.fa.fa-heart(ng-class="{'text-pink': ctrl.selectedFilter == '-wanted_count,name,id', 'text-gray-light': ctrl.selectedFilter != '-wanted_count,name,id'}")
                     md-tooltip(md-direction="bottom") Sort by people who want it
+                a(ng-click="ctrl.loadGamesList('-release,id')")
+                    em.fa.fa-clock-o(ng-class="{'text-info': ctrl.selectedFilter == '-release,id', 'text-gray-light': ctrl.selectedFilter != '-release,id'}")
+                    md-tooltip(md-direction="bottom") Sort by latest releases
                 a(ng-click="ctrl.loadGamesList('name,id')")
                     em.fa.fa-sort-alpha-asc(ng-class="{'text-success': ctrl.selectedFilter == 'name,id', 'text-gray-light': ctrl.selectedFilter != 'name,id'}")
                     md-tooltip(md-direction="bottom") Sort alphabetically
@@ -28,10 +31,10 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
             .card-item
                 .label.label-warning.swap-indicator(ng-if="ctrl.iHave(game)")
                     .em.fa.fa-star
-                    md-tooltip(md-direction="bottom") I have this game
+                    md-tooltip(md-direction="bottom") I have this game on my collection
                 .label.label-pink.swap-indicator(ng-if="ctrl.iWant(game)")
                     .em.fa.fa-heart
-                    md-tooltip(md-direction="bottom") I want this game
+                    md-tooltip(md-direction="bottom") I have this game on my wish list
                 div(style="height: 170px; background-color: #000; text-align: center;" ng-click="ctrl.showGameDetails(game)")
                     img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="max-height: 170px; text-align: center; margin: 0 auto;")
                     md-tooltip(md-direction="top") {{game.full_name}}
