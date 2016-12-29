@@ -29,15 +29,21 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 div(style="height: 170px; background-color: #000; text-align: center;")
                     img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="max-height: 170px; text-align: center; margin: 0 auto;")
                     md-tooltip(md-direction="top") {{game.full_name}}
-            .card-body(style="text-align: center; cursor: default;")
-                span(style="margin-right: 20px;")
-                    em.text-info.fa.fa-user
-                    span {{ game.owned_count }}
-                    md-tooltip(md-direction="bottom") People who have it
-                span
-                    em.text-pink.fa.fa-heart
-                    span {{ game.wanted_count }}
-                    md-tooltip(md-direction="bottom") People who want it
+            .card-body(style="text-align: center; cursor: default; padding-left: 5px; padding-right: 5px; padding-top: 5px;")
+                div(style="overflow: hidden; margin-bottom: 10px;")
+                    span(style="white-space: nowrap;") {{ game.name }}
+                    md-tooltip(md-direction="top") {{game.full_name}}
+                div
+                    span(style="margin-right: 20px;")
+                        em.text-info.fa.fa-user
+                        span {{ game.owned_count }}
+                        md-tooltip(md-direction="bottom")
+                            ng-pluralize(count="game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ game.owned_count }} person has this game', 'other': '{{ game.owned_count }} people have this game'}")
+                    span
+                        em.text-pink.fa.fa-heart
+                        span {{ game.wanted_count }}
+                        md-tooltip(md-direction="bottom")
+                            ng-pluralize(count="game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ game.wanted_count }} person wants this game', 'other': '{{ game.wanted_count }} people want this game'}")
 
         div(style="clear: both;")
     div(style="clear: both;")
