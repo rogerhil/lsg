@@ -223,7 +223,7 @@ class PopulateGamesDbBase(BaseScript):
 
         genres = g.genres or {}
 
-        for genre in genres.get('Genre', []):
+        for genre in genres.get('genre', []):
             genre_db = Genre.objects.get_or_create(name=genre)[0]
             game.genres.add(genre_db)
 

@@ -19,7 +19,7 @@ class CeleryTaskLog(View):
             log = 'File "%s" does not exist. Maybe the script didn\'t start running yet.' % \
                   celery_task.log
         worker_log = getstatusoutput('tail -n 100 /app/logs/celery/worker.log')[1]
-        log = '\n'.join(l for l in log.splitlines() if ' DEBUG ' not in l)
+        #log = '\n'.join(l for l in log.splitlines() if ' DEBUG ' not in l)
         data = dict(
             log=log,
             worker_log=worker_log,

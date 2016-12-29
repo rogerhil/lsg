@@ -1,8 +1,6 @@
 from django.conf import settings
 from games.models import Game, Platform
 from rest_framework import serializers
-#from rest_framework_cache.registry import cache_registry
-#from rest_framework_cache.serializers import CachedSerializerMixin
 
 
 class LocalGameImagesSerializer(serializers.Serializer):
@@ -34,8 +32,6 @@ class PlatformSerializer(serializers.ModelSerializer):
         read_only_fields = fields
         list_serializer_class = CategorizedPlatformSerializer
 
-    #cache_registry.register(PlatformSerializer)
-
 
 class GameSerializer(serializers.ModelSerializer):
     images = LocalGameImagesSerializer()
@@ -43,14 +39,22 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name', 'owned_count',
-                  'wanted_count')
+        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name')
         read_only_fields = fields
-        #exclude = ('api_rating', 'similar', 'similar_count',
-        #           'youtube', 'genres')
         depth = 1
 
-#cache_registry.register(GameSerializer)
+
+class FullGameSerializer(serializers.ModelSerializer):
+    images = LocalGameImagesSerializer()
+    platform = PlatformSerializer()
+
+    class Meta:
+        model = Game
+        fields = ('id', 'api_id', 'name', 'images', 'platform', 'full_name', 'owned_count',
+                  'wanted_count', 'release', 'overview', 'players', 'youtube', 'developer',
+                  'publisher', 'co_op', 'esrb', 'api_rating')
+        read_only_fields = fields
+        depth = 1
 
 
 class CategorizedGameSerializer(serializers.Serializer):

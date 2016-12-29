@@ -6,7 +6,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 md-tooltip(md-direction="bottom") Select a platform
             div(style="float: left;")
                 a(ng-click="ctrl.loadGamesList('-owned_count,name,id')")
-                    em.fa.fa-user(ng-class="{'text-info': ctrl.selectedFilter == '-owned_count,name,id', 'text-gray-light': ctrl.selectedFilter != '-owned_count,name,id'}")
+                    em.fa.fa-star(ng-class="{'text-warning': ctrl.selectedFilter == '-owned_count,name,id', 'text-gray-light': ctrl.selectedFilter != '-owned_count,name,id'}")
                     md-tooltip(md-direction="bottom") Sort by people who have it
                 a(ng-click="ctrl.loadGamesList('-wanted_count,name,id')")
                     em.fa.fa-heart(ng-class="{'text-pink': ctrl.selectedFilter == '-wanted_count,name,id', 'text-gray-light': ctrl.selectedFilter != '-wanted_count,name,id'}")
@@ -26,7 +26,13 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
         infinite-scroll-disabled="ctrl.loading")
         .card.game-list-item.animate(ng-repeat='game in ctrl.games track by game.id')
             .card-item
-                div(style="height: 170px; background-color: #000; text-align: center;")
+                .label.label-warning.swap-indicator(ng-if="ctrl.iHave(game)")
+                    .em.fa.fa-star
+                    md-tooltip(md-direction="bottom") I have this game
+                .label.label-pink.swap-indicator(ng-if="ctrl.iWant(game)")
+                    .em.fa.fa-heart
+                    md-tooltip(md-direction="bottom") I want this game
+                div(style="height: 170px; background-color: #000; text-align: center;" ng-click="ctrl.showGameDetails(game)")
                     img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="max-height: 170px; text-align: center; margin: 0 auto;")
                     md-tooltip(md-direction="top") {{game.full_name}}
             .card-body(style="text-align: center; cursor: default; padding-left: 5px; padding-right: 5px; padding-top: 5px;")
@@ -35,7 +41,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                     md-tooltip(md-direction="top") {{game.full_name}}
                 div
                     span(style="margin-right: 20px;")
-                        em.text-info.fa.fa-user
+                        em.text-warning.fa.fa-star
                         span {{ game.owned_count }}
                         md-tooltip(md-direction="bottom")
                             ng-pluralize(count="game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ game.owned_count }} person has this game', 'other': '{{ game.owned_count }} people have this game'}")

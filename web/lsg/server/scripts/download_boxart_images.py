@@ -16,7 +16,7 @@ URL_FETCH_TIME_LIMIT = 10  # seconds
 class BoxartDownloader(BaseScript):
     name = "download_boxart_images"
 
-    image_kinds = ['front_thumb', 'front', 'back_thumb', 'back']
+    image_kinds = ['front', 'front_thumb', 'back', 'back_thumb']
 
     def download_and_save(self, game, fpath, url, override=False):
         if url is None:
@@ -53,7 +53,7 @@ class BoxartDownloader(BaseScript):
                                                     p.strip().strip('/')))
         subpath = fp(LocalGameImages.get_path_by_platform_api_id(platform,
                                                                  game.id))
-        method = getattr(LocalGameImages, 'get_front_thumb_path')
+        method = getattr(LocalGameImages, 'get_front_path')
         path = fp(method(platform, game.id))
         if not os.path.isdir(subpath):
             os.makedirs(subpath)

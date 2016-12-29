@@ -5,8 +5,11 @@ from scripts.base import BaseScript
 
 URL_FETCH_TIME_LIMIT = 10  # seconds
 
-MAX_WIDTH = 85
-MAX_HEIGHT = 98
+MAX_WIDTH_SMALL = 200
+MAX_HEIGHT_SMALL = 100
+
+MAX_WIDTH_MEDIUM = 340
+MAX_HEIGHT_MEDIUM = 170
 
 
 class ThumbnailsMaker(BaseScript):
@@ -45,7 +48,7 @@ class ThumbnailsMaker(BaseScript):
                 if not os.path.isdir(subdir):
                     continue
                 for img in os.listdir(subdir):
-                    if not os.path.splitext(img)[0].endswith('thumb'):
+                    if not os.path.splitext(img)[0].endswith('front'):
                         continue
                     infile = os.path.join(subdir, img)
                     for sufix, max_width, min_width in sizes:
@@ -62,8 +65,8 @@ class ThumbnailsMaker(BaseScript):
 
     def main(self):
         sizes = [
-            # ('small', MAX_WIDTH, MAX_HEIGHT),
-            ('medium', MAX_WIDTH * 2, MAX_HEIGHT * 2),
+            ('small', MAX_WIDTH_SMALL, MAX_HEIGHT_SMALL),
+            ('medium', MAX_WIDTH_MEDIUM, MAX_HEIGHT_MEDIUM),
         ]
         self.make_all_thumbnails(sizes, update=False)
 

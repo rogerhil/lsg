@@ -41,7 +41,7 @@ class BaseScript(object):
         self.skip_existent_platforms = False
         self.parser = argparse.ArgumentParser()
         self.setup_cli()
-        self._api = TheGamesDb(20, 10)
+        self._api = TheGamesDb(20, 1, 600)
         self.mocked_api = TheGamesDbMock(self.xml_path)
 
     @property

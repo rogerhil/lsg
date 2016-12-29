@@ -1,0 +1,92 @@
+md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 900px;")
+    form
+        md-toolbar
+            .md-toolbar-tools
+                h2 {{ ctrl.game.full_name }}
+                span(flex)
+                md-button.md-icon-button(ng-click="ctrl.close()")
+                    md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
+        md-dialog-content
+            .md-dialog-content(style="min-width: 320px;")
+                div(layout="row")
+                    div(style="margin-right: 20px; position: relative;")
+                        .label.label-warning.swap-indicator(ng-if="ctrl.game.iHave")
+                            .em.fa.fa-star
+                            md-tooltip(md-direction="bottom") I have this game
+                        .label.label-pink.swap-indicator(ng-if="ctrl.game.iWant")
+                            .em.fa.fa-heart
+                            md-tooltip(md-direction="bottom") I want this game
+                        img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}')
+                    div
+                        h3(style="margin-top: 0;")
+                            img(ng-src="{{ ctrl.game.platform.logo_image }}" alt="{{ctrl.game.platform.short_name}}" style="height: 40px;")
+                            span(style="vertical-align: bottom;") {{ctrl.game.name}}
+                        div
+                            p(ng-if="ctrl.game.iHave")
+                                em.text-warning.fa.fa-star
+                                span I have this game on my collection.
+                            p(ng-if="ctrl.game.iWant")
+                                em.text-pink.fa.fa-heart
+                                span I have this game on my wish list.
+                        div(style="text-align: center;")
+                            span(style="margin-right: 20px;")
+                                em.text-warning.fa.fa-star
+                                span {{ ctrl.game.owned_count }}
+                                md-tooltip(md-direction="bottom")
+                                    ng-pluralize(count="ctrl.game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ ctrl.game.owned_count }} person has this game', 'other': '{{ ctrl.game.owned_count }} people have this game'}")
+                            span
+                                em.text-pink.fa.fa-heart
+                                span {{ ctrl.game.wanted_count }}
+                                md-tooltip(md-direction="bottom")
+                                    ng-pluralize(count="ctrl.game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ ctrl.game.wanted_count }} person wants this game', 'other': '{{ ctrl.game.wanted_count }} people want this game'}")
+
+                //p {{ ctrl.game.overview }}
+                //p
+                //    strong Release:
+                //    span {{ ctrl.game.release }}
+                //p
+                //    strong Genres:
+                //    span {{ ctrl.game.genres_display }}
+                //p
+                //    strong Players:
+                //    span {{ ctrl.game.players }}
+                //p
+                //    strong Co-op:
+                //    span {{ ctrl.game.co-op }}
+                //p
+                //    strong Developer:
+                //    span {{ ctrl.game.developer }}
+                //p
+                //    strong Publisher:
+                //    span {{ ctrl.game.publisher }}
+                //p
+                //    strong ESRB:
+                //    span {{ ctrl.game.esrb }}
+                //p
+                //    strong Youtube:
+                //    span {{ ctrl.game.youtube }}
+                //p
+                //    strong Ratings:
+                //    span {{ ctrl.game.api_rating }}
+
+                div(style="clear: both;")
+
+            div(style="height: 20px;")
+
+        .dialog-bottom-fade
+
+        md-dialog-actions(layout="row")
+            button.btn.mb-sm.btn-warning.btn-labeled(ng-click="ctrl.close()" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
+                span.btn-label
+                    em.fa.fa-star
+                span I have it
+            button.btn.mb-sm.btn-pink.btn-labeled(ng-click="ctrl.close()" style="margin-left: 10px" ng-if="!ctrl.game.iHave && !ctrl.game.iWant")
+                span.btn-label
+                    em.fa.fa-heart
+                span I want it
+            button.btn.mb-sm.btn-default.btn-labeled.hidden-xs(ng-click="ctrl.close()" style="margin-left: 10px")
+                span.btn-label
+                    em.fa.fa-close
+                span Close
+            button.btn.mb-sm.btn-default.visible-xs(ng-click="ctrl.close()" style="margin-left: 10px")
+                span Close

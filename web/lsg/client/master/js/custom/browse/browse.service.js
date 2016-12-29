@@ -12,7 +12,7 @@
         self.counts = {};
 
         self.getGames = function (ordering, platform, page) {
-            var url = '/api/games/?limit=' + self.limit + '&ordering=' + ordering;
+            var url = '/api/games/detailed/?limit=' + self.limit + '&ordering=' + ordering;
             var q = $q.defer();
             var offset;
             var urlWithoutOffset;

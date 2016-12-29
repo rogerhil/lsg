@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from filters import BaseNotInFilter
 from games.models import Game, Platform
-from games.api.serializers import PlatformSerializer, GameSerializer, \
+from games.api.serializers import PlatformSerializer, GameSerializer, FullGameSerializer, \
     CategorizedGameSerializer
 
 #all_platforms = Platform.objects.all()
@@ -61,15 +61,6 @@ class GameViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
     filter_class = GameFilter
     permission_classes = [IsAuthenticated]
 
-    @list_route(methods=['get'])
-    def categorized(self, request):
-        queryset = self.filter_queryset(self.get_queryset())
-        context = self.get_serializer_context()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = CategorizedGameSerializer(page, many=True,
-                                                   context=context)
-            return self.get_paginated_response(serializer.data)
-        serializer = CategorizedGameSerializer(queryset, many=True,
-                                               context=context)
-        return response.Response(serializer.data)
+    @list_route(methods=['get'], serializer_class=FullGameSerializer)
+    def detailed(self, request):
+        return super(GameViewSet, self).list(request)
