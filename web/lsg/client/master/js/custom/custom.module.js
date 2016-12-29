@@ -92,8 +92,12 @@
                         group: 'connectionIssue'
                     });
                 } else if (rejection.status == 403) {
-                    console.log('Probably logged out.');
-                    window.location = '/app/'
+                    if (rejection.data && rejection.data.detail &&
+                        rejection.data.detail.indexOf('Authentication credentials were not provided') != -1) {
+                        console.log('Probably logged out.');
+                        window.location = '/app/';
+                        return;
+                    }
                 } else {
                     $('#spinner').hide();
                 }

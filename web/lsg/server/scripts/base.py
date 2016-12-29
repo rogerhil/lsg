@@ -138,10 +138,10 @@ class BaseScript(object):
         t = '%s%s:%s:%s' % (days, hours, minutes, seconds)
         self.logger.info('Script "%s" took %s to run.' % (self.name, t))
 
-    def chunks_of(self, name, collection, size=1000):
+    def chunks_of(self, name, collection, size=1000, filter=None):
         if inspect.isclass(collection) and issubclass(collection, models.Model):
             count = collection.objects.count()
-            all_items = collection.objects.all()
+            all_items = collection.objects.filter(**(filter or {}))
         else:
             count = len(collection)
             all_items = collection

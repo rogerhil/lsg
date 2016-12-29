@@ -15,12 +15,13 @@ class UpdateGameCounts(BaseScript):
     @transaction.atomic
     def update_game_counts(self):
         game_counts = dict()
-        for i, chunk in self.chunks_of('collection item', CollectionItem):
+        filter = dict(user__deleted=False)
+        for i, chunk in self.chunks_of('collection item', CollectionItem, filter=filter):
             self.logger.info('Processing chunk %s' % (i + 1))
             for collection_item in chunk:
                 game_counts.setdefault(collection_item.game.id, dict(owned=0, wanted=0))
                 game_counts[collection_item.game.id]['owned'] += 1
-        for i, chunk in self.chunks_of('wish list item', WishlistItem):
+        for i, chunk in self.chunks_of('wish list item', WishlistItem, filter=filter):
             self.logger.info('Processing chunk %s' % (i + 1))
             for wishlist_item in chunk:
                 game_counts.setdefault(wishlist_item.game.id, dict(owned=0, wanted=0))

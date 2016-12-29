@@ -9,6 +9,32 @@ from request.api.views import MyRequestsViewSet, IncomingRequestsViewSet
 from cache import get_cache_key_for_viewset
 
 
+@receiver(post_save, sender=CollectionItem)
+def update_game_owned_counts_when_create(sender, instance, created, **kwargs):
+    if created:
+        instance.game.owned_count += 1
+        instance.game.save()
+
+
+@receiver(post_save, sender=WishlistItem)
+def update_game_wanted_counts_when_create(sender, instance, created, **kwargs):
+    if created:
+        instance.game.wanted_count += 1
+        instance.game.save()
+
+
+@receiver(pre_delete, sender=CollectionItem)
+def update_game_owned_counts_when_delete(sender, instance=None, **kwargs):
+    instance.game.owned_count -= 1
+    instance.game.save()
+
+
+@receiver(pre_delete, sender=WishlistItem)
+def update_game_wanted_counts_when_delete(sender, instance=None, **kwargs):
+    instance.game.wanted_count -= 1
+    instance.game.save()
+
+
 @receiver(pre_delete, sender=CollectionItem)
 def check_collection_item_is_in_open_request(sender, instance=None, **kwargs):
     if instance.is_in_open_request():

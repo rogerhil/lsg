@@ -68,7 +68,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
-        resp = Response("You still have unfinished open requests, so you "
+        resp = Response("You still have unfinished open requests, you "
                         "need to close them before you delete your account.",
                         status=status.HTTP_403_FORBIDDEN)
         for item in CollectionItem.objects.filter(user=user):
@@ -77,9 +77,17 @@ class UsersViewSet(viewsets.ModelViewSet):
         for item in WishlistItem.objects.filter(user=user):
             if item.is_in_open_request():
                 return resp
+        collection = user.collection.all().select_related('game')
+        wishlist = user.wishlist.all().select_related('game')
+        collection_ids = ','.join([str(i) for i in collection.values_list('id', flat=True)])
+        wishlist_ids = ','.join([str(i) for i in wishlist.values_list('id', flat=True)])
         user.deleted = True
+        user.collection_ids_account_deleted = collection_ids
+        user.wishlist_ids_account_deleted = wishlist_ids
         user.deleted_date = datetime.now()
         user.save()
+        user.collection.clear()  # IMPORTANT to delete to update the games counts (signal)!
+        user.wishlist.clear()   # IMPORTANT to delete to update the games counts (signal)!
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @detail_route(methods=['get'], serializer_class=UserCountsStarsSerializer,

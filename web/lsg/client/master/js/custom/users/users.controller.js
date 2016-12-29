@@ -72,10 +72,10 @@
         self.deleteMyAccount = function () {
 
             var confirm = $mdDialog.confirm()
-                .title('Are you really sure you want to delete your account? \n You might have all your data lost!')
+                .title('Are you really sure you want to delete your account? \n All your data will be lost!')
                 .textContent('')
                 .ariaLabel('Delete my account')
-                .ok("Yes, I'm sure")
+                .ok("Yes")
                 .cancel('No');
             $mdDialog.show(confirm).then(function () {
                 UsersService.delete().then(function () {
