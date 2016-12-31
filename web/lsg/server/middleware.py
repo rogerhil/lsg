@@ -17,12 +17,13 @@ class RedirectFallbackMiddleware(object):
         # the view (and later middleware) are called.
 
         response = self.get_response(request)
-        #return response
-        if request.path.startswith(settings.STATIC_URL) or \
-           self.app_static_regex.match(request.path):
-            return response
 
         if response.status_code == 404:
+            # return response
+            if request.path.startswith(settings.STATIC_URL) or \
+               request.path.startswith(settings.MEDIA_URL) or \
+               self.app_static_regex.match(request.path):
+                return response
             #if request.user.is_authenticated():
             #    return http.HttpResponseRedirect('/app/')
             return http.HttpResponseRedirect('/')

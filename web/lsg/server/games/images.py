@@ -108,11 +108,12 @@ class LocalGameImages(BaseGameImages):
 
     @classmethod
     def get_front_thumb_path(cls, platform, api_id, sufix=""):
-        return cls.get_front_path(platform, api_id, "_thumb%s" % sufix)
+        return cls.get_front_path(platform, api_id, sufix)
+        #return cls.get_front_path(platform, api_id, "_thumb%s" % sufix)
 
     @classmethod
     def get_back_thumb_path(cls, platform, api_id, sufix=""):
-        return cls.get_back_path(platform, api_id, "_thumb%s" % sufix)
+        return cls.get_back_path(platform, api_id, sufix)
 
     @property
     def front(self):

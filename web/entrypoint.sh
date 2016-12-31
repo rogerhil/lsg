@@ -95,9 +95,6 @@ elif [ "$1" = 'makemigrationsmigrate' ]; then
     sudo -u lsg -E HOME=/home/lsg/ python manage.py makemigrations
     sudo -u lsg -E HOME=/home/lsg/ python manage.py migrate
 
-elif [ "$1" = 'bash' ]; then
-    bash
-
 else
     exec "$@"
 fi

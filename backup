@@ -7,6 +7,14 @@
 # 2. UN-TAR THE BACKUP:
 #    $ docker run --rm --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
 #
+# REAL EXAMPLE TESTED LOCALLY (PS: had to move backup tar.gz file from the timestamp directory one level below):
+# RESTORE DATA:
+# 1. IMPORTANT!!!: stop postgres: $  docker-compose -f docker-compose.base.yml -f docker-compose.dev.yml stop postgres
+# 2. docker run --rm --volumes-from lsgdocker_postgres_1 -v $(pwd)/backup-files/dev:/backup-files lsgdocker_postgres bash -c "ls -lh /var/lib/postgresql/data/; du -sh /var/lib/postgresql/data/; rm -rf /var/lib/postgresql/data/*; tar zxf /backup-files/data-backup.tar.gz; ls -lh /var/lib/postgresql/data/; du -sh /var/lib/postgresql/data/;"
+#
+# RESTORE MEDIA:
+# docker run --rm --volumes-from lsgdocker_web_1 -v $(pwd)/backup-files/dev:/backup-files lsgdocker_web bash -c "ls -lh /app/media; du -sh /app/media; tar zxf /backup-files/media-backup.tar.gz; ls -lh /app/media; du -sh /app/media;"
+#
 
 PREFIX='dev'
 LOCAL_MOUNT="$(pwd)"
