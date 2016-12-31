@@ -11,3 +11,4 @@ class SwapRequestAdmin(ExtraUrlMixin, admin.ModelAdmin):
                     'requested', 'requested_game', 'requested_feedback',
                     'requested_game_condition_notes',
                     'status', 'created', 'updated')
+    raw_id_fields = ('requester_game', 'requested_game')

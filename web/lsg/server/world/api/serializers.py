@@ -1,3 +1,5 @@
+import logging
+
 from django_countries.serializer_fields import CountryField
 from django_countries import countries
 from django.conf import settings
@@ -10,6 +12,9 @@ from world.models import Address
 from constants import serialize_country
 
 COUNTRIES_NAMES = [str(countries.name(i)) for i in settings.SUPPORTED_COUNTRIES]
+
+
+logger = logging.getLogger('lsg')
 
 
 class CustomCountryField(CountryField):
@@ -88,6 +93,8 @@ class AddressSerializer(serializers.ModelSerializer):
         country = validated_data.get('country')
         if location:
             data = Address.parse_address_data(location, country)
+            if not data['geocoder_address'] or not data['point']:
+                logger.warning("geocoder_address not retrieved for: %s (%s)" % (location, country))
             validated_data.update(data)
         return super(AddressSerializer, self).create(validated_data)
 
