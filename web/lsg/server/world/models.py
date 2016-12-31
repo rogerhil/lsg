@@ -1,4 +1,5 @@
 import geocoder
+import logging
 
 from django.conf import settings
 from django.contrib.gis.db import models
@@ -11,6 +12,8 @@ from django_countries.fields import CountryField
 # ]
 #
 # COUNTRIES_CHOICES = [(i, i) for i in AVAILABLE_COUNTRIES]
+
+logger = logging.getLogger('lsg')
 
 
 class WorldBorder(models.Model):
@@ -94,6 +97,7 @@ class Address(models.Model):
     def parse_address_data(cls, location, country=None):
         geo = cls.get_geocode_obj_from_address(location, country)
         if geo is None:
+            logger.warning("geocode not found for: %s (%s)" % (location, country))
             return {}
 
         def join(*args):
@@ -103,6 +107,9 @@ class Address(models.Model):
         state = join(geo.state_long, geo.province_long)
         city_location = "%s, %s, %s" % (city, state, geo.country)
         geo_city = cls.get_geocode_obj_from_address(city_location, country)
+
+        if geo_city is None:
+            logger.warning("geocode not found for city: %s (%s)" % (city_location, country))
 
         data = dict(
             point=str(geo.wkt),
