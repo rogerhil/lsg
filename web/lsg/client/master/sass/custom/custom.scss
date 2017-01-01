@@ -34,6 +34,22 @@
   margin-top: -7px;
 }
 
+.nav li.highlight-enter,
+.nav li.active.highlight-enter,
+.nav li.highlight-enter a {
+  background-color: $mdc-yellow-300 !important;
+}
+
+.nav li.highlight-exit,
+.nav li.active.highlight-exit,
+.nav li.highlight-exit a {
+  background-color: #fff !important;
+  -webkit-transition: background-color 2s !important;
+  -o-transition: background-color 2s !important;
+  transition: background-color 2s !important;
+
+}
+
 .lsg-nav a {
   color: #fff;
   display: block;

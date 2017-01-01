@@ -28,7 +28,7 @@ div.keep-content-heading(ng-controller='MatchesCtrl as ctrl')
         div
 
     .card.match-set-item.animate(ng-repeat='match in ctrl.filteredMatches track by match.iwish.id')
-        .card-item
+        .card-item(ng-click="ctrl.openMatch(match)")
             div
                 img.similar-ribon.small(ng-if="match.iwish.is_similar" ng-src="/app/app/img/similar-78.png")
                 md-tooltip(md-direction="top") This is a similar game to the ones you have on your wish list.

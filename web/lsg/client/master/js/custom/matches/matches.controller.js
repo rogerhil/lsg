@@ -13,8 +13,8 @@
     /*
       MatchesCtrl
      */
-    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'MatchesService'];
-    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, MatchesService) {
+    MatchesCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', '$rootScope', 'MatchesService'];
+    function MatchesCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, $rootScope, MatchesService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.matches = [];
@@ -23,36 +23,12 @@
         self.showOngoingSwaps = false;
         self.showPendingSwaps = true;
         self.showSimilarMatches = true;
-        self.matchesPollingInterval = 10000;
-        self.matchesPromise = undefined;
 
-        self.loadMatches = function () {
-            MatchesService.getMatches().then(function (matches) {
-                self.loaded = true;
+        self.filterMatches = function (matches) {
+            self.loaded = true;
+            if (matches) {
                 self.matches = matches;
-                self.filterMatches();
-
-                // $timeout(function () {
-                //     $('img.match-game-image').each(function() {
-                //         var vibrant = new Vibrant(this);
-                //         var swatches = vibrant.swatches();
-                //         if ($(this).parent().css('background-color').toString() == 'rgba(0, 0, 0, 0)') {
-                //             $(this).parent().css('background-color', swatches['DarkMuted'].getHex());
-                //         }
-                //         /*
-                //          * Results into:
-                //          * Vibrant #7a4426
-                //          * Muted #7b9eae
-                //          * DarkVibrant #348945
-                //          * DarkMuted #141414
-                //          * LightVibrant #f3ccb4
-                //          */
-                //     });
-                // }, 200);
-            });
-        };
-
-        self.filterMatches = function () {
+            }
             self.filteredMatches = self.matches.filter(function (match) {
                 if ((self.showOngoingSwaps || (!match.no_games_left && !match.ongoing)) &&
                     (self.showPendingSwaps || !match.iwish.swap_pending) &&
@@ -62,15 +38,10 @@
             });
         };
 
-
-        self.pollMatches = function () {
-            if (!$('md-dialog').length) {
-                self.loadMatches();
-            }
-            self.matchesPromise = $timeout(function () {
-                self.pollMatches();
-            }, self.matchesPollingInterval);
-        };
+        if ($rootScope.matchesPromise) {
+            $timeout.cancel($rootScope.matchesPromise);
+        }
+        MatchesService.pollMatches(self.filterMatches);
 
         self.openMatch = function(match) {
             $mdDialog.show({
@@ -84,10 +55,12 @@
             });
         };
 
-        self.pollMatches();
-
         $scope.$on('$destroy', function() {
-            $timeout.cancel(self.matchesPromise);
+            // restart poll without callback
+            $timeout.cancel($rootScope.matchesPromise);
+            $timeout(function () {
+                MatchesService.pollMatches();
+            }, $rootScope.matchesPollingInterval);
         });
     }
 

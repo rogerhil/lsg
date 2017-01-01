@@ -116,6 +116,9 @@ class Game(models.Model):
     def __str__(self):
         return self.full_name
 
+    def __hash__(self):
+        return self.id
+
     @property
     def full_name(self):
         return "%s (%s)" % (self.name, self.platform.short_name)

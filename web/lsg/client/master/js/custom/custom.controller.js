@@ -10,8 +10,8 @@
         .module('custom')
         .controller('LsgController', LsgController);
 
-    LsgController.$inject = ['$log', '$mdDialog'];
-    function LsgController($log, $mdDialog) {
+    LsgController.$inject = ['$log', '$mdDialog', '$rootScope', 'MatchesService'];
+    function LsgController($log, $mdDialog, $rootScope, MatchesService) {
         var self = this;
 
         self.signOut = function () {
@@ -27,10 +27,6 @@
                 // TODO: maybe do something if cancel confirm
             });
         };
-
-        function activate() {
-          $log.log('I\'m a line from custom.js');
-        }
 
     }
 })();

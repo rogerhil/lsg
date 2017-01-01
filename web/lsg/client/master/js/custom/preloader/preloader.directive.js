@@ -5,8 +5,8 @@
         .module('app.preloader')
         .directive('preloader', preloader);
 
-    preloader.$inject = ['$animate', '$timeout', '$rootScope', '$state', 'UsersService', '$mdDialog'];
-    function preloader($animate, $timeout, $rootScope, $state, UsersService, $mdDialog) {
+    preloader.$inject = ['$animate', '$timeout', '$rootScope', '$state', 'UsersService', '$mdDialog', 'MatchesService'];
+    function preloader($animate, $timeout, $rootScope, $state, UsersService, $mdDialog, MatchesService) {
         var counter = 0;
 
         var locationChange = function (event, next, current) {
@@ -149,6 +149,11 @@
                         $state.transitionTo("app.welcome");
                     }
                     endCounter(scope, el);
+
+                    // start polling
+                    if (matchedState.name != 'app.matches') {
+                        MatchesService.pollMatches();
+                    }
                 } else {
                     //endCounter(scope, el);
                 }

@@ -16,18 +16,27 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                         .label.label-pink.swap-indicator(ng-if="ctrl.game.iWant")
                             .em.fa.fa-heart
                             md-tooltip(md-direction="bottom") You want this game
+                        a(href="javascript:;" ng-click="ctrl.checkoutMatches()")
+                            .label.label-info.swap-indicator(ng-if="ctrl.game.inMatches" style="right: 45px;")
+                                .em.fa.fa-thumbs-up
+                                md-tooltip(md-direction="bottom") There is a match with this game!
                         img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}')
                     div
                         h3(style="margin-top: 0;")
                             img(ng-src="{{ ctrl.game.platform.logo_image }}" alt="{{ctrl.game.platform.short_name}}" style="height: 40px;")
                             span(style="vertical-align: bottom;") {{ctrl.game.name}}
                         p
+                            .label.label-info(ng-if="ctrl.game.inMatches" style="margin-right: 10px;")
+                                .em.fa.fa-thumbs-up
+                                span &nbsp;
+                                a(href="/app/#/app/matches" style="color: #fff;") There is a match with this game.
                             .label.label-warning(ng-if="ctrl.game.iHave" style="margin-right: 10px;")
                                 .em.fa.fa-star
-                                span You have this game on your collection.
+                                span &nbsp; You have this game on your collection.
                             .label.label-pink(ng-if="ctrl.game.iWant")
                                 .em.fa.fa-heart
-                                span You have this game on your wish list.
+                                span &nbsp; You have this game on your wish list.
+
                         p
                             span(style="margin-right: 20px;")
                                 em.text-warning.fa.fa-star
@@ -41,7 +50,8 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                             button.btn.mb-sm.btn-info.btn-labeled(style="margin: 0 auto;")
                                 span.btn-label
                                     em.fa.fa-exchange
-                                span Check out matches&nbsp;
+                                span(ng-if="!ctrl.game.inMatches") Check out matches&nbsp;
+                                span(ng-if="ctrl.game.inMatches") Check the match with this game
 
                 //p {{ ctrl.game.overview }}
                 //p

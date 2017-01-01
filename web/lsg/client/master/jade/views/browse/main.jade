@@ -35,6 +35,10 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 .label.label-pink.swap-indicator(ng-if="ctrl.iWant(game)")
                     .em.fa.fa-heart
                     md-tooltip(md-direction="bottom") You want this game
+                a(href="/app/#/app/matches")
+                    .label.label-info.swap-indicator(ng-if="ctrl.inMatches(game)" style="right: 45px;")
+                        .em.fa.fa-thumbs-up
+                        md-tooltip(md-direction="bottom") There is a match with this game!
                 div(style="height: 170px; width: 100%; background-image: url({{game.images.front_thumb_medium}}); background-size: cover; background-position: center top; position: absolute;" ng-click="ctrl.showGameDetails(game)")
                 md-tooltip(md-direction="top") {{game.full_name}}
                 div(style="height: 170px; text-align: center;" ng-click="ctrl.showGameDetails(game)")

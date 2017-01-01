@@ -303,11 +303,12 @@ class User(AbstractUser):
             .select_related('game') \
             .select_related('game__platform') \
             .select_related('user__address')
+        my_collection_ids = [g.id for g in self.collection.all()]
 
         similar_ids = reduce(lambda a, b: a + b,
                              [w.similar_same_platform_ids_list for w in wishlist],
                              [])
-        similar_ids = set(similar_ids) - set(wishlist_ids)
+        similar_ids = set(similar_ids) - set(wishlist_ids) - set(my_collection_ids)
         similar_collections_qs = CollectionItem.objects.filter(game_id__in=similar_ids)
 
         all_collections = []
@@ -467,11 +468,12 @@ class User(AbstractUser):
 
         for match in matches.values():
             match['swaps'] = list(match['swaps'].values())
-            all_wanted_games = reduce(lambda a, b: a + b,
-                                   [s['wanted_games'] for s in match['swaps']])
+            all_wanted_games = set(reduce(lambda a, b: a + b,
+                                   [s['wanted_games'] for s in match['swaps']]))
             match['no_games_left'] = all([(g.ongoing or g.cannot_request or
                                            g.other_user_ongoing or g.this_user_ongoing)
                                           for g in all_wanted_games])
+            match['all_wanted_games'] = all_wanted_games
             match['swaps'].sort(key=lambda p: p['user'].rating)
             match['swaps'].sort(key=lambda p: p['user'].succeeded_swaps_count,
                                 reverse=True)
@@ -507,13 +509,21 @@ class User(AbstractUser):
         if cached:
             return cached
 
+        serialized_games = {}
+
+        def ser_game(game):
+            if game.id not in serialized_games:
+                ser = gs.to_representation(game)
+                serialized_games[game.id] = ser
+            return serialized_games[game.id]
+
         from games.api.serializers import GameSerializer
         from users.api.serializers import SmallUserSerializer
         gs = GameSerializer()
         us = SmallUserSerializer()
         serialized_matches = []
         for match in self.matches:
-            iwish = gs.to_representation(match['iwish'])
+            iwish = ser_game(match['iwish'])
             iwish['is_similar'] = match['iwish'].is_similar
             iwish['swap_pending'] = match['iwish'].swap_pending
             serialized_match = dict(
@@ -521,6 +531,7 @@ class User(AbstractUser):
                 count=match['count'],
                 ongoing=match['ongoing'],
                 no_games_left=match['no_games_left'],
+                all_wanted_games=[ser_game(g) for g in match['all_wanted_games']],
                 swaps=[]
             )
             for swap in match['swaps']:
@@ -536,7 +547,7 @@ class User(AbstractUser):
                                                                       unit)
                 games = []
                 for game_obj in swap['wanted_games']:
-                    game = gs.to_representation(game_obj)
+                    game = ser_game(game_obj)
                     game['cannot_request'] = game_obj.cannot_request
                     game['other_user_ongoing'] = game_obj.other_user_ongoing
                     game['ongoing'] = game_obj.ongoing

@@ -59,6 +59,17 @@
             return game.iWant;
         };
 
+        self.inMatches = function (game) {
+            if (!game.inMatches) {
+                if (game.iWant) {
+                    game.inMatches = $rootScope.matchesWantedIds.indexOf(game.id) != -1;
+                } else {
+                    game.inMatches = $rootScope.matchesOwnedIds.indexOf(game.id) != -1;
+                }
+            }
+            return game.inMatches;
+        };
+
         self.loadGamesList = function (filter, concatenate) {
             self.loading = true;
             if (!concatenate) {
@@ -157,7 +168,7 @@
             self.close();
             $timeout(function () {
                 $state.transitionTo("app.matches");
-            }, 500);
+            }, 600);
         };
 
         self.addGameTo = function (context) {
