@@ -27,6 +27,11 @@ class UpdateGameCounts(BaseScript):
                 game_counts.setdefault(wishlist_item.game.id, dict(owned=0, wanted=0))
                 game_counts[wishlist_item.game.id]['wanted'] += 1
 
+        c = Game.objects.exclude(owned_count=0).update(owned_count=0)
+        self.logger.info('%s games with owned_count back to zero' % c)
+        c = Game.objects.exclude(wanted_count=0).update(wanted_count=0)
+        self.logger.info('%s games with wanted_count back to zero' % c)
+
         for i, chunk in self.chunks_of('games ids', list(game_counts.keys()), 100):
             self.logger.info('Processing chunk %s' % (i + 1))
             games = Game.objects.filter(id__in=chunk)

@@ -31,17 +31,19 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
             .card-item
                 .label.label-warning.swap-indicator(ng-if="ctrl.iHave(game)")
                     .em.fa.fa-star
-                    md-tooltip(md-direction="bottom") I have this game on my collection
+                    md-tooltip(md-direction="bottom") You have this game
                 .label.label-pink.swap-indicator(ng-if="ctrl.iWant(game)")
                     .em.fa.fa-heart
-                    md-tooltip(md-direction="bottom") I have this game on my wish list
-                div(style="height: 170px; background-color: #000; text-align: center;" ng-click="ctrl.showGameDetails(game)")
-                    img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="max-height: 170px; text-align: center; margin: 0 auto;")
+                    md-tooltip(md-direction="bottom") You want this game
+                div(style="height: 170px; width: 100%; background-image: url({{game.images.front_thumb_medium}}); background-size: cover; background-position: center top; position: absolute;" ng-click="ctrl.showGameDetails(game)")
+                md-tooltip(md-direction="top") {{game.full_name}}
+                div(style="height: 170px; text-align: center;" ng-click="ctrl.showGameDetails(game)")
+                    img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="height: 170px; max-width: none; text-align: center; margin: 0 auto;")
                     md-tooltip(md-direction="top") {{game.full_name}}
             .card-body(style="text-align: center; cursor: default; padding-left: 5px; padding-right: 5px; padding-top: 5px;")
-                div(style="overflow: hidden; margin-bottom: 10px;")
-                    span(style="white-space: nowrap;") {{ game.name }}
-                    md-tooltip(md-direction="top") {{game.full_name}}
+                //div(style="overflow: hidden; margin-bottom: 10px;")
+                //    span(style="white-space: nowrap;") {{ game.name }}
+                //    md-tooltip(md-direction="top") {{game.full_name}}
                 div
                     span(style="margin-right: 20px;")
                         em.text-warning.fa.fa-star

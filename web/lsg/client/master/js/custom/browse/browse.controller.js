@@ -117,8 +117,8 @@
     /*
      GameDetailsDialogCtrl
      */
-    GameDetailsDialogCtrl.$inject = ['$scope', '$mdDialog', 'game', '$mdMedia', 'browseCtrl', 'Notify', 'UsersService', '$timeout', 'BrowseService'];
-    function GameDetailsDialogCtrl($scope, $mdDialog, game, $mdMedia, browseCtrl, Notify, UsersService, $timeout, BrowseService) {
+    GameDetailsDialogCtrl.$inject = ['$scope', '$rootScope', '$mdDialog', 'game', '$mdMedia', 'browseCtrl', 'Notify', 'UsersService', '$timeout', 'BrowseService', '$state'];
+    function GameDetailsDialogCtrl($scope, $rootScope, $mdDialog, game, $mdMedia, browseCtrl, Notify, UsersService, $timeout, BrowseService, $state) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
@@ -132,6 +132,7 @@
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scrollwheel: false
         };
+        self.circles = [];
 
 
         BrowseService.gameOwnedBy(self.game.id).then(function (users) {
@@ -141,13 +142,22 @@
 
         BrowseService.gameWantedBy(self.game.id).then(function (users) {
             self.wantedBy = users;
-            $timeout(function () {
-                setupUsersMap();
-            }, 1000);
+            if (self.game.owned_count || self.game.wanted_count) {
+                $timeout(function () {
+                    setupUsersMap();
+                }, 1000);
+            }
         });
 
         self.close = function () {
             $mdDialog.hide();
+        };
+
+        self.checkoutMatches = function () {
+            self.close();
+            $timeout(function () {
+                $state.transitionTo("app.matches");
+            }, 500);
         };
 
         self.addGameTo = function (context) {
@@ -156,11 +166,15 @@
                 if (context == 'collection') {
                     self.game.iHave = true;
                     self.game.owned_count++;
+                    self.ownedBy.push($rootScope.user);
                 } else {
                     self.game.iWant = true;
                     self.game.wanted_count++;
                     title = 'wish list';
+                    self.wantedBy.push($rootScope.user);
                 }
+                resetMap();
+                setupUsersMap();
                 Notify.alert('The game "' + self.game.full_name + '" was successfully added to your ' + title,
                              {status: 'success', timeout: 5000});
             }, function (errors) {
@@ -179,62 +193,54 @@
             });
         };
 
+        function resetMap() {
+            for (var i = 0; i < self.circles.length; i++) {
+                self.circles[i].setMap(null);
+            }
+            self.circles = [];
+        }
+
         function setupUsersMap() {
             var bounds = new google.maps.LatLngBounds();
-            // var userPosition = new google.maps.LatLng(user.address.latitude,
-            //     user.address.longitude);
-            var radius = 10;  // km
-            // var earthRadius = 6371;
-            // var otherUserPosition;
-            // var zoom = 14;
-            // if (otherUser.show_full_address_allowed) {
-            //     otherUserPosition = new google.maps.LatLng(otherUser.address.latitude,
-            //         otherUser.address.longitude);
-            // } else {
-            //     otherUserPosition = new google.maps.LatLng(otherUser.address.city_latitude,
-            //         otherUser.address.city_longitude);
-            //     zoom = 9;
-            // }
-            //
-            // var userMarker, otherUserMarker, circle;
-            //
+            var radius = [14, 18, 15, 17, 16];  // km
 
             self.usersMapOptions = {
                 zoom: 14,
-                //center: userPosition,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scrollwheel: false
             };
 
             $timeout(function () {
-                var circles = [];
 
                 for (var k = 0; k < self.ownedBy.length; k++) {
                     var user = self.ownedBy[k];
                     var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
                     var circle = new google.maps.Circle({
                         map: self.usersMap,
-                        radius: radius * 1000,
-                        fillColor: '#000',
-                        strokeWeight: 0,
+                        radius: radius[k % 5] * 1000,
+                        fillColor: '#ff9800',
+                        strokeWeight: 1,
+                        strokeColor: '#000',
                         center: userPosition
                     });
-                    circles.push(circle);
-                    bounds.extend(circle.center);
+
+                    self.circles.push(circle);
+                    bounds.union(circle.getBounds());
                 }
 
                 for (var k = 0; k < self.wantedBy.length; k++) {
-                    var user = self.ownedBy[0];
+                    var user = self.wantedBy[0];
                     var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
                     var circle = new google.maps.Circle({
                         map: self.usersMap,
-                        radius: radius * 1000,
-                        fillColor: '#f00',
-                        strokeWeight: 0,
+                        radius: radius[k % 5] * 1000,
+                        fillColor: '#E91E63',
+                        strokeWeight: 1,
+                        strokeColor: '#000',
                         center: userPosition
                     });
-                    circles.push(circle);
-                    bounds.extend(circle.center);
+                    self.circles.push(circle);
+                    bounds.union(circle.getBounds());
                 }
 
 
@@ -242,14 +248,6 @@
                     google.maps.event.trigger(self.usersMap, 'resize');
                     $timeout(function () {
                         self.usersMap.fitBounds(bounds);
-                        // if (!otherUser.show_full_address_allowed) {
-                        //     self.contactDetailsMapOptions.zoom = zoom;
-                        //     self.contactDetailsMap.setZoom(zoom);
-                        // }
-                        // var listener = google.maps.event.addListener(map, "idle", function() {
-                        //   if (map.getZoom() > 16) map.setZoom(16);
-                        //   google.maps.event.removeListener(listener);
-                        // });
                     });
                 });
             });

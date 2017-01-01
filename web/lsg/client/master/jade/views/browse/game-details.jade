@@ -12,33 +12,36 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                     div(style="margin-right: 20px; position: relative;")
                         .label.label-warning.swap-indicator(ng-if="ctrl.game.iHave")
                             .em.fa.fa-star
-                            md-tooltip(md-direction="bottom") I have this game
+                            md-tooltip(md-direction="bottom") You have this game
                         .label.label-pink.swap-indicator(ng-if="ctrl.game.iWant")
                             .em.fa.fa-heart
-                            md-tooltip(md-direction="bottom") I want this game
+                            md-tooltip(md-direction="bottom") You want this game
                         img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}')
                     div
                         h3(style="margin-top: 0;")
                             img(ng-src="{{ ctrl.game.platform.logo_image }}" alt="{{ctrl.game.platform.short_name}}" style="height: 40px;")
                             span(style="vertical-align: bottom;") {{ctrl.game.name}}
-                        div
-                            p(ng-if="ctrl.game.iHave")
-                                em.text-warning.fa.fa-star
-                                span I have this game on my collection.
-                            p(ng-if="ctrl.game.iWant")
-                                em.text-pink.fa.fa-heart
-                                span I have this game on my wish list.
-                        div(style="text-align: center;")
+                        p
+                            .label.label-warning(ng-if="ctrl.game.iHave" style="margin-right: 10px;")
+                                .em.fa.fa-star
+                                span You have this game on your collection.
+                            .label.label-pink(ng-if="ctrl.game.iWant")
+                                .em.fa.fa-heart
+                                span You have this game on your wish list.
+                        p
                             span(style="margin-right: 20px;")
                                 em.text-warning.fa.fa-star
-                                span {{ ctrl.game.owned_count }}
-                                md-tooltip(md-direction="bottom")
-                                    ng-pluralize(count="ctrl.game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ ctrl.game.owned_count }} person has this game', 'other': '{{ ctrl.game.owned_count }} people have this game'}")
+                                ng-pluralize(count="ctrl.game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ ctrl.game.owned_count }} person has this game', 'other': '{{ ctrl.game.owned_count }} people have this game'}")
+                        p
                             span
                                 em.text-pink.fa.fa-heart
-                                span {{ ctrl.game.wanted_count }}
-                                md-tooltip(md-direction="bottom")
-                                    ng-pluralize(count="ctrl.game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ ctrl.game.wanted_count }} person wants this game', 'other': '{{ ctrl.game.wanted_count }} people want this game'}")
+                                ng-pluralize(count="ctrl.game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ ctrl.game.wanted_count }} person wants this game', 'other': '{{ ctrl.game.wanted_count }} people want this game'}")
+
+                        a(href="javascript:;" ng-click="ctrl.checkoutMatches()")
+                            button.btn.mb-sm.btn-info.btn-labeled(style="margin: 0 auto;")
+                                span.btn-label
+                                    em.fa.fa-exchange
+                                span Check out matches&nbsp;
 
                 //p {{ ctrl.game.overview }}
                 //p
@@ -69,7 +72,7 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                 //    strong Ratings:
                 //    span {{ ctrl.game.api_rating }}
 
-                .gmap(ui-map='ctrl.usersMap', ui-options='ctrl.usersMapOptions', class="map-canvas")
+                .gmap(ui-map='ctrl.usersMap', ui-options='ctrl.usersMapOptions', class="map-canvas" style="margin-top: 20px;" ng-if="ctrl.game.owned_count || ctrl.game.wanted_count")
 
                 div(style="clear: both;")
 
