@@ -48,11 +48,11 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                         p
                             span(style="margin-right: 20px;")
                                 em.text-warning.fa.fa-star
-                                ng-pluralize(count="ctrl.game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ ctrl.game.owned_count }} person has this game', 'other': '{{ ctrl.game.owned_count }} people have this game'}")
+                                span {{ ctrl.ownedTitle(ctrl.game) }}
                         p
                             span
                                 em.text-pink.fa.fa-heart
-                                ng-pluralize(count="ctrl.game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ ctrl.game.wanted_count }} person wants this game', 'other': '{{ ctrl.game.wanted_count }} people want this game'}")
+                                span {{ ctrl.wantedTitle(ctrl.game) }}
 
                         a(href="javascript:;" ng-click="ctrl.checkoutMatches()")
                             button.btn.mb-sm.btn-info.btn-labeled(style="margin: 0 auto;")

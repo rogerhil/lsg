@@ -11,6 +11,9 @@ MAX_HEIGHT_SMALL = 100
 MAX_WIDTH_MEDIUM = 340
 MAX_HEIGHT_MEDIUM = 170
 
+MAX_WIDTH_BIG = 600
+MAX_HEIGHT_BIG = 300
+
 
 class ThumbnailsMaker(BaseScript):
     name = 'make_thumbnails'
@@ -27,14 +30,17 @@ class ThumbnailsMaker(BaseScript):
             return
         width, height = im.size
         ratio = min(max_width / width, max_height / height)
-        new_size = (width * ratio, height * ratio)
-        if infile != outfile:
-            try:
-                im.thumbnail(new_size, Image.ANTIALIAS)
-                im.save(outfile, "JPEG")
-            except IOError as err:
-                self.logger.error("ERROR! Unable to create thumbnail for '%s'"
-                                  ": %s" % (infile, err))
+        new_size = (int(width * ratio), int(height * ratio))
+        if new_size[0] >= width or new_size[1] >= height:
+            self.logger.warning("New size is bigger, it will consider the small size: "
+                                "%s > %sx%s" % (new_size, width, height))
+            new_size = (width, height)
+        try:
+            im.thumbnail(new_size, Image.ANTIALIAS)
+            im.save(outfile, "JPEG")
+        except IOError as err:
+            self.logger.error("ERROR! Unable to create thumbnail for '%s'"
+                              ": %s" % (infile, err))
 
     def make_all_thumbnails(self, sizes, update=False):
         count = 0
@@ -52,12 +58,13 @@ class ThumbnailsMaker(BaseScript):
                         continue
                     infile = os.path.join(subdir, img)
                     for sufix, max_width, min_width in sizes:
-                        outfile = "%s_%s.jpg" % (os.path.splitext(infile)[0],
+                        outfile = "%s%s.jpg" % (os.path.splitext(infile)[0],
                                                  sufix)
-                        if not update and os.path.isfile(outfile):
+                        # if not "sufix", the image will be resized anyway, to reduce the size
+                        # of the original image, usually is too big.
+                        if not update and os.path.isfile(outfile) and sufix:
                             continue
-                        self.make_thumbnail(infile, outfile, max_width,
-                                            min_width)
+                        self.make_thumbnail(infile, outfile, max_width, min_width)
                         count += 1
                         if count % 200 == 0:
                             self.logger.info("%s: built %s thumbnails so far" %
@@ -65,8 +72,9 @@ class ThumbnailsMaker(BaseScript):
 
     def main(self):
         sizes = [
-            ('small', MAX_WIDTH_SMALL, MAX_HEIGHT_SMALL),
-            ('medium', MAX_WIDTH_MEDIUM, MAX_HEIGHT_MEDIUM),
+            ('_small', MAX_WIDTH_SMALL, MAX_HEIGHT_SMALL),
+            ('_medium', MAX_WIDTH_MEDIUM, MAX_HEIGHT_MEDIUM),
+            ('', MAX_WIDTH_BIG, MAX_HEIGHT_BIG),  # to replace the original with a small size
         ]
         self.make_all_thumbnails(sizes, update=False)
 

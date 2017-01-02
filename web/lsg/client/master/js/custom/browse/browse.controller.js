@@ -59,6 +59,46 @@
             return game.iWant;
         };
 
+        self.wantedTitle = function (game) {
+            var c = game.wanted_count;
+            switch (c) {
+                case 0:
+                    return 'Nobody wants this game';
+                case 1:
+                    if (self.iWant(game)) {
+                        return 'You want this game';
+                    } else {
+                        return '1 person wants this game';
+                    }
+                case 2:
+                    var title = c + ' people want this game';
+                    if (self.iWant(game)) {
+                        title += ' (including you)'
+                    }
+                    return title;
+            }
+        };
+
+        self.ownedTitle = function (game) {
+            var c = game.owned_count;
+            switch (c) {
+                case 0:
+                    return 'Nobody has this game';
+                case 1:
+                    if (self.iHave(game)) {
+                        return 'You have this game';
+                    } else {
+                        return '1 person has this game';
+                    }
+                case 2:
+                    var title = c + ' people have this game';
+                    if (self.iHave(game)) {
+                        title += ' (including you)'
+                    }
+                    return title;
+            }
+        };
+
         self.inMatches = function (game) {
             if (!game.inMatches) {
                 if (game.iWant) {
@@ -152,7 +192,8 @@
             scrollwheel: false
         };
         self.circles = [];
-
+        var myMarker;
+        var userInfoWindow;
 
         BrowseService.gameOwnedBy(self.game.id).then(function (users) {
             self.ownedBy = users;
@@ -169,6 +210,7 @@
         });
 
         self.close = function () {
+            resetMap();
             $mdDialog.hide();
         };
 
@@ -185,6 +227,9 @@
                 $state.transitionTo("app.requests");
             }, 600);
         };
+
+        self.wantedTitle = browseCtrl.wantedTitle;
+        self.ownedTitle = browseCtrl.ownedTitle;
 
         self.addGameTo = function (context) {
             UsersService.addGameTo(self.game.id, context).then(function (game) {
@@ -224,7 +269,13 @@
                 self.circles[i].setMap(null);
             }
             self.circles = [];
+            myMarker.setMap(null);
+            userInfoWindow.close();
+            console.log('cleared');
         }
+
+        var myPosition = new google.maps.LatLng($rootScope.user.address.latitude,
+                                                $rootScope.user.address.longitude);
 
         function setupUsersMap() {
             var bounds = new google.maps.LatLngBounds();
@@ -235,12 +286,27 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scrollwheel: false
             };
+            myMarker = new google.maps.Marker({
+                map: self.usersMap,
+                position: myPosition,
+                title: 'My location',
+                visible: true
+            });
+
+            userInfoWindow = new google.maps.InfoWindow({
+                content: 'Your location'
+            });
+            userInfoWindow.open(self.usersMap, myMarker);
+
+            bounds.extend(myMarker.position);
 
             $timeout(function () {
-
                 for (var k = 0; k < self.ownedBy.length; k++) {
                     var user = self.ownedBy[k];
                     var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
+                    if (user.id == $rootScope.user.id) {
+                        continue;
+                    }
                     var circle = new google.maps.Circle({
                         map: self.usersMap,
                         radius: radius[k % 5] * 1000,
@@ -257,6 +323,9 @@
                 for (var k = 0; k < self.wantedBy.length; k++) {
                     var user = self.wantedBy[0];
                     var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
+                    if (user.id == $rootScope.user.id) {
+                        continue;
+                    }
                     var circle = new google.maps.Circle({
                         map: self.usersMap,
                         radius: radius[k % 5] * 1000,
@@ -272,6 +341,7 @@
 
                 $timeout(function () {
                     google.maps.event.trigger(self.usersMap, 'resize');
+                    $('.gm-style-iw div').css('max-height', '15px');  // FIX infoWindow bug when it open again
                     $timeout(function () {
                         self.usersMap.fitBounds(bounds);
                     });

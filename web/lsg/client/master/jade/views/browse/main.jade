@@ -57,12 +57,12 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                         em.text-warning.fa.fa-star
                         span {{ game.owned_count }}
                         md-tooltip(md-direction="bottom")
-                            ng-pluralize(count="game.owned_count", when="{'0': 'Nobody has this game', 'one': '{{ game.owned_count }} person has this game', 'other': '{{ game.owned_count }} people have this game'}")
+                            span {{ ctrl.ownedTitle(game) }}
                     span
                         em.text-pink.fa.fa-heart
                         span {{ game.wanted_count }}
                         md-tooltip(md-direction="bottom")
-                            ng-pluralize(count="game.wanted_count", when="{'0': 'Nobody wants this game', 'one': '{{ game.wanted_count }} person wants this game', 'other': '{{ game.wanted_count }} people want this game'}")
+                            span {{ ctrl.wantedTitle(game) }}
 
         div(style="clear: both;")
     div(style="clear: both;")

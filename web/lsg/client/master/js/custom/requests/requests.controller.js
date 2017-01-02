@@ -476,7 +476,7 @@
                 }
 
                 var userInfoWindow = new google.maps.InfoWindow({
-                    content: 'My location'
+                    content: 'Your location'
                 });
                 userInfoWindow.open(self.contactDetailsMap, userMarker);
                 if (otherUserMarker) {
