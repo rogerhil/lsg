@@ -191,7 +191,7 @@
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scrollwheel: false
         };
-        self.circles = [];
+        self.markers = [];
         var myMarker;
         var userInfoWindow;
 
@@ -265,13 +265,29 @@
         };
 
         function resetMap() {
-            for (var i = 0; i < self.circles.length; i++) {
-                self.circles[i].setMap(null);
+            for (var i = 0; i < self.markers.length; i++) {
+                self.markers[i].setMap(null);
             }
-            self.circles = [];
-            myMarker.setMap(null);
-            userInfoWindow.close();
-            console.log('cleared');
+            self.markers = [];
+        }
+
+        function randomLocationNearBy(lat, lng) {
+            var r = 5000/111300;  // 5 km
+            var u = Math.random();
+            var v = Math.random();
+            var w = r * Math.sqrt(u);
+            var t = 2 * Math.PI * v;
+            var x = w * Math.cos(t) ;
+            var y1 = w * Math.sin(t);
+            var x1 = x / Math.cos(lat);
+            var newLat = lat + y1;
+            var newLng = lng + x1;
+            return [newLat, newLng];
+        }
+
+        function randomMapLatLngNearByUser(user) {
+            var coords = randomLocationNearBy(user.address.city_latitude, user.address.city_longitude);
+            return new google.maps.LatLng(coords[0], coords[1]);
         }
 
         var myPosition = new google.maps.LatLng($rootScope.user.address.latitude,
@@ -303,41 +319,38 @@
             $timeout(function () {
                 for (var k = 0; k < self.ownedBy.length; k++) {
                     var user = self.ownedBy[k];
-                    var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
+                    var userPosition = randomMapLatLngNearByUser(user);
                     if (user.id == $rootScope.user.id) {
                         continue;
                     }
-                    var circle = new google.maps.Circle({
+                    var marker = new google.maps.Marker({
                         map: self.usersMap,
-                        radius: radius[k % 5] * 1000,
-                        fillColor: '#ff9800',
-                        strokeWeight: 1,
-                        strokeColor: '#000',
-                        center: userPosition
+                        position: userPosition,
+                        visible: true,
+                        title: user.name,
+                        icon: '/app/app/img/star.png'
                     });
 
-                    self.circles.push(circle);
-                    bounds.union(circle.getBounds());
+                    self.markers.push(marker);
+                    bounds.extend(marker.position);
                 }
 
                 for (var k = 0; k < self.wantedBy.length; k++) {
                     var user = self.wantedBy[0];
-                    var userPosition = new google.maps.LatLng(user.address.city_latitude, user.address.city_longitude);
+                    var userPosition = randomMapLatLngNearByUser(user);
                     if (user.id == $rootScope.user.id) {
                         continue;
                     }
-                    var circle = new google.maps.Circle({
+                    var marker = new google.maps.Marker({
                         map: self.usersMap,
-                        radius: radius[k % 5] * 1000,
-                        fillColor: '#E91E63',
-                        strokeWeight: 1,
-                        strokeColor: '#000',
-                        center: userPosition
+                        position: userPosition,
+                        visible: true,
+                        title: user.name,
+                        icon: '/app/app/img/heart.png'
                     });
-                    self.circles.push(circle);
-                    bounds.union(circle.getBounds());
+                    self.markers.push(marker);
+                    bounds.extend(marker.position);
                 }
-
 
                 $timeout(function () {
                     google.maps.event.trigger(self.usersMap, 'resize');

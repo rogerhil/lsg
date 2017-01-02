@@ -23,6 +23,34 @@
 
 /* END some layout customization */
 
+.matches-indicator {
+  left: 0;
+}
+.requests-indicator {
+  left: 40px;
+}
+
+.top-indicator {
+  position: absolute;
+  right: -10px; top: -10px;
+  font-family: Roboto, sans-serif;
+  font-size: 90%;
+  padding: 2px 4px 2px 3px;
+  font-weight: bold;
+  -webkit-transition: all .4s !important;
+  -o-transition: all .4s !important;
+  transition: all .4s !important;
+}
+
+.top-indicator.ng-enter {
+  top: -50px;
+
+}
+
+.top-indicator.ng-enter.ng-enter-active {
+  top: 0px;
+}
+
 .similar-ribon {
   position: absolute;
   margin-left: -10px;
@@ -381,6 +409,15 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
       padding: 1px 6px !important;
       font-size: 10px !important;
       left: 5% !important;
+  }
+  .matches-indicator {
+    left: 100px;
+  }
+  .requests-indicator {
+    left: 140px;
+  }
+  header nav {
+    height: 64px !important;
   }
 }
 

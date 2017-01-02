@@ -17,6 +17,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 a(ng-click="ctrl.loadGamesList('name,id')")
                     em.fa.fa-sort-alpha-asc(ng-class="{'text-success': ctrl.selectedFilter == 'name,id', 'text-gray-light': ctrl.selectedFilter != 'name,id'}")
                     md-tooltip(md-direction="bottom") Sort alphabetically
+        small.hidden-xs See which games are most wanted and which games people most own.
 
     .ball-pulse(ng-if="ctrl.loading && !ctrl.paginating" style="text-align: center; padding: 100px 0;")
         div
@@ -27,6 +28,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
         infinite-scroll-distance='2'
         infinite-scroll-container='div.content-wrapper.ng-scope'
         infinite-scroll-disabled="ctrl.loading")
+
         .card.game-list-item.animate(ng-repeat='game in ctrl.games track by game.id')
             .card-item
                 .label.label-warning.swap-indicator(ng-if="ctrl.iHave(game)")
@@ -38,7 +40,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                 a(href="/app/#/app/matches")
                     .label.label-info.swap-indicator(ng-if="ctrl.inMatches(game) && !ctrl.inOpenRequest(game)" style="right: 45px;")
                         .em.fa.fa-thumbs-up
-                        md-tooltip(md-direction="bottom") There is a match with this game!
+                        md-tooltip(md-direction="bottom") There is a match for this game!
                 a(href="/app/#/app/requests")
                     .label.label-success.swap-indicator(ng-if="ctrl.inOpenRequest(game)" style="right: 45px;")
                         .em.fa.fa-hand-o-up
