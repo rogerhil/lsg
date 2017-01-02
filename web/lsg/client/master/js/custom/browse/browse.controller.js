@@ -70,6 +70,14 @@
             return game.inMatches;
         };
 
+        self.inOpenRequest = function (game) {
+            if (!game.inOpenRequest) {
+                game.inOpenRequest = $rootScope.myOpenRequestsGamesIds.indexOf(game.id) != -1 ||
+                                     $rootScope.incomingOpenRequestsGamesIds.indexOf(game.id) != -1;
+            }
+            return game.inOpenRequest;
+        };
+
         self.loadGamesList = function (filter, concatenate) {
             self.loading = true;
             if (!concatenate) {
@@ -168,6 +176,13 @@
             self.close();
             $timeout(function () {
                 $state.transitionTo("app.matches");
+            }, 600);
+        };
+
+        self.openRequests = function () {
+            self.close();
+            $timeout(function () {
+                $state.transitionTo("app.requests");
             }, 600);
         };
 

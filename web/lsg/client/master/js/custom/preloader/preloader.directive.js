@@ -5,8 +5,8 @@
         .module('app.preloader')
         .directive('preloader', preloader);
 
-    preloader.$inject = ['$animate', '$timeout', '$rootScope', '$state', 'UsersService', '$mdDialog', 'MatchesService'];
-    function preloader($animate, $timeout, $rootScope, $state, UsersService, $mdDialog, MatchesService) {
+    preloader.$inject = ['$animate', '$timeout', '$rootScope', '$state', 'UsersService', '$mdDialog', 'MatchesService', 'RequestsService'];
+    function preloader($animate, $timeout, $rootScope, $state, UsersService, $mdDialog, MatchesService, RequestsService) {
         var counter = 0;
 
         var locationChange = function (event, next, current) {
@@ -153,6 +153,10 @@
                     // start polling
                     if (matchedState.name != 'app.matches') {
                         MatchesService.pollMatches();
+                    }
+                    if (matchedState.name != 'app.requests') {
+                        // just a gap of 1 second to not load request at the same time as matches
+                        $timeout(RequestsService.pollRequests, 1000);
                     }
                 } else {
                     //endCounter(scope, el);

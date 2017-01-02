@@ -17,25 +17,33 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                             .em.fa.fa-heart
                             md-tooltip(md-direction="bottom") You want this game
                         a(href="javascript:;" ng-click="ctrl.checkoutMatches()")
-                            .label.label-info.swap-indicator(ng-if="ctrl.game.inMatches" style="right: 45px;")
+                            .label.label-info.swap-indicator(ng-if="ctrl.game.inMatches && !ctrl.game.inOpenRequest" style="right: 45px;")
                                 .em.fa.fa-thumbs-up
                                 md-tooltip(md-direction="bottom") There is a match with this game!
+                        a(href="javascript:;" ng-click="ctrl.openRequests()")
+                            .label.label-success.swap-indicator(ng-if="ctrl.game.inOpenRequest" style="right: 45px;")
+                                .em.fa.fa-hand-o-up
+                                md-tooltip(md-direction="bottom") There is an open request involving this game
                         img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}')
                     div
                         h3(style="margin-top: 0;")
                             img(ng-src="{{ ctrl.game.platform.logo_image }}" alt="{{ctrl.game.platform.short_name}}" style="height: 40px;")
                             span(style="vertical-align: bottom;") {{ctrl.game.name}}
                         p
-                            .label.label-info(ng-if="ctrl.game.inMatches" style="margin-right: 10px;")
+                            .label.label-info(ng-if="ctrl.game.inMatches && !ctrl.game.inOpenRequest" style="margin-right: 10px;")
                                 .em.fa.fa-thumbs-up
                                 span &nbsp;
-                                a(href="/app/#/app/matches" style="color: #fff;") There is a match with this game.
+                                a(href="javascript:;" ng-click="ctrl.checkoutMatches()" style="color: #fff;") There is a match with this game
+                            .label.label-success(ng-if="ctrl.game.inOpenRequest" style="margin-right: 10px;")
+                                .em.fa.fa-hand-o-up
+                                span &nbsp;
+                                a(href="javascript:;" ng-click="ctrl.openRequests()" style="color: #fff;") There is an open request involving this game
                             .label.label-warning(ng-if="ctrl.game.iHave" style="margin-right: 10px;")
                                 .em.fa.fa-star
-                                span &nbsp; You have this game on your collection.
+                                span &nbsp; You have this game on your collection
                             .label.label-pink(ng-if="ctrl.game.iWant")
                                 .em.fa.fa-heart
-                                span &nbsp; You have this game on your wish list.
+                                span &nbsp; You have this game on your wish list
 
                         p
                             span(style="margin-right: 20px;")

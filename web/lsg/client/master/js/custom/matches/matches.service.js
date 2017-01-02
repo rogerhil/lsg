@@ -5,8 +5,8 @@
         .module('app.matches')
         .service('MatchesService', MatchesService);
 
-    MatchesService.$inject = ['$q', '$http', '$rootScope', '$timeout'];
-    function MatchesService($q, $http, $rootScope, $timeout) {
+    MatchesService.$inject = ['$q', '$http', '$rootScope', '$timeout', 'GlobalFunctions'];
+    function MatchesService($q, $http, $rootScope, $timeout, GlobalFunctions) {
         var self = this;
 
         self.getMatches = function () {
@@ -23,25 +23,10 @@
         };
 
         $rootScope.matchesPromise = undefined;
-        $rootScope.matchesPollingInterval = 10000;
+        $rootScope.matchesPollingInterval = 11000;
         $rootScope.matches = [];
         $rootScope.matchesWantedIds = [];
         $rootScope.matchesOwnedIds = [];
-
-        function highlight(el) {
-            el = $(el);
-            el.addClass('highlight-enter');
-            el.animate({'right': '+=20px'}, 200, 'swing', function () {
-                el.animate({'right': '-=20px'}, 200);
-            });
-            $timeout(function () {
-                el.addClass('highlight-exit');
-            }, 100);
-            $timeout(function () {
-                el.removeClass('highlight-enter');
-                el.removeClass('highlight-exit');
-            }, 2100);
-        }
 
         var loadMatches = function (callback) {
             self.getMatches().then(function (matches) {
@@ -54,10 +39,8 @@
                 if (callback) {
                     callback(matches);
                 }
-                console.log(matches.length);
-                console.log($rootScope.matches.length);
                 if (matches.length > $rootScope.matches.length) {
-                    highlight('.nav li[sref="app.matches"]');
+                    GlobalFunctions.highlight('.nav li[sref="app.matches"]');
                 }
                 $rootScope.matches = matches;
                 $rootScope.matchesWantedIds = matches.map(function (o) {

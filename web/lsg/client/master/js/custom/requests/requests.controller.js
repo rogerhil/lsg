@@ -26,8 +26,6 @@
         self.pendingMyRequests = [];
         self.pendingIncomingRequests = [];
 
-        self.requestsPollingInterval = 10000;
-        self.requestsPromise = undefined;
         self.tour = undefined;
 
         function checkToUpdateCountsStars(currentRequests, newRequests) {
@@ -44,52 +42,37 @@
             }
         }
 
-        self.loadMyRequests = function () {
-            RequestsService.getMyRequests().then(function (requests) {
-                checkToUpdateCountsStars(self.myRequests, requests);
-                self.myRequests = requests;
-                self.myRequestsLoaded = true;
-                updateImagesBackground();
-                if ($stateParams.my) {
-                    $timeout(function () {
-                        self.highlightRequest();
-                    }, 100);
-                }
-            });
-        };
-
-        self.loadIncomingRequests = function () {
-            RequestsService.getIncomingRequests().then(function (requests) {
-                checkToUpdateCountsStars(self.incomingRequests, requests);
-                self.incomingRequests = requests;
-                self.incomingRequestsLoaded = true;
-                updateImagesBackground();
-                if ($stateParams.inc) {
-                    $timeout(function () {
-                        self.highlightRequest();
-                    }, 100);
-                }
-            });
-        };
-
-        self.loadAllRequests = function (force) {
-            if (!$('md-dialog').length || force) {
-                self.loadMyRequests();
-                self.loadIncomingRequests();
+        self.afterLoadMyRequests = function (requests) {
+            checkToUpdateCountsStars(self.myRequests, requests);
+            self.myRequests = requests;
+            self.myRequestsLoaded = true;
+            updateImagesBackground();
+            if ($stateParams.my) {
+                $timeout(function () {
+                    self.highlightRequest();
+                }, 100);
             }
         };
 
-        self.pollRequests = function () {
-            self.loadAllRequests(true);
-            self.requestsPromise = $interval(self.loadAllRequests, self.requestsPollingInterval);
+        self.afterLoadIncomingRequests = function (requests) {
+            checkToUpdateCountsStars(self.incomingRequests, requests);
+            self.incomingRequests = requests;
+            self.incomingRequestsLoaded = true;
+            updateImagesBackground();
+            if ($stateParams.inc) {
+                $timeout(function () {
+                    self.highlightRequest();
+                }, 100);
+            }
         };
 
-        if (self.requestsPromise == undefined) {
-            self.pollRequests();
-        }
+        RequestsService.pollRequests(self.afterLoadMyRequests, self.afterLoadIncomingRequests);
 
         $scope.$on('$destroy', function() {
-            $interval.cancel(self.requestsPromise);
+            $timeout.cancel($rootScope.pollRequestsPromise);
+            $timeout(function () {
+                RequestsService.pollRequests();
+            }, $rootScope.pollRequestsInterval);
         });
 
         function updateImagesBackground() {
@@ -117,9 +100,6 @@
             if (self.tour || $stateParams.id === undefined) {
                 return;
             }
-            //$timeout.cancel(self.requestsPromise);
-            $interval.cancel(self.requestsPromise);
-            self.requestsPromise = undefined;
             // BootstrapTour is not compatible with z-index based layout
             // so adding position:static for this case makes the browser
             // to ignore the property
@@ -143,9 +123,7 @@
                     "  </div>" +
                     "</div>",
                 onEnd: function (t) {
-                    if (self.requestsPromise == undefined) {
-                        self.pollRequests();
-                    }
+
                 },
                 steps: [
                 {

@@ -5,16 +5,33 @@
         .module('app.requests')
         .service('RequestsService', RequestsService);
 
-    RequestsService.$inject = ['$q', '$http', '$rootScope'];
-    function RequestsService($q, $http, $rootScope) {
-        var userId = $rootScope.user.id;
-        var baseUrl = {
-            myRequests: '/api/users/' + userId + '/my_requests/',
-            incomingRequests: '/api/users/' + userId + '/incoming_requests/',
-            requests: '/api/users/' + userId + '/requests/'
-        };
-        this.baseUrl = baseUrl;
-        
+    RequestsService.$inject = ['$q', '$http', '$rootScope', '$timeout', 'GlobalFunctions'];
+    function RequestsService($q, $http, $rootScope, $timeout, GlobalFunctions) {
+
+        var self = this;
+
+        $rootScope.pollRequestsInterval = 10000;
+        $rootScope.pollRequestsPromise = undefined;
+        $rootScope.myRequests = [];
+        $rootScope.incomingRequests = [];
+        $rootScope.myOpenRequests = [];
+        $rootScope.incomingOpenRequests = [];
+        $rootScope.myOpenRequestsGamesIds = [];
+        $rootScope.incomingOpenRequestsGamesIds = [];
+
+        self.highlightMy = false;
+        self.highlightInc = false;
+
+        function getBaseUrl(key) {
+            var userId = $rootScope.user.id;
+            var baseUrl = {
+                myRequests: '/api/users/' + userId + '/my_requests/',
+                incomingRequests: '/api/users/' + userId + '/incoming_requests/',
+                requests: '/api/users/' + userId + '/requests/'
+            };
+            return baseUrl[key];
+        }
+
         var Request = function (data) {
             for (var key in data) {
                 this[key] = data[key];
@@ -65,28 +82,95 @@
             return $rootScope.Status.finalized_statuses.indexOf(this.status) != -1;
         };
 
-        this.Request = Request;
+        self.Request = Request;
 
-        this.getMyRequests = function () {
+        self.getMyRequests = function () {
             var q = $q.defer();
             $http
-                .get(baseUrl.myRequests)
+                .get(getBaseUrl('myRequests'))
                 .success(function (response) {
                     var requests = response.results.map(function (o) {return new Request(o)});
                     q.resolve(requests);
                 });
             return q.promise;
         };
-        this.getIncomingRequests = function () {
+        self.getIncomingRequests = function () {
             var q = $q.defer();
             $http
-                .get(baseUrl.incomingRequests)
+                .get(getBaseUrl('incomingRequests'))
                 .success(function (response) {
                     var requests = response.results.map(function (o) {return new Request(o)});
                     q.resolve(requests);
                 });
             return q.promise;
         };
+
+        function highlightMenu () {
+            if (self.highlightMy && self.highlightInc) {
+                GlobalFunctions.highlight('.nav li[sref="app.requests"]');
+            }
+        }
+
+        function filterOpen(requests) {
+            var f =  requests.filter(function (o) {
+                return o.isOpen();
+            });
+            return f;
+        }
+
+        function allGamesIds(requests) {
+            return requests.reduce(function (reduced, request) {
+                var ids = [request.requester_game.id, request.requested_game.id];
+                return reduced.concat(ids);
+            }, []);
+        }
+
+        var loadMyRequests = function (callback) {
+            self.getMyRequests().then(function (requests) {
+                self.highlightMy = true;
+                if (filterOpen(requests).length != $rootScope.myOpenRequests.length) {
+                    highlightMenu();
+                }
+                $rootScope.myRequests = requests;
+                $rootScope.myOpenRequests = filterOpen(requests);
+                $rootScope.myOpenRequestsGamesIds = allGamesIds($rootScope.myOpenRequests);
+                if (callback) {
+                    callback(requests);
+                }
+            });
+        };
+
+        var loadIncomingRequests = function (callback) {
+            self.getIncomingRequests().then(function (requests) {
+                self.highlightInc = true;
+                if (filterOpen(requests).length != $rootScope.incomingOpenRequests.length) {
+                    highlightMenu();
+                }
+                $rootScope.incomingRequests = requests;
+                $rootScope.incomingOpenRequests = filterOpen(requests);
+                $rootScope.incomingOpenRequestsGamesIds = allGamesIds($rootScope.incomingOpenRequests);
+                if (callback) {
+                    callback(requests);
+                }
+            });
+        };
+
+        var loadAllRequests = function (callbackMy, callbackIncoming, preventOnDialog) {
+            if (!preventOnDialog || !$('md-dialog').length) {
+                loadMyRequests(callbackMy);
+                loadIncomingRequests(callbackIncoming);
+            }
+        };
+
+        self.pollRequests = function (callbackMy, callbackIncoming, preventOnDialog) {
+            self.highlightMy = false;
+            self.highlightInc = false;
+            loadAllRequests(callbackMy, callbackIncoming, preventOnDialog);
+            $rootScope.pollRequestsPromise = $timeout(function () {
+                self.pollRequests(callbackMy, callbackIncoming, true);
+            }, $rootScope.pollRequestsInterval);
+        };
+
         this.createSwapRequest = function (requested, requested_game,
                                            requester, requester_game,
                                            requester_game_condition_notes,
@@ -101,7 +185,7 @@
                 distance: distance
             };
             $http
-                .post(baseUrl.myRequests, data)
+                .post(getBaseUrl('myRequests'), data)
                 .success(function (response) {
                     q.resolve(new Request(response));
                 }).error(function(response, status) {
@@ -114,7 +198,7 @@
         };
         this.acceptRequest = function (requestId,
                                        requested_game_condition_notes) {
-            var url = baseUrl.incomingRequests + requestId + '/accept/';
+            var url = getBaseUrl('incomingRequests') + requestId + '/accept/';
             var q = $q.defer();
             var data = {
                 requested_game_condition_notes: requested_game_condition_notes,
@@ -127,7 +211,7 @@
             return q.promise;
         };
         this.refuseRequest = function (requestId) {
-            var url = baseUrl.incomingRequests + requestId + '/refuse/';
+            var url = getBaseUrl('incomingRequests') + requestId + '/refuse/';
             var q = $q.defer();
             $http
                 .post(url)
@@ -137,7 +221,7 @@
             return q.promise;
         };
         this.cancelRequest = function (requestId) {
-            var url = baseUrl.myRequests + requestId + '/cancel/';
+            var url = getBaseUrl('myRequests') + requestId + '/cancel/';
             var q = $q.defer();
             $http
                 .post(url)
@@ -147,7 +231,7 @@
             return q.promise;
         };
         this.finalizeRequest = function (requestId, swapped, other_feedback, other_feedback_notes) {
-            var url = baseUrl.requests + requestId + '/finalize/';
+            var url = getBaseUrl('requests') + requestId + '/finalize/';
             var q = $q.defer();
             var data = {
                 swapped: swapped,
@@ -162,7 +246,7 @@
             return q.promise;
         };
         this.archiveRequest = function (requestId) {
-            var url = baseUrl.requests + requestId + '/archive/';
+            var url = getBaseUrl('requests') + requestId + '/archive/';
             var q = $q.defer();
             $http
                 .post(url)
@@ -172,7 +256,7 @@
             return q.promise;
         };
         this.archiveAllRequests = function () {
-            var url = baseUrl.requests + 'archive-all/';
+            var url = getBaseUrl('requests') + 'archive-all/';
             var q = $q.defer();
             $http
                 .post(url)

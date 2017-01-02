@@ -17,7 +17,6 @@
         self.matchesPercentage = 0;
         self.updateRecentFeedbackPromise = undefined;
         self.updateRecentActivitiesPromise = undefined;
-        self.updateMatchesPercentagePromise = undefined;
         self.classyOptions = {
             speed: 5,
             fontSize: "30px",
@@ -35,7 +34,10 @@
         $scope.$on('$destroy', function() {
             $timeout.cancel(self.updateRecentFeedbackPromise);
             $timeout.cancel(self.updateRecentActivitiesPromise);
-            $timeout.cancel(self.updateMatchesPercentagePromise);
+            $timeout.cancel($rootScope.matchesPromise);
+            $timeout(function () {
+                MatchesService.pollMatches();
+            }, $rootScope.matchesPollingInterval);
         });
 
         var updateRecentFeedback = function () {
@@ -63,14 +65,12 @@
             }
         };
 
-        var updateMatchesPercentage = function () {
-            MatchesService.getMatches().then(function (matches) {
-                var filtered = matches.filter(function (o) {
-                    return !o.ongoing && !o.iwish.is_similar && !o.no_games_left;
-                });
-                self.matchesLength = filtered.length;
-                reloadPerc();
+        var updateMatchesPercentage = function (matches) {
+            var filtered = matches.filter(function (o) {
+                return !o.ongoing && !o.iwish.is_similar && !o.no_games_left;
             });
+            self.matchesLength = filtered.length;
+            reloadPerc();
             UsersService.getWishlist().then(function (wishlist) {
                 var length = wishlist.reduce(function (a, b) {
                     return a + b.items.length;
@@ -78,12 +78,15 @@
                 self.wishlistLength = length || 1;
                 reloadPerc();
             });
-            self.updateMatchesPercentagePromise = $timeout(updateMatchesPercentage, 30000);
         };
 
         updateRecentFeedback();
         updateRecentActivities();
-        updateMatchesPercentage();
+
+        if ($rootScope.matchesPromise) {
+            $timeout.cancel($rootScope.matchesPromise);
+        }
+        MatchesService.pollMatches(updateMatchesPercentage);
 
     }
 })();

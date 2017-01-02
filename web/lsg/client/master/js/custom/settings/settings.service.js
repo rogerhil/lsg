@@ -4,7 +4,9 @@
     angular
         .module('app.customSettings')
         .service('ConstantsService', ConstantsService)
-        .service('GlobalFixes', GlobalFixes);
+        .service('GlobalFixes', GlobalFixes)
+        .service('GlobalFunctions', GlobalFunctions);
+
 
     ConstantsService.$inject = ['$q', '$http'];
     function ConstantsService($q, $http) {
@@ -18,6 +20,25 @@
             return q.promise;
         };
 
+    }
+
+    GlobalFunctions.$inject = ['$timeout'];
+    function GlobalFunctions($timeout) {
+
+        this.highlight = function (el) {
+            el = $(el);
+            el.addClass('highlight-enter');
+            el.animate({'right': '+=20px'}, 200, 'swing', function () {
+                el.animate({'right': '-=20px'}, 200);
+            });
+            $timeout(function () {
+                el.addClass('highlight-exit');
+            }, 100);
+            $timeout(function () {
+                el.removeClass('highlight-enter');
+                el.removeClass('highlight-exit');
+            }, 2100);
+        }
     }
 
     GlobalFixes.$inject = ['$timeout'];
