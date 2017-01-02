@@ -5,8 +5,8 @@
         .module('app.dashboard')
         .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$scope', '$timeout', 'UsersService', 'MatchesService'];
-    function DashboardController($scope, $timeout, UsersService, MatchesService) {
+    DashboardController.$inject = ['$scope', '$timeout', '$rootScope', 'UsersService', 'MatchesService'];
+    function DashboardController($scope, $timeout, $rootScope, UsersService, MatchesService) {
         var self = this;
         self.recentFeedback = [];
         self.recentFeedbackLoaded = false;

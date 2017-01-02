@@ -8,8 +8,10 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                     md-icon(md-svg-src="app/img/icons/ic_close_24px.svg", aria-label="Close dialog")
         md-dialog-content
             .md-dialog-content(style="min-width: 320px;")
+                div.visible-xs(show-sm style="text-align: center;")
+                    img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}' style="max-width: 250px;")
                 div(layout="row")
-                    div(style="margin-right: 20px; position: relative;")
+                    div.hidden-xs(style="margin-right: 20px; position: relative;")
                         .label.label-warning.swap-indicator(ng-if="ctrl.game.iHave")
                             .em.fa.fa-star
                             md-tooltip(md-direction="bottom") You have this game
@@ -24,7 +26,7 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                             .label.label-success.swap-indicator(ng-if="ctrl.game.inOpenRequest" style="right: 45px;")
                                 .em.fa.fa-hand-o-up
                                 md-tooltip(md-direction="bottom") There is an open request involving this game
-                        img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}')
+                        img(ng-src='{{ctrl.game.images.front_thumb_medium}}', alt='{{ctrl.game.full_name}}' style="max-width: 250px;")
                     div
                         h3(style="margin-top: 0;")
                             img(ng-src="{{ ctrl.game.platform.logo_image }}" alt="{{ctrl.game.platform.short_name}}" style="height: 40px;")
@@ -91,7 +93,7 @@ md-dialog(aria-label="{{ ctrl.game.full_name }}", ng-cloak, style="max-width: 90
                 //    span {{ ctrl.game.api_rating }}
 
                 p(style="margin-top: 20px; color: #FF3800;" ng-if="ctrl.game.owned_count || ctrl.game.wanted_count")
-                    i The markers displayed on the map are not exact location of the users, just an approximation.
+                    i The markers displayed on the map are not exact location of the users, just an approximation near by each users' location.
                 .gmap(ui-map='ctrl.usersMap', ui-options='ctrl.usersMapOptions', class="map-canvas" style="margin-top: 20px;" ng-if="ctrl.game.owned_count || ctrl.game.wanted_count")
 
                 div(style="clear: both;")

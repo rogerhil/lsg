@@ -5,8 +5,8 @@
         .module('app.matches')
         .service('MatchesService', MatchesService);
 
-    MatchesService.$inject = ['$q', '$http', '$rootScope', '$timeout', 'GlobalFunctions'];
-    function MatchesService($q, $http, $rootScope, $timeout, GlobalFunctions) {
+    MatchesService.$inject = ['$q', '$http', '$rootScope', '$state', '$timeout', 'GlobalFunctions'];
+    function MatchesService($q, $http, $rootScope, $state, $timeout, GlobalFunctions) {
         var self = this;
 
         self.getMatches = function () {
@@ -25,10 +25,17 @@
         $rootScope.matchesPromise = undefined;
         $rootScope.matchesPollingInterval = 11000;
         $rootScope.matches = [];
+        $rootScope.matchesIndicatorRead = true;
         $rootScope.matchesWantedIds = [];
         $rootScope.matchesOwnedIds = [];
+        $rootScope.markMatchesIndicatorAsRead = function () {
+            $rootScope.matchesIndicatorRead = true;
+        };
 
         var loadMatches = function (callback) {
+            if ($state.current.name == 'app.matches') {
+                $rootScope.matchesIndicatorRead = true;
+            }
             self.getMatches().then(function (matches) {
                 // filter invalid matches anyway
                 matches = matches.filter(function (match) {
@@ -41,6 +48,13 @@
                 }
                 if (matches.length > $rootScope.matches.length) {
                     GlobalFunctions.highlight('.nav li[sref="app.matches"]');
+                }
+                if (matches.length != $rootScope.matches.length) {
+                    if ($state.current.name == 'app.matches') {
+                        $rootScope.matchesIndicatorRead = true;
+                    } else {
+                        $rootScope.matchesIndicatorRead = false;
+                    }
                 }
                 $rootScope.matches = matches;
                 $rootScope.matchesWantedIds = matches.map(function (o) {

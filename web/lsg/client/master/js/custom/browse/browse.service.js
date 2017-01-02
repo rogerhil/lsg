@@ -5,11 +5,15 @@
         .module('app.browse')
         .service('BrowseService', BrowseService);
 
-    BrowseService.$inject = ['$q', '$http', '$rootScope', 'Notify'];
-    function BrowseService($q, $http, $rootScope, Notify) {
+    BrowseService.$inject = ['$q', '$http', '$rootScope', 'Notify', 'Utils'];
+    function BrowseService($q, $http, $rootScope, Notify, Utils) {
         var self = this;
         self.limit = 60;
         self.counts = {};
+
+        if (Utils.isMobile()) {
+            self.limit = 20;
+        }
 
         self.getGames = function (ordering, platform, page) {
             var url = '/api/games/detailed/?limit=' + self.limit + '&ordering=' + ordering;

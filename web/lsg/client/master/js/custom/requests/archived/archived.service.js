@@ -7,12 +7,11 @@
 
     ArchivedRequestsService.$inject = ['$q', '$http', '$rootScope', 'RequestsService'];
     function ArchivedRequestsService($q, $http, $rootScope, RequestsService) {
-        var userId = $rootScope.user.id;
         var Request = RequestsService.Request;
 
         this.getArchivedRequests = function () {
             var q = $q.defer();
-            var url = RequestsService.baseUrl.requests + 'archived/';
+            var url = RequestsService.getBaseUrl('requests') + 'archived/';
             $http
                 .get(url)
                 .success(function (response) {

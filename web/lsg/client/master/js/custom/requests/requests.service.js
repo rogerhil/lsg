@@ -5,8 +5,8 @@
         .module('app.requests')
         .service('RequestsService', RequestsService);
 
-    RequestsService.$inject = ['$q', '$http', '$rootScope', '$timeout', 'GlobalFunctions'];
-    function RequestsService($q, $http, $rootScope, $timeout, GlobalFunctions) {
+    RequestsService.$inject = ['$q', '$http', '$rootScope', '$state', '$timeout', 'GlobalFunctions'];
+    function RequestsService($q, $http, $rootScope, $state, $timeout, GlobalFunctions) {
 
         var self = this;
 
@@ -18,6 +18,11 @@
         $rootScope.incomingOpenRequests = [];
         $rootScope.myOpenRequestsGamesIds = [];
         $rootScope.incomingOpenRequestsGamesIds = [];
+        $rootScope.requestsIndicatorRead = true;
+
+        $rootScope.markRequestsIndicatorAsRead = function () {
+            $rootScope.requestsIndicatorRead = true;
+        };
 
         self.highlightMy = false;
         self.highlightInc = false;
@@ -31,6 +36,8 @@
             };
             return baseUrl[key];
         }
+
+        self.getBaseUrl = getBaseUrl;
 
         var Request = function (data) {
             for (var key in data) {
@@ -108,6 +115,11 @@
         function highlightMenu () {
             if (self.highlightMy && self.highlightInc) {
                 GlobalFunctions.highlight('.nav li[sref="app.requests"]');
+                if ($state.current.name == 'app.requests') {
+                    $rootScope.requestsIndicatorRead = true;
+                } else {
+                    $rootScope.requestsIndicatorRead = false;
+                }
             }
         }
 
@@ -156,6 +168,9 @@
         };
 
         var loadAllRequests = function (callbackMy, callbackIncoming, preventOnDialog) {
+            if ($state.current.name == 'app.requests') {
+                $rootScope.requestsIndicatorRead = true;
+            }
             if (!preventOnDialog || !$('md-dialog').length) {
                 loadMyRequests(callbackMy);
                 loadIncomingRequests(callbackIncoming);

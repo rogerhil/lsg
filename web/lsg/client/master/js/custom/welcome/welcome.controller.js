@@ -72,9 +72,7 @@
         }
 
         $timeout(function () {
-            console.log('before reload');
             $route.reload();
-            console.log('after reload');
         }, 15000);
 
 

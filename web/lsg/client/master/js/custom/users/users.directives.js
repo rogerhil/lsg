@@ -12,7 +12,6 @@
 
     animateModelChange.$inject = ['$timeout'];
     function animateModelChange($timeout) {
-        console.log(111);
         function animateModelChangeLink(scope, element, attrs) {
             var timer = null,
                 timeout = (attrs.timeout || getTransitionDuration(element[0], attrs.$normalize)) || 300,
