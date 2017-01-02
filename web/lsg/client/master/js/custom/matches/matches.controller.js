@@ -201,12 +201,12 @@
 
         RequestsService.getMyRequests().then(function (requests) {
             self.pendingMyRequests = requests.filter(function (request) {
-                 return (request.requested_game.id == self.iwish.id || request.requester_game.id == self.game.id);
+                 return ((request.requested_game.id == self.iwish.id || request.requester_game.id == self.game.id) && request.isPending());
             });
         });
         RequestsService.getIncomingRequests().then(function (requests) {
             self.pendingIncomingRequests = requests.filter(function (request) {
-                 return (request.requester_game.id == self.iwish.id || request.requested_game.id == self.game.id);
+                 return ((request.requester_game.id == self.iwish.id || request.requested_game.id == self.game.id) && request.isPending());
             });
         });
 
@@ -221,6 +221,5 @@
             requestSwapDialogCtrl.createSwapRequest();
         };
     }
-
 
 })();
