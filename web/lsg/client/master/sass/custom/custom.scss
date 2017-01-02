@@ -23,14 +23,48 @@
 
 /* END some layout customization */
 
+
+
+[animate-model-change] {
+  -webkit-transition: all .4s !important;
+  -o-transition: all .4s !important;
+  transition: all .4s !important;
+}
+
+.animate-up {
+  background: $mdc-red-A700 !important;
+  transform: scale(4) !important;
+}
+
+.animate-down {
+  background: $mdc-blue-500 !important;
+  transform: scale(0.7) !important;
+}
+
+.animate-up-small {
+  background: $mdc-red-A700 !important;
+  transform: scale(1.5) !important;
+}
+
+
+
 .matches-indicator {
   left: 0;
 }
 .requests-indicator {
-  left: 40px;
+  left: 20px;
 }
 
-.top-indicator {
+.top-indicators .fa {
+  color: #607D8B;
+  position: relative;
+}
+
+.top-indicators .fa.active {
+  color: #fff;
+}
+
+.top-indicators .label {
   position: absolute;
   right: -10px; top: -10px;
   font-family: Roboto, sans-serif;
@@ -42,12 +76,12 @@
   transition: all .4s !important;
 }
 
-.top-indicator.ng-enter {
+.top-indicators .label.ng-enter {
   top: -50px;
 
 }
 
-.top-indicator.ng-enter.ng-enter-active {
+.top-indicators .label.ng-enter.ng-enter-active {
   top: 0px;
 }
 

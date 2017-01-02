@@ -18,18 +18,22 @@ nav.navbar.topnavbar(role='navigation')
                 em.icon-logout
                 md-tooltip(md-direction="bottom") Log out
 
-        ul.nav.navbar-nav
+        ul.nav.navbar-nav.top-indicators
 
             li
                 // Button to show/hide the sidebar on mobile. Visible on mobile only.
                 a.sidebar-toggle.matches-indicator(href='/app/#/app/matches', md-ink-ripple)
-                    em.fa.fa-exchange(style="color: #607D8B; position: relative;")
-                        .label.label-danger.top-indicator(ng-if="matches.length") {{matches.length}}
+                    em.fa.fa-exchange(ng-class="{active: matches.length}")
+                        .label.label-danger(ng-if="matches.length"
+                                            animate-model-change model="{{matches.length}}" increment-class="animate-up" decrement-class="animate-down")
+                            | {{matches.length}}
                     md-tooltip.hidden-xs(md-direction="bottom") Matches
             li
                 a.sidebar-toggle.requests-indicator(href='/app/#/app/requests', ng-click="app.asideToggled = !app.asideToggled", md-ink-ripple)
-                    em.fa.fa-hand-o-up(style="color: #607D8B; position: relative;")
-                        .label.label-danger.top-indicator(ng-if="myRequests.length || incomingRequests.length") {{ myRequests.length + incomingRequests.length }}
+                    em.fa.fa-hand-o-up(ng-class="{active: myRequests.length || incomingRequests.length}")
+                        .label.label-danger(ng-if="myRequests.length || incomingRequests.length"
+                                            animate-model-change model="{{myRequests.length + incomingRequests.length}}" increment-class="animate-up" decrement-class="animate-down")
+                            | {{ myRequests.length + incomingRequests.length }}
                     md-tooltip.hidden-xs(md-direction="bottom") Requests
 
             li
