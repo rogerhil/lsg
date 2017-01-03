@@ -502,12 +502,11 @@ class User(AbstractUser):
     def matches_cache_key(self):
         return self.get_matches_cache_key_for(self.id)
 
-    @property
-    def serialized_matches(self):
+    def serialized_matches(self, cached=True):
         cache_key = self.matches_cache_key
-        cached = cache.get(cache_key)
-        if cached:
-            return cached
+        cached_matches = cache.get(cache_key)
+        if cached and cached_matches:
+            return cached_matches
 
         serialized_games = {}
 

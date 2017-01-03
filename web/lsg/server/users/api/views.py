@@ -111,7 +111,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'])
     def matches(self, request, pk):
-        return views.Response(request.user.serialized_matches)
+        return views.Response(request.user.serialized_matches())
 
     @detail_route(methods=['get'], url_path='recent-feedback',
                   permission_classes=[IsAuthenticated])

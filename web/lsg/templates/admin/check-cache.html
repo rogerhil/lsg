@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static %}
+{% load i18n %}
+
+{% block extrahead %}
+  {{ block.super }}
+{% endblock extrahead %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; Statistics
+    </div>
+{% endblock %}
+
+{% block object-tools %}
+    {{super}}
+    <h1>Check caches</h1>
+    <div id="check-caches">
+        {% if differences %}
+            <ul>
+                {% for diff in differences %}
+                    <li>
+                        <h2>{{ diff.user.full_name }}</h2>
+                        <h3>Diff:</h3>
+                        <ol>
+                            {% for item in diff %}
+                            <li>
+                                {{ item }}
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        <h3>Matches: <a href="javascript:;" for="matches" class="expand-collapse">expand/collapse</a></h3>
+                        <div style="display: none;" class="matches">
+                            {% with matches=diff.matches %}
+                                {% include 'admin/matches.html' %}
+                            {% endwith %}
+                        </div>
+                        <h3>Cached: <a href="javascript:;" for="cached" class="expand-collapse">expand/collapse</a></h3>
+                        <div style="display: none;" class="cached">
+                            {% with matches=diff.cached %}
+                                {% include 'admin/matches.html' %}
+                            {% endwith %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            Matches cache are ok, no differences.
+        {% endif %}
+    </div>
+
+    <script>
+        $('.expand-collapse').click(function () {
+            var klass = $(this).attr('for');
+            var el = $(this).parent().parent().find('.' + klass);
+            if (el.is(':hidden')) {
+                el.slideDown();
+            } else {
+                el.slideUp();
+            }
+        });
+    </script>
+
+{% endblock %}

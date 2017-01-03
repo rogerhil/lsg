@@ -1,3 +1,5 @@
+from dictdiffer import diff
+
 from django.contrib.auth import logout
 from django.views.generic import RedirectView, TemplateView
 from django.http import Http404
@@ -43,7 +45,7 @@ class AdminStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         matches = []
         for user in User.objects.filter(deleted=False, accepted_terms=True, enabled=True):
-            matches.append((user, user.matches))
+            matches.append((user, user.serialized_matches()))
         kwargs['matches'] = matches
         kwargs['requests'] = SwapRequest.objects.all()\
             .select_related('requester').select_related('requested') \
@@ -52,3 +54,19 @@ class AdminStatisticsView(TemplateView):
             .select_related('requester_game__platform') \
             .select_related('requested_game__platform')
         return super(AdminStatisticsView, self).get_context_data(**kwargs)
+
+
+class CheckCacheView(TemplateView):
+    template_name = 'admin/check-cache.html'
+
+    def get_context_data(self, **kwargs):
+        differences = []
+        for user in User.objects.filter(deleted=False, accepted_terms=True, enabled=True):
+            matches = user.serialized_matches(False)
+            cached = user.serialized_matches()
+            difference = list(diff(matches, cached))
+            if difference:
+                differences.append(dict(user=user, matches=matches, cached=cached,
+                                        difference=difference))
+        kwargs['differences'] = differences
+        return super(CheckCacheView, self).get_context_data(**kwargs)

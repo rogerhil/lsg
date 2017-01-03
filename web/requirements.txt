@@ -23,3 +23,4 @@ git+https://github.com/celery/django-celery.git
 thegamesdb
 python-memcached
 rest-framework-cache
+dictdiffer

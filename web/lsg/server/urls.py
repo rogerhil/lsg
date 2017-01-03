@@ -31,7 +31,7 @@ from constants import ConstantsView
 from mail.views import SwapRequestEmailPreview, SwapRequestEmailSendTest
 from scripts.views import CeleryTaskLog, WatchCeleryTask, StopCeleryTask, \
     KillCeleryTask
-from users.views import Logout, Done, AdminStatisticsView
+from users.views import Logout, Done, AdminStatisticsView, CheckCacheView
 from games.api.views import GameViewSet, PlatformViewSet
 from users.api.views import UsersViewSet, CollectionItemViewSet, \
     WishlistViewSet, AuthenticatedUserView
@@ -85,6 +85,7 @@ urlpatterns = [
     url(r'^logout/$', Logout.as_view(), name='logout'),
 
     url(r'^lsgmanagement/statistics/', s(AdminStatisticsView.as_view()), name="admin_statistcts"),
+    url(r'^lsgmanagement/check-cache/', s(CheckCacheView.as_view()), name="admin_check_cache"),
 
     url(r'^mail/swap-request/(?P<template_name>[\w\-]+)/preview/',
         s(SwapRequestEmailPreview.as_view()),
