@@ -151,10 +151,10 @@
                     endCounter(scope, el);
 
                     // start polling
-                    if (matchedState.name != 'app.matches') {
+                    if (!matchedState || matchedState.name != 'app.matches') {
                         MatchesService.pollMatches();
                     }
-                    if (matchedState.name != 'app.requests') {
+                    if (!matchedState || matchedState.name != 'app.requests') {
                         // just a gap of 1 second to not load request at the same time as matches
                         $timeout(RequestsService.pollRequests, 1000);
                     }
