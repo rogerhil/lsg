@@ -58,7 +58,7 @@ RUN htpasswd -bc /etc/nginx/.htpasswd lsg Identificad0
 # COPY requirements.txt and RUN pip install BEFORE adding the rest of your code, this will cause Docker's caching mechanism
 # to prevent re-installinig (all your) dependencies when you made a change a line or two in your app.
 
-COPY lsg/requirements.txt /app/
+COPY requirements.txt /app/
 RUN pip install -r /app/requirements.txt
 
 # add unprivileged lsg
@@ -81,10 +81,10 @@ COPY uwsgi_params /app
 COPY uwsgi.ini /app
 
 # apply patches
-COPY lsg/patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstream/
-COPY lsg/patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packages/djcelery/backends/
-COPY lsg/patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
-COPY lsg/patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
+COPY patches/actstream/urls.py /usr/local/lib/python3.5/site-packages/actstream/
+COPY patches/djcelery/backends/cache.py /usr/local/lib/python3.5/site-packages/djcelery/backends/
+COPY patches/pg_fts/fields.py /usr/local/lib/python3.5/site-packages/pg_fts/
+COPY patches/pg_fts/migrations.py /usr/local/lib/python3.5/site-packages/pg_fts/
 
 COPY bashrc /root/.bashrc
 COPY vimrc /root/.vimrc
