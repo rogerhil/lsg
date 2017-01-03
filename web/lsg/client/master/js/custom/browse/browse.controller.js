@@ -336,7 +336,7 @@
                 }
 
                 for (var k = 0; k < self.wantedBy.length; k++) {
-                    var user = self.wantedBy[0];
+                    var user = self.wantedBy[k];
                     var userPosition = randomMapLatLngNearByUser(user);
                     if (user.id == $rootScope.user.id) {
                         continue;
