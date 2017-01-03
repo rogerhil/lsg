@@ -70,10 +70,10 @@
                     } else {
                         return '1 person wants this game';
                     }
-                case 2:
+                default:
                     var title = c + ' people want this game';
                     if (self.iWant(game)) {
-                        title += ' (including you)'
+                        title += ' (including you)';
                     }
                     return title;
             }
@@ -90,7 +90,7 @@
                     } else {
                         return '1 person has this game';
                     }
-                case 2:
+                default:
                     var title = c + ' people have this game';
                     if (self.iHave(game)) {
                         title += ' (including you)'
