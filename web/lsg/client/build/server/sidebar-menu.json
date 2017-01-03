@@ -45,6 +45,13 @@
     "label": "label label-primary"
   },
   {
+    "text": "Browse",
+    "sref": "app.browse",
+    "icon": "fa fa-search",
+    "alert": "NEW!",
+    "label": "label label-pink"
+  },
+  {
     "text": "Invite",
     "sref": "app.invite",
     "icon": "fa fa-group",
