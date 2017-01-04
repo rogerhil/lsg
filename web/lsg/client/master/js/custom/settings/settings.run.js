@@ -5,9 +5,9 @@
         .module('app.customSettings')
         .run(customSettingsRun);
 
-    customSettingsRun.$inject = ['$rootScope', 'ConstantsService'];
+    customSettingsRun.$inject = ['$rootScope', 'ConstantsService', 'VersionService'];
 
-    function customSettingsRun($rootScope, ConstantsService) {
+    function customSettingsRun($rootScope, ConstantsService, VersionService) {
 
         $rootScope.constants = {};
 
@@ -42,7 +42,8 @@
             hiddenFooter: false,
             offsidebarOpen: false,
             asideToggled: false,
-            viewAnimation: 'ng-fadeInUp'
+            viewAnimation: 'ng-fadeInUp',
+            incVersion: VersionService.getIncVersion()
         };
 
         if ($rootScope.user === undefined || $rootScope.user == null) {

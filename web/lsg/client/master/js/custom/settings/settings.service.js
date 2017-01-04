@@ -5,8 +5,20 @@
         .module('app.customSettings')
         .service('ConstantsService', ConstantsService)
         .service('GlobalFixes', GlobalFixes)
-        .service('GlobalFunctions', GlobalFunctions);
+        .service('GlobalFunctions', GlobalFunctions)
+        .service('VersionService', VersionService);
 
+    VersionService.$inject = ['$q', '$http'];
+    function VersionService($q, $http) {
+        var url = 'server/inc-version.txt?v=' + (new Date().getTime()); // jumps cache
+        var q = $q.defer();
+        this.getIncVersion = function () {
+            $http.get(url).success(function (response) {
+                q.resolve(response);
+            });
+            return q.promise;
+        };
+    }
 
     ConstantsService.$inject = ['$q', '$http'];
     function ConstantsService($q, $http) {
