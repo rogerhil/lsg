@@ -8,8 +8,8 @@
     /*
      platformSelect
      */
-    platformSelect.$inject = [];
-    function platformSelect () {
+    platformSelect.$inject = ['$rootScope'];
+    function platformSelect ($rootScope) {
         var controller = ['$scope', '$timeout', 'GamesService', function ($scope, $timeout, GamesService) {
             $scope.popularPlatforms = [];
             $scope.retroPlatforms = [];
@@ -66,7 +66,7 @@
                 allowall: '='
             },
             controller: controller,
-            templateUrl: 'app/views/games/directives/platform-select.html'
+            templateUrl: $rootScope.viewPath('games/directives/platform-select.html')
         }
     }
 })();

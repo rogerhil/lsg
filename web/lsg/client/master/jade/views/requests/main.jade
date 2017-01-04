@@ -5,7 +5,7 @@ div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
     h3 Incoming Requests
 
     .card.request-item.animate(ng-repeat='request in ctrl.incomingRequests track by request.id' request-id="{{ request.id }}")
-        ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requester; context='incomingRequests'")
+        ng-include(src="viewPath('requests/items.partial.html')", onload="user=request.requester; context='incomingRequests'")
 
     p(ng-if="!ctrl.incomingRequests.length && ctrl.incomingRequestsLoaded" style="margin-bottom: 40px;") No incoming requests.
     .ball-pulse(ng-if="!ctrl.incomingRequestsLoaded" style="margin-bottom: 40px;")
@@ -19,7 +19,7 @@ div.keep-content-heading(ng-controller='RequestsCtrl as ctrl')
       small &nbsp;
 
     .card.request-item.animate(ng-repeat='request in ctrl.myRequests track by request.id' request-id="{{ request.id }}")
-        ng-include(src="'app/views/requests/items.partial.html'", onload="user=request.requested; context='myRequests'")
+        ng-include(src="viewPath('requests/items.partial.html')", onload="user=request.requested; context='myRequests'")
 
     p(ng-if="!ctrl.myRequests.length && ctrl.myRequestsLoaded") No requests.
     .ball-pulse(ng-if="!ctrl.myRequestsLoaded")

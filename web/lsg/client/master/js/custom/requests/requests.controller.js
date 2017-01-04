@@ -13,8 +13,8 @@
     /*
      RequestsCtrl
      */
-    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$interval', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams', 'UsersService'];
-    function RequestsCtrl($scope, $q, $timeout, $interval, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams, UsersService) {
+    RequestsCtrl.$inject = ['$scope', '$q', '$timeout', '$mdDialog', '$mdMedia', 'RequestsService', '$rootScope', 'globalFunctions', '$stateParams', 'UsersService'];
+    function RequestsCtrl($scope, $q, $timeout, $mdDialog, $mdMedia, RequestsService, $rootScope, globalFunctions, $stateParams, UsersService) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.user = $rootScope.user;
@@ -159,7 +159,7 @@
                 controllerAs: 'ctrl',
                 controller: AcceptRequestDialogCtrl,
                 locals: {request: request, requestsCtrl: self},
-                templateUrl: 'app/views/requests/swap.partial.html',
+                templateUrl: $rootScope.viewPath('requests/swap.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -215,7 +215,7 @@
                 controllerAs: 'ctrl',
                 controller: ContactDetailsCtrl,
                 locals: {request: request, context: context, msg: msg, requestsCtrl: self},
-                templateUrl: 'app/views/requests/contact-details.partial.html',
+                templateUrl: $rootScope.viewPath('requests/contact-details.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -227,7 +227,7 @@
                 controllerAs: 'ctrl',
                 controller: FinalizeRequestCtrl,
                 locals: {request: request, requestsCtrl: self},
-                templateUrl: 'app/views/requests/finalize-request.partial.html',
+                templateUrl: $rootScope.viewPath('requests/finalize-request.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -298,8 +298,8 @@
     /*
      AcceptRequestDialogCtrl
      */
-    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService'];
-    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions, UsersService) {
+    AcceptRequestDialogCtrl.$inject = ['$scope', '$mdDialog', '$mdMedia', 'request', 'requestsCtrl', 'RequestsService', 'globalFunctions', 'UsersService', '$rootScope'];
+    function AcceptRequestDialogCtrl($scope, $mdDialog, $mdMedia, request, requestsCtrl, RequestsService, globalFunctions, UsersService, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.request = request;
@@ -344,7 +344,7 @@
                     controllerAs: 'ctrl',
                     controller: PendingRequestsWarningCtrl,
                     locals: {request: request, pendingMyRequests: pendingMyRequests, pendingIncomingRequests: pendingIncomingRequests, acceptRequestDialogCtrl: self},
-                    templateUrl: 'app/views/requests/warning-refuse-pending.partial.html',
+                    templateUrl: $rootScope.viewPath('requests/warning-refuse-pending.partial.html'),
                     parent: angular.element(document.body),
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
@@ -386,8 +386,8 @@
     /*
      ContactDetailsCtrl
      */
-    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'request', 'context', 'msg', 'requestsCtrl', 'UsersService'];
-    function ContactDetailsCtrl($scope, $timeout, $mdDialog, $mdMedia, request, context, msg, requestsCtrl, UsersService) {
+    ContactDetailsCtrl.$inject = ['$scope', '$timeout', '$mdDialog', '$mdMedia', 'request', 'context', 'msg', 'requestsCtrl', 'UsersService', '$rootScope'];
+    function ContactDetailsCtrl($scope, $timeout, $mdDialog, $mdMedia, request, context, msg, requestsCtrl, UsersService, $rootScope) {
         var self = this;
         self.msg = msg;
         self.user = requestsCtrl.user;
@@ -411,7 +411,7 @@
                 controllerAs: 'ctrl',
                 controller: 'ReportUserCtrl',
                 locals: {user: self.swapUser, onreportuserclose: showContact},
-                templateUrl: 'app/views/users/report-user-form.html',
+                templateUrl: $rootScope.viewPath('users/report-user-form.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen

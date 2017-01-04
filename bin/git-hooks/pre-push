@@ -1,0 +1,24 @@
+#!/bin/sh
+
+BRANCH=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [ $BRANCH != "master" ]; then
+    echo "Version increment is ignored for branches other than master."
+    exit 0
+fi
+
+BASE_DIR=`git rev-parse --show-toplevel`
+
+INC_VERSION_FILE="$BASE_DIR/web/lsg/client/build/server/inc-version.txt"
+CURRENT_INC_VERSION=`cat $INC_VERSION_FILE`
+NEW_INC_VERSION="$(($CURRENT_INC_VERSION+1))"
+
+echo $NEW_INC_VERSION > $INC_VERSION_FILE
+
+MSG="Version changed from $CURRENT_INC_VERSION to $NEW_INC_VERSION"
+
+echo $MSG
+
+git commit -a -m "$MSG"
+
+exit 0

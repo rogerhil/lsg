@@ -40,8 +40,6 @@ md-dialog(aria-label="Match", ng-cloak, style="max-width: 580px;")
                                            "'other': 'You already have pending requests involving both games \"{{ ctrl.iwish.full_name }}\" and \"{{ ctrl.game.full_name }}\" game, check below:'}")
 
                 div
-                    //ng-include(src="'app/views/requests/requests-pending-warning.partial.html'", onload="iwish=ctrl.iwish; game=ctrl.game; context='pendingMyRequests'; meContext='requested'; otherContext='requester'")
-                    //ng-include(src="'app/views/requests/requests-pending-warning.partial.html'", onload="iwish=ctrl.iwish; game=ctrl.game; context='pendingIncomingRequests'; meContext='requester'; otherContext='requested'")
 
                     div.media.shadow-z2(style="margin: 20px 20px 0 0; float: left;" ng-repeat="request in ctrl.pendingMyRequests")
                         div(layout="row")

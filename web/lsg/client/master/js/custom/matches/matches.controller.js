@@ -48,7 +48,7 @@
                 controllerAs: 'ctrl',
                 controller: 'MatchDialogCtrl',
                 locals: {match: match, matchesCtrl: self},
-                templateUrl: 'app/views/matches/match.partial.html',
+                templateUrl: $rootScope.viewPath('matches/match.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -67,8 +67,8 @@
     /*
      MatchDialogCtrl
      */
-    MatchDialogCtrl.$inject = ['$scope', '$mdDialog', 'match', '$mdMedia', 'matchesCtrl'];
-    function MatchDialogCtrl($scope, $mdDialog, match, $mdMedia, matchesCtrl) {
+    MatchDialogCtrl.$inject = ['$scope', '$mdDialog', 'match', '$mdMedia', 'matchesCtrl', '$rootScope'];
+    function MatchDialogCtrl($scope, $mdDialog, match, $mdMedia, matchesCtrl, $rootScope) {
         var self = this;
         var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
         self.match = match;
@@ -85,7 +85,7 @@
                 controllerAs: 'ctrl',
                 controller: 'RequestSwapDialogCtrl',
                 locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl, matchCtrl: self},
-                templateUrl: 'app/views/requests/swap.partial.html',
+                templateUrl: $rootScope.viewPath('requests/swap.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
@@ -153,7 +153,7 @@
                 controllerAs: 'ctrl',
                 controller: 'PendingRequestWarningCtrl',
                 locals: {match: match, game: game, swapUser: swapUser, matchesCtrl: matchesCtrl, requestSwapDialogCtrl: self},
-                templateUrl: 'app/views/matches/match.warning.html',
+                templateUrl: $rootScope.viewPath('matches/match.warning.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen

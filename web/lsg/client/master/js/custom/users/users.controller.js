@@ -132,7 +132,7 @@
             self.countryTour.init();
             self.countryTour.start();
             self.countryTour.restart(true);
-            section.css({'position': 'static'});
+            //section.css({'position': 'static'});
         }
 
         function tourMoveSteps() {
@@ -292,7 +292,7 @@
                 controllerAs: 'ctrl',
                 controller: ChangePictureDialogCtrl,
                 locals: {usersCtrl: self},
-                templateUrl: 'app/views/users/change-picture.partial.html',
+                templateUrl: $rootScope.viewPath('users/change-picture.partial.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen

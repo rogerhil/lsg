@@ -47,7 +47,7 @@
         Request.prototype.isFinalizedByAuthenticatedUser = function () {
             var finalizing = this.isFinalizing() || this.isFinalized();
             var context;
-            if (this.requester.id == userId) {
+            if (this.requester.id == $rootScope.user.id) {
                 context = 'requester';
             } else {
                 context = 'requested';
@@ -170,6 +170,9 @@
         var loadAllRequests = function (callbackMy, callbackIncoming, preventOnDialog) {
             if ($state.current.name == 'app.requests') {
                 $rootScope.requestsIndicatorRead = true;
+            }
+            if (!$rootScope.user.acceptedTerms()) {
+                return;
             }
             if (!preventOnDialog || !$('md-dialog').length) {
                 loadMyRequests(callbackMy);

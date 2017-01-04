@@ -20,7 +20,7 @@
                 scope.StatusLabelClasses = $rootScope.StatusLabelClasses;
                 scope.StatusIcons = $rootScope.StatusIcons;
             },
-            templateUrl: 'app/views/requests/directives/status-display.html'
+            templateUrl: $rootScope.viewPath('requests/directives/status-display.html')
         }
     };
 })();

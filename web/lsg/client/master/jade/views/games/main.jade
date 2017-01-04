@@ -17,7 +17,7 @@ h3 Games
                     .em.icon-layers(style="display: inline;") &nbsp;
                     span My Collection
             .card-body
-                ng-include(src="'app/views/games/items.partial.html'", onload="context='collection'; ctrl.gameTour()")
+                ng-include(src="viewPath('games/items.partial.html')", onload="context='collection'; ctrl.gameTour()")
                 div(ng-if="ctrl.restartTourButton" style="margin: 30px auto 10px auto; text-align: center;")
                     button.btn.mb-sm.btn-default.btn-labeled(ng-click="ctrl.runGameTour()")
                         span.btn-label
@@ -38,7 +38,7 @@ h3 Games
                     .em.icon-heart(style="display: inline;") &nbsp;
                     span Wish list
             .card-body
-                ng-include(src="'app/views/games/items.partial.html'", onload="context='wishlist'")
+                ng-include(src="viewPath('games/items.partial.html')", onload="context='wishlist'")
 
 .row(style="text-align: center; margin-top: 50px;")
     a(href="/app/#/app/matches")

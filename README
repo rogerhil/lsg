@@ -13,6 +13,12 @@ docker-machine ssh dev 'ls /home/<MY_USER>'
 -> REF: https://github.com/docker/compose/issues/2247
 
 
+## IMPORTANT NOTE:
+
+Enable git hooks by executing the following:
+ln -s bin/git-hooks/pre-push .git/hooks/pre-push
+
+
 ## INIT
 
 1. Activate the docker machine:

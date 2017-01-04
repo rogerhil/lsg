@@ -26,7 +26,7 @@
                 controllerAs: 'ctrl',
                 controller: TermsAndConditionsDialogCtrl,
                 locals: {welcomeCtrl: self},
-                templateUrl: 'app/views/users/terms-and-conditions.html',
+                templateUrl: $rootScope.viewPath('users/terms-and-conditions.html'),
                 parent: angular.element(document.body),
                 fullscreen: useFullScreen
             });

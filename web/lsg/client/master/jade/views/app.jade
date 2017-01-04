@@ -1,18 +1,17 @@
 // top navbar
-header.topnavbar-wrapper(ng-include="'app/views/partials/top-navbar.html'")
+header.topnavbar-wrapper(ng-include="viewPath('partials/top-navbar.html')")
 
 // sidebar
-aside.aside(ng-include="'app/views/partials/sidebar.html'", ng-controller="SidebarController")
+aside.aside(ng-include="viewPath('partials/sidebar.html')", ng-controller="SidebarController")
 
 // offsidebar
-aside.offsidebar(ng-include="'app/views/partials/offsidebar.html'")
+aside.offsidebar(ng-include="viewPath('partials/offsidebar.html')")
 
 // Main section
 section
 
   // Page content
   .content-wrapper(ui-view="", autoscroll="false", ng-class="app.viewAnimation")
-  
-// Page footer
-footer(ng-include="'app/views/partials/footer.html'")
 
+// Page footer
+footer(ng-include="viewPath('partials/footer.html')")

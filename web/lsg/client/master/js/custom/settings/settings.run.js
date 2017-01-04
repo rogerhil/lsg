@@ -43,8 +43,17 @@
             offsidebarOpen: false,
             asideToggled: false,
             viewAnimation: 'ng-fadeInUp',
-            incVersion: VersionService.getIncVersion()
+            incVersion: 0
         };
+
+        VersionService.getIncVersion().then(function (v) {
+            $rootScope.app.incVersion = v;
+        });
+
+        $rootScope.viewPath = function (path) {
+            return 'app/views/' + path + '?iv=' + $rootScope.app.incVersion;
+        };
+
 
         if ($rootScope.user === undefined || $rootScope.user == null) {
             //window.location = '/app/#/sign-in';

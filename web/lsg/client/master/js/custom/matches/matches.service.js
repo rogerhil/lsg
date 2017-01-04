@@ -36,6 +36,9 @@
             if ($state.current.name == 'app.matches') {
                 $rootScope.matchesIndicatorRead = true;
             }
+            if (!$rootScope.user.acceptedTerms()) {
+                return;
+            }
             self.getMatches().then(function (matches) {
                 // filter invalid matches anyway
                 matches = matches.filter(function (match) {

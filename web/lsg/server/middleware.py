@@ -6,7 +6,7 @@ from django.conf import settings
 
 class RedirectFallbackMiddleware(object):
 
-    static_extensions = 'css|html|jpg|jpeg|js|json|md|png|svg'
+    static_extensions = 'css|html|jpg|jpeg|js|json|md|png|svg|txt'
     app_static_regex = re.compile(r'/app/.*(%s)' % static_extensions)
 
     def __init__(self, get_response):

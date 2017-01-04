@@ -165,7 +165,7 @@
                 controllerAs: 'ctrl',
                 controller: 'GameDetailsDialogCtrl',
                 locals: {game: game, browseCtrl: self},
-                templateUrl: 'app/views/browse/game-details.html',
+                templateUrl: $rootScope.viewPath('browse/game-details.html'),
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen

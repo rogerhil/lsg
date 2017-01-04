@@ -1,3 +1,5 @@
+PS: old instructions below to setup without using docker!
+
 # Setup
  - Install Python 3.5
  - Install postgres
