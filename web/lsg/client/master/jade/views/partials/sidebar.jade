@@ -6,9 +6,9 @@ script(type='text/ng-template', id="sidebar-renderer.html")
         .pull-right.label.label-info(ng-if="item.sref == 'app.matches' && matches.length"
                                      animate-model-change model="{{matches.length}}" increment-class="animate-up-small" decrement-class="animate-down")
             | {{matches.length}}
-        .pull-right.label.label-success(ng-if="item.sref == 'app.requests' && (myRequests.length || incomingRequests.length)"
-                                        animate-model-change model="{{myOpenRequests.length + incomingOpenRequests.length}}" increment-class="animate-up-small" decrement-class="animate-up-small")
-            | {{ myRequests.length + incomingRequests.length }}
+        .pull-right.label.label-success(ng-if="item.sref == 'app.requests' && (myOpenRequests.length || incomingOpenRequests.length)"
+                                        animate-model-change model="{{myOpenRequests.length + incomingOpenRequests.length}}" increment-class="animate-up-small" decrement-class="animate-down")
+            | {{ myOpenRequests.length + incomingOpenRequests.length }}
         em(class="{{item.icon}}", ng-if="item.icon")
         span {{(item.translate | translate) || item.text}}
     ul(class="nav sidebar-subnav", ng-if="item.submenu", uib-collapse="isCollapse(pIndex)",  ng-init="addCollapse(pIndex, item)")
