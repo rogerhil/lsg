@@ -13,7 +13,7 @@
                         <ul>
                             {% for swap in item.swaps %}
                                 <li>
-                                    <strong {% if swap.user.id == 0 %}style="color: #DDD"{% endif %}>From {{ swap.user.name }}:</strong>
+                                    <strong {% if swap.user.id == 1 %}style="color: #DDD"{% endif %}>From {{ swap.user.name }}:</strong>
                                     <ol style="list-style-type: decimal;">
                                         {% for game in swap.wanted_games %}
                                             <li style="list-style-type: decimal;">
