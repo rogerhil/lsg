@@ -76,7 +76,7 @@ echo Removing old S3 backups
 OLD_S3_BACKUPS=`aws s3 ls letswapgames-backup-prod | sort | head -n -3 | awk '{ print $2 }'`
 for SUB_DIR in $OLD_S3_BACKUPS
 do
-    echo "Running: aws s3 rm s3://letswapgames-backup-prod/$SUB_DIR"
+    echo "Running: aws s3 rm --recursive s3://letswapgames-backup-prod/$SUB_DIR"
     aws s3 rm s3://letswapgames-backup-prod/$SUB_DIR
 done
 
