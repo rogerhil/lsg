@@ -16,20 +16,16 @@
 # docker run --rm --volumes-from lsgdocker_web_1 -v $(pwd)/backup-files/dev:/backup-files lsgdocker_web bash -c "ls -lh /app/media; du -sh /app/media; tar zxf /backup-files/media-backup.tar.gz; ls -lh /app/media; du -sh /app/media;"
 #
 
-PREFIX='dev'
-LOCAL_MOUNT="$(pwd)"
-
-if [ "$DOCKER_MACHINE_NAME" == "lsgdigitalocean" ]; then
-    PREFIX='prod'
-    LOCAL_MOUNT='/root/lsg-backup/'
-fi
+PREFIX='prod'
+LOCAL_MOUNT='/root/lsg-mount-backup/'
 
 echo
 echo "** Running backup for $PREFIX"
 echo
 
 TIMESTAMP_DIR="$(date +'%Y-%m-%dT%H:%M')"
-BACKUP_DIR="backup-files/$PREFIX/$TIMESTAMP_DIR"
+BACKUP_DIR_BASE="/root/backup-files/$PREFIX/"
+BACKUP_DIR="$BACKUP_DIR_BASE$TIMESTAMP_DIR"
 mkdir -p $BACKUP_DIR
 
 echo Saving postgres data
@@ -43,12 +39,9 @@ echo
 echo Saving logs
 docker run --rm --volumes-from lsgdocker_web_1 -v $LOCAL_MOUNT:/logs-backup alpine tar cfz /logs-backup/logs-backup.tar.gz /app/logs
 
-if [ "$PREFIX" == "prod" ]; then
-    scp root@letswapgames.com:$LOCAL_MOUNT/* .
-fi
-mv data-backup.tar.gz $BACKUP_DIR
-mv media-backup.tar.gz $BACKUP_DIR
-mv logs-backup.tar.gz $BACKUP_DIR
+mv $LOCAL_MOUNT/data-backup.tar.gz $BACKUP_DIR/
+mv $LOCAL_MOUNT/media-backup.tar.gz $BACKUP_DIR/
+mv $LOCAL_MOUNT/logs-backup.tar.gz $BACKUP_DIR/
 
 echo
 echo Copying to S3
@@ -65,3 +58,30 @@ aws s3 ls --region=eu-west-1 s3://letswapgames-backup-$PREFIX/$TIMESTAMP_DIR/
 echo
 echo Backup files saved at $BACKUP_DIR and S3 bucket letswapgames-backup-$PREFIX/$TIMESTAMP_DIR/
 echo
+
+echo
+echo Removing old local backups
+
+OLD_LOCAL_BACKUPS=`ls $BACKUP_DIR_BASE  | sort | head -n -3`
+
+for SUB_DIR in $OLD_LOCAL_BACKUPS
+do
+    echo "Running: rm -rf $BACKUP_DIR_BASE$SUB_DIR"
+    rm -rf $BACKUP_DIR_BASE$SUB_DIR
+done
+
+echo
+echo Removing old S3 backups
+
+OLD_S3_BACKUPS=`aws s3 ls letswapgames-backup-prod | sort | head -n -3 | awk '{ print $2 }'`
+for SUB_DIR in $OLD_S3_BACKUPS
+do
+    echo "Running: aws s3 rm --recursive s3://letswapgames-backup-prod/$SUB_DIR"
+    aws s3 rm s3://letswapgames-backup-prod/$SUB_DIR
+done
+
+echo
+echo Current backups:
+aws s3 ls --region=eu-west-1 s3://letswapgames-backup-$PREFIX
+echo
+echo Finished.
