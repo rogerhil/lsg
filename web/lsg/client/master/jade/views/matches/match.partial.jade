@@ -10,15 +10,15 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
             .md-dialog-content(style="min-width: 320px;")
                 div(style="float: left; margin-right: 20px; position: relative;")
                     div
-                        img.similar-ribon(ng-if="ctrl.match.iwish.is_similar" ng-src="/app/app/img/similar.png")
+                        img.similar-ribon(ng-show="ctrl.match.iwish.is_similar" ng-src="/app/app/img/similar.png")
                         md-tooltip(md-direction="top") This is a similar game to the ones you have on your wish list.
-                    .label.label-warning.swap-indicator(ng-if="ctrl.match.iwish.swap_pending")
+                    .label.label-warning.swap-indicator(ng-show="ctrl.match.iwish.swap_pending")
                         .em.fa.fa-ellipsis-h
                         md-tooltip(md-direction="bottom") You already have a pending Swap Request for this game.
-                    .label.label-info.swap-indicator(ng-if="ctrl.match.ongoing")
+                    .label.label-info.swap-indicator(ng-show="ctrl.match.ongoing")
                         .em.fa.fa-thumbs-up
                         md-tooltip(md-direction="bottom") There is already an ongoing swap with this game.
-                    .label.bg-primary-dark.swap-indicator(ng-if="match.no_games_left" ng-style="ctrl.match.iwish.swap_pending && {right: '40px'}")
+                    .label.bg-primary-dark.swap-indicator(ng-show="match.no_games_left" ng-style="ctrl.match.iwish.swap_pending && {right: '40px'}")
                         .em.fa.fa-frown-o
                         md-tooltip(md-direction="bottom") All your games are already on ongoing swaps.
                     img(ng-src='{{ctrl.match.iwish.images.front_thumb_medium}}', alt='{{ctrl.match.iwish.full_name}}')
@@ -29,16 +29,16 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
                 //p
                 //    .label.label-success {{ctrl.match.iwish.platform.short_name}}
 
-                div(ng-if="ctrl.match.iwish.is_similar")
+                div(ng-show="ctrl.match.iwish.is_similar")
                     .media.bg-info(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
                         span This is a similar game to the ones you have on your wish list.
-                div(ng-if="ctrl.match.iwish.swap_pending")
+                div(ng-show="ctrl.match.iwish.swap_pending")
                     .media.bg-warning(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
                         span You already have a pending Swap Request for this game.
-                div(ng-if="ctrl.match.ongoing")
+                div(ng-show="ctrl.match.ongoing")
                     .media.bg-danger-dark(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
                         span You cannot request this game for swapping as you already have a swap ongoing involving this game.
-                div(ng-if="ctrl.match.no_games_left")
+                div(ng-show="ctrl.match.no_games_left")
                     .media.bg-primary-dark(style="padding: 9px; border-radius: 5px; margin: 9px 0 9px 0;")
                         span No valid matches available.
                 p.m0
@@ -55,20 +55,20 @@ md-dialog(aria-label="Matches", ng-cloak, style="max-width: 580px;")
 
                         .media(style="margin: 0 -15px -15px 0; padding-top: 15px;")
                             .game-img-holder.animate(ng-repeat='game in swap.wanted_games')
-                                .label.label-info.swap-indicator(ng-if="game.ongoing")
+                                .label.label-info.swap-indicator(ng-show="game.ongoing")
                                     .em.fa.fa-thumbs-up
                                     md-tooltip(md-direction="bottom") There is already an ongoing swap with this game.
-                                .label.label-warning.swap-indicator(ng-if="game.swap_pending")
+                                .label.label-warning.swap-indicator(ng-show="game.swap_pending")
                                     .em.fa.fa-ellipsis-h
                                     md-tooltip(md-direction="bottom") This games is involved in a "pending" Swap Request.
                                 img(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', ng-style="(game.cannot_request || game.other_user_ongoing || game.this_user_ongoing || ctrl.match.ongoing) && {opacity: 0.4}")
 
-                                md-tooltip(md-direction="top" ng-if="!game.cannot_request && !game.other_user_ongoing && !game.this_user_ongoing && !ctrl.match.ongoing") Swap with your game "{{game.full_name}}" now!
-                                md-tooltip(md-direction="top" ng-if="game.cannot_request") You cannot select this game to swap, as you already have an ongoing swap involving this game.
-                                md-tooltip(md-direction="bottom" ng-if="ctrl.match.ongoing") You cannot select this game to swap, as you already have an ongoing swap involving the game "{{ ctrl.match.iwish.name }}".
-                                md-tooltip(md-direction="top" ng-if="game.other_user_ongoing") You cannot select this game to swap as {{ swap.user.name }} is currently negotiating this game with some other user.
-                                md-tooltip(md-direction="bottom" ng-if="game.this_user_ongoing") You cannot select any of your games to swap as {{ swap.user.name }} is currently negotiating the game "{{ ctrl.match.iwish.name }}" with some other user.
-                                button.btn.btn-info.btn-circle.btn-lg.swap(type="button" ng-click="ctrl.requestSwap(ctrl.match, game, swap.user)" ng-if="!game.cannot_request && !game.other_user_ongoing && !game.this_user_ongoing")
+                                md-tooltip(md-direction="top" ng-show="!game.cannot_request && !game.other_user_ongoing && !game.this_user_ongoing && !ctrl.match.ongoing") Swap with your game "{{game.full_name}}" now!
+                                md-tooltip(md-direction="top" ng-show="game.cannot_request") You cannot select this game to swap, as you already have an ongoing swap involving this game.
+                                md-tooltip(md-direction="bottom" ng-show="ctrl.match.ongoing") You cannot select this game to swap, as you already have an ongoing swap involving the game "{{ ctrl.match.iwish.name }}".
+                                md-tooltip(md-direction="top" ng-show="game.other_user_ongoing") You cannot select this game to swap as {{ swap.user.name }} is currently negotiating this game with some other user.
+                                md-tooltip(md-direction="bottom" ng-show="game.this_user_ongoing") You cannot select any of your games to swap as {{ swap.user.name }} is currently negotiating the game "{{ ctrl.match.iwish.name }}" with some other user.
+                                button.btn.btn-info.btn-circle.btn-lg.swap(type="button" ng-click="ctrl.requestSwap(ctrl.match, game, swap.user)" ng-show="!game.cannot_request && !game.other_user_ongoing && !game.this_user_ongoing")
                                     em.fa.fa-exchange
 
                 div(style="clear: both;")

@@ -19,7 +19,7 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
                     md-tooltip(md-direction="bottom") Sort alphabetically
         small.hidden-xs See which games are most wanted and which games people most own.
 
-    .ball-pulse(ng-if="ctrl.loading && !ctrl.paginating" style="text-align: center; padding: 100px 0;")
+    .ball-pulse(ng-show="ctrl.loading && !ctrl.paginating" style="text-align: center; padding: 100px 0;")
         div
         div
         div
@@ -31,44 +31,44 @@ div.keep-content-heading(ng-controller='BrowseCtrl as ctrl')
 
         .card.game-list-item.animate(ng-repeat='game in ctrl.games track by game.id')
             .card-item
-                .label.label-warning.swap-indicator(ng-if="ctrl.iHave(game)")
+                .label.label-warning.swap-indicator(ng-show="game.iHave")
                     .em.fa.fa-star
                     md-tooltip(md-direction="bottom") You have this game
-                .label.label-pink.swap-indicator(ng-if="ctrl.iWant(game)")
+                .label.label-pink.swap-indicator(ng-show="game.iWant")
                     .em.fa.fa-heart
                     md-tooltip(md-direction="bottom") You want this game
-                a(href="/app/#/app/matches")
-                    .label.label-info.swap-indicator(ng-if="ctrl.inMatches(game) && !ctrl.inOpenRequest(game)" style="right: 45px;")
+                a(href="/app/#/app/matches" ng-show="game.inMatches && !game.inOpenRequest")
+                    .label.label-info.swap-indicator(style="right: 45px;")
                         .em.fa.fa-thumbs-up
                         md-tooltip(md-direction="bottom") There is a match for this game!
-                a(href="/app/#/app/requests")
-                    .label.label-success.swap-indicator(ng-if="ctrl.inOpenRequest(game)" style="right: 45px;")
+                a(href="/app/#/app/requests" ng-show="game.inOpenRequest")
+                    .label.label-success.swap-indicator(style="right: 45px;")
                         .em.fa.fa-hand-o-up
                         md-tooltip(md-direction="bottom") There is an open request involving this game
-                div(style="height: 170px; width: 100%; background-image: url({{game.images.front_thumb_medium}}); background-size: cover; background-position: center top; position: absolute;" ng-click="ctrl.showGameDetails(game)")
-                md-tooltip(md-direction="top") {{game.full_name}}
+                div.game-bg-image(style="height: 170px; width: 100%; background-image: url({{game.images.front_thumb_medium}}); background-size: cover; background-position: center top; position: absolute;" ng-click="ctrl.showGameDetails(game)")
+                md-tooltip(md-direction="top") {{::game.full_name}}
                 div(style="height: 170px; text-align: center;" ng-click="ctrl.showGameDetails(game)")
-                    img.img-responsive.match-game-image(ng-src='{{game.images.front_thumb_medium}}', alt='{{game.full_name}}', style="height: 170px; max-width: none; text-align: center; margin: 0 auto;")
+                    img.img-responsive.match-game-image(ng-src='{{::game.images.front_thumb_medium}}', alt='{{::game.full_name}}', style="height: 170px; max-width: none; text-align: center; margin: 0 auto;")
                     md-tooltip(md-direction="top") {{game.full_name}}
             .card-body(style="text-align: center; cursor: default; padding-left: 5px; padding-right: 5px; padding-top: 5px;")
                 //div(style="overflow: hidden; margin-bottom: 10px;")
-                //    span(style="white-space: nowrap;") {{ game.name }}
-                //    md-tooltip(md-direction="top") {{game.full_name}}
+                //    span(style="white-space: nowrap;") {{::game.name}}
+                //    md-tooltip(md-direction="top") {{::game.full_name}}
                 div
                     span(style="margin-right: 20px;")
                         em.text-warning.fa.fa-star
                         span {{ game.owned_count }}
                         md-tooltip(md-direction="bottom")
-                            span {{ ctrl.ownedTitle(game) }}
+                            span {{ game.ownedTitle }}
                     span
                         em.text-pink.fa.fa-heart
                         span {{ game.wanted_count }}
                         md-tooltip(md-direction="bottom")
-                            span {{ ctrl.wantedTitle(game) }}
+                            span {{ game.wantedTitle }}
 
         div(style="clear: both;")
     div(style="clear: both;")
-    .ball-pulse(ng-if="ctrl.loading && ctrl.paginating" style="text-align: center;")
+    .ball-pulse(ng-show="ctrl.loading && ctrl.paginating" style="text-align: center;")
         div
         div
         div

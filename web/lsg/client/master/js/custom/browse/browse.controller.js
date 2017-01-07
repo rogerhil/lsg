@@ -46,17 +46,11 @@
         });
 
         self.iHave = function (game) {
-            if (!game.iHave) {
-                game.iHave = self.collectionIds.indexOf(game.id) != -1;
-            }
-            return game.iHave;
+            return self.collectionIds.indexOf(game.id) != -1;
         };
 
         self.iWant = function (game) {
-            if (!game.iWant) {
-                game.iWant = self.wishlistIds.indexOf(game.id) != -1;
-            }
-            return game.iWant;
+            return self.wishlistIds.indexOf(game.id) != -1;
         };
 
         self.wantedTitle = function (game) {
@@ -100,23 +94,41 @@
         };
 
         self.inMatches = function (game) {
-            if (!game.inMatches) {
-                if (game.iWant) {
-                    game.inMatches = $rootScope.matchesWantedIds.indexOf(game.id) != -1;
-                } else {
-                    game.inMatches = $rootScope.matchesOwnedIds.indexOf(game.id) != -1;
-                }
+            if (game.iWant) {
+                return game.inMatches = $rootScope.matchesWantedIds.indexOf(game.id) != -1;
+            } else {
+                return game.inMatches = $rootScope.matchesOwnedIds.indexOf(game.id) != -1;
             }
-            return game.inMatches;
         };
 
         self.inOpenRequest = function (game) {
-            if (!game.inOpenRequest) {
-                game.inOpenRequest = $rootScope.myOpenRequestsGamesIds.indexOf(game.id) != -1 ||
-                                     $rootScope.incomingOpenRequestsGamesIds.indexOf(game.id) != -1;
-            }
-            return game.inOpenRequest;
+            return $rootScope.myOpenRequestsGamesIds.indexOf(game.id) != -1 ||
+                   $rootScope.incomingOpenRequestsGamesIds.indexOf(game.id) != -1;
         };
+
+        var processGames = function (games) {
+            games.forEach(function (game) {
+                game.iHave = self.iHave(game);
+                game.iWant = self.iWant(game);
+                game.ownedTitle = self.ownedTitle(game);
+                game.wantedTitle = self.wantedTitle(game);
+                game.inMatches = self.inMatches(game);
+                game.inOpenRequest = self.inOpenRequest(game);
+            });
+        };
+
+        self.pollProcessGamesPromise = undefined;
+
+        var pollProcessGames = function () {
+            processGames(self.games);
+            self.pollProcessGamesPromise = $timeout(function () {
+                pollProcessGames();
+            }, 5000);
+        };
+
+        $scope.$on('$destroy', function() {
+            $timeout.cancel(self.pollProcessGamesPromise);
+        });
 
         self.loadGamesList = function (filter, concatenate) {
             self.loading = true;
@@ -132,6 +144,9 @@
             self.selectedFilter = filter;
             $timeout(function () {
                 BrowseService.getGames(filter, self.currentPlatform, self.page).then(function (games) {
+                    if (!self.pollProcessGamesPromise) {
+                        $timeout(pollProcessGames, 4000);
+                    }
                     self.paginating = false;
                     if (concatenate) {
                         if (games.length) {
@@ -148,7 +163,8 @@
         };
 
         self.loadMore = function () {
-            //if (self.endOfList) return;
+            if (self.loading) return;
+            if (self.endOfList) return;
             self.page++;
             self.loadGamesList(self.selectedFilter, true);
         };

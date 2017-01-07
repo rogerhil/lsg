@@ -782,7 +782,13 @@ md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolb
   @include translate3d(0, -2px, 0);
 }
 
-.game-list-item * {
+//.game-list-item * {
+  //-webkit-transition: all 0.4s;
+  //-o-transition: all 0.4s;
+  //transition: all 0.4s;
+//}
+
+.game-list-item .card-item {
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   transition: all 0.4s;
