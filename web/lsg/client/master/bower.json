@@ -59,7 +59,7 @@
     "bootstrap-tour": "0.11.0",
     "angular-bootstrap-tour": "0.3.4",
     "sparkline": "http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js",
-    "jquery-classyloader": "http://vox.space/files/jquery-classyloader.zip",
+    "jquery-classyloader": "https://vox.space/file_download/24/jquery-classyloader.zip",
     "loaders.css": "0.1.2",
     "spinkit": "1.2.5",
     "vibrant": "*",

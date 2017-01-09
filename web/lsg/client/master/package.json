@@ -10,7 +10,7 @@
     "gulp-angular-htmlify": "^0.4.0",
     "gulp-angular-templatecache": "^1.7.0",
     "gulp-changed": "^1.1.0",
-    "gulp-compass": "2.0.4",
+    "gulp-compass": "^2.1.0",
     "gulp-compile-handlebars": "^0.6.1",
     "gulp-concat": "^2.4.1",
     "gulp-css-flip": "^0.4.0",
